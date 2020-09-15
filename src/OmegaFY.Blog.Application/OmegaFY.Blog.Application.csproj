@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Base\" />
+    <Folder Include="Commands\Comentarios\Handlers\" />
+    <Folder Include="Commands\Postagens\Handlers\" />
+    <Folder Include="Commands\Usuarios\" />
+    <Folder Include="Events\Comentarios\Handlers\" />
+    <Folder Include="Events\Postagens\Handlers\" />
+    <Folder Include="Queries\Comentarios\Handlers\" />
+    <Folder Include="Queries\Postagens\Handlers\" />
+    <Folder Include="Queries\Usuarios\" />
+    <Folder Include="Validations\Comentarios\" />
+    <Folder Include="Validations\Postagens\" />
+    <Folder Include="Validations\Usuarios\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.1.3" />
+    <PackageReference Include="MediatR" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

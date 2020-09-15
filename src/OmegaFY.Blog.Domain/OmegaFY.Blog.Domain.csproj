@@ -5,15 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Comments\Handlers\" />
-    <Folder Include="Commands\Posts\Handlers\" />
-    <Folder Include="Entities\Comments\" />
-    <Folder Include="Entities\Posts\" />
-    <Folder Include="Queries\Comments\Handlers\" />
-    <Folder Include="Queries\Posts\Handlers\" />
-    <Folder Include="Repositories\Comments\" />
-    <Folder Include="Repositories\Posts\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flunt" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OmegaFY.Blog.Common\OmegaFY.Blog.Common.csproj" />
+    <ProjectReference Include="..\OmegaFY.Blog.Infra\OmegaFY.Blog.Infra.csproj" />
   </ItemGroup>
 
 </Project>
