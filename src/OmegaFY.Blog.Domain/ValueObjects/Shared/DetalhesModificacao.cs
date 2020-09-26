@@ -12,7 +12,11 @@ namespace OmegaFY.Blog.Domain.ValueObjects.Shared
 
         public DetalhesModificacao() => DataCriacao = DateTime.Now;
 
-        public void Modificado() => DataModificacao = DateTime.Now;
+        public DetalhesModificacao(DateTime dataCriacao)
+        {
+            DataCriacao = dataCriacao;
+            DataModificacao = DateTime.Now;
+        }
 
         public override bool Equals(ValueObject other)
         {

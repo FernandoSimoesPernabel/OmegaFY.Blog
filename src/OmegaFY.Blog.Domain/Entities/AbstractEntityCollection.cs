@@ -1,11 +1,10 @@
 ﻿using Flunt.Validations;
-using OmegaFY.Blog.Domain.Entities;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OmegaFY.Blog.Domain.ValueObjects
+namespace OmegaFY.Blog.Domain.Entities
 {
 
     public abstract class AbstractEntityCollection<T> where T : Entity

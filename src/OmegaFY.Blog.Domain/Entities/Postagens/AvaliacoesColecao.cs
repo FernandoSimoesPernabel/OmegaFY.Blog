@@ -1,7 +1,6 @@
-﻿using OmegaFY.Blog.Domain.Entities.Postagens;
-using System.Linq;
+﻿using System.Linq;
 
-namespace OmegaFY.Blog.Domain.ValueObjects.Postagens
+namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
 
     public class AvaliacoesColecao : AbstractEntityCollection<Avaliacao>

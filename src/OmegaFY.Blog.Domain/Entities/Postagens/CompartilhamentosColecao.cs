@@ -1,6 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Entities.Postagens;
-
-namespace OmegaFY.Blog.Domain.ValueObjects.Postagens
+﻿namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
     public class CompartilhamentosColecao : AbstractEntityCollection<Compartilhamento>
     {

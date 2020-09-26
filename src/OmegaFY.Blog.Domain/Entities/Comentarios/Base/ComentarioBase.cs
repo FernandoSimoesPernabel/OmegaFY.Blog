@@ -1,11 +1,9 @@
 ﻿using Flunt.Validations;
 using OmegaFY.Blog.Common.Enums;
 using OmegaFY.Blog.Domain.Extensions;
-using OmegaFY.Blog.Domain.ValueObjects.Comentarios;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
 {
@@ -36,7 +34,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
             new Contract().ValidarComentario(comentario).EnsureContractIsValid();
 
             Corpo = comentario;
-            DetalhesModificacao.Modificado();
+            DetalhesModificacao = new DetalhesModificacao(DetalhesModificacao.DataCriacao);
         }
 
         public void Reagir(Guid usuarioId, Reacoes reacoes) => _reacoes.Reagir(new Reacao(usuarioId, Id, reacoes));

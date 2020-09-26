@@ -15,7 +15,9 @@ namespace OmegaFY.Blog.Domain.ValueObjects.Shared
 
         public Email(string email)
         {
-            new Contract().IsEmail(email, nameof(email), $"O e-mail '{email}' não é um endereço valído.").EnsureContractIsValid();
+            new Contract()
+                .IsEmail(email, nameof(email), $"O e-mail '{email}' não é um endereço valído.")
+                .EnsureContractIsValid();
 
             Endereco = email;
 

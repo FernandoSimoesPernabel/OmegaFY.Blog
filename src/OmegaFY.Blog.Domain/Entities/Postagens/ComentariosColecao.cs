@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Domain.Entities.Comentarios;
 
-namespace OmegaFY.Blog.Domain.ValueObjects.Postagens
+namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
 
     public class ComentariosColecao : AbstractEntityCollection<Comentario>

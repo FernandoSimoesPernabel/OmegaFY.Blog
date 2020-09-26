@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
+    <Folder Include="ValueObjects\Comentarios\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,11 +1,9 @@
 ﻿using Flunt.Validations;
 using OmegaFY.Blog.Domain.Entities.Comentarios.Base;
 using OmegaFY.Blog.Domain.Extensions;
-using OmegaFY.Blog.Domain.ValueObjects.Comentarios;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OmegaFY.Blog.Domain.Entities.Comentarios
 {

@@ -28,7 +28,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public Corpo Corpo { get; private set; }
 
-        public DetalhesModificacao DetalhesModificacao { get; }
+        public DetalhesModificacao DetalhesModificacao { get; private set; }
 
         public IReadOnlyCollection<Comentario> Comentarios => _comentarios.ReadOnlyCollection;
 
@@ -60,7 +60,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
             Cabecalho = cabecalho;
 
-            DetalhesModificacao?.Modificado();
+            Modificado();
         }
 
         public void DefinirCorpoDaPostagem(string conteudoPostagem)
@@ -75,7 +75,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
             Corpo = conteudoPostagem;
 
-            DetalhesModificacao?.Modificado();
+            Modificado();
         }
 
         public void Ocultar()
@@ -136,6 +136,12 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         }
 
         public override string ToString() => Corpo.ToString();
+
+        private void Modificado()
+        {
+            if (DetalhesModificacao != null)
+                DetalhesModificacao = new DetalhesModificacao(DetalhesModificacao.DataCriacao);
+        }
 
         private bool VerificarSeAcaoFoiRealizadaPeloAutor(Guid usuarioId) => usuarioId == UsuarioId;
 

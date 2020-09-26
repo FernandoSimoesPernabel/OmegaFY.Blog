@@ -1,7 +1,6 @@
-﻿using OmegaFY.Blog.Domain.Entities.Comentarios;
-using System.Linq;
+﻿using System.Linq;
 
-namespace OmegaFY.Blog.Domain.ValueObjects.Comentarios
+namespace OmegaFY.Blog.Domain.Entities.Comentarios
 {
 
     public class ReacoesColecao : AbstractEntityCollection<Reacao>
