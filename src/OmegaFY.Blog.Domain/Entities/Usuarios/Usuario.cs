@@ -1,10 +1,11 @@
-﻿using OmegaFY.Blog.Domain.ValueObjects.Shared;
+﻿using OmegaFY.Blog.Domain.Core.Entities;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 using OmegaFY.Blog.Domain.ValueObjects.Usuarios;
 
 namespace OmegaFY.Blog.Domain.Entities.Usuario
 {
 
-    public class Usuario : Entity, IAggregateRoot
+    public class Usuario : Entity, IAggregateRoot<Usuario>
     {
 
         public Login Login { get; }

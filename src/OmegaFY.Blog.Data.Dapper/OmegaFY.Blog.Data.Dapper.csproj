@@ -16,4 +16,8 @@
     <Folder Include="Queries\Usuarios\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
+  </ItemGroup>
+
 </Project>

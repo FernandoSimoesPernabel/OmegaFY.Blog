@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="ValueObjects\Comentarios\" />
   </ItemGroup>
 
@@ -15,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OmegaFY.Blog.Common\OmegaFY.Blog.Common.csproj" />
-    <ProjectReference Include="..\OmegaFY.Blog.Infra\OmegaFY.Blog.Infra.csproj" />
+    <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace OmegaFY.Blog.Domain.Entities.Comentarios
 {
 
-    public class Comentario : ComentarioBase, IAggregateRoot
+    public class Comentario : ComentarioBase
     {
 
         private readonly SubComentariosColecao _subComentarios;

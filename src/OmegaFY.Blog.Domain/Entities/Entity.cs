@@ -1,14 +1,10 @@
-﻿using Flunt.Validations;
-using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.Extensions;
+﻿using OmegaFY.Blog.Domain.Core.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace OmegaFY.Blog.Domain.Entities
 {
 
-    public abstract class Entity : IComparable, IEquatable<Entity>
+    public abstract class Entity : IEntity, IComparable, IEquatable<Entity>
     {
 
         public Guid Id { get; }

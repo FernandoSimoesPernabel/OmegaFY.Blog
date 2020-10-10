@@ -1,23 +1,17 @@
-﻿using OmegaFY.Blog.Application.Commands;
-using OmegaFY.Blog.Application.Queries;
+﻿using OmegaFY.Blog.Domain.Core.Results;
 using System.Collections.Generic;
 
 namespace OmegaFY.Blog.Application.Base
 {
 
-    public class GenericResult<TResult> where TResult : ICommandResult, IQueryResult
+    public class GenericResult<TResult> where TResult : IResult
     {
         private List<ValidationError> _erros { get; }
 
-        public TResult Data { get; }
-
         public IReadOnlyCollection<ValidationError> Errors => _erros;
 
-        public GenericResult() : this(default) { }
-
-        public GenericResult(TResult data)
+        public GenericResult()
         {
-            Data = data;
             _erros = new List<ValidationError>();
         }
 

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OmegaFY.Blog.WebAPI.Extensions;
 
 namespace OmegaFY.Blog.WebAPI
 {
@@ -23,10 +24,8 @@ namespace OmegaFY.Blog.WebAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-        }
+        public void ConfigureServices(IServiceCollection services) 
+            => services.AddDependencyInjectionRegister(typeof(Startup).Assembly, Configuration);
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,7 +39,7 @@ namespace OmegaFY.Blog.WebAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -10,14 +10,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Repositories\Comentarios\" />
     <Folder Include="Mappings\" />
     <Folder Include="Repositories\Postagens\" />
     <Folder Include="Repositories\Usuarios\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
+    <ProjectReference Include="..\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj" />
   </ItemGroup>
 
 </Project>

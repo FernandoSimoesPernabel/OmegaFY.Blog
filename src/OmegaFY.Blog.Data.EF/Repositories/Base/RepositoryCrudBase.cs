@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OmegaFY.Blog.Domain.Core.Entities;
+using OmegaFY.Blog.Domain.Core.Repositories;
 using OmegaFY.Blog.Domain.Entities;
-using OmegaFY.Blog.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
     /// Contem metodos basicos de adicionar, atualizar e remover, assim como os basicos de leitura.
     /// </summary>
     /// <typeparam name="T">Uma entidade raiz de agregação que herde da classe abstrata Entity.</typeparam>
-    public abstract class RepositoryCrudBase<T> : IRepository<T> where T : Entity, IAggregateRoot //, new()
+    public abstract class RepositoryCrudBase<T> : IRepository<T> where T : Entity, IAggregateRoot<T> //, new()
     {
 
         /// <summary>

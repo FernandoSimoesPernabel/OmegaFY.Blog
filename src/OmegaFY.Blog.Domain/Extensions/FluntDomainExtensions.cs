@@ -1,5 +1,5 @@
 ﻿using Flunt.Validations;
-using OmegaFY.Blog.Common.Constantes;
+using OmegaFY.Blog.Domain.Core.Constantes;
 using System;
 
 namespace OmegaFY.Blog.Domain.Extensions

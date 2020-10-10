@@ -2,9 +2,9 @@
 using FluentValidation.Results;
 using MediatR;
 using OmegaFY.Blog.Application.Base;
-using OmegaFY.Blog.Application.Commands;
-using OmegaFY.Blog.Application.Queries;
-using OmegaFY.Blog.Common.Constantes;
+using OmegaFY.Blog.Domain.Core.Commands;
+using OmegaFY.Blog.Domain.Core.Constantes;
+using OmegaFY.Blog.Domain.Core.Queries;
 using OmegaFY.Blog.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -35,11 +35,11 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
             }
             catch (DomainException domainException)
             {
-                return ErrosFromException(domainException.ErrorCode, domainException.Message);
+                return ErrorsFromException(domainException.ErrorCode, domainException.Message);
             }
             catch (Exception ex)
             {
-                return ErrosFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.Message);
+                return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.Message);
             }
         }
 
@@ -53,7 +53,7 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
             return CreateTaskResult(result);
         }
 
-        private Task<TResult> ErrosFromException(string errorCode, string errorMessage)
+        private Task<TResult> ErrorsFromException(string errorCode, string errorMessage)
         {
             GenericResult<TResult> result = new GenericResult<TResult>();
             result.Criticar(errorCode, errorMessage);

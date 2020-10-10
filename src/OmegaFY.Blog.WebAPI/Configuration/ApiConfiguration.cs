@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OmegaFY.Blog.Infra.IoC;
+using OmegaFY.Blog.Domain.Core.IoC;
 
 namespace OmegaFY.Blog.WebAPI.Configuration
 {

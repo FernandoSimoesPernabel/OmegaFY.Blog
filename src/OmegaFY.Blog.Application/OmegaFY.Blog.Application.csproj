@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Commands\Base\" />
     <Folder Include="Commands\Comentarios\Handlers\" />
-    <Folder Include="Commands\Postagens\Handlers\" />
     <Folder Include="Commands\Usuarios\" />
     <Folder Include="Events\Comentarios\Handlers\" />
     <Folder Include="Events\Postagens\Handlers\" />
@@ -25,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,5 @@
 ﻿using Flunt.Validations;
-using OmegaFY.Blog.Common.Enums;
+using OmegaFY.Blog.Domain.Core.Enums;
 using OmegaFY.Blog.Domain.Extensions;
 using System;
 

@@ -1,6 +1,7 @@
 ﻿using Flunt.Validations;
-using OmegaFY.Blog.Common.Constantes;
-using OmegaFY.Blog.Common.Enums;
+using OmegaFY.Blog.Domain.Core.Constantes;
+using OmegaFY.Blog.Domain.Core.Entities;
+using OmegaFY.Blog.Domain.Core.Enums;
 using OmegaFY.Blog.Domain.Entities.Comentarios;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Extensions;
@@ -13,7 +14,7 @@ using System.Linq;
 namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
 
-    public class Postagem : Entity, IAggregateRoot
+    public class Postagem : Entity, IAggregateRoot<Postagem>
     {
 
         private readonly ComentariosColecao _comentarios;
