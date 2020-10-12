@@ -15,7 +15,9 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
 
         public IReadOnlyCollection<SubComentario> SubComentarios => _subComentarios.ReadOnlyCollection;
 
-        public Comentario(Guid usuarioId, Guid postagemId, string comentario) : base(usuarioId, postagemId)
+        protected Comentario() { }
+
+        public Comentario(Guid usuarioId, Guid postagemId, Corpo comentario) : base(usuarioId, postagemId)
         {
             new Contract()
                 .ValidarUsuarioId(usuarioId)
@@ -29,7 +31,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
             Corpo = comentario;
         }
 
-        public void Comentar(string comentario, Guid usuarioId) 
+        public void Comentar(string comentario, Guid usuarioId)
             => _subComentarios.Comentar(new SubComentario(usuarioId, PostagemId, Id, comentario));
 
         public void RemoverComentario(SubComentario subComentario) => _subComentarios.RemoverComentario(subComentario);

@@ -157,12 +157,6 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
             => await CreateAsNoTrackingQueryWithInclude(includes).Where(filter).Select(expression).AsQueryable().ToListAsync();
 
         /// <summary>
-        /// Aplica efetivamente as alterações na base de dados.
-        /// </summary>
-        /// <returns>Retorna a quantidade de registros escritos no banco de dados.</returns>
-        protected virtual async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
-
-        /// <summary>
         /// Cria uma query onde o EF adicionara seu proxy para que acompanhe as mudanças realizadas.
         /// Deve ser usado caso queria modificar a entidade de alguma forma.
         /// </summary>
@@ -190,6 +184,12 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
             includes?.ToList()?.ForEach(x => query.Include(x));
             return query;
         }
+
+        /// <summary>
+        /// Aplica efetivamente as alterações na base de dados.
+        /// </summary>
+        /// <returns>Retorna a quantidade de registros escritos no banco de dados.</returns>
+        public virtual async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
 
         /// <summary>
         /// Dispose da interface IDisposable, chama o metodo DisposeAsync() do contexto.

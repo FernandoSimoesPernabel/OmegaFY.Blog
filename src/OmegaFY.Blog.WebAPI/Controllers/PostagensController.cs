@@ -4,6 +4,7 @@ using OmegaFY.Blog.Application.Commands.Postagens;
 using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.WebAPI.Controllers
@@ -16,12 +17,12 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(CancellationToken cancellationToken)
         {
             var c = new PublicarPostagemCommand() { ConteudoPostagem = "Conteudo", Titulo = "Titulo", SubTitulo = "SubTitulo" };
 
             return Ok(await _serviceBus
-                .SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(c));
+                .SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(c, cancellationToken));
         }
 
         [HttpGet("id:guid")]
@@ -33,15 +34,14 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(PublicarPostagemCommand publicarPostagemCommand)
         {
-            return Ok(await _serviceBus
-                .SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(publicarPostagemCommand));
+            return Ok();
         }
 
-        //[HttpPut("id:guid")]
-        //public async Task<IActionResult> Put(Guid guid, object editarPostagemCommand)
-        //{
-        //    return Ok();
-        //}
+        [HttpPut("id:guid")]
+        public async Task<IActionResult> Put(Guid guid, object editarPostagemCommand)
+        {
+            return Ok();
+        }
 
         [HttpPatch("id:guid")]
         public async Task<IActionResult> Patch(Guid id, object editarPostagemCommand)

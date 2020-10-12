@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OmegaFY.Blog.Domain.Core.Enums
+namespace OmegaFY.Blog.Common.Enums
 {
 
     public enum Estrelas

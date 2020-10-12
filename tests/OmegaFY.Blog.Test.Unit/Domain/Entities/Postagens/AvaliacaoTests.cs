@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using OmegaFY.Blog.Domain.Core.Constantes;
-using OmegaFY.Blog.Domain.Core.Enums;
+using OmegaFY.Blog.Common.Constantes;
+using OmegaFY.Blog.Common.Enums;
 using OmegaFY.Blog.Domain.Entities.Postagens;
 using OmegaFY.Blog.Domain.Exceptions;
 using System;

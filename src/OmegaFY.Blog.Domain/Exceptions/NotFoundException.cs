@@ -1,4 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Core.Constantes;
+﻿using OmegaFY.Blog.Common.Constantes;
 
 namespace OmegaFY.Blog.Domain.Exceptions
 {

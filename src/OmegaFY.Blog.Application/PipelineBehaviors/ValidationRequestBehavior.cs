@@ -2,8 +2,8 @@
 using FluentValidation.Results;
 using MediatR;
 using OmegaFY.Blog.Application.Base;
+using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Domain.Core.Commands;
-using OmegaFY.Blog.Domain.Core.Constantes;
 using OmegaFY.Blog.Domain.Core.Queries;
 using OmegaFY.Blog.Domain.Exceptions;
 using System;
@@ -21,10 +21,8 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
 
         private readonly IValidator<TRequest> _validator;
 
-        public ValidationRequestBehavior(IValidator<TRequest> validator)
-        {
-            _validator = validator;
-        }
+        public ValidationRequestBehavior(IValidator<TRequest> validator) 
+            => _validator = validator;
 
         public Task<TResult> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResult> next)
         {

@@ -1,7 +1,7 @@
 ﻿using Flunt.Validations;
-using OmegaFY.Blog.Domain.Core.Constantes;
+using OmegaFY.Blog.Common.Constantes;
+using OmegaFY.Blog.Common.Enums;
 using OmegaFY.Blog.Domain.Core.Entities;
-using OmegaFY.Blog.Domain.Core.Enums;
 using OmegaFY.Blog.Domain.Entities.Comentarios;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Extensions;
@@ -36,6 +36,8 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         public IReadOnlyCollection<Avaliacao> Avaliacoes => _avaliacoes.ReadOnlyCollection;
 
         public IReadOnlyCollection<Compartilhamento> Compartilhamentos => _compartilhamentos.ReadOnlyCollection;
+
+        protected Postagem() { }
 
         public Postagem(Guid usuarioAutorId, Cabecalho cabecalho, string conteudoPostagem)
         {

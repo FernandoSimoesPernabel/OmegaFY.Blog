@@ -1,4 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Core.Enums;
+﻿using OmegaFY.Blog.Common.Enums;
 using System.ComponentModel;
 
 namespace OmegaFY.Blog.Domain.Extensions

@@ -1,4 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Core.Enums;
+﻿using OmegaFY.Blog.Common.Enums;
 using OmegaFY.Blog.Domain.Entities.Comentarios;
 using System;
 using System.Collections.Generic;

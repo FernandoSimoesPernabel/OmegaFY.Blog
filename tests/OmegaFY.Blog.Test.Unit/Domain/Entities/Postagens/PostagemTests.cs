@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using FluentAssertions;
-using OmegaFY.Blog.Domain.Core.Constantes;
+using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Domain.Entities.Comentarios;
 using OmegaFY.Blog.Domain.Entities.Postagens;
 using OmegaFY.Blog.Domain.Exceptions;

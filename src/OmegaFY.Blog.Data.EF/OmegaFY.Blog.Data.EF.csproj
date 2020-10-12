@@ -11,8 +11,6 @@
 
   <ItemGroup>
     <Folder Include="Repositories\Comentarios\" />
-    <Folder Include="Mappings\" />
-    <Folder Include="Repositories\Postagens\" />
     <Folder Include="Repositories\Usuarios\" />
   </ItemGroup>
 

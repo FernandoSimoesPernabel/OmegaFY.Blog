@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Domain.Core.Constantes
+﻿namespace OmegaFY.Blog.Common.Constantes
 {
 
     public class PostagensConstantes

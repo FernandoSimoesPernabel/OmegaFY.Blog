@@ -1,5 +1,5 @@
 ﻿using Flunt.Validations;
-using OmegaFY.Blog.Domain.Core.Enums;
+using OmegaFY.Blog.Common.Enums;
 using OmegaFY.Blog.Domain.Extensions;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 using System;
@@ -20,6 +20,8 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
         public Corpo Corpo { get; protected set; }
 
         public IReadOnlyCollection<Reacao> Reacoes => _reacoes.ReadOnlyCollection;
+
+        protected ComentarioBase() { }
 
         public ComentarioBase(Guid usuarioId, Guid postagemId)
         {

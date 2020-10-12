@@ -7,17 +7,18 @@ using OmegaFY.Blog.Domain.Core.IoC;
 namespace OmegaFY.Blog.WebAPI.Configuration
 {
 
-    //public class EntityFrameworkConfiguration : IDependencyInjectionRegister
-    //{
+    public class EntityFrameworkConfiguration : IDependencyInjectionRegister
+    {
 
-    //    public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
-    //    {
-    //        return services.AddDbContext<ApplicationContext>(options =>
-    //        {
-    //            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), sqlConfig => sqlConfig.MaxBatchSize(1));
-    //        });
-    //    }
+        public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
+        {
+            return services.AddDbContext<ApplicationContext>(options =>
+            {
+                //options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), sqlConfig => sqlConfig.MaxBatchSize(1));
+                options.UseInMemoryDatabase("InMemoryDatabase");
+            });
+        }
 
-    //}
+    }
 
 }
