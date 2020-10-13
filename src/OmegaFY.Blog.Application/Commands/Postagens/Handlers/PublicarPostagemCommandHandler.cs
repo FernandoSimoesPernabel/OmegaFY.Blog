@@ -18,11 +18,6 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.Handlers
 
         private readonly IPostagemRepository _postagemRepository;
 
-        public PublicarPostagemCommandHandler(IPostagemRepository postagemRepository)
-        {
-            _postagemRepository = postagemRepository;
-        }
-
         public PublicarPostagemCommandHandler(IUserInformation user,
                                               ILogger<PublicarPostagemCommandHandler> logger,
                                               IPostagemRepository postagemRepository)

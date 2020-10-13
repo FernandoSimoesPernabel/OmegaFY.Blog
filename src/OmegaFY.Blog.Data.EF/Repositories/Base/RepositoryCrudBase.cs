@@ -189,7 +189,7 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
         /// Aplica efetivamente as alterações na base de dados.
         /// </summary>
         /// <returns>Retorna a quantidade de registros escritos no banco de dados.</returns>
-        public virtual async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
+        public virtual async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
         /// <summary>
         /// Dispose da interface IDisposable, chama o metodo DisposeAsync() do contexto.
