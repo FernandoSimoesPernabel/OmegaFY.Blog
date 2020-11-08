@@ -10,14 +10,28 @@ namespace OmegaFY.Blog.Application.Base
 
         public IReadOnlyCollection<ValidationError> Errors => _erros;
 
-        public GenericResult()
+        public TResult Data { get; }
+
+        public bool Sucesso { get; }
+
+        public GenericResult(bool sucesso) : this(default, sucesso) { }
+
+        public GenericResult(TResult data, bool sucesso)
         {
             _erros = new List<ValidationError>();
+
+            Data = data;
+            Sucesso = sucesso;
         }
 
         public void Criticar(string codigo, string mensagem) => _erros.Add(new ValidationError(codigo, mensagem));
 
         public bool Valido() => _erros?.Count == 0;
+
+        public static GenericResult<TResult> ResultSucesso() => new GenericResult<TResult>(true);
+
+        public static GenericResult<TResult> ResultFalha() => new GenericResult<TResult>(false);
+
 
     }
 

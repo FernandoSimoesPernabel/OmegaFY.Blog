@@ -43,7 +43,7 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
 
         private Task<TResult> ErrosFromValidationFailure(IEnumerable<ValidationFailure> failures)
         {
-            GenericResult<TResult> result = new GenericResult<TResult>();
+            GenericResult<TResult> result = GenericResult<TResult>.ResultFalha();
 
             foreach (ValidationFailure failure in failures)
                 result.Criticar(failure.ErrorCode, failure.ErrorMessage);
@@ -53,7 +53,7 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
 
         private Task<TResult> ErrorsFromException(string errorCode, string errorMessage)
         {
-            GenericResult<TResult> result = new GenericResult<TResult>();
+            GenericResult<TResult> result = GenericResult<TResult>.ResultFalha();
             result.Criticar(errorCode, errorMessage);
 
             return CreateTaskResult(result);

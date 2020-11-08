@@ -20,25 +20,28 @@ namespace OmegaFY.Blog.Data.EF.Mappings
 
             builder.OwnsOne(p => p.Corpo,
                             c => c.Property(p => p.Conteudo)
-                                  .HasColumnName($"varchar({PostagensConstantes.TAMANHO_MAX_CORPO})")
+                                  .HasColumnType($"varchar({PostagensConstantes.TAMANHO_MAX_CORPO})")
+                                  .HasColumnName("Corpo")
                                   .IsRequired());
 
             builder.OwnsOne(p => p.DetalhesModificacao,
                             dm =>
                             {
-                                dm.Property(p => p.DataCriacao).IsRequired();
-                                dm.Property(p => p.DataModificacao);
+                                dm.Property(p => p.DataCriacao).HasColumnName("DataCriacao").IsRequired();
+                                dm.Property(p => p.DataModificacao).HasColumnName("DataModificacao");
                             });
 
             builder.OwnsOne(p => p.Cabecalho,
                             cab =>
                             {
                                 cab.Property(p => p.Titulo)
-                                   .HasColumnName($"varchar({PostagensConstantes.TAMANHO_MAX_TITULO})")
+                                   .HasColumnType($"varchar({PostagensConstantes.TAMANHO_MAX_TITULO})")
+                                   .HasColumnName("Titulo")
                                    .IsRequired();
 
                                 cab.Property(p => p.SubTitulo)
-                                   .HasColumnName($"varchar({PostagensConstantes.TAMANHO_MAX_SUB_TITULO})")
+                                   .HasColumnType($"varchar({PostagensConstantes.TAMANHO_MAX_SUB_TITULO})")
+                                   .HasColumnName("SubTitulo")
                                    .IsRequired();
                             });
 

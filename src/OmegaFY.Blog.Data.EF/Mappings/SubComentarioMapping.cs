@@ -20,14 +20,15 @@ namespace OmegaFY.Blog.Data.EF.Mappings
 
             builder.OwnsOne(p => p.Corpo,
                             c => c.Property(p => p.Conteudo)
-                                  .HasColumnName($"varchar({ComentariosConstantes.TAMANHO_MAX_COMENTARIO})")
+                                  .HasColumnType($"varchar({ComentariosConstantes.TAMANHO_MAX_COMENTARIO})")
+                                  .HasColumnName("Corpo")
                                   .IsRequired());
 
             builder.OwnsOne(p => p.DetalhesModificacao,
                             dm =>
                             {
-                                dm.Property(p => p.DataCriacao).IsRequired();
-                                dm.Property(p => p.DataModificacao);
+                                dm.Property(p => p.DataCriacao).HasColumnName("DataCriacao").IsRequired();
+                                dm.Property(p => p.DataModificacao).HasColumnName("DataModificacao");
                             });
 
             builder.HasMany(p => p.Reacoes).WithOne();
