@@ -36,7 +36,7 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.Handlers
             _postagemRepository.PublicarPostagem(postagem);
             await _postagemRepository.SaveChangesAsync();
 
-            return await Task.FromResult(GenericResult<PublicarPostagemCommandResult>.ResultSucesso());
+            return await Task.FromResult(GenericResult<PublicarPostagemCommandResult>.ResultSucesso(new PublicarPostagemCommandResult()));
         }
     }
 

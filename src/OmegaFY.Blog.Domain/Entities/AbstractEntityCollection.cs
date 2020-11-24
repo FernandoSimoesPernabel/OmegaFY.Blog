@@ -14,7 +14,7 @@ namespace OmegaFY.Blog.Domain.Entities
 
         public AbstractEntityCollection() => _collection = new List<T>();
 
-        public IReadOnlyCollection<T> ReadOnlyCollection => _collection;
+        public IReadOnlyCollection<T> ReadOnlyCollection => _collection.AsReadOnly();
 
         public int Total() => _collection.Count;
 

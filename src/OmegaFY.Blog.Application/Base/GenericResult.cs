@@ -28,7 +28,7 @@ namespace OmegaFY.Blog.Application.Base
 
         public bool Valido() => _erros?.Count == 0;
 
-        public static GenericResult<TResult> ResultSucesso() => new GenericResult<TResult>(true);
+        public static GenericResult<TResult> ResultSucesso(TResult data) => new GenericResult<TResult>(data, true);
 
         public static GenericResult<TResult> ResultFalha() => new GenericResult<TResult>(false);
 
