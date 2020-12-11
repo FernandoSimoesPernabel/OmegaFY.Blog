@@ -31,12 +31,15 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
             Corpo = comentario;
         }
 
-        public void Comentar(string comentario, Guid usuarioId)
+        internal void Comentar(string comentario, Guid usuarioId)
             => _subComentarios.Comentar(new SubComentario(usuarioId, PostagemId, Id, comentario));
 
-        public void RemoverComentario(SubComentario subComentario) => _subComentarios.RemoverComentario(subComentario);
+        internal void EditarSubComentario(Guid subComentarioId, Guid usuarioModificacaoId, string comentario) 
+            => _subComentarios.EditarSubComentario(subComentarioId, usuarioModificacaoId, comentario);
 
-        public int TotalDeComentarios() => _subComentarios.Total();
+        internal void RemoverComentario(SubComentario subComentario) => _subComentarios.RemoverComentario(subComentario);
+
+        internal int TotalDeComentarios() => _subComentarios.Total();
 
     }
 

@@ -15,7 +15,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         protected override string CriticaRemocaoNaoRealizadaPeloUsuarioOriginal()
             => "A avaliação apenas pode ser removida pelo usuário que a realizou.";
 
-        public void Avaliar(Avaliacao avaliacaoAtual)
+        internal void Avaliar(Avaliacao avaliacaoAtual)
         {
             Avaliacao avaliacaoJaExistente =
                 ReadOnlyCollection.SingleOrDefault(avaliacaoUsuario => avaliacaoUsuario.UsuarioId == avaliacaoAtual?.UsuarioId);
@@ -26,7 +26,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             Add(avaliacaoAtual);
         }
 
-        public void RemoverAvaliacao(Avaliacao avaliacao) => Remove(avaliacao);
+        internal void RemoverAvaliacao(Avaliacao avaliacao) => Remove(avaliacao);
 
     }
 

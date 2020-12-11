@@ -13,13 +13,13 @@
     <Folder Include="Queries\Postagens\Handlers\" />
     <Folder Include="Queries\Usuarios\" />
     <Folder Include="Validations\Comentarios\" />
-    <Folder Include="Validations\Postagens\" />
     <Folder Include="Validations\Usuarios\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.3.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
 

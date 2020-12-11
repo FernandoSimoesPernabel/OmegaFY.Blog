@@ -99,6 +99,9 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             Oculta = false;
         }
 
+        public Comentario ObterComentarioDaPostagem(Guid comentarioId)
+            => Comentarios.FirstOrDefault(c => c.Id == comentarioId && c.PostagemId == Id);
+
         public void Comentar(string comentario, Guid usuarioId)
         {
             CriticarSeAcaoFoiRealizadaPeloAutor(usuarioId, "O autor da postagem pode apenas responder outros comentários.");
@@ -106,9 +109,25 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             _comentarios.Comentar(new Comentario(usuarioId, Id, comentario));
         }
 
+        public void EditarComentario(Guid comentarioId, Guid usuarioModificacaoId, string comentario)
+            => _comentarios.EditarComentario(comentarioId, usuarioModificacaoId, comentario);
+
+        public void EditarSubComentario(Guid comentarioId, Guid subComentarioId, Guid usuarioModificacaoId, string comentario)
+        {
+            Comentario comentarioPai = ObterComentarioDaPostagem(comentarioId);
+
+            new Contract()
+                .IsNotNull(comentarioPai, nameof(comentarioPai), "Não foi encontrado o comentário informado nessa postagem.")
+                .EnsureContractIsValid();
+
+            comentarioPai.EditarSubComentario(subComentarioId, usuarioModificacaoId, comentario);
+        }
+
         public void RemoverComentario(Comentario comentario) => _comentarios.RemoverComentario(comentario);
 
         public int TotalDeComentarios() => _comentarios.Total();
+
+        public int? TotalDeSubComentarios(Guid comentarioId) => ObterComentarioDaPostagem(comentarioId)?.TotalDeComentarios();
 
         public void Compartilhar(Guid usuarioId)
         {
@@ -138,8 +157,6 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             return Avaliacoes.Sum(avaliacao => avaliacao.Nota) / Avaliacoes.Count();
         }
 
-        public override string ToString() => Corpo.ToString();
-
         private void Modificado()
         {
             if (DetalhesModificacao != null)
@@ -152,6 +169,8 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             new Contract()
                 .IsFalse(VerificarSeAcaoFoiRealizadaPeloAutor(usuarioId), nameof(usuarioId), mensagemCritica)
                 .EnsureContractIsValid<DomainInvalidOperationException>();
+
+        public override string ToString() => Corpo.ToString();
 
     }
 

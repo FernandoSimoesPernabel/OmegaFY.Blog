@@ -10,8 +10,8 @@
 
         public ValidationError(string codigo, string mensagem)
         {
-            Codigo = codigo;
-            Mensagem = mensagem;
+            Codigo = codigo ?? string.Empty;
+            Mensagem = mensagem ?? string.Empty;
         }
 
     }

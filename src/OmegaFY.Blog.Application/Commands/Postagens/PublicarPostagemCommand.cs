@@ -1,11 +1,10 @@
 ﻿using MediatR;
-using OmegaFY.Blog.Application.Base;
 using OmegaFY.Blog.Domain.Core.Commands;
 
 namespace OmegaFY.Blog.Application.Commands.Postagens
 {
 
-    public class PublicarPostagemCommand : ICommand, IRequest<GenericResult<PublicarPostagemCommandResult>>
+    public class PublicarPostagemCommand : ICommand, IRequest<PublicarPostagemCommandResult>
     {
 
         public string Titulo { get; set; }

@@ -15,7 +15,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
         protected override string CriticaRemocaoNaoRealizadaPeloUsuarioOriginal()
             => "O comentário apenas pode ser removido pelo usuário que o comentou.";
 
-        public void Reagir(Reacao reacaoAtual)
+        internal void Reagir(Reacao reacaoAtual)
         {
             Reacao reacaoJaExistente =
                 ReadOnlyCollection.SingleOrDefault(reacaoUsuario => reacaoUsuario.UsuarioId == reacaoAtual?.UsuarioId);
@@ -26,7 +26,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
             Add(reacaoAtual);
         }
 
-        public void RemoverReacao(Reacao reacao) => Remove(reacao);
+        internal void RemoverReacao(Reacao reacao) => Remove(reacao);
 
     }
 

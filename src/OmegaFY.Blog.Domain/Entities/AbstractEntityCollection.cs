@@ -1,20 +1,21 @@
 ﻿using Flunt.Validations;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OmegaFY.Blog.Domain.Entities
 {
 
-    public abstract class AbstractEntityCollection<T> where T : Entity
+    public abstract class AbstractEntityCollection<TEntity> where TEntity : Entity
     {
 
-        private readonly List<T> _collection;
+        protected readonly List<TEntity> _collection;
 
-        public AbstractEntityCollection() => _collection = new List<T>();
+        public AbstractEntityCollection() => _collection = new List<TEntity>();
 
-        public IReadOnlyCollection<T> ReadOnlyCollection => _collection.AsReadOnly();
+        public IReadOnlyCollection<TEntity> ReadOnlyCollection => _collection.AsReadOnly();
 
         public int Total() => _collection.Count;
 
@@ -27,9 +28,9 @@ namespace OmegaFY.Blog.Domain.Entities
         protected virtual string CriticaRemocaoNaoRealizadaPeloUsuarioOriginal()
             => "Essa ação apenas pode ser realizada pelo usuário que a realizou.";
 
-        protected void Add(T entity) => _collection.Add(entity);
+        protected void Add(TEntity entity) => _collection.Add(entity);
 
-        protected void Remove(T entity)
+        protected void Remove(TEntity entity)
         {
             CriticarSeRemocaoNaoFoiRealizadaPeloUsuarioOriginal(entity);
             _collection.Remove(entity);
@@ -39,14 +40,37 @@ namespace OmegaFY.Blog.Domain.Entities
         {
             Entity itemQueSeraRemovido = _collection.FirstOrDefault(c => c.Id == itemParaSerRemovido?.Id);
 
+            CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(itemParaSerRemovido, 
+                                                            itemQueSeraRemovido, 
+                                                            CriticaRemocaoNaoRealizadaPeloUsuarioOriginal());
+        }
+
+        protected virtual void CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(Entity novoItem,
+                                                                               Entity itemDaColecao,
+                                                                               string criticaOperacaoNaoRealizadaPeloUsuarioOriginal)
+        {
             new Contract()
-                .IsNotNull(itemParaSerRemovido, nameof(itemParaSerRemovido), CriticaEntidadeInformadaNula())
-                .IsNotNull(itemQueSeraRemovido, nameof(itemQueSeraRemovido), CriticaEntidadeNaoEncontradaNaColecao())
+                .IsNotNull(novoItem, nameof(novoItem), CriticaEntidadeInformadaNula())
+                .IsNotNull(itemDaColecao, nameof(itemDaColecao), CriticaEntidadeNaoEncontradaNaColecao())
                 .EnsureContractIsValid()
-                .AreEquals(itemQueSeraRemovido?.UsuarioId,
-                           itemParaSerRemovido?.UsuarioId,
-                           nameof(itemParaSerRemovido),
-                           CriticaRemocaoNaoRealizadaPeloUsuarioOriginal())
+                .AreEquals(itemDaColecao.UsuarioId,
+                           novoItem.UsuarioId,
+                           nameof(novoItem),
+                           criticaOperacaoNaoRealizadaPeloUsuarioOriginal)
+                .EnsureContractIsValid<DomainInvalidOperationException>();
+        }
+
+        protected virtual void CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(Entity itemDaColecao,
+                                                                               Guid usuarioModificacaoId,
+                                                                               string criticaOperacaoNaoRealizadaPeloUsuarioOriginal)
+        {
+            new Contract()
+                 .IsNotNull(itemDaColecao, nameof(itemDaColecao), CriticaEntidadeNaoEncontradaNaColecao())
+                .EnsureContractIsValid()
+                .AreEquals(itemDaColecao.UsuarioId,
+                           usuarioModificacaoId,
+                           nameof(usuarioModificacaoId),
+                           criticaOperacaoNaoRealizadaPeloUsuarioOriginal)
                 .EnsureContractIsValid<DomainInvalidOperationException>();
         }
 

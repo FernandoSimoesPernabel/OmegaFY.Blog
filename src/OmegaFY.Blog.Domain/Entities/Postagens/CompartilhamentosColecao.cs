@@ -12,9 +12,9 @@
         protected override string CriticaRemocaoNaoRealizadaPeloUsuarioOriginal()
             => "O compartilhamento apenas pode ser descompartilhado pelo usuário que o realizou.";
 
-        public void Compartilhar(Compartilhamento compartilhamento) => Add(compartilhamento);
+        internal void Compartilhar(Compartilhamento compartilhamento) => Add(compartilhamento);
 
-        public void Descompartilhar(Compartilhamento compartilhamento) => Remove(compartilhamento);
+        internal void Descompartilhar(Compartilhamento compartilhamento) => Remove(compartilhamento);
 
     }
 

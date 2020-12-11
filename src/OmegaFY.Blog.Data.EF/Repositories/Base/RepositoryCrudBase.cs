@@ -49,7 +49,7 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
         /// Toda vez que for chamado será criado um novo registro no banco de dados.
         /// </summary>
         /// <param name="entity">Entidade de negocio que vai ser adicionada no banco de dados.</param>
-        protected virtual void Add(T entity) => _dbSet.Add(entity);
+        protected async virtual Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
         /// <summary>
         /// Verifica se uma entidade se encontra desatachada ou com estado diferente de modificado.
@@ -185,11 +185,10 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
             return query;
         }
 
-        /// <summary>
-        /// Aplica efetivamente as alterações na base de dados.
-        /// </summary>
-        /// <returns>Retorna a quantidade de registros escritos no banco de dados.</returns>
-        public virtual async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+        ///// <summary>
+        ///// Aplica efetivamente as alterações na base de dados.
+        ///// </summary>
+        //public virtual async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
         /// <summary>
         /// Dispose da interface IDisposable, chama o metodo DisposeAsync() do contexto.

@@ -12,7 +12,7 @@ namespace OmegaFY.Blog.Application.Base
     /// <summary>
     /// Implementação do IServiceBus utilizando o pacote MediatR.
     /// </summary>
-    public class MediatorServiceBus : IServiceBus
+    internal class MediatorServiceBus : IServiceBus
     {
 
         /// <summary>

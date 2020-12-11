@@ -3,8 +3,6 @@ using FluentValidation.Results;
 using MediatR;
 using OmegaFY.Blog.Application.Base;
 using OmegaFY.Blog.Common.Constantes;
-using OmegaFY.Blog.Domain.Core.Commands;
-using OmegaFY.Blog.Domain.Core.Queries;
 using OmegaFY.Blog.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -14,52 +12,54 @@ using System.Threading.Tasks;
 namespace OmegaFY.Blog.Application.PipelineBehaviors
 {
 
-    public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, TResult>
-        where TRequest : ICommandHandler, IQueryHandler
-        where TResult : GenericResult<TResult>, ICommandResult, IQueryResult
+    public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, TResult> where TResult : GenericResult
     {
 
         private readonly IValidator<TRequest> _validator;
 
-        public ValidationRequestBehavior(IValidator<TRequest> validator) 
+        public ValidationRequestBehavior(IValidator<TRequest> validator)
             => _validator = validator;
 
-        public Task<TResult> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResult> next)
+        public async Task<TResult> Handle(TRequest request,
+                                          CancellationToken cancellationToken,
+                                          RequestHandlerDelegate<TResult> next)
         {
             try
             {
                 ValidationResult validationResult = _validator.Validate(request);
-                return validationResult.IsValid ? ErrosFromValidationFailure(validationResult.Errors) : next();
+                return !validationResult.IsValid ? await ErrosFromValidationFailure(validationResult.Errors) : await next();
             }
             catch (DomainException domainException)
             {
-                return ErrorsFromException(domainException.ErrorCode, domainException.Message);
+                return await ErrorsFromException(domainException.ErrorCode, domainException.Message);
             }
             catch (Exception ex)
             {
-                return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.Message);
+                return await ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.Message);
             }
         }
 
-        private Task<TResult> ErrosFromValidationFailure(IEnumerable<ValidationFailure> failures)
+        private async Task<TResult> ErrosFromValidationFailure(IEnumerable<ValidationFailure> failures)
         {
-            GenericResult<TResult> result = GenericResult<TResult>.ResultFalha();
+            TResult result = CreateInstanceOfTResult();
 
             foreach (ValidationFailure failure in failures)
                 result.Criticar(failure.ErrorCode, failure.ErrorMessage);
 
-            return CreateTaskResult(result);
+            return await CreateTaskResult(result);
         }
 
-        private Task<TResult> ErrorsFromException(string errorCode, string errorMessage)
+        private async Task<TResult> ErrorsFromException(string errorCode, string errorMessage)
         {
-            GenericResult<TResult> result = GenericResult<TResult>.ResultFalha();
+            TResult result = CreateInstanceOfTResult();
             result.Criticar(errorCode, errorMessage);
 
-            return CreateTaskResult(result);
+            return await CreateTaskResult(result);
         }
 
-        private Task<TResult> CreateTaskResult(GenericResult<TResult> result) => Task.FromResult(result as TResult);
+        private async Task<TResult> CreateTaskResult(TResult result) => await Task.FromResult(result);
+
+        private TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult), new object[] { false });
 
     }
 

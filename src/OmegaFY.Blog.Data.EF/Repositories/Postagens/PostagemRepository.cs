@@ -2,15 +2,16 @@
 using OmegaFY.Blog.Data.EF.Repositories.Base;
 using OmegaFY.Blog.Domain.Entities.Postagens;
 using OmegaFY.Blog.Domain.Repositories;
+using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Data.EF.Repositories.Postagens
 {
-    public class PostagemRepository : RepositoryCrudBase<Postagem>, IPostagemRepository
+    internal class PostagemRepository : RepositoryCrudBase<Postagem>, IPostagemRepository
     {
 
         public PostagemRepository(ApplicationContext dbContext) : base(dbContext) { }
 
-        public void PublicarPostagem(Postagem postagem) => Add(postagem);
+        public async Task PublicarPostagem(Postagem postagem) => await AddAsync(postagem);
 
     }
 

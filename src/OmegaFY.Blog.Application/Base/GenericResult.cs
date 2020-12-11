@@ -4,34 +4,22 @@ using System.Collections.Generic;
 namespace OmegaFY.Blog.Application.Base
 {
 
-    public class GenericResult<TResult> where TResult : IResult
+    public abstract class GenericResult : IResult
     {
         private List<ValidationError> _erros { get; }
 
-        public IReadOnlyCollection<ValidationError> Errors => _erros;
-
-        public TResult Data { get; }
-
-        public bool Sucesso { get; }
-
-        public GenericResult(bool sucesso) : this(default, sucesso) { }
-
-        public GenericResult(TResult data, bool sucesso)
+        public GenericResult()
         {
             _erros = new List<ValidationError>();
-
-            Data = data;
-            Sucesso = sucesso;
         }
 
         public void Criticar(string codigo, string mensagem) => _erros.Add(new ValidationError(codigo, mensagem));
 
-        public bool Valido() => _erros?.Count == 0;
+        public bool Sucesso() => _erros?.Count == 0;
 
-        public static GenericResult<TResult> ResultSucesso(TResult data) => new GenericResult<TResult>(data, true);
+        public bool Falha() => !Sucesso();
 
-        public static GenericResult<TResult> ResultFalha() => new GenericResult<TResult>(false);
-
+        public IReadOnlyCollection<ValidationError> Errors() => _erros.AsReadOnly();
 
     }
 

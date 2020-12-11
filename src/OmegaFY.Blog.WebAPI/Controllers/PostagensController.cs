@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OmegaFY.Blog.Application.Base;
 using OmegaFY.Blog.Application.Commands.Postagens;
 using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
@@ -17,43 +18,159 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpGet()]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> List(CancellationToken cancellationToken)
         {
             var c = new PublicarPostagemCommand() { ConteudoPostagem = "Conteudo", Titulo = "Titulo", SubTitulo = "SubTitulo" };
 
-            return Ok(await _serviceBus
-                .SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(c, cancellationToken));
+            PublicarPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(c, cancellationToken);
+
+            return CreatedAtAction(nameof(ObterAsync), new { result.Id }, result);
         }
 
-        [HttpGet("id:guid")]
-        public async Task<IActionResult> Get(Guid id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> ObterAsync([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(PublicarPostagemCommand publicarPostagemCommand)
-        {
-            return Ok();
-        }
+        //[HttpGet("")]
+        //public async Task<IActionResult> ListarPostagensRecentesAsync([FromQuery] PagedRequest pagedRequest, 
+        //                                                              CancellationToken cancellationToken)
+        //{
+        //    return Ok();
+        //}
 
-        [HttpPut("id:guid")]
-        public async Task<IActionResult> Put(Guid guid, object editarPostagemCommand)
-        {
-            return Ok();
-        }
+        //[HttpGet("{id:guid}/listar-postagens-usuario")]
+        //public async Task<IActionResult> ListarPostagensRecentesAsync([FromRoute]Guid usuarioId,
+        //                                                              [FromQuery] PagedRequest pagedRequest,
+        //                                                              CancellationToken cancellationToken)
+        //{
+        //    return Ok();
+        //}
 
-        [HttpPatch("id:guid")]
-        public async Task<IActionResult> Patch(Guid id, object editarPostagemCommand)
-        {
-            return Ok();
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> PublicarPostagemAsync(PublicarPostagemCommand command, CancellationToken cancellationToken)
+        //{
 
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            return NoContent();
-        }
+        //}
+
+        // [HttpPut("{id:guid}")]
+        // public async Task<IActionResult> EditarDadosPostagemAsync([FromRoute]Guid id, 
+        //                                                           EditarDadosPostagemCommand command, 
+        //                                                           CancellationToken cancellationToken)
+        // {
+        //     return Ok();
+        // }
+
+        //[HttpPatch("{id:guid}")]
+        //public async Task<IActionResult> OcultarPostagemAsync([FromRoute]Guid id, 
+        //                                                      OcultarPostagemCommand command, 
+        //                                                      CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        // [HttpPatch("{id:guid}")]
+        // public async Task<IActionResult> DesocultarPostagemAsync([FromRoute]Guid id,
+        //                                                          DesocultarPostagemCommand command, 
+        //                                                          CancellationToken cancellationToken)
+        // {
+
+        // }
+
+        //[HttpDelete("{id:guid}")]
+        //public async Task<IActionResult> ExcluirPostagemAsync(ExcluirPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPost("{id:guid}/comentarios")]
+        //public async Task<IActionResult> ComentarPostagemAsync(ComentarPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPut("{id:guid}/comentarios/{comentarioId:guid}")]
+        //public async Task<IActionResult> EditarComentarioPostagemAsync(EditarComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}")]
+        //public async Task<IActionResult> ExcluirComentarioAsync(ExcluirComentarioCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios")]
+        //public async Task<IActionResult> ComentarComentarioAsync(ComentarComentarioCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPut("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}")]
+        //public async Task<IActionResult> EditarSubComentarioPostagemAsync(EditarSubComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}")]
+        //public async Task<IActionResult> ExcluirSubComentarioAsync(ExcluirSubComentarioCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPost("{id:guid}/compartilhamentos")]
+        //public async Task<IActionResult> CompartilharPostagemAsync(CompartilharPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpDelete("{id:guid}/compartilhamentos/{compartilhamentoId:guid}")]
+        //public async Task<IActionResult> DescompartilharPostagemAsync(DescompartilharPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPost("{id:guid}/avaliacoes")]
+        //public async Task<IActionResult> AvaliarPostagemAsync(AvaliarPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpDelete("{id:guid}/avaliacoes/{avalicaoId:guid}")]
+        //public async Task<IActionResult> RemoverAvaliacaoPostagemAsync(RemoverAvaliacaoPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/reacoes")]
+        //public async Task<IActionResult> ReagirComentarioPostagemAsync(ReagirComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/reacoes/{reacaoId:guid}")]
+        //public async Task<IActionResult> RemoverReacaoComentarioPostagemAsync(RemoverReacaoComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}/reacoes)]
+        //public async Task<IActionResult> ReagirSubComentarioPostagemAsync(ReagirSubComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
+
+        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}/reacoes/{reacaoId:guid}")]
+        //public async Task<IActionResult> RemoverReacaoSubComentarioPostagemAsync(RemoverReacaoSubComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //{
+
+        //}
 
     }
 }

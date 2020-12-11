@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="FluentValidation" Version="9.3.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.3.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
@@ -24,12 +28,12 @@
     <ProjectReference Include="..\OmegaFY.Blog.Application\OmegaFY.Blog.Application.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Data.EF\OmegaFY.Blog.Data.EF.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
+    <ProjectReference Include="..\OmegaFY.Blog.WebAPI.Models\OmegaFY.Blog.WebAPI.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Filters\" />
-    <Folder Include="Middlewares\" />
     <Folder Include="BackgroundServices\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
 
 

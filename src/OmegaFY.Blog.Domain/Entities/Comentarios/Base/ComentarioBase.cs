@@ -31,7 +31,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
             PostagemId = postagemId;
         }
 
-        public void Editar(string comentario)
+        internal void Editar(string comentario)
         {
             new Contract().ValidarComentario(comentario).EnsureContractIsValid();
 
@@ -39,13 +39,13 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
             DetalhesModificacao = new DetalhesModificacao(DetalhesModificacao.DataCriacao);
         }
 
-        public void Reagir(Guid usuarioId, Reacoes reacoes) => _reacoes.Reagir(new Reacao(usuarioId, Id, reacoes));
+        internal void Reagir(Guid usuarioId, Reacoes reacoes) => _reacoes.Reagir(new Reacao(usuarioId, Id, reacoes));
 
-        public void RemoverReacao(Reacao reacao) => _reacoes.RemoverReacao(reacao);
+        internal void RemoverReacao(Reacao reacao) => _reacoes.RemoverReacao(reacao);
 
-        public int TotalDeReacoes() => _reacoes.Total();
+        internal int TotalDeReacoes() => _reacoes.Total();
 
-        public IDictionary<Reacoes, int> QuantidadeDeReacoesPorReacao() => Reacoes.QuantidadeDeReacoesPorReacao();
+        internal IDictionary<Reacoes, int> QuantidadeDeReacoesPorReacao() => Reacoes.QuantidadeDeReacoesPorReacao();
 
         public override string ToString() => Corpo.ToString();
 
