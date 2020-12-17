@@ -9,8 +9,6 @@ namespace OmegaFY.Blog.Domain.Entities
 
         public Guid Id { get; }
 
-        public Guid UsuarioId { get; protected set; }
-
         protected Entity() => Id = Guid.NewGuid();
 
         private static bool ValidarIgualdade(Entity entity1, Entity entity2)

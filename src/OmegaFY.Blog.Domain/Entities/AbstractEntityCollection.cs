@@ -8,7 +8,7 @@ using System.Linq;
 namespace OmegaFY.Blog.Domain.Entities
 {
 
-    public abstract class AbstractEntityCollection<TEntity> where TEntity : Entity
+    public abstract class AbstractEntityCollection<TEntity> where TEntity : EntityWithUserId
     {
 
         protected readonly List<TEntity> _collection;
@@ -36,17 +36,17 @@ namespace OmegaFY.Blog.Domain.Entities
             _collection.Remove(entity);
         }      
 
-        protected virtual void CriticarSeRemocaoNaoFoiRealizadaPeloUsuarioOriginal(Entity itemParaSerRemovido)
+        protected virtual void CriticarSeRemocaoNaoFoiRealizadaPeloUsuarioOriginal(EntityWithUserId itemParaSerRemovido)
         {
-            Entity itemQueSeraRemovido = _collection.FirstOrDefault(c => c.Id == itemParaSerRemovido?.Id);
+            EntityWithUserId itemQueSeraRemovido = _collection.FirstOrDefault(c => c.Id == itemParaSerRemovido?.Id);
 
             CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(itemParaSerRemovido, 
                                                             itemQueSeraRemovido, 
                                                             CriticaRemocaoNaoRealizadaPeloUsuarioOriginal());
         }
 
-        protected virtual void CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(Entity novoItem,
-                                                                               Entity itemDaColecao,
+        protected virtual void CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(EntityWithUserId novoItem,
+                                                                               EntityWithUserId itemDaColecao,
                                                                                string criticaOperacaoNaoRealizadaPeloUsuarioOriginal)
         {
             new Contract()
@@ -60,7 +60,7 @@ namespace OmegaFY.Blog.Domain.Entities
                 .EnsureContractIsValid<DomainInvalidOperationException>();
         }
 
-        protected virtual void CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(Entity itemDaColecao,
+        protected virtual void CriticarOperacaoNaoRealizadaPeloUsuarioOriginal(EntityWithUserId itemDaColecao,
                                                                                Guid usuarioModificacaoId,
                                                                                string criticaOperacaoNaoRealizadaPeloUsuarioOriginal)
         {

@@ -6,7 +6,7 @@ using System;
 namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
 
-    public class Compartilhamento : Entity
+    public class Compartilhamento : EntityWithUserId
     {
 
         public Guid PostagemId { get; }
@@ -15,14 +15,13 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         protected Compartilhamento() { }
 
-        public Compartilhamento(Guid usuarioId, Guid postagemId)
+        public Compartilhamento(Guid usuarioId, Guid postagemId) : base(usuarioId)
         {
             new Contract()
                 .ValidarUsuarioId(usuarioId)
                 .ValidarPostagemId(postagemId)
                 .EnsureContractIsValid();
 
-            UsuarioId = usuarioId;
             PostagemId = postagemId;
             DataCompartilhamento = DateTime.Now;
         }

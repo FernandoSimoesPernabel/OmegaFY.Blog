@@ -2,7 +2,7 @@
 using OmegaFY.Blog.Domain.Core.Commands;
 using System;
 
-namespace OmegaFY.Blog.Application.Commands.Postagens
+namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
 {
 
     public class PublicarPostagemCommandResult : GenericResult, ICommandResult

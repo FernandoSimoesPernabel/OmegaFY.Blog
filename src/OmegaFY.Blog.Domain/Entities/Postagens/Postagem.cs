@@ -14,7 +14,7 @@ using System.Linq;
 namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
 
-    public class Postagem : Entity, IAggregateRoot<Postagem>
+    public class Postagem : EntityWithUserId, IAggregateRoot<Postagem>
     {
 
         private readonly ComentariosColecao _comentarios;
@@ -39,7 +39,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         protected Postagem() { }
 
-        public Postagem(Guid usuarioAutorId, Cabecalho cabecalho, string conteudoPostagem)
+        public Postagem(Guid usuarioAutorId, Cabecalho cabecalho, string conteudoPostagem) : base(usuarioAutorId)
         {
             new Contract()
                 .ValidarUsuarioId(usuarioAutorId)
@@ -53,7 +53,6 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             _avaliacoes = new AvaliacoesColecao();
             _compartilhamentos = new CompartilhamentosColecao();
 
-            UsuarioId = usuarioAutorId;
             DetalhesModificacao = new DetalhesModificacao();
         }
 

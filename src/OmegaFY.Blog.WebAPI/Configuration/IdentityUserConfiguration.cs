@@ -11,12 +11,12 @@ namespace OmegaFY.Blog.WebAPI.Configuration
 
         public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
         {
-            return services.AddScoped<IUserInformation, User>();
+            return services.AddScoped<IUserInformation, HttpRequestUserInformation>();
         }
 
     }
 
-    public class User : IUserInformation
+    public class HttpRequestUserInformation : IUserInformation
     {
         public System.Guid CurrentRequestUserId { get; set; } = System.Guid.NewGuid();
     }

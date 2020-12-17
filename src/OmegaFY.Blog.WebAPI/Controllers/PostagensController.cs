@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OmegaFY.Blog.Application.Base;
-using OmegaFY.Blog.Application.Commands.Postagens;
+using OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem;
 using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using System;
@@ -28,7 +27,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
             PublicarPostagemCommandResult result =
                 await _serviceBus.SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(c, cancellationToken);
 
-            return CreatedAtAction(nameof(ObterAsync), new { result.Id }, result);
+            return CreatedAtAction(nameof(ObterAsync), new { id = result.Id }, result);
         }
 
         [HttpGet("{id:guid}")]
@@ -44,7 +43,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         //    return Ok();
         //}
 
-        //[HttpGet("{id:guid}/listar-postagens-usuario")]
+        //[HttpGet("/listar-por-usuario")]
         //public async Task<IActionResult> ListarPostagensRecentesAsync([FromRoute]Guid usuarioId,
         //                                                              [FromQuery] PagedRequest pagedRequest,
         //                                                              CancellationToken cancellationToken)
@@ -66,7 +65,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         //     return Ok();
         // }
 
-        //[HttpPatch("{id:guid}")]
+        //[HttpPatch("{id:guid}/ocultar")]
         //public async Task<IActionResult> OcultarPostagemAsync([FromRoute]Guid id, 
         //                                                      OcultarPostagemCommand command, 
         //                                                      CancellationToken cancellationToken)
@@ -74,7 +73,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
 
         //}
 
-        // [HttpPatch("{id:guid}")]
+        // [HttpPatch("{id:guid}/desocultar")]
         // public async Task<IActionResult> DesocultarPostagemAsync([FromRoute]Guid id,
         //                                                          DesocultarPostagemCommand command, 
         //                                                          CancellationToken cancellationToken)
@@ -95,7 +94,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         //}
 
         //[HttpPut("{id:guid}/comentarios/{comentarioId:guid}")]
-        //public async Task<IActionResult> EditarComentarioPostagemAsync(EditarComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //public async Task<IActionResult> EditarComentarioAsync(EditarComentarioPostagemCommand command, CancellationToken cancellationToken)
         //{
 
         //}
@@ -113,7 +112,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         //}
 
         //[HttpPut("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}")]
-        //public async Task<IActionResult> EditarSubComentarioPostagemAsync(EditarSubComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //public async Task<IActionResult> EditarSubComentarioAsync(EditarSubComentarioPostagemCommand command, CancellationToken cancellationToken)
         //{
 
         //}
@@ -149,25 +148,25 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         //}
 
         //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/reacoes")]
-        //public async Task<IActionResult> ReagirComentarioPostagemAsync(ReagirComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //public async Task<IActionResult> ReagirComentarioAsync(ReagirComentarioPostagemCommand command, CancellationToken cancellationToken)
         //{
 
         //}
 
         //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/reacoes/{reacaoId:guid}")]
-        //public async Task<IActionResult> RemoverReacaoComentarioPostagemAsync(RemoverReacaoComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //public async Task<IActionResult> RemoverReacaoComentarioAsync(RemoverReacaoComentarioPostagemCommand command, CancellationToken cancellationToken)
         //{
 
         //}
 
         //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}/reacoes)]
-        //public async Task<IActionResult> ReagirSubComentarioPostagemAsync(ReagirSubComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //public async Task<IActionResult> ReagirSubComentarioAsync(ReagirSubComentarioPostagemCommand command, CancellationToken cancellationToken)
         //{
 
         //}
 
         //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}/reacoes/{reacaoId:guid}")]
-        //public async Task<IActionResult> RemoverReacaoSubComentarioPostagemAsync(RemoverReacaoSubComentarioPostagemCommand command, CancellationToken cancellationToken)
+        //public async Task<IActionResult> RemoverReacaoSubComentarioAsync(RemoverReacaoSubComentarioPostagemCommand command, CancellationToken cancellationToken)
         //{
 
         //}

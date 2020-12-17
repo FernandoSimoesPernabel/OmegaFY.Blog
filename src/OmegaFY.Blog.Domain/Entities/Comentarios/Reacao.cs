@@ -6,7 +6,7 @@ using System;
 namespace OmegaFY.Blog.Domain.Entities.Comentarios
 {
 
-    public class Reacao : Entity
+    public class Reacao : EntityWithUserId
     {
 
         public Guid ComentarioId { get; }
@@ -15,7 +15,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
 
         protected Reacao() { }
 
-        public Reacao(Guid usuarioId, Guid comentarioId, Reacoes reacaoUsuario)
+        public Reacao(Guid usuarioId, Guid comentarioId, Reacoes reacaoUsuario) : base(usuarioId)
         {
             new Contract()
                 .ValidarUsuarioId(usuarioId)
@@ -23,7 +23,6 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
                 .EnsureContractIsValid();
 
             ComentarioId = comentarioId;
-            UsuarioId = usuarioId;
             ReacaoUsuario = reacaoUsuario;
         }
 

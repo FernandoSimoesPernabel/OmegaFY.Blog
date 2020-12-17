@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OmegaFY.Blog.Application.Commands.Postagens;
+using OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem;
 
 namespace OmegaFY.Blog.Application.Validations.Postagens
 {

@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Core.Authentication;
 using OmegaFY.Blog.Domain.Core.Repositories;
@@ -10,10 +9,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OmegaFY.Blog.Application.Commands.Postagens.Handlers
+namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
 {
 
-    public class PublicarPostagemCommandHandler : CommandHandlerBase<PublicarPostagemCommandHandler>, IRequestHandler<PublicarPostagemCommand, PublicarPostagemCommandResult>
+    public class PublicarPostagemCommandHandler : CommandHandlerMediatRBase<PublicarPostagemCommandHandler, PublicarPostagemCommand, PublicarPostagemCommandResult>
     {
 
         private readonly IPostagemRepository _postagemRepository;
@@ -27,7 +26,7 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.Handlers
             _postagemRepository = postagemRepository;
         }
 
-        public async Task<PublicarPostagemCommandResult> Handle(PublicarPostagemCommand request, CancellationToken cancellationToken)
+        public override async Task<PublicarPostagemCommandResult> Handle(PublicarPostagemCommand request, CancellationToken cancellationToken)
         {
             Postagem postagem = new Postagem(Guid.NewGuid(),
                                              new Cabecalho(request.Titulo, request.SubTitulo),

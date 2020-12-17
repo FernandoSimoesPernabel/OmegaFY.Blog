@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
 {
 
-    public abstract class ComentarioBase : Entity
+    public abstract class ComentarioBase : EntityWithUserId
     {
 
         protected readonly ReacoesColecao _reacoes;
@@ -23,11 +23,10 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
 
         protected ComentarioBase() { }
 
-        public ComentarioBase(Guid usuarioId, Guid postagemId)
+        public ComentarioBase(Guid usuarioId, Guid postagemId) : base(usuarioId)
         {
             _reacoes = new ReacoesColecao();
 
-            UsuarioId = usuarioId;
             PostagemId = postagemId;
         }
 

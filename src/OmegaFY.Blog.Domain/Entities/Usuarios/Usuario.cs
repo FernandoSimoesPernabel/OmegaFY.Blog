@@ -14,7 +14,6 @@ namespace OmegaFY.Blog.Domain.Entities.Usuario
 
         public Usuario(Login login)
         {
-            UsuarioId = Id;
             Login = login;
             //Senha = senha;
             //Email = email;

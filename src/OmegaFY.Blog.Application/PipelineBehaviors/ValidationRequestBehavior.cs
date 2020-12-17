@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using MediatR;
 using OmegaFY.Blog.Application.Base;
 using OmegaFY.Blog.Common.Constantes;
+using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -31,11 +32,11 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
             }
             catch (DomainException domainException)
             {
-                return await ErrorsFromException(domainException.ErrorCode, domainException.Message);
+                return await ErrorsFromException(domainException.ErrorCode, domainException.GetErrorsMessagesFromInnerExceptions());
             }
             catch (Exception ex)
             {
-                return await ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.Message);
+                return await ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
             }
         }
 

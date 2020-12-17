@@ -5,14 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Comentarios\Handlers\" />
     <Folder Include="Commands\Usuarios\" />
-    <Folder Include="Events\Comentarios\Handlers\" />
-    <Folder Include="Events\Postagens\Handlers\" />
-    <Folder Include="Queries\Comentarios\Handlers\" />
-    <Folder Include="Queries\Postagens\Handlers\" />
+    <Folder Include="Events\Postagens\" />
     <Folder Include="Queries\Usuarios\" />
-    <Folder Include="Validations\Comentarios\" />
     <Folder Include="Validations\Usuarios\" />
   </ItemGroup>
 

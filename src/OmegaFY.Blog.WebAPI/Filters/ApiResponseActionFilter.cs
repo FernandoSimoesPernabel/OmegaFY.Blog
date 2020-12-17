@@ -26,7 +26,7 @@ namespace OmegaFY.Blog.WebAPI.Filters
             }
             catch (Exception ex)
             {
-                ApiResponse response = new ApiResponse(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.Message);
+                ApiResponse response = new ApiResponse(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
                 context.Result = new ObjectResult(response) { StatusCode = StatusCodes.Status500InternalServerError };
             }
         }

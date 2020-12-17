@@ -17,6 +17,7 @@ namespace OmegaFY.Blog.WebAPI.Configuration
                 {
                     controllerOptions.Filters.Add(new ApiResponseActionFilter());
                     controllerOptions.Filters.Add(new ErrorHandlerExceptionFilter());
+                    controllerOptions.SuppressAsyncSuffixInActionNames = false;
                 })
                 .AddJsonOptions(jsonOptions =>
                 {
