@@ -3,10 +3,10 @@
 namespace OmegaFY.Blog.Infra.Configuration
 {
 
-    public class AutoMapperProfileConfig : Profile
+    public class AutoMapperQueriesProfileConfig : Profile
     {
 
-        public AutoMapperProfileConfig()
+        public AutoMapperQueriesProfileConfig()
         {
             //            CreateMap<CustomerViewModel, UpdateCustomerCommand>()
             //.ConstructUsing(c => new UpdateCustomerCommand(c.Id, c.Name, c.Email, c.BirthDate));

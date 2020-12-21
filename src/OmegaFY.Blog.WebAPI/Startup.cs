@@ -38,9 +38,13 @@ namespace OmegaFY.Blog.WebAPI
                 endpoints.MapControllers();
             });
 
-            //app.UseSwagger();
+            app.UseSwagger();
 
-            //app.UseSwaggerUI(options => options.SwaggerEndpoint($"/swagger.json", "swagger"));
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint($"/swagger/v1/swagger.json", "OmegaFY.Blog.WebAPI");
+                options.RoutePrefix = string.Empty;
+            });
 
         }
 

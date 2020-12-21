@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Domain.Core.Services;
 
@@ -17,10 +16,13 @@ namespace OmegaFY.Blog.WebAPI.Controllers.Base
 
         protected readonly IServiceBus _serviceBus;
 
-        public ApiControllerBase(ILogger<TController> logger, IServiceBus serviceBus)
+        protected readonly IMapperServices _mapper;
+
+        public ApiControllerBase(ILogger<TController> logger, IServiceBus serviceBus, IMapperServices mapper)
         {
             _logger = logger;
             _serviceBus = serviceBus;
+            _mapper = mapper;
         }
 
     }

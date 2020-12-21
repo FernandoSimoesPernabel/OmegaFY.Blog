@@ -1,9 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OmegaFY.Blog.Application.Commands.Postagens.AvaliarPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.ComentarComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.ComentarPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.CompartilharPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.DescompartilharPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.DesocultarPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.EditarComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.EditarDadosPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.EditarSubComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.ExcluirComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.ExcluirPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.ExcluirSubComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.OcultarPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.ReagirComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.ReagirSubComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.RemoverAvaliacaoPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoSubComentario;
 using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
-using System;
+using OmegaFY.Blog.WebAPI.Models.CommandsViewModels;
+using OmegaFY.Blog.WebAPI.Models.QueriesViewModels;
+using OmegaFY.Blog.WebAPI.Requests;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,164 +32,381 @@ namespace OmegaFY.Blog.WebAPI.Controllers
     public class PostagensController : ApiControllerBase<PostagensController>
     {
 
-        public PostagensController(ILogger<PostagensController> logger, IServiceBus serviceBus) : base(logger, serviceBus)
-        {
-        }
-
-        [HttpGet()]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> List(CancellationToken cancellationToken)
-        {
-            var c = new PublicarPostagemCommand() { ConteudoPostagem = "Conteudo", Titulo = "Titulo", SubTitulo = "SubTitulo" };
-
-            PublicarPostagemCommandResult result =
-                await _serviceBus.SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(c, cancellationToken);
-
-            return CreatedAtAction(nameof(ObterAsync), new { id = result.Id }, result);
-        }
+        public PostagensController(ILogger<PostagensController> logger,
+                                   IServiceBus serviceBus,
+                                   IMapperServices mapper) : base(logger, serviceBus, mapper) { }
 
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> ObterAsync([FromRoute] Guid id, CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ObterPostagemAsync([FromRoute] ObterPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
             return Ok();
         }
 
-        //[HttpGet("")]
-        //public async Task<IActionResult> ListarPostagensRecentesAsync([FromQuery] PagedRequest pagedRequest, 
-        //                                                              CancellationToken cancellationToken)
-        //{
-        //    return Ok();
-        //}
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        public async Task<IActionResult> ListarPostagensRecentesAsync(ListarPostagensRecentesViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //[HttpGet("/listar-por-usuario")]
-        //public async Task<IActionResult> ListarPostagensRecentesAsync([FromRoute]Guid usuarioId,
-        //                                                              [FromQuery] PagedRequest pagedRequest,
-        //                                                              CancellationToken cancellationToken)
-        //{
-        //    return Ok();
-        //}
+        [HttpGet("listar-por-usuario")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ListarPostagensPorUsuarioAsync(ListarPostagensPorUsuarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> PublicarPostagemAsync(PublicarPostagemCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> PublicarPostagemAsync(PublicarPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            PublicarPostagemCommand command = _mapper.MapToObject<PublicarPostagemViewModel, PublicarPostagemCommand>(viewModel);
 
-        //}
+            PublicarPostagemCommandResult result =
+                            await _serviceBus.SendMessageAsync<PublicarPostagemCommand, PublicarPostagemCommandResult>(command, cancellationToken);
 
-        // [HttpPut("{id:guid}")]
-        // public async Task<IActionResult> EditarDadosPostagemAsync([FromRoute]Guid id, 
-        //                                                           EditarDadosPostagemCommand command, 
-        //                                                           CancellationToken cancellationToken)
-        // {
-        //     return Ok();
-        // }
+            return CreatedAtAction(nameof(ObterPostagemAsync), new { id = result.Id }, result);
+        }
 
-        //[HttpPatch("{id:guid}/ocultar")]
-        //public async Task<IActionResult> OcultarPostagemAsync([FromRoute]Guid id, 
-        //                                                      OcultarPostagemCommand command, 
-        //                                                      CancellationToken cancellationToken)
-        //{
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> EditarDadosPostagemAsync(EditarDadosPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            EditarDadosPostagemCommand command = _mapper.MapToObject<EditarDadosPostagemViewModel, EditarDadosPostagemCommand>(viewModel);
 
-        //}
+            EditarDadosPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<EditarDadosPostagemCommand, EditarDadosPostagemCommandResult>(command, cancellationToken);
 
-        // [HttpPatch("{id:guid}/desocultar")]
-        // public async Task<IActionResult> DesocultarPostagemAsync([FromRoute]Guid id,
-        //                                                          DesocultarPostagemCommand command, 
-        //                                                          CancellationToken cancellationToken)
-        // {
+            return Ok();
+        }
 
-        // }
+        [HttpPatch("{id:guid}/ocultar")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> OcultarPostagemAsync(OcultarPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            OcultarPostagemCommand command = _mapper.MapToObject<OcultarPostagemViewModel, OcultarPostagemCommand>(viewModel);
 
-        //[HttpDelete("{id:guid}")]
-        //public async Task<IActionResult> ExcluirPostagemAsync(ExcluirPostagemCommand command, CancellationToken cancellationToken)
-        //{
+            OcultarPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<OcultarPostagemCommand, OcultarPostagemCommandResult>(command, cancellationToken);
 
-        //}
+            return Ok();
+        }
 
-        //[HttpPost("{id:guid}/comentarios")]
-        //public async Task<IActionResult> ComentarPostagemAsync(ComentarPostagemCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpPatch("{id:guid}/desocultar")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> DesocultarPostagemAsync(DesocultarPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            DesocultarPostagemCommand command = _mapper.MapToObject<DesocultarPostagemViewModel, DesocultarPostagemCommand>(viewModel);
 
-        //}
+            DesocultarPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<DesocultarPostagemCommand, DesocultarPostagemCommandResult>(command, cancellationToken);
 
-        //[HttpPut("{id:guid}/comentarios/{comentarioId:guid}")]
-        //public async Task<IActionResult> EditarComentarioAsync(EditarComentarioPostagemCommand command, CancellationToken cancellationToken)
-        //{
+            return Ok();
+        }
 
-        //}
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ExcluirPostagemAsync(ExcluirPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            ExcluirPostagemCommand command = _mapper.MapToObject<ExcluirPostagemViewModel, ExcluirPostagemCommand>(viewModel);
 
-        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}")]
-        //public async Task<IActionResult> ExcluirComentarioAsync(ExcluirComentarioCommand command, CancellationToken cancellationToken)
-        //{
+            ExcluirPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<ExcluirPostagemCommand, ExcluirPostagemCommandResult>(command, cancellationToken);
 
-        //}
+            return NoContent();
+        }
 
-        //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios")]
-        //public async Task<IActionResult> ComentarComentarioAsync(ComentarComentarioCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpGet("{id:guid}/comentarios/{idComentario:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ObterComentarioAsync(ObterComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //}
+        [HttpGet("{id:guid}/comentarios")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ListarComentariosPostagemAsync(ListarComentariosPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //[HttpPut("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}")]
-        //public async Task<IActionResult> EditarSubComentarioAsync(EditarSubComentarioPostagemCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpPost("{id:guid}/comentarios")]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ComentarPostagemAsync(ComentarPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            ComentarPostagemCommand command = _mapper.MapToObject<ComentarPostagemViewModel, ComentarPostagemCommand>(viewModel);
 
-        //}
+            ComentarPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<ComentarPostagemCommand, ComentarPostagemCommandResult>(command, cancellationToken);
 
-        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}")]
-        //public async Task<IActionResult> ExcluirSubComentarioAsync(ExcluirSubComentarioCommand command, CancellationToken cancellationToken)
-        //{
+            return CreatedAtAction(nameof(ObterComentarioAsync), null, null);
+        }
 
-        //}
+        [HttpPut("{id:guid}/comentarios/{comentarioId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> EditarComentarioAsync(EditarComentarioPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            EditarComentarioCommand command = _mapper.MapToObject<EditarComentarioPostagemViewModel, EditarComentarioCommand>(viewModel);
 
-        //[HttpPost("{id:guid}/compartilhamentos")]
-        //public async Task<IActionResult> CompartilharPostagemAsync(CompartilharPostagemCommand command, CancellationToken cancellationToken)
-        //{
+            EditarComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<EditarComentarioCommand, EditarComentarioCommandResult>(command, cancellationToken);
 
-        //}
+            return Ok();
+        }
 
-        //[HttpDelete("{id:guid}/compartilhamentos/{compartilhamentoId:guid}")]
-        //public async Task<IActionResult> DescompartilharPostagemAsync(DescompartilharPostagemCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ExcluirComentarioAsync(ExcluirComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            ExcluirComentarioCommand command = _mapper.MapToObject<ExcluirComentarioViewModel, ExcluirComentarioCommand>(viewModel);
 
-        //}
+            ExcluirComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<ExcluirComentarioCommand, ExcluirComentarioCommandResult>(command, cancellationToken);
 
-        //[HttpPost("{id:guid}/avaliacoes")]
-        //public async Task<IActionResult> AvaliarPostagemAsync(AvaliarPostagemCommand command, CancellationToken cancellationToken)
-        //{
+            return NoContent();
+        }
 
-        //}
+        [HttpGet("{id:guid}/comentarios/{comentarioId:guid}/reacoes/{reacaoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ObterReacaoComentarioAsync(ObterReacaoComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //[HttpDelete("{id:guid}/avaliacoes/{avalicaoId:guid}")]
-        //public async Task<IActionResult> RemoverAvaliacaoPostagemAsync(RemoverAvaliacaoPostagemCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpGet("{id:guid}/comentarios/{comentarioId:guid}/reacoes")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ListarReacoesComentarioPostagemAsync(ListarReacoesComentarioPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //}
+        [HttpPost("{id:guid}/comentarios/{comentarioId:guid}/reacoes")]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ReagirComentarioAsync(ReagirComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            ReagirComentarioCommand command = _mapper.MapToObject<ReagirComentarioViewModel, ReagirComentarioCommand>(viewModel);
 
-        //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/reacoes")]
-        //public async Task<IActionResult> ReagirComentarioAsync(ReagirComentarioPostagemCommand command, CancellationToken cancellationToken)
-        //{
+            ReagirComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<ReagirComentarioCommand, ReagirComentarioCommandResult>(command, cancellationToken);
 
-        //}
+            return CreatedAtAction(nameof(ObterReacaoComentarioAsync), null, null);
+        }
 
-        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/reacoes/{reacaoId:guid}")]
-        //public async Task<IActionResult> RemoverReacaoComentarioAsync(RemoverReacaoComentarioPostagemCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/reacoes/{reacaoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> RemoverReacaoComentarioAsync(RemoverReacaoComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            RemoverReacaoComentarioCommand command = _mapper.MapToObject<RemoverReacaoComentarioViewModel, RemoverReacaoComentarioCommand>(viewModel);
 
-        //}
+            RemoverReacaoComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<RemoverReacaoComentarioCommand, RemoverReacaoComentarioCommandResult>(command, cancellationToken);
 
-        //[HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}/reacoes)]
-        //public async Task<IActionResult> ReagirSubComentarioAsync(ReagirSubComentarioPostagemCommand command, CancellationToken cancellationToken)
-        //{
+            return NoContent();
+        }
 
-        //}
+        [HttpGet("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ObterSubComentarioAsync(ObterSubComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //[HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subcomentarioId:guid}/reacoes/{reacaoId:guid}")]
-        //public async Task<IActionResult> RemoverReacaoSubComentarioAsync(RemoverReacaoSubComentarioPostagemCommand command, CancellationToken cancellationToken)
-        //{
+        [HttpGet("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ListarSubComentariosPostagemAsync(ListarSubComentariosPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
 
-        //}
+        [HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios")]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ComentarComentarioAsync(ComentarComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            ComentarComentarioCommand command = _mapper.MapToObject<ComentarComentarioViewModel, ComentarComentarioCommand>(viewModel);
+
+            ComentarComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<ComentarComentarioCommand, ComentarComentarioCommandResult>(command, cancellationToken);
+
+            return CreatedAtAction(nameof(ObterSubComentarioAsync), null, null);
+        }
+
+        [HttpPut("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> EditarSubComentarioAsync(EditarSubComentarioPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            EditarSubComentarioCommand command = _mapper.MapToObject<EditarSubComentarioPostagemViewModel, EditarSubComentarioCommand>(viewModel);
+
+            EditarSubComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<EditarSubComentarioCommand, EditarSubComentarioCommandResult>(command, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ExcluirSubComentarioAsync(ExcluirSubComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            ExcluirSubComentarioCommand command = _mapper.MapToObject<ExcluirSubComentarioViewModel, ExcluirSubComentarioCommand>(viewModel);
+
+            ExcluirSubComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<ExcluirSubComentarioCommand, ExcluirSubComentarioCommandResult>(command, cancellationToken);
+
+            return NoContent();
+        }
+
+        [HttpGet("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}/reacoes/{reacaoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ObterReacaoSubComentarioAsync(ObterReacaoSubComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
+
+        [HttpGet("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}/reacoes")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ListarReacoesSubComentarioPostagemAsync(ListarReacoesSubComentarioPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
+
+        [HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}/reacoes")]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ReagirSubComentarioAsync(ReagirSubComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            ReagirSubComentarioCommand command = _mapper.MapToObject<ReagirSubComentarioViewModel, ReagirSubComentarioCommand>(viewModel);
+
+            ReagirSubComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<ReagirSubComentarioCommand, ReagirSubComentarioCommandResult>(command, cancellationToken);
+
+            return CreatedAtAction(nameof(ObterReacaoSubComentarioAsync), null, null);
+        }
+
+        [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}/reacoes/{reacaoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> RemoverReacaoSubComentarioAsync(RemoverReacaoSubComentarioViewModel viewModel, CancellationToken cancellationToken)
+        {
+            RemoverReacaoSubComentarioCommand command = _mapper.MapToObject<RemoverReacaoSubComentarioViewModel, RemoverReacaoSubComentarioCommand>(viewModel);
+
+            RemoverReacaoSubComentarioCommandResult result =
+                await _serviceBus.SendMessageAsync<RemoverReacaoSubComentarioCommand, RemoverReacaoSubComentarioCommandResult>(command, cancellationToken);
+
+            return NoContent();
+        }
+
+        [HttpGet("{id:guid}/compartilhamentos/{compartilhamentoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ObterCompartilhamentoAsync(ObterCompartilhamentoViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
+
+        [HttpGet("{id:guid}/compartilhamentos")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ListarCompartilhamentosPostagemAsync(ListarCompartilhamentosPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
+
+        [HttpPost("{id:guid}/compartilhamentos")]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> CompartilharPostagemAsync(CompartilharPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            CompartilharPostagemCommand command = _mapper.MapToObject<CompartilharPostagemViewModel, CompartilharPostagemCommand>(viewModel);
+
+            CompartilharPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<CompartilharPostagemCommand, CompartilharPostagemCommandResult>(command, cancellationToken);
+
+            return CreatedAtAction(nameof(ObterCompartilhamentoAsync), null, null);
+        }
+
+        [HttpDelete("{id:guid}/compartilhamentos/{compartilhamentoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> DescompartilharPostagemAsync(DescompartilharPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            DescompartilharPostagemCommand command = _mapper.MapToObject<DescompartilharPostagemViewModel, DescompartilharPostagemCommand>(viewModel);
+
+            DescompartilharPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<DescompartilharPostagemCommand, DescompartilharPostagemCommandResult>(command, cancellationToken);
+
+            return NoContent();
+        }
+
+        [HttpGet("{id:guid}/avaliacoes/{avalicaoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ObterAvaliacaoAsync(ObterAvaliacaoViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
+
+        [HttpGet("{id:guid}/avaliacoes")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> ListarAvaliacoesPostagemAsync(ListarAvaliacoesPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            return Ok();
+        }
+
+        [HttpPost("{id:guid}/avaliacoes")]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> AvaliarPostagemAsync(AvaliarPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            AvaliarPostagemCommand command = _mapper.MapToObject<AvaliarPostagemViewModel, AvaliarPostagemCommand>(viewModel);
+
+            AvaliarPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<AvaliarPostagemCommand, AvaliarPostagemCommandResult>(command, cancellationToken);
+
+            return CreatedAtAction(nameof(ObterAvaliacaoAsync), null, null);
+        }
+
+        [HttpDelete("{id:guid}/avaliacoes/{avalicaoId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse), 404)]
+        public async Task<IActionResult> RemoverAvaliacaoPostagemAsync(RemoverAvaliacaoPostagemViewModel viewModel, CancellationToken cancellationToken)
+        {
+            RemoverAvaliacaoPostagemCommand command = _mapper.MapToObject<RemoverAvaliacaoPostagemViewModel, RemoverAvaliacaoPostagemCommand>(viewModel);
+
+            RemoverAvaliacaoPostagemCommandResult result =
+                await _serviceBus.SendMessageAsync<RemoverAvaliacaoPostagemCommand, RemoverAvaliacaoPostagemCommandResult>(command, cancellationToken);
+
+            return NoContent();
+        }
 
     }
 }

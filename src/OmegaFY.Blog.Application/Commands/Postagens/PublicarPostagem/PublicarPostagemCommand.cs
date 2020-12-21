@@ -12,6 +12,18 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
 
         public string ConteudoPostagem { get; set; }
 
+        public PublicarPostagemCommand()
+        {
+
+        }
+
+        public PublicarPostagemCommand(string titulo, string subTitulo, string conteudoPostagem)
+        {
+            Titulo = titulo;
+            SubTitulo = subTitulo;
+            ConteudoPostagem = conteudoPostagem;
+        }
+
     }
 
 }

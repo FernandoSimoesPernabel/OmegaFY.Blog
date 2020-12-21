@@ -18,15 +18,13 @@ namespace OmegaFY.Blog.WebAPI.Requests
 
         public object Data { get; set; }
 
-        public ApiResponse(object data)
-        {
-            _erros = new List<ValidationError>();
-            Data = data;
-        }
+        public ApiResponse() => _erros = new List<ValidationError>();
 
-        public ApiResponse(IReadOnlyCollection<ValidationError> erros) => _erros = (List<ValidationError>)erros;
+        public ApiResponse(object data) : this() => Data = data;
 
-        public ApiResponse(string codigo, string mensagem) : base() => _erros.Add(new ValidationError(codigo, mensagem));
+        public ApiResponse(IReadOnlyCollection<ValidationError> erros) : this() => _erros = new List<ValidationError>(erros);
+
+        public ApiResponse(string codigo, string mensagem) : this() => _erros.Add(new ValidationError(codigo, mensagem));
 
         public int StatusCode()
         {

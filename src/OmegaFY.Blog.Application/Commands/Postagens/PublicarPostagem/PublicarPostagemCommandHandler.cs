@@ -28,14 +28,19 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
 
         public override async Task<PublicarPostagemCommandResult> Handle(PublicarPostagemCommand request, CancellationToken cancellationToken)
         {
-            Postagem postagem = new Postagem(Guid.NewGuid(),
+            Postagem postagem = new Postagem(_user.CurrentRequestUserId,
                                              new Cabecalho(request.Titulo, request.SubTitulo),
                                              request.ConteudoPostagem);
 
             await _postagemRepository.PublicarPostagem(postagem);
             //await _unitOfWork.SaveChangesAsync();
 
-            return await Task.FromResult(new PublicarPostagemCommandResult(postagem.Id));
+            return await Task.FromResult(new PublicarPostagemCommandResult(postagem.Id, 
+                                                                           postagem.UsuarioId,
+                                                                           postagem.Cabecalho.Titulo,
+                                                                           postagem.Cabecalho.SubTitulo,
+                                                                           postagem.Corpo,
+                                                                           postagem.DetalhesModificacao.DataCriacao));
         }
     }
 

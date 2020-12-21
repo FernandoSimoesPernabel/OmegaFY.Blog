@@ -60,7 +60,7 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
 
         private async Task<TResult> CreateTaskResult(TResult result) => await Task.FromResult(result);
 
-        private TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult), new object[] { false });
+        private TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult), new object[] { });
 
     }
 

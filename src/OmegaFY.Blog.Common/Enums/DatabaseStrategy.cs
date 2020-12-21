@@ -1,17 +1,31 @@
 ﻿namespace OmegaFY.Blog.Common.Enums
 {
 
+    /// <summary>
+    /// Estrategia para definir onde sera persistido os dados pelos repositorios.
+    /// </summary>
     public enum DatabaseStrategy
     {
-        Undefined = 0,
 
-        InMemoryDB = 1,
+        /// <summary>
+        /// Persistência em memoria, não grava em disco os dados e os mesmos são perdidos ao finalizar a aplicação.
+        /// </summary>
+        InMemoryDB = 0,
 
-        SqlServer = 2,
+        /// <summary>
+        /// Persistência utilizando uma base de dados SQL Server.
+        /// </summary>
+        SqlServer = 1,
 
-        MongoDB = 3,
+        /// <summary>
+        /// Persistência utlizando uma base de dados MongoDB.
+        /// </summary>
+        MongoDB = 2,
 
-        SQLite = 4
+        /// <summary>
+        /// Persistência utilizando um banco de dados local SQLite embarcado com a aplicação.
+        /// </summary>
+        SQLite = 3
 
     }
 

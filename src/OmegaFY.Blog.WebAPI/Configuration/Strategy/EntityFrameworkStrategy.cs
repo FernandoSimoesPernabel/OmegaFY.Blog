@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OmegaFY.Blog.Common.Enums;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.WebAPI.Configuration.Options;
 
 namespace OmegaFY.Blog.WebAPI.Configuration.Strategy
 {
@@ -10,14 +11,14 @@ namespace OmegaFY.Blog.WebAPI.Configuration.Strategy
     public class EntityFrameworkStrategy
     {
 
-        public IServiceCollection Register(IServiceCollection services, IConfiguration configuration, DatabaseStrategy databaseStrategy)
+        public IServiceCollection Register(IServiceCollection services, IConfiguration configuration, DatabaseConfigurationOptions databaseOptions)
         {
             return services.AddDbContext<ApplicationContext>(options =>
             {
-                if (databaseStrategy == DatabaseStrategy.InMemoryDB)
-                    options.UseInMemoryDatabase(nameof(DatabaseStrategy.InMemoryDB));
+                if (databaseOptions.DatabaseStrategy == DatabaseStrategy.InMemoryDB)
+                    options.UseInMemoryDatabase(databaseOptions.DatabaseName);
                 else
-                    options.UseSqlServer(configuration.GetConnectionString("BlogDatabase"), sqlConfig => sqlConfig.MaxBatchSize(1));
+                    options.UseSqlServer(configuration.GetConnectionString(databaseOptions.DatabaseName), sqlConfig => sqlConfig.MaxBatchSize(1));
             });
         }
 
