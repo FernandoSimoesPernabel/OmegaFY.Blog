@@ -19,6 +19,8 @@ using OmegaFY.Blog.Application.Commands.Postagens.ReagirSubComentario;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverAvaliacaoPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoComentario;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoSubComentario;
+using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem;
+using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem.Results;
 using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.CommandsViewModels;
@@ -37,11 +39,16 @@ namespace OmegaFY.Blog.WebAPI.Controllers
                                    IMapperServices mapper) : base(logger, serviceBus, mapper) { }
 
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse<ObterPostagemQueryResult>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
-        public async Task<IActionResult> ObterPostagemAsync([FromRoute] ObterPostagemViewModel viewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> ObterPostagemAsync([FromQuery] ObterPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
-            return Ok();
+            ObterPostagemQuery query = _mapper.MapToObject<ObterPostagemViewModel, ObterPostagemQuery>(viewModel);
+
+            ObterPostagemQueryResult result =
+                            await _serviceBus.SendMessageAsync<ObterPostagemQuery, ObterPostagemQueryResult>(query, cancellationToken);
+
+            return Ok(result);
         }
 
         [HttpGet]
@@ -60,7 +67,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse<PublicarPostagemCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<IActionResult> PublicarPostagemAsync(PublicarPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -73,7 +80,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse<EditarDadosPostagemCommandResult>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<IActionResult> EditarDadosPostagemAsync(EditarDadosPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -86,7 +93,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPatch("{id:guid}/ocultar")]
-        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse<OcultarPostagemCommandResult>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<IActionResult> OcultarPostagemAsync(OcultarPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -99,7 +106,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPatch("{id:guid}/desocultar")]
-        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse<DesocultarPostagemCommandResult>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<IActionResult> DesocultarPostagemAsync(DesocultarPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -112,7 +119,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse<ExcluirPostagemCommandResult>), 204)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> ExcluirPostagemAsync(ExcluirPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -141,7 +148,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPost("{id:guid}/comentarios")]
-        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse<ComentarPostagemCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> ComentarPostagemAsync(ComentarPostagemViewModel viewModel, CancellationToken cancellationToken)
@@ -155,7 +162,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPut("{id:guid}/comentarios/{comentarioId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse<EditarComentarioCommandResult>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> EditarComentarioAsync(EditarComentarioPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -168,7 +175,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse<ExcluirComentarioCommandResult>), 204)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> ExcluirComentarioAsync(ExcluirComentarioViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -197,7 +204,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPost("{id:guid}/comentarios/{comentarioId:guid}/reacoes")]
-        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse<ReagirComentarioCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> ReagirComentarioAsync(ReagirComentarioViewModel viewModel, CancellationToken cancellationToken)
@@ -211,7 +218,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/reacoes/{reacaoId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse<RemoverReacaoComentarioCommandResult>), 204)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> RemoverReacaoComentarioAsync(RemoverReacaoComentarioViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -240,7 +247,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios")]
-        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse<ComentarComentarioCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> ComentarComentarioAsync(ComentarComentarioViewModel viewModel, CancellationToken cancellationToken)
@@ -254,7 +261,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPut("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse<EditarSubComentarioCommandResult>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> EditarSubComentarioAsync(EditarSubComentarioPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -267,7 +274,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse<ExcluirSubComentarioCommandResult>), 204)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> ExcluirSubComentarioAsync(ExcluirSubComentarioViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -296,7 +303,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPost("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}/reacoes")]
-        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse<ReagirSubComentarioCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> ReagirSubComentarioAsync(ReagirSubComentarioViewModel viewModel, CancellationToken cancellationToken)
@@ -310,7 +317,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpDelete("{id:guid}/comentarios/{comentarioId:guid}/subcomentarios/{subComentarioId:guid}/reacoes/{reacaoId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse<RemoverReacaoSubComentarioCommandResult>), 204)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> RemoverReacaoSubComentarioAsync(RemoverReacaoSubComentarioViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -339,7 +346,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPost("{id:guid}/compartilhamentos")]
-        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse<CompartilharPostagemCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> CompartilharPostagemAsync(CompartilharPostagemViewModel viewModel, CancellationToken cancellationToken)
@@ -353,7 +360,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpDelete("{id:guid}/compartilhamentos/{compartilhamentoId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse<DescompartilharPostagemCommandResult>), 204)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> DescompartilharPostagemAsync(DescompartilharPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
@@ -382,7 +389,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpPost("{id:guid}/avaliacoes")]
-        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse<AvaliarPostagemCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> AvaliarPostagemAsync(AvaliarPostagemViewModel viewModel, CancellationToken cancellationToken)
@@ -396,7 +403,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpDelete("{id:guid}/avaliacoes/{avalicaoId:guid}")]
-        [ProducesResponseType(typeof(ApiResponse), 204)]
+        [ProducesResponseType(typeof(ApiResponse<RemoverAvaliacaoPostagemCommandResult>), 204)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
         public async Task<IActionResult> RemoverAvaliacaoPostagemAsync(RemoverAvaliacaoPostagemViewModel viewModel, CancellationToken cancellationToken)
         {

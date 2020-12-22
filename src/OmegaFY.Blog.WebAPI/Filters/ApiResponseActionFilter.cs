@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OmegaFY.Blog.Application.Base;
+using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.WebAPI.Requests;

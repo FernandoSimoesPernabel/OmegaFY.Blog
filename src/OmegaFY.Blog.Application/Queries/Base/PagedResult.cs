@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Application.Base
+﻿namespace OmegaFY.Blog.Application.Queries.Base
 {
 
     public abstract class PagedResult

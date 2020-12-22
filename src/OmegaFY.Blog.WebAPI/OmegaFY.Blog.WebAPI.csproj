@@ -12,6 +12,7 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.3.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="4.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,6 +31,7 @@
     <ProjectReference Include="..\OmegaFY.Blog.Application\OmegaFY.Blog.Application.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Data.EF\OmegaFY.Blog.Data.EF.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
+    <ProjectReference Include="..\OmegaFY.Blog.Infra\OmegaFY.Blog.Infra.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.WebAPI.Models\OmegaFY.Blog.WebAPI.Models.csproj" />
   </ItemGroup>
 

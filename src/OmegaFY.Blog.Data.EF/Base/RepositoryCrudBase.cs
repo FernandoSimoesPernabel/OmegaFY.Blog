@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace OmegaFY.Blog.Data.EF.Repositories.Base
+namespace OmegaFY.Blog.Data.EF.Base
 {
 
     /// <summary>
@@ -86,21 +86,6 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
         /// <returns>Uma instancia da entidade, ou nulo caso nao encontre.</returns>
         protected virtual async Task<T> Get(Guid guid, params Expression<Func<T, object>>[] includes) => await Get(x => x.Id == guid, includes);
 
-        ///// <summary>
-        ///// Recupera uma entidade pelo seu identificador numerico.
-        ///// </summary>
-        ///// <param name="id">Inteiro identificador da entidade.</param>
-        ///// <returns>Uma instancia da entidade, ou nulo caso nao encontre.</returns>
-        //protected virtual async Task<T> Get(long id) => await Get(id, null);
-
-        ///// <summary>
-        ///// Recupera uma entidade pelo seu identificador numerico.
-        ///// </summary>
-        ///// <param name="id">Inteiro identificador da entidade.</param>
-        ///// <param name="includes">Array de includes a ser realizado na consulta.</param>
-        ///// <returns>Uma instancia da entidade, ou nulo caso nao encontre.</returns>
-        //protected virtual async Task<T> Get(long id, params Expression<Func<T, object>>[] includes) => await Get(x => x.Id == id, includes);
-
         /// <summary>
         /// Recupera uma entidade na base de dados conforme o filtro informado.
         /// </summary>
@@ -115,7 +100,7 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
         /// <param name="includes">Array de includes a ser realizado na consulta.</param>
         /// <returns>Uma instancia da entidade, ou nulo caso nao encontre.</returns>
         protected virtual async Task<T> Get(Func<T, bool> filter, params Expression<Func<T, object>>[] includes)
-            => await CreateAsTrackingQueryWithInclude(includes).Where(filter).AsQueryable().FirstOrDefaultAsync();
+            => await Task.FromResult(CreateAsTrackingQueryWithInclude(includes).Where(filter).FirstOrDefault());
 
         /// <summary>
         /// Recupera um conjunto de entidades na base de dados conforme o filtro informado.
@@ -131,7 +116,7 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
         /// <param name="includes">Array de includes a ser realizado na consulta.</param>
         /// <returns>Conjunto de entidades com a quantidade recuperada pelo filtro.</returns>
         protected virtual async Task<IEnumerable<T>> List(Func<T, bool> filter, params Expression<Func<T, object>>[] includes)
-            => await CreateAsNoTrackingQueryWithInclude(includes).Where(filter).AsQueryable().ToListAsync();
+            => await Task.FromResult(CreateAsNoTrackingQueryWithInclude(includes).Where(filter).ToList());
 
         /// <summary>
         /// Recupera um conjunto de entidades na base de dados conforme o filtro informado.
@@ -154,7 +139,7 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
         protected virtual async Task<IEnumerable<object>> Report(Expression<Func<T, bool>> filter,
                                                                  Expression<Func<T, object>> expression,
                                                                  params Expression<Func<T, object>>[] includes)
-            => await CreateAsNoTrackingQueryWithInclude(includes).Where(filter).Select(expression).AsQueryable().ToListAsync();
+            => await Task.FromResult(CreateAsNoTrackingQueryWithInclude(includes).Where(filter).Select(expression).ToList());
 
         /// <summary>
         /// Cria uma query onde o EF adicionara seu proxy para que acompanhe as mudanças realizadas.
@@ -184,11 +169,6 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
             includes?.ToList()?.ForEach(x => query.Include(x));
             return query;
         }
-
-        ///// <summary>
-        ///// Aplica efetivamente as alterações na base de dados.
-        ///// </summary>
-        //public virtual async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
         /// <summary>
         /// Dispose da interface IDisposable, chama o metodo DisposeAsync() do contexto.

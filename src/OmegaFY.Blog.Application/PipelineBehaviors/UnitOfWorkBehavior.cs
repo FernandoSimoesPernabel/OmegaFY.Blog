@@ -19,7 +19,7 @@ namespace OmegaFY.Blog.Application.PipelineBehaviors
         {
             TResult response = await next();
 
-            //await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
 
             return response;
         }

@@ -18,7 +18,8 @@ namespace OmegaFY.Blog.WebAPI.Configuration.Strategy
                 if (databaseOptions.DatabaseStrategy == DatabaseStrategy.InMemoryDB)
                     options.UseInMemoryDatabase(databaseOptions.DatabaseName);
                 else
-                    options.UseSqlServer(configuration.GetConnectionString(databaseOptions.DatabaseName), sqlConfig => sqlConfig.MaxBatchSize(1));
+                    options.UseSqlServer(configuration.GetConnectionString(databaseOptions.SqlServerConnectionStringName),
+                                         sqlConfig => sqlConfig.MaxBatchSize(1));
             });
         }
 

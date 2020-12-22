@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes
 {
-    class ListarPostagensRecentesQuery
+
+    public class ListarPostagensRecentesQuery
     {
+
     }
+
 }

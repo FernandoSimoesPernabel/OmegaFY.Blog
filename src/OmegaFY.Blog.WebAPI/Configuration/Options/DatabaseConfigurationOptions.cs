@@ -12,6 +12,8 @@ namespace OmegaFY.Blog.WebAPI.Configuration.Options
 
         public string DatabaseName { get; set; }
 
+        public string SqlServerConnectionStringName { get; set; }
+
     }
 
 }

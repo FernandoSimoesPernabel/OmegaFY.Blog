@@ -8,39 +8,39 @@ using System.Linq;
 namespace OmegaFY.Blog.WebAPI.Requests
 {
 
-    public class ApiResponse
+    public class ApiResponse : ApiResponse<object>
     {
-        private List<ValidationError> _erros { get; set; }
+        //private List<ValidationError> _erros { get; set; }
 
-        public bool Sucesso => _erros?.Count == 0;
+        //public bool Sucesso => _erros?.Count == 0;
 
-        public IReadOnlyCollection<ValidationError> Erros => _erros.AsReadOnly();
+        //public IReadOnlyCollection<ValidationError> Erros => _erros.AsReadOnly();
 
-        public object Data { get; set; }
+        //public object Data { get; set; }
 
-        public ApiResponse() => _erros = new List<ValidationError>();
+        public ApiResponse() : base() { }
 
-        public ApiResponse(object data) : this() => Data = data;
+        public ApiResponse(object data) : base(data) { }
 
-        public ApiResponse(IReadOnlyCollection<ValidationError> erros) : this() => _erros = new List<ValidationError>(erros);
+        public ApiResponse(IReadOnlyCollection<ValidationError> erros) : base(erros) { }
 
-        public ApiResponse(string codigo, string mensagem) : this() => _erros.Add(new ValidationError(codigo, mensagem));
+        public ApiResponse(string codigo, string mensagem) : base(codigo, mensagem) { }
 
-        public int StatusCode()
-        {
-            if (_erros.Any(erro => erro.Codigo.In(DomainErrorCodes.GENERIC_DOMAIN_ERROR_CODE,
-                                                  DomainErrorCodes.INVALID_OPERATION_ERROR_CODE,
-                                                  DomainErrorCodes.DOMAIN_ARGUMENT_ERROR_CODE)))
-                return StatusCodes.Status400BadRequest;
+        //public int StatusCode()
+        //{
+        //    if (_erros.Any(erro => erro.Codigo.In(DomainErrorCodes.GENERIC_DOMAIN_ERROR_CODE,
+        //                                          DomainErrorCodes.INVALID_OPERATION_ERROR_CODE,
+        //                                          DomainErrorCodes.DOMAIN_ARGUMENT_ERROR_CODE)))
+        //        return StatusCodes.Status400BadRequest;
 
-            if (_erros.Any(erro => erro.Codigo == DomainErrorCodes.NOT_FOUND_ERROR_CODE))
-                return StatusCodes.Status404NotFound;
+        //    if (_erros.Any(erro => erro.Codigo == DomainErrorCodes.NOT_FOUND_ERROR_CODE))
+        //        return StatusCodes.Status404NotFound;
 
-            if (Sucesso)
-                return StatusCodes.Status200OK;
+        //    if (Sucesso)
+        //        return StatusCodes.Status200OK;
 
-            return StatusCodes.Status500InternalServerError;
-        }
+        //    return StatusCodes.Status500InternalServerError;
+        //}
 
     }
 

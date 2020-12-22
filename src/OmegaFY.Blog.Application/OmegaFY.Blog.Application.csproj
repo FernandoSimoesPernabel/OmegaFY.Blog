@@ -9,7 +9,6 @@
     <Folder Include="Events\Postagens\" />
     <Folder Include="Queries\Postagens\ListarComentariosPostagem\" />
     <Folder Include="Queries\Postagens\ObterComentario\" />
-    <Folder Include="Queries\Postagens\ObterPostagem\" />
     <Folder Include="Queries\Usuarios\" />
     <Folder Include="Validations\Usuarios\" />
   </ItemGroup>

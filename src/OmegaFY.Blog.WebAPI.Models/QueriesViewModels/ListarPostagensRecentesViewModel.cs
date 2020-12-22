@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OmegaFY.Blog.Application.Base;
+using OmegaFY.Blog.Application.Queries.Base;
 
 namespace OmegaFY.Blog.WebAPI.Models.QueriesViewModels
 {

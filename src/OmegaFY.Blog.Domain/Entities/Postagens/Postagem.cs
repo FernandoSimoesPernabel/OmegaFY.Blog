@@ -31,11 +31,11 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public DetalhesModificacao DetalhesModificacao { get; private set; }
 
-        public IReadOnlyCollection<Comentario> Comentarios => _comentarios.ReadOnlyCollection;
+        public IReadOnlyCollection<Comentario> Comentarios => _comentarios?.ReadOnlyCollection;
 
-        public IReadOnlyCollection<Avaliacao> Avaliacoes => _avaliacoes.ReadOnlyCollection;
+        public IReadOnlyCollection<Avaliacao> Avaliacoes => _avaliacoes?.ReadOnlyCollection;
 
-        public IReadOnlyCollection<Compartilhamento> Compartilhamentos => _compartilhamentos.ReadOnlyCollection;
+        public IReadOnlyCollection<Compartilhamento> Compartilhamentos => _compartilhamentos?.ReadOnlyCollection;
 
         protected Postagem() { }
 

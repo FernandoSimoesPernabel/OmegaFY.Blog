@@ -5,7 +5,6 @@ using OmegaFY.Blog.Domain.Core.Repositories;
 using OmegaFY.Blog.Domain.Entities.Postagens;
 using OmegaFY.Blog.Domain.Repositories;
 using OmegaFY.Blog.Domain.ValueObjects.Postagens;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,6 +41,7 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
                                                                            postagem.Corpo,
                                                                            postagem.DetalhesModificacao.DataCriacao));
         }
+
     }
 
 }

@@ -1,19 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using OmegaFY.Blog.Domain.Core.IoC;
+using OmegaFY.Blog.Infra.Extensions;
 
 namespace OmegaFY.Blog.WebAPI.Configuration
 {
-
-    public class SwaggerConfiguration : IDependencyInjectionRegister
+    public class MapperServicesConfiguration : IDependencyInjectionRegister
     {
 
         public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSwaggerGen(options => options.DescribeAllParametersInCamelCase());
-
-            return services;
+            return services.AddAutoMapperMapperServices();
         }
 
     }
