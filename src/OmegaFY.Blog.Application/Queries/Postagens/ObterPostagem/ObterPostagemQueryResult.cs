@@ -1,9 +1,8 @@
 ﻿using OmegaFY.Blog.Application.Base;
 using OmegaFY.Blog.Domain.Core.Queries;
 using System;
-using System.Collections.Generic;
 
-namespace OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem.Results
+namespace OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem
 {
 
     public class ObterPostagemQueryResult : GenericResult, IQueryResult
@@ -23,11 +22,11 @@ namespace OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem.Results
 
         public DateTime? DataModificacao { get; set; }
 
-        public IReadOnlyCollection<ObterPostagemAvaliacoesQuery> Avaliacoes { get; set; }
+        public int TotalDeAvaliacoes { get; set; }
 
-        public IReadOnlyCollection<ObterPostagemComentariosQuery> Comentarios { get; set; }
+        public int TotalDeComentarios { get; set; }
 
-        public IReadOnlyCollection<ObterPostagemCompartilhamentosQuery> Compartilhamentos { get; set; }
+        public int TotalDeCompartilhamentos { get; set; }
 
     }
 

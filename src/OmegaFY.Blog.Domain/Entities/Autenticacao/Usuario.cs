@@ -1,8 +1,8 @@
 ﻿using OmegaFY.Blog.Domain.Core.Entities;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
-using OmegaFY.Blog.Domain.ValueObjects.Usuarios;
+using OmegaFY.Blog.Domain.ValueObjects.Autenticacao;
 
-namespace OmegaFY.Blog.Domain.Entities.Usuario
+namespace OmegaFY.Blog.Domain.Entities.Autenticacao
 {
 
     public class Usuario : Entity, IAggregateRoot<Usuario>
@@ -15,8 +15,6 @@ namespace OmegaFY.Blog.Domain.Entities.Usuario
         public Usuario(Login login)
         {
             Login = login;
-            //Senha = senha;
-            //Email = email;
             DetalhesModificacao = new DetalhesModificacao();
         }
 

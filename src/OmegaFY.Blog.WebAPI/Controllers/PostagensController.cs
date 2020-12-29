@@ -20,7 +20,6 @@ using OmegaFY.Blog.Application.Commands.Postagens.RemoverAvaliacaoPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoComentario;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoSubComentario;
 using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem;
-using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem.Results;
 using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.CommandsViewModels;

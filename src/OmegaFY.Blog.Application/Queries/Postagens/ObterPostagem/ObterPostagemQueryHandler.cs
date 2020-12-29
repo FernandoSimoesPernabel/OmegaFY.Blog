@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Application.Queries.Interfaces;
-using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem.Results;
 using OmegaFY.Blog.Domain.Core.Authentication;
 using OmegaFY.Blog.Domain.Exceptions;
 using System.Threading;

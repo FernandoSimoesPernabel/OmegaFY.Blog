@@ -1,7 +1,7 @@
 ﻿using System;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
-namespace OmegaFY.Blog.Domain.ValueObjects.Usuarios
+namespace OmegaFY.Blog.Domain.ValueObjects.Autenticacao
 {
 
     public class Login : ValueObject

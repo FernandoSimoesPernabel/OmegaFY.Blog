@@ -1,5 +1,5 @@
-﻿using OmegaFY.Blog.Data.EF.Base;
-using OmegaFY.Blog.Data.EF.Context;
+﻿using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Repositories.Base;
 using OmegaFY.Blog.Domain.Entities.Postagens;
 using OmegaFY.Blog.Domain.Repositories;
 using System.Threading.Tasks;

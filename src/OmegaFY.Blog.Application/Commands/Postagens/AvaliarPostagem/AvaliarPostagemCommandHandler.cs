@@ -2,6 +2,7 @@
 using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Core.Authentication;
 using OmegaFY.Blog.Domain.Core.Repositories;
+using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.Domain.Repositories;
 using System;
 using System.Threading;
@@ -18,8 +19,9 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.AvaliarPostagem
         public AvaliarPostagemCommandHandler(IUserInformation user,
                                              ILogger<AvaliarPostagemCommandHandler> logger,
                                              IUnitOfWork unitOfWork,
+                                             IMapperServices mapper,
                                              IPostagemRepository postagemRepository)
-            : base(user, logger, unitOfWork)
+            : base(user, logger, unitOfWork, mapper)
         {
             _postagemRepository = postagemRepository;
         }

@@ -1,5 +1,5 @@
 ﻿using OmegaFY.Blog.Domain.Core.Repositories;
-using OmegaFY.Blog.Domain.Entities.Usuario;
+using OmegaFY.Blog.Domain.Entities.Autenticacao;
 
 namespace OmegaFY.Blog.Domain.Repositories
 {

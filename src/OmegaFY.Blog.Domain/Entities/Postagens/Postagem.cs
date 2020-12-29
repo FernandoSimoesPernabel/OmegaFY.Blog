@@ -37,7 +37,12 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public IReadOnlyCollection<Compartilhamento> Compartilhamentos => _compartilhamentos?.ReadOnlyCollection;
 
-        protected Postagem() { }
+        protected Postagem()
+        {
+            _comentarios = new ComentariosColecao();
+            _avaliacoes = new AvaliacoesColecao();
+            _compartilhamentos = new CompartilhamentosColecao();
+        }
 
         public Postagem(Guid usuarioAutorId, Cabecalho cabecalho, string conteudoPostagem) : base(usuarioAutorId)
         {

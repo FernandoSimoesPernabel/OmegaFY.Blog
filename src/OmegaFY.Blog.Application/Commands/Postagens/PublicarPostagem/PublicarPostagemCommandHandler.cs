@@ -2,6 +2,7 @@
 using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Core.Authentication;
 using OmegaFY.Blog.Domain.Core.Repositories;
+using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.Domain.Entities.Postagens;
 using OmegaFY.Blog.Domain.Repositories;
 using OmegaFY.Blog.Domain.ValueObjects.Postagens;
@@ -19,8 +20,9 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
         public PublicarPostagemCommandHandler(IUserInformation user,
                                               ILogger<PublicarPostagemCommandHandler> logger,
                                               IUnitOfWork unitOfWork,
+                                              IMapperServices mapper,
                                               IPostagemRepository postagemRepository)
-            : base(user, logger, unitOfWork)
+            : base(user, logger, unitOfWork, mapper)
         {
             _postagemRepository = postagemRepository;
         }
@@ -32,14 +34,8 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
                                              request.ConteudoPostagem);
 
             await _postagemRepository.PublicarPostagem(postagem);
-            //await _unitOfWork.SaveChangesAsync();
 
-            return await Task.FromResult(new PublicarPostagemCommandResult(postagem.Id, 
-                                                                           postagem.UsuarioId,
-                                                                           postagem.Cabecalho.Titulo,
-                                                                           postagem.Cabecalho.SubTitulo,
-                                                                           postagem.Corpo,
-                                                                           postagem.DetalhesModificacao.DataCriacao));
+            return await Task.FromResult(_mapper.MapToObject<Postagem, PublicarPostagemCommandResult>(postagem));
         }
 
     }

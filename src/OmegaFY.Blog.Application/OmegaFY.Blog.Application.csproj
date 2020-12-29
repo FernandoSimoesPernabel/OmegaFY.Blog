@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Usuarios\" />
+    <Folder Include="Commands\Autenticacao\" />
     <Folder Include="Events\Postagens\" />
     <Folder Include="Queries\Postagens\ListarComentariosPostagem\" />
     <Folder Include="Queries\Postagens\ObterComentario\" />
-    <Folder Include="Queries\Usuarios\" />
-    <Folder Include="Validations\Usuarios\" />
+    <Folder Include="Queries\Autenticacao\" />
+    <Folder Include="Validations\Autenticacao\" />
   </ItemGroup>
 
   <ItemGroup>

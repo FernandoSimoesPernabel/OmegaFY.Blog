@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensPorUsuario
 {
-    class ListarPostagensPorUsuarioQueryResult
+
+    public class ListarPostagensPorUsuarioQueryResult
     {
+
     }
+
 }

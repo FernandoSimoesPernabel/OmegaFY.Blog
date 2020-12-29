@@ -1,5 +1,4 @@
 ﻿using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem;
-using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem.Results;
 using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Queries.Interfaces
