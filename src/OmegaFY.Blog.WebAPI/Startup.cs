@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OmegaFY.Blog.WebAPI.Extensions;
+using OmegaFY.Blog.WebAPI.Middlewares;
 
 namespace OmegaFY.Blog.WebAPI
 {
@@ -25,6 +26,7 @@ namespace OmegaFY.Blog.WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMiddleware<GarbageColletorMiddleware>();
             }
 
             app.UseHttpsRedirection();

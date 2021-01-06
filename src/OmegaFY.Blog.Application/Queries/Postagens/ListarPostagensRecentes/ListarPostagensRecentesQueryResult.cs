@@ -1,12 +1,16 @@
-﻿using System;
+﻿using OmegaFY.Blog.Application.Base;
+using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes.DTOs;
+using OmegaFY.Blog.Domain.Core.Queries;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes
 {
-    class ListarPostagensPorUsuarioQueryResult
+
+    public class ListarPostagensRecentesQueryResult : GenericResult, IQueryResult
     {
+
+        public IEnumerable<PostagensRecentesDTO> PostagensRecentes { get; set; }
+
     }
+
 }

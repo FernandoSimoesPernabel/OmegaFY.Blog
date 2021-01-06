@@ -28,6 +28,8 @@ namespace OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem
 
         public int TotalDeCompartilhamentos { get; set; }
 
+        public float NotaMediaDasAvaliacoes { get; set; }
+
     }
 
 }

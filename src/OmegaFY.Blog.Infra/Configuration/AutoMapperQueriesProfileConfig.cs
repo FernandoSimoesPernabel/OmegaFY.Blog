@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes;
 using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem;
 using OmegaFY.Blog.Domain.Entities.Postagens;
 using OmegaFY.Blog.WebAPI.Models.QueriesViewModels;
@@ -26,8 +27,11 @@ namespace OmegaFY.Blog.Infra.Configuration
                     DataModificacao = postagem.DetalhesModificacao.DataModificacao,
                     TotalDeAvaliacoes = postagem.TotalDeAvaliacoes(),
                     TotalDeComentarios = postagem.TotalDeComentarios(),
-                    TotalDeCompartilhamentos = postagem.TotalDeCompartilhamentos()
+                    TotalDeCompartilhamentos = postagem.TotalDeCompartilhamentos(),
+                    NotaMediaDasAvaliacoes = postagem.CalcularNotaMedia()
                 });
+
+            CreateMap<ListarPostagensRecentesViewModel, ListarPostagensRecentesQuery>();
 
             //CreateMap<Postagem, PostagemDTO>()
             //    .ConstructUsing(postagem => new PostagemDTO()

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OmegaFY.Blog.Application.Queries.Base;
 
 namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes
 {
 
-    public class ListarPostagensRecentesQuery
+    public class ListarPostagensRecentesQuery : QueryRequestMediatRBase<ListarPostagensRecentesQueryResult>
     {
+
+        public PagedRequest PagedRequest { get; set; }
 
     }
 

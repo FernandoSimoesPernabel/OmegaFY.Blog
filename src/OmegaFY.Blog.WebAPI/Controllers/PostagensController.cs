@@ -19,6 +19,7 @@ using OmegaFY.Blog.Application.Commands.Postagens.ReagirSubComentario;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverAvaliacaoPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoComentario;
 using OmegaFY.Blog.Application.Commands.Postagens.RemoverReacaoSubComentario;
+using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes;
 using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem;
 using OmegaFY.Blog.Domain.Core.Services;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
@@ -52,9 +53,14 @@ namespace OmegaFY.Blog.WebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse), 200)]
-        public async Task<IActionResult> ListarPostagensRecentesAsync(ListarPostagensRecentesViewModel viewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> ListarPostagensRecentesAsync([FromQuery] ListarPostagensRecentesViewModel viewModel, CancellationToken cancellationToken)
         {
-            return Ok();
+            ListarPostagensRecentesQuery query = _mapper.MapToObject<ListarPostagensRecentesViewModel, ListarPostagensRecentesQuery>(viewModel);
+
+            ListarPostagensRecentesQueryResult result =
+                            await _serviceBus.SendMessageAsync<ListarPostagensRecentesQuery, ListarPostagensRecentesQueryResult>(query, cancellationToken);
+
+            return Ok(result);
         }
 
         [HttpGet("listar-por-usuario")]
