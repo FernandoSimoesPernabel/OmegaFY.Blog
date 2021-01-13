@@ -9,7 +9,7 @@ namespace OmegaFY.Blog.Application.Validations.Postagens
 
         public ListarPostagensRecentesQueryValidator()
         {
-
+            RuleFor(x => x.PagedRequest).NotNull();
         }
 
     }

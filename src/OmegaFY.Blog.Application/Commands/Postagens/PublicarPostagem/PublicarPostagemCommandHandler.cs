@@ -19,10 +19,9 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
 
         public PublicarPostagemCommandHandler(IUserInformation user,
                                               ILogger<PublicarPostagemCommandHandler> logger,
-                                              IUnitOfWork unitOfWork,
                                               IMapperServices mapper,
                                               IPostagemRepository postagemRepository)
-            : base(user, logger, unitOfWork, mapper)
+            : base(user, logger,  mapper)
         {
             _postagemRepository = postagemRepository;
         }

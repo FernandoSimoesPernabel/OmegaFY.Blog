@@ -52,7 +52,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse<ListarPostagensRecentesQuery>), 200)]
         public async Task<IActionResult> ListarPostagensRecentesAsync([FromQuery] ListarPostagensRecentesViewModel viewModel, CancellationToken cancellationToken)
         {
             ListarPostagensRecentesQuery query = _mapper.MapToObject<ListarPostagensRecentesViewModel, ListarPostagensRecentesQuery>(viewModel);
@@ -94,7 +94,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
             EditarDadosPostagemCommandResult result =
                 await _serviceBus.SendMessageAsync<EditarDadosPostagemCommand, EditarDadosPostagemCommandResult>(command, cancellationToken);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPatch("{id:guid}/ocultar")]
@@ -354,7 +354,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         [ProducesResponseType(typeof(ApiResponse<CompartilharPostagemCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
-        public async Task<IActionResult> CompartilharPostagemAsync(CompartilharPostagemViewModel viewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> CompartilharPostagemAsync([FromQuery] CompartilharPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
             CompartilharPostagemCommand command = _mapper.MapToObject<CompartilharPostagemViewModel, CompartilharPostagemCommand>(viewModel);
 

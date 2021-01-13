@@ -8,7 +8,7 @@ namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes.DTO
 
         public Guid Id { get; set; }
 
-        public string Usuario { get; set; }
+        public string Autor { get; set; }
 
         public string Titulo { get; set; }
 
@@ -21,10 +21,10 @@ namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes.DTO
 
         }
 
-        public PostagensRecentesDTO(Guid id, string usuario, string titulo, DateTime dataCriacao, DateTime? dataModificacao)
+        public PostagensRecentesDTO(Guid id, string autor, string titulo, DateTime dataCriacao, DateTime? dataModificacao)
         {
             Id = id;
-            Usuario = usuario;
+            Autor = autor;
             Titulo = titulo;
             DataCriacao = dataCriacao;
             DataModificacao = dataModificacao;

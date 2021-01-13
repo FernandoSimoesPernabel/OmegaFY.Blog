@@ -21,7 +21,7 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.AvaliarPostagem
                                              IUnitOfWork unitOfWork,
                                              IMapperServices mapper,
                                              IPostagemRepository postagemRepository)
-            : base(user, logger, unitOfWork, mapper)
+            : base(user, logger, mapper)
         {
             _postagemRepository = postagemRepository;
         }

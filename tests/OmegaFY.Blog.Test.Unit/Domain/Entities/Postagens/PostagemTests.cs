@@ -99,8 +99,8 @@ namespace OmegaFY.Blog.Test.Unit.Domain.Entities.Postagens
             Guid usuarioId = Guid.NewGuid();
 
             //Act
-            postagem.Comentar(comentario, usuarioId);
-            postagem.Comentar(comentario2, usuarioId);
+            postagem.Comentar(new Comentario(usuarioId, postagem.Id, comentario));
+            postagem.Comentar(new Comentario(usuarioId, postagem.Id, comentario2));
 
             //Assert
             postagem.TotalDeComentarios().Should().Be(2);
@@ -136,7 +136,7 @@ namespace OmegaFY.Blog.Test.Unit.Domain.Entities.Postagens
             Guid usuarioId = postagem.UsuarioId;
 
             //Act
-            Action comentar = () => postagem.Comentar(comentario, usuarioId);
+            Action comentar = () => postagem.Comentar(new Comentario(usuarioId, postagem.Id, comentario));
 
             //Assert
             comentar.Should().ThrowExactly<DomainInvalidOperationException>()
@@ -154,13 +154,13 @@ namespace OmegaFY.Blog.Test.Unit.Domain.Entities.Postagens
             string comentario2 = _faker.Lorem.Word();
             Guid usuarioId = Guid.NewGuid();
 
-            postagem.Comentar(comentario1, usuarioId);
-            postagem.Comentar(comentario2, usuarioId);
+            postagem.Comentar(new Comentario(usuarioId, postagem.Id, comentario1));
+            postagem.Comentar(new Comentario(usuarioId, postagem.Id, comentario2));
 
             Comentario comentario = postagem.Comentarios.FirstOrDefault();
 
             //Act
-            postagem.RemoverComentario(comentario);
+            postagem.RemoverComentario(comentario.Id, usuarioId);
 
             //Assert
             postagem.TotalDeComentarios().Should().Be(1);

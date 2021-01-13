@@ -15,14 +15,13 @@ namespace OmegaFY.Blog.Data.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Comentarios.Comentario", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PostagemId")
@@ -31,9 +30,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id")
-                        .HasName("PK_ComentarioId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.HasKey("Id");
 
                     b.HasIndex("PostagemId");
 
@@ -43,7 +40,6 @@ namespace OmegaFY.Blog.Data.EF.Migrations
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Comentarios.Reacao", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ComentarioId")
@@ -58,9 +54,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id")
-                        .HasName("PK_ReacaoId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.HasKey("Id");
 
                     b.HasIndex("ComentarioId");
 
@@ -72,10 +66,9 @@ namespace OmegaFY.Blog.Data.EF.Migrations
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Comentarios.SubComentario", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ComentarioId")
+                    b.Property<Guid?>("ComentarioId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PostagemId")
@@ -84,11 +77,9 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id")
-                        .HasName("PK_SubComentarioId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.HasKey("Id");
 
-                    b.HasIndex("ComentarioId");
+                    b.HasIndex("ComentarioId1");
 
                     b.ToTable("SubComentarios");
                 });
@@ -96,7 +87,6 @@ namespace OmegaFY.Blog.Data.EF.Migrations
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Postagens.Avaliacao", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataAvaliacao")
@@ -114,9 +104,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id")
-                        .HasName("PK_AvaliacaoId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.HasKey("Id");
 
                     b.HasIndex("PostagemId");
 
@@ -126,11 +114,10 @@ namespace OmegaFY.Blog.Data.EF.Migrations
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Postagens.Compartilhamento", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCompartilhamento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<Guid>("PostagemId")
                         .HasColumnType("uniqueidentifier");
@@ -138,9 +125,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id")
-                        .HasName("PK_CompartilhamentoId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.HasKey("Id");
 
                     b.HasIndex("PostagemId");
 
@@ -161,7 +146,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_PostagemId")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                        .IsClustered();
 
                     b.ToTable("Postagens");
                 });
@@ -172,6 +157,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         .WithMany("Comentarios")
                         .HasForeignKey("PostagemId")
                         .HasConstraintName("FK_ComentarioPostagemId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.OwnsOne("OmegaFY.Blog.Domain.ValueObjects.Shared.Corpo", "Corpo", b1 =>
@@ -181,8 +167,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
                             b1.Property<string>("Conteudo")
                                 .IsRequired()
-                                .HasColumnName("Corpo")
-                                .HasColumnType("varchar(1000)");
+                                .HasColumnType("varchar(1000)")
+                                .HasColumnName("Corpo");
 
                             b1.HasKey("ComentarioId");
 
@@ -198,12 +184,12 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<DateTime>("DataCriacao")
-                                .HasColumnName("DataCriacao")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime")
+                                .HasColumnName("DataCriacao");
 
                             b1.Property<DateTime?>("DataModificacao")
-                                .HasColumnName("DataModificacao")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime")
+                                .HasColumnName("DataModificacao");
 
                             b1.HasKey("ComentarioId");
 
@@ -212,6 +198,10 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("ComentarioId");
                         });
+
+                    b.Navigation("Corpo");
+
+                    b.Navigation("DetalhesModificacao");
                 });
 
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Comentarios.Reacao", b =>
@@ -219,20 +209,22 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.HasOne("OmegaFY.Blog.Domain.Entities.Comentarios.Comentario", null)
                         .WithMany("Reacoes")
                         .HasForeignKey("ComentarioId")
+                        .HasConstraintName("FK_ReacaoComentarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Domain.Entities.Comentarios.SubComentario", null)
                         .WithMany("Reacoes")
-                        .HasForeignKey("SubComentarioId");
+                        .HasForeignKey("SubComentarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Comentarios.SubComentario", b =>
                 {
                     b.HasOne("OmegaFY.Blog.Domain.Entities.Comentarios.Comentario", null)
                         .WithMany("SubComentarios")
-                        .HasForeignKey("ComentarioId")
-                        .HasConstraintName("FK_SubComentarioComentarioId")
-                        .IsRequired();
+                        .HasForeignKey("ComentarioId1")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.OwnsOne("OmegaFY.Blog.Domain.ValueObjects.Shared.Corpo", "Corpo", b1 =>
                         {
@@ -241,8 +233,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
                             b1.Property<string>("Conteudo")
                                 .IsRequired()
-                                .HasColumnName("Corpo")
-                                .HasColumnType("varchar(1000)");
+                                .HasColumnType("varchar(1000)")
+                                .HasColumnName("Corpo");
 
                             b1.HasKey("SubComentarioId");
 
@@ -258,12 +250,12 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<DateTime>("DataCriacao")
-                                .HasColumnName("DataCriacao")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime")
+                                .HasColumnName("DataCriacao");
 
                             b1.Property<DateTime?>("DataModificacao")
-                                .HasColumnName("DataModificacao")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime")
+                                .HasColumnName("DataModificacao");
 
                             b1.HasKey("SubComentarioId");
 
@@ -272,6 +264,10 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("SubComentarioId");
                         });
+
+                    b.Navigation("Corpo");
+
+                    b.Navigation("DetalhesModificacao");
                 });
 
             modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Postagens.Avaliacao", b =>
@@ -280,6 +276,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         .WithMany("Avaliacoes")
                         .HasForeignKey("PostagemId")
                         .HasConstraintName("FK_AvaliacaoPostagemId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -289,6 +286,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         .WithMany("Compartilhamentos")
                         .HasForeignKey("PostagemId")
                         .HasConstraintName("FK_CompartilhamentoPostagemId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -301,13 +299,13 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
                             b1.Property<string>("SubTitulo")
                                 .IsRequired()
-                                .HasColumnName("SubTitulo")
-                                .HasColumnType("varchar(30)");
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("SubTitulo");
 
                             b1.Property<string>("Titulo")
                                 .IsRequired()
-                                .HasColumnName("Titulo")
-                                .HasColumnType("varchar(30)");
+                                .HasColumnType("varchar(30)")
+                                .HasColumnName("Titulo");
 
                             b1.HasKey("PostagemId");
 
@@ -324,8 +322,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
                             b1.Property<string>("Conteudo")
                                 .IsRequired()
-                                .HasColumnName("Corpo")
-                                .HasColumnType("varchar(8000)");
+                                .HasColumnType("varchar(8000)")
+                                .HasColumnName("Corpo");
 
                             b1.HasKey("PostagemId");
 
@@ -341,12 +339,12 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<DateTime>("DataCriacao")
-                                .HasColumnName("DataCriacao")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime")
+                                .HasColumnName("DataCriacao");
 
                             b1.Property<DateTime?>("DataModificacao")
-                                .HasColumnName("DataModificacao")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime")
+                                .HasColumnName("DataModificacao");
 
                             b1.HasKey("PostagemId");
 
@@ -355,6 +353,33 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("PostagemId");
                         });
+
+                    b.Navigation("Cabecalho");
+
+                    b.Navigation("Corpo");
+
+                    b.Navigation("DetalhesModificacao");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Comentarios.Comentario", b =>
+                {
+                    b.Navigation("Reacoes");
+
+                    b.Navigation("SubComentarios");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Comentarios.SubComentario", b =>
+                {
+                    b.Navigation("Reacoes");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Postagens.Postagem", b =>
+                {
+                    b.Navigation("Avaliacoes");
+
+                    b.Navigation("Comentarios");
+
+                    b.Navigation("Compartilhamentos");
                 });
 #pragma warning restore 612, 618
         }

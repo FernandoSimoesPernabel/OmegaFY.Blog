@@ -8,13 +8,16 @@ namespace OmegaFY.Blog.Domain.Extensions
     public static class FluntDomainExtensions
     {
         public static Contract ValidarUsuarioId(this Contract contract, Guid usuarioId)
-            => contract.ValidarGuidVazio(usuarioId, nameof(usuarioId), "Não foi informado um usuário válido.");
+            => contract.ValidarGuidVazio(usuarioId, nameof(usuarioId), "Não foi informado um identificador de usuário válido.");
 
         public static Contract ValidarPostagemId(this Contract contract, Guid postagemId)
-            => contract.ValidarGuidVazio(postagemId, nameof(postagemId), "Não foi informado uma postagem válida.");
+            => contract.ValidarGuidVazio(postagemId, nameof(postagemId), "Não foi informado um identificador de postagem válida.");
 
         public static Contract ValidarComentarioId(this Contract contract, Guid comentarioId)
-            => contract.ValidarGuidVazio(comentarioId, nameof(comentarioId), "Não foi informado um comentário válido.");
+            => contract.ValidarGuidVazio(comentarioId, nameof(comentarioId), "Não foi informado um identificador de comentário válido.");
+
+        public static Contract ValidarSubComentarioId(this Contract contract, Guid comentarioId)
+            => contract.ValidarGuidVazio(comentarioId, nameof(comentarioId), "Não foi informado um identificador de SubComentário válido.");
 
         public static Contract ValidarGuidVazio(this Contract contract, Guid usuarioId, string property, string message)
             => contract.IsNotEmpty(usuarioId, property, message);

@@ -11,13 +11,13 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<Compartilhamento> builder)
         {
 
-            builder.HasKey(p => p.Id).IsClustered().HasName("PK_CompartilhamentoId");
+            builder.Property(p => p.Id).ValueGeneratedNever();
 
             builder.Property(p => p.UsuarioId).IsRequired();
 
             builder.Property(p => p.PostagemId).IsRequired();
 
-            builder.Property(p => p.DataCompartilhamento).IsRequired();
+            builder.Property(p => p.DataCompartilhamento).HasColumnType("datetime").IsRequired();
 
             builder.ToTable("Compartilhamentos");
 

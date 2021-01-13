@@ -58,9 +58,9 @@ namespace OmegaFY.Blog.Data.EF.Repositories.Base
         /// <param name="entity">Entidade de negocio que vai ser atualizada no banco de dados.</param>
         protected virtual void Update(T entity)
         {
-			if (_context.Entry(entity).State != EntityState.Detached)
+			if (_context.Entry(entity).State == EntityState.Detached)
                 _dbSet.Attach(entity);
-			
+
             if (_context.Entry(entity).State != EntityState.Modified)
                 _dbSet.Update(entity);
         }

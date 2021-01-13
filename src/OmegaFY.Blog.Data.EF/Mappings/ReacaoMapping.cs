@@ -11,11 +11,13 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<Reacao> builder)
         {
 
-            builder.HasKey(p => p.Id).IsClustered().HasName("PK_ReacaoId");
+            builder.Property(p => p.Id).ValueGeneratedNever();
 
             builder.Property(p => p.UsuarioId).IsRequired();
 
             builder.Property(p => p.ComentarioId).IsRequired();
+
+            builder.Property(p => p.SubComentarioId);
 
             builder.Property(p => p.ReacaoUsuario).HasConversion<byte>().IsRequired();
 

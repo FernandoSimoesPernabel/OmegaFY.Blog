@@ -13,7 +13,7 @@ namespace OmegaFY.Blog.WebAPI.Configuration.Strategy
 
         public IServiceCollection Register(IServiceCollection services, IConfiguration configuration, DatabaseConfigurationOptions databaseOptions)
         {
-            return services.AddDbContextPool<ApplicationContext>(options =>
+            return services.AddDbContext<ApplicationContext>(options =>
             {
                 if (databaseOptions.DatabaseStrategy == DatabaseStrategy.InMemoryDB)
                     options.UseInMemoryDatabase(databaseOptions.DatabaseName);

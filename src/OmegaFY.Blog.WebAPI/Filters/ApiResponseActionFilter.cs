@@ -43,8 +43,8 @@ namespace OmegaFY.Blog.WebAPI.Filters
                 }
                 else
                 {
-                    result.Value = new ApiResponse(result.Value);
                     AddPaginationHeaderInformationIfPageResponse(result, context.HttpContext.Response.Headers);
+                    result.Value = new ApiResponse(result.Value);
                 }
 
             }

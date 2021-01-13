@@ -12,7 +12,7 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<SubComentario> builder)
         {
 
-            builder.HasKey(p => p.Id).IsClustered().HasName("PK_SubComentarioId");
+            builder.Property(p => p.Id).ValueGeneratedNever();
 
             builder.Property(p => p.UsuarioId).IsRequired();
 
@@ -27,11 +27,11 @@ namespace OmegaFY.Blog.Data.EF.Mappings
             builder.OwnsOne(p => p.DetalhesModificacao,
                             dm =>
                             {
-                                dm.Property(p => p.DataCriacao).HasColumnName("DataCriacao").IsRequired();
-                                dm.Property(p => p.DataModificacao).HasColumnName("DataModificacao");
+                                dm.Property(p => p.DataCriacao).HasColumnType("datetime").HasColumnName("DataCriacao").IsRequired();
+                                dm.Property(p => p.DataModificacao).HasColumnType("datetime").HasColumnName("DataModificacao");
                             });
 
-            builder.HasMany(p => p.Reacoes).WithOne();
+            builder.HasMany(p => p.Reacoes).WithOne().OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("SubComentarios");
 

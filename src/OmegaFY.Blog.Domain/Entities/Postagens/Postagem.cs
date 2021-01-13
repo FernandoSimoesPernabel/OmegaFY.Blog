@@ -1,6 +1,5 @@
 ﻿using Flunt.Validations;
 using OmegaFY.Blog.Common.Constantes;
-using OmegaFY.Blog.Common.Enums;
 using OmegaFY.Blog.Domain.Core.Entities;
 using OmegaFY.Blog.Domain.Entities.Comentarios;
 using OmegaFY.Blog.Domain.Exceptions;
@@ -14,14 +13,16 @@ using System.Linq;
 namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
 
-    public class Postagem : EntityWithUserId, IAggregateRoot<Postagem>
+    public class Postagem : Entity, IAggregateRoot<Postagem>
     {
 
-        private readonly ComentariosColecao _comentarios;
+        private readonly List<Avaliacao> _avaliacoes;
 
-        private readonly AvaliacoesColecao _avaliacoes;
+        private readonly List<Comentario> _comentarios;
 
-        private readonly CompartilhamentosColecao _compartilhamentos;
+        private readonly List<Compartilhamento> _compartilhamentos;
+
+        public Guid UsuarioId { get; }
 
         public bool Oculta { get; private set; }
 
@@ -31,32 +32,34 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public DetalhesModificacao DetalhesModificacao { get; private set; }
 
-        public IReadOnlyCollection<Comentario> Comentarios => _comentarios?.ReadOnlyCollection;
+        public IReadOnlyCollection<Avaliacao> Avaliacoes => _avaliacoes.AsReadOnly();
 
-        public IReadOnlyCollection<Avaliacao> Avaliacoes => _avaliacoes?.ReadOnlyCollection;
+        public IReadOnlyCollection<Comentario> Comentarios => _comentarios.AsReadOnly();
 
-        public IReadOnlyCollection<Compartilhamento> Compartilhamentos => _compartilhamentos?.ReadOnlyCollection;
+        public IReadOnlyCollection<Compartilhamento> Compartilhamentos => _compartilhamentos.AsReadOnly();
 
         protected Postagem()
         {
-            _comentarios = new ComentariosColecao();
-            _avaliacoes = new AvaliacoesColecao();
-            _compartilhamentos = new CompartilhamentosColecao();
+            _avaliacoes = new List<Avaliacao>();
+            _comentarios = new List<Comentario>();
+            _compartilhamentos = new List<Compartilhamento>();
         }
 
-        public Postagem(Guid usuarioAutorId, Cabecalho cabecalho, string conteudoPostagem) : base(usuarioAutorId)
+        public Postagem(Guid usuarioId, Cabecalho cabecalho, string conteudoPostagem)
         {
             new Contract()
-                .ValidarUsuarioId(usuarioAutorId)
+                .ValidarUsuarioId(usuarioId)
                 .EnsureContractIsValid();
+
+            UsuarioId = usuarioId;
 
             DefinirCabecalho(cabecalho);
 
             DefinirCorpoDaPostagem(conteudoPostagem);
 
-            _comentarios = new ComentariosColecao();
-            _avaliacoes = new AvaliacoesColecao();
-            _compartilhamentos = new CompartilhamentosColecao();
+            _avaliacoes = new List<Avaliacao>();
+            _comentarios = new List<Comentario>();
+            _compartilhamentos = new List<Compartilhamento>();
 
             DetalhesModificacao = new DetalhesModificacao();
         }
@@ -106,15 +109,28 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         public Comentario ObterComentarioDaPostagem(Guid comentarioId)
             => Comentarios.FirstOrDefault(c => c.Id == comentarioId && c.PostagemId == Id);
 
-        public void Comentar(string comentario, Guid usuarioId)
+        public void Comentar(Comentario comentario)
         {
-            CriticarSeAcaoFoiRealizadaPeloAutor(usuarioId, "O autor da postagem pode apenas responder outros comentários.");
+            CriticarSeAcaoFoiRealizadaPeloAutor(comentario?.UsuarioId ?? Guid.Empty, "O autor da postagem pode apenas responder outros comentários.");
 
-            _comentarios.Comentar(new Comentario(usuarioId, Id, comentario));
+            _comentarios.Add(comentario);
         }
 
         public void EditarComentario(Guid comentarioId, Guid usuarioModificacaoId, string comentario)
-            => _comentarios.EditarComentario(comentarioId, usuarioModificacaoId, comentario);
+        {
+            Comentario comentarioQueSeraEditado = _comentarios.FirstOrDefault(c => c.Id == comentarioId);
+
+            new Contract()
+                .IsNotNull(comentarioQueSeraEditado, nameof(comentarioQueSeraEditado), "O comentário informado não existe.")
+                .EnsureContractIsValid()
+                .AreEquals(comentarioQueSeraEditado.UsuarioId,
+                           usuarioModificacaoId,
+                           nameof(usuarioModificacaoId),
+                           "O comentário apenas pode ser editado pelo autor do comentário.")
+                .EnsureContractIsValid<DomainInvalidOperationException>();
+
+            comentarioQueSeraEditado.Editar(comentario);
+        }
 
         public void EditarSubComentario(Guid comentarioId, Guid subComentarioId, Guid usuarioModificacaoId, string comentario)
         {
@@ -127,33 +143,79 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             comentarioPai.EditarSubComentario(subComentarioId, usuarioModificacaoId, comentario);
         }
 
-        public void RemoverComentario(Comentario comentario) => _comentarios.RemoverComentario(comentario);
+        public void RemoverComentario(Guid comentarioId, Guid usuarioId)
+        {
+            Comentario comentarioQueSeraRemovido = _comentarios.FirstOrDefault(c => c.Id == comentarioId);
 
-        public int TotalDeComentarios() => _comentarios.Total();
+            new Contract()
+                .IsNotNull(comentarioQueSeraRemovido, nameof(comentarioQueSeraRemovido), "O comentário informado não existe.")
+                .EnsureContractIsValid()
+                .AreEquals(comentarioQueSeraRemovido.UsuarioId,
+                           usuarioId,
+                           nameof(usuarioId),
+                           "O comentário apenas pode ser removido pelo autor do comentário.")
+                .EnsureContractIsValid<DomainInvalidOperationException>();
+
+            _comentarios.Remove(comentarioQueSeraRemovido);
+        }
+
+        public int TotalDeComentarios() => _comentarios.Count;
 
         public int? TotalDeSubComentarios(Guid comentarioId) => ObterComentarioDaPostagem(comentarioId)?.TotalDeComentarios();
 
-        public void Compartilhar(Guid usuarioId)
+        public void Compartilhar(Compartilhamento compartilhamento)
         {
-            CriticarSeAcaoFoiRealizadaPeloAutor(usuarioId, "O autor da postagem não pode compartilhar sua própria postagem.");
+            new Contract()
+                .IsNotNull(compartilhamento, nameof(compartilhamento), "Não foi informado nenhum compartilhamento para essa postagem.")
+                .EnsureContractIsValid();
 
-            _compartilhamentos.Compartilhar(new Compartilhamento(usuarioId, Id));
+            CriticarSeAcaoFoiRealizadaPeloAutor(compartilhamento.UsuarioId, "O autor da postagem não pode compartilhar sua própria postagem.");
+
+            _compartilhamentos.Add(compartilhamento);
         }
 
-        public void Descompartilhar(Compartilhamento compartilhamento) => _compartilhamentos.Descompartilhar(compartilhamento);
-
-        public int TotalDeCompartilhamentos() => _compartilhamentos.Total();
-
-        public void Avaliar(Guid usuarioId, Estrelas estrelas)
+        public void Descompartilhar(Guid compartilhamentoId, Guid usuarioId)
         {
-            CriticarSeAcaoFoiRealizadaPeloAutor(usuarioId, "O autor da postagem não pode avaliar sua própria postagem.");
+            Compartilhamento compartilhamentoQueSeraRemovido = _compartilhamentos.FirstOrDefault(c => c.Id == compartilhamentoId);
 
-            _avaliacoes.Avaliar(new Avaliacao(usuarioId, Id, estrelas));
+            new Contract()
+                .IsNotNull(compartilhamentoQueSeraRemovido, nameof(compartilhamentoQueSeraRemovido), "O compartilhamento informado não existe.")
+                .EnsureContractIsValid()
+                .AreEquals(compartilhamentoQueSeraRemovido.UsuarioId,
+                           usuarioId,
+                           nameof(usuarioId),
+                           "O compartilhamento apenas pode ser descompartilhado pelo usuário que o realizou.")
+                .EnsureContractIsValid<DomainInvalidOperationException>();
+
+            _compartilhamentos.Remove(compartilhamentoQueSeraRemovido);
         }
 
-        public void RemoverAvaliacao(Avaliacao avaliacao) => _avaliacoes.RemoverAvaliacao(avaliacao);
+        public int TotalDeCompartilhamentos() => _compartilhamentos.Count;
 
-        public int TotalDeAvaliacoes() => _avaliacoes.Total();
+        public void Avaliar(Avaliacao avaliacao)
+        {
+            CriticarSeAcaoFoiRealizadaPeloAutor(avaliacao?.UsuarioId ?? Guid.Empty, "O autor da postagem não pode avaliar sua própria postagem.");
+
+            _avaliacoes.Add(avaliacao);
+        }
+
+        public void RemoverAvaliacao(Guid avaliacaoId, Guid usuarioId)
+        {
+            Avaliacao avaliacaoQueSeraRemovida = _avaliacoes.FirstOrDefault(c => c.Id == avaliacaoId);
+
+            new Contract()
+                .IsNotNull(avaliacaoQueSeraRemovida, nameof(avaliacaoQueSeraRemovida), "A avaliação informada não existe.")
+                .EnsureContractIsValid()
+                .AreEquals(avaliacaoQueSeraRemovida.UsuarioId,
+                           usuarioId,
+                           nameof(usuarioId),
+                           "A avaliação apenas pode ser removida pelo usuário que a realizou.")
+                .EnsureContractIsValid<DomainInvalidOperationException>();
+
+            _avaliacoes.Remove(avaliacaoQueSeraRemovida);
+        }
+
+        public int TotalDeAvaliacoes() => _avaliacoes.Count;
 
         public float CalcularNotaMedia()
         {

@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace OmegaFY.Blog.WebAPI.Models.CommandsViewModels
 {
 
     public class CompartilharPostagemViewModel
     {
+
+        [FromRoute]
+        public Guid Id { get; set; }
 
     }
 

@@ -5,6 +5,7 @@ using OmegaFY.Blog.Infra.Extensions;
 
 namespace OmegaFY.Blog.WebAPI.Configuration
 {
+	
     public class MapperServicesConfiguration : IDependencyInjectionRegister
     {
 

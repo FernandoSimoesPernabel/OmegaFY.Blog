@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OmegaFY.Blog.Application.Commands.Postagens.CompartilharPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.EditarDadosPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem;
 using OmegaFY.Blog.Domain.Entities.Postagens;
@@ -15,6 +16,7 @@ namespace OmegaFY.Blog.Infra.Configuration
 
             CreateMap<PublicarPostagemViewModel, PublicarPostagemCommand>(); //.ReverseMap();
             CreateMap<EditarDadosPostagemViewModel, EditarDadosPostagemCommand>();
+            CreateMap<CompartilharPostagemViewModel, CompartilharPostagemCommand>();
 
             CreateMap<Postagem, PublicarPostagemCommandResult>()
                 .ConvertUsing(postagem => new PublicarPostagemCommandResult()

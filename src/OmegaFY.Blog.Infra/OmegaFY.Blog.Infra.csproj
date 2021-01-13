@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OmegaFY.Blog.Application\OmegaFY.Blog.Application.csproj" />
+    <ProjectReference Include="..\OmegaFY.Blog.Data.EF\OmegaFY.Blog.Data.EF.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.WebAPI.Models\OmegaFY.Blog.WebAPI.Models.csproj" />
   </ItemGroup>

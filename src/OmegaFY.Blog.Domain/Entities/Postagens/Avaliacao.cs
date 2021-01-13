@@ -6,10 +6,12 @@ using System;
 namespace OmegaFY.Blog.Domain.Entities.Postagens
 {
 
-    public class Avaliacao : EntityWithUserId
+    public class Avaliacao : Entity
     {
 
         public Guid PostagemId { get; }
+
+        public Guid UsuarioId { get; }
 
         public DateTime DataAvaliacao { get; }
 
@@ -19,7 +21,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         protected Avaliacao() { }
 
-        public Avaliacao(Guid usuarioId, Guid postagemId, Estrelas estrelas) : base(usuarioId)
+        public Avaliacao(Guid usuarioId, Guid postagemId, Estrelas estrelas)
         {
             new Contract()
                 .ValidarUsuarioId(usuarioId)
@@ -27,6 +29,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
                 .EnsureContractIsValid();
 
             PostagemId = postagemId;
+            UsuarioId = usuarioId;
             DataAvaliacao = DateTime.Now;
             Estrelas = estrelas;
             Nota = estrelas.NotaDaAvaliacao();

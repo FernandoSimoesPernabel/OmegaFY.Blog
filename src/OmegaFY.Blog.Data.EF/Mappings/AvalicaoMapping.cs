@@ -11,7 +11,7 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<Avaliacao> builder)
         {
 
-            builder.HasKey(p => p.Id).IsClustered().HasName("PK_AvaliacaoId");
+            builder.Property(p => p.Id).ValueGeneratedNever();          
 
             builder.Property(p => p.UsuarioId).IsRequired();
 

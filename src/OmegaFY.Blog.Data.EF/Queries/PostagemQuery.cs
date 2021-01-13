@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Application.Queries.Interfaces;
 using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes;
 using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes.DTOs;
@@ -33,7 +34,11 @@ namespace OmegaFY.Blog.Data.EF.Queries
 
         public async Task<ListarPostagensRecentesQueryResult> ListarPostagensRecentesAsync(ListarPostagensRecentesQuery query)
         {
-            ListarPostagensRecentesQueryResult result = new ListarPostagensRecentesQueryResult()
+            int totalDePostagens = await _dbSet.AsNoTracking().CountAsync();
+
+            PagedResultInfo resultInfo = new PagedResultInfo(0, 0, 0, totalDePostagens);
+
+            ListarPostagensRecentesQueryResult result = new ListarPostagensRecentesQueryResult(resultInfo)
             {
                 PostagensRecentes = await _dbSet.AsNoTracking().Select(p => new PostagensRecentesDTO(p.Id,
                                                                                                      p.UsuarioId.ToString(),

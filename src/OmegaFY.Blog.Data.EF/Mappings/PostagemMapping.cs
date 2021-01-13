@@ -27,8 +27,8 @@ namespace OmegaFY.Blog.Data.EF.Mappings
             builder.OwnsOne(p => p.DetalhesModificacao,
                             dm =>
                             {
-                                dm.Property(p => p.DataCriacao).HasColumnName("DataCriacao").IsRequired();
-                                dm.Property(p => p.DataModificacao).HasColumnName("DataModificacao");
+                                dm.Property(p => p.DataCriacao).HasColumnType("datetime").HasColumnName("DataCriacao").IsRequired();
+                                dm.Property(p => p.DataModificacao).HasColumnType("datetime").HasColumnName("DataModificacao");
                             });
 
             builder.OwnsOne(p => p.Cabecalho,
