@@ -11,17 +11,17 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<Avaliacao> builder)
         {
 
-            builder.Property(p => p.Id).ValueGeneratedNever();          
+            builder.Property(a => a.Id).ValueGeneratedNever();          
 
-            builder.Property(p => p.UsuarioId).IsRequired();
+            builder.Property(a => a.UsuarioId).IsRequired();
 
-            builder.Property(p => p.PostagemId).IsRequired();
+            builder.Property(a => a.PostagemId).IsRequired();
 
-            builder.Property(p => p.Nota).IsRequired();
+            builder.Property(a => a.Nota).IsRequired();
 
-            builder.Property(p => p.Estrelas).HasConversion<byte>().IsRequired();
+            builder.Property(a => a.Estrelas).HasConversion<byte>().IsRequired();
 
-            builder.Property(p => p.DataAvaliacao).IsRequired();
+            builder.Property(a => a.DataAvaliacao).IsRequired();
 
             builder.ToTable("Avaliacoes");
 

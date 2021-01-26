@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using OmegaFY.Blog.Application.Commands.Postagens.AvaliarPostagem;
+using OmegaFY.Blog.Application.Commands.Postagens.ComentarComentario;
+using OmegaFY.Blog.Application.Commands.Postagens.ComentarPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.CompartilharPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.EditarDadosPostagem;
 using OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem;
@@ -14,20 +17,24 @@ namespace OmegaFY.Blog.Infra.Configuration
         public AutoMapperCommandsProfileConfig()
         {
 
-            CreateMap<PublicarPostagemViewModel, PublicarPostagemCommand>(); //.ReverseMap();
+            CreateMap<PublicarPostagemViewModel, PublicarPostagemCommand>();
             CreateMap<EditarDadosPostagemViewModel, EditarDadosPostagemCommand>();
+            CreateMap<AvaliarPostagemViewModel, AvaliarPostagemCommand>();
+            CreateMap<ComentarPostagemViewModel, ComentarPostagemCommand>();
+            CreateMap<ComentarComentarioViewModel, ComentarComentarioCommand>();
             CreateMap<CompartilharPostagemViewModel, CompartilharPostagemCommand>();
+            CreateMap<Postagem, PublicarPostagemCommandResult>();
 
-            CreateMap<Postagem, PublicarPostagemCommandResult>()
-                .ConvertUsing(postagem => new PublicarPostagemCommandResult()
-                {
-                    Id = postagem.Id,
-                    UsuarioId = postagem.UsuarioId,
-                    Titulo = postagem.Cabecalho.Titulo,
-                    SubTitulo = postagem.Cabecalho.SubTitulo,
-                    Corpo = postagem.Corpo,
-                    DataCriacao = postagem.DetalhesModificacao.DataCriacao
-                });
+            //CreateMap<Postagem, PublicarPostagemCommandResult>()
+            //    .ConvertUsing(postagem => new PublicarPostagemCommandResult()
+            //    {
+            //        Id = postagem.Id,
+            //        UsuarioId = postagem.UsuarioId,
+            //        Titulo = postagem.Cabecalho.Titulo,
+            //        SubTitulo = postagem.Cabecalho.SubTitulo,
+            //        Corpo = postagem.Corpo,
+            //        DataCriacao = postagem.DetalhesModificacao.DataCriacao
+            //    });
         }
 
     }

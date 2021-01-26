@@ -12,29 +12,12 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.PublicarPostagem
 
         public Guid UsuarioId { get; set; }
 
-        public string Titulo { get; set; }
-
-        public string SubTitulo { get; set; }
-
-        public string Corpo { get; set; }
-
-        public DateTime DataCriacao { get; set; }
-
         public PublicarPostagemCommandResult() : base() { }
 
-        public PublicarPostagemCommandResult(Guid id,
-                                             Guid usuarioId,
-                                             string titulo,
-                                             string subTitulo,
-                                             string corpo,
-                                             DateTime dataCriacao)
+        public PublicarPostagemCommandResult(Guid id, Guid usuarioId)
         {
             Id = id;
             UsuarioId = usuarioId;
-            Titulo = titulo;
-            SubTitulo = subTitulo;
-            Corpo = corpo;
-            DataCriacao = dataCriacao;
         }
 
     }

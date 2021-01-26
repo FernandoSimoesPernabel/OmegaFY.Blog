@@ -26,11 +26,14 @@ using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.CommandsViewModels;
 using OmegaFY.Blog.WebAPI.Models.QueriesViewModels;
 using OmegaFY.Blog.WebAPI.Requests;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.WebAPI.Controllers
 {
+
+    [ApiVersion("1.0")]
     public class PostagensController : ApiControllerBase<PostagensController>
     {
 
@@ -156,9 +159,9 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         [ProducesResponseType(typeof(ApiResponse<ComentarPostagemCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
-        public async Task<IActionResult> ComentarPostagemAsync(ComentarPostagemViewModel viewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> ComentarPostagemAsync(Guid id, ComentarPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
-            ComentarPostagemCommand command = _mapper.MapToObject<ComentarPostagemViewModel, ComentarPostagemCommand>(viewModel);
+            ComentarPostagemCommand command = new ComentarPostagemCommand(id, viewModel.Comentario);
 
             ComentarPostagemCommandResult result =
                 await _serviceBus.SendMessageAsync<ComentarPostagemCommand, ComentarPostagemCommandResult>(command, cancellationToken);
@@ -255,9 +258,9 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         [ProducesResponseType(typeof(ApiResponse<ComentarComentarioCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
-        public async Task<IActionResult> ComentarComentarioAsync(ComentarComentarioViewModel viewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> ComentarComentarioAsync(Guid id, Guid comentarioId, ComentarComentarioViewModel viewModel, CancellationToken cancellationToken)
         {
-            ComentarComentarioCommand command = _mapper.MapToObject<ComentarComentarioViewModel, ComentarComentarioCommand>(viewModel);
+            ComentarComentarioCommand command = new ComentarComentarioCommand();
 
             ComentarComentarioCommandResult result =
                 await _serviceBus.SendMessageAsync<ComentarComentarioCommand, ComentarComentarioCommandResult>(command, cancellationToken);
@@ -397,9 +400,9 @@ namespace OmegaFY.Blog.WebAPI.Controllers
         [ProducesResponseType(typeof(ApiResponse<AvaliarPostagemCommandResult>), 201)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         [ProducesResponseType(typeof(ApiResponse), 404)]
-        public async Task<IActionResult> AvaliarPostagemAsync(AvaliarPostagemViewModel viewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> AvaliarPostagemAsync(Guid id, AvaliarPostagemViewModel viewModel, CancellationToken cancellationToken)
         {
-            AvaliarPostagemCommand command = _mapper.MapToObject<AvaliarPostagemViewModel, AvaliarPostagemCommand>(viewModel);
+            AvaliarPostagemCommand command = new AvaliarPostagemCommand(id, viewModel.Estrelas);
 
             AvaliarPostagemCommandResult result =
                 await _serviceBus.SendMessageAsync<AvaliarPostagemCommand, AvaliarPostagemCommandResult>(command, cancellationToken);

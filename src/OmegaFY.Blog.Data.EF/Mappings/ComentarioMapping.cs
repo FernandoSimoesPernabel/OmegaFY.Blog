@@ -12,32 +12,32 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<Comentario> builder)
         {
 
-            builder.Property(p => p.Id).ValueGeneratedNever();
+            builder.Property(c => c.Id).ValueGeneratedNever();
 
-            builder.Property(p => p.UsuarioId).IsRequired();
+            builder.Property(c => c.UsuarioId).IsRequired();
 
-            builder.Property(p => p.PostagemId).IsRequired();
+            builder.Property(c => c.PostagemId).IsRequired();
 
-            builder.OwnsOne(p => p.Corpo,
-                            c => c.Property(p => p.Conteudo)
+            builder.OwnsOne(c => c.Corpo,
+                            c => c.Property(c => c.Conteudo)
                                   .HasColumnType($"varchar({ComentariosConstantes.TAMANHO_MAX_COMENTARIO})")
                                   .HasColumnName("Corpo")
                                   .IsRequired());
 
-            builder.OwnsOne(p => p.DetalhesModificacao,
+            builder.OwnsOne(c => c.DetalhesModificacao,
                             dm =>
                             {
-                                dm.Property(p => p.DataCriacao).HasColumnType("datetime").HasColumnName("DataCriacao").IsRequired();
-                                dm.Property(p => p.DataModificacao).HasColumnType("datetime").HasColumnName("DataModificacao");
+                                dm.Property(c => c.DataCriacao).HasColumnType("datetime").HasColumnName("DataCriacao").IsRequired();
+                                dm.Property(c => c.DataModificacao).HasColumnType("datetime").HasColumnName("DataModificacao");
                             });
 
             builder
-                .HasMany(p => p.Reacoes)
+                .HasMany(c => c.Reacoes)
                 .WithOne()
-                .HasForeignKey(p => p.ComentarioId)
+                .HasForeignKey(c => c.ComentarioId)
                 .HasConstraintName("FK_ReacaoComentarioId");
 
-            builder.HasMany(p => p.SubComentarios).WithOne().OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(c => c.SubComentarios).WithOne().OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("Comentarios");
 

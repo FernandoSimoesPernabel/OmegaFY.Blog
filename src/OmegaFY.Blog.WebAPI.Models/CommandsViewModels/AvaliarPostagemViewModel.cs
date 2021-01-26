@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OmegaFY.Blog.Common.Enums;
 
 namespace OmegaFY.Blog.WebAPI.Models.CommandsViewModels
 {
 
     public class AvaliarPostagemViewModel
     {
+
+        public Estrelas Estrelas { get; set; }
 
     }
 

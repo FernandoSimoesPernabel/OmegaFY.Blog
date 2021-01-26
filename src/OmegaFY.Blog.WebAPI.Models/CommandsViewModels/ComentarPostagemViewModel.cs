@@ -4,6 +4,9 @@
     public class ComentarPostagemViewModel
     {
 
+        public string Comentario { get; set; }
+
+
     }
 
 }

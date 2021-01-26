@@ -8,22 +8,19 @@ namespace OmegaFY.Blog.Application.Commands.Postagens.CompartilharPostagem
     public class CompartilharPostagemCommandResult : GenericResult, ICommandResult
     {
 
-        public Guid IdCompartilhamento { get; set; }
+        public Guid CompartilhamentoId { get; set; }
 
-        public Guid IdPostagem { get; set; }
+        public Guid PostagemId { get; set; }
 
-        public Guid IdUsuario { get; set; }
+        public Guid UsuarioId { get; set; }
 
-        public CompartilharPostagemCommandResult()
+        public CompartilharPostagemCommandResult() { }
+
+        public CompartilharPostagemCommandResult(Guid compartilhamentoId, Guid postagemId, Guid usuarioId)
         {
-
-        }
-
-        public CompartilharPostagemCommandResult(Guid idCompartilhamento, Guid idPostagem, Guid idUsuario)
-        {
-            IdCompartilhamento = idCompartilhamento;
-            IdPostagem = idPostagem;
-            IdUsuario = idUsuario;
+            CompartilhamentoId = compartilhamentoId;
+            PostagemId = postagemId;
+            UsuarioId = usuarioId;
         }
 
     }

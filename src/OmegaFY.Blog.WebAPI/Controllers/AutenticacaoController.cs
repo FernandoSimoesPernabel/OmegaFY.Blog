@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace OmegaFY.Blog.WebAPI.Controllers
 {
 
+    [ApiVersion("1.0")]
     public class AutenticacaoController : ApiControllerBase<PostagensController>
     {
 

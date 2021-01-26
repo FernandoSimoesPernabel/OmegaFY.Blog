@@ -12,26 +12,26 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<SubComentario> builder)
         {
 
-            builder.Property(p => p.Id).ValueGeneratedNever();
+            builder.Property(sc => sc.Id).ValueGeneratedNever();
 
-            builder.Property(p => p.UsuarioId).IsRequired();
+            builder.Property(sc => sc.UsuarioId).IsRequired();
 
-            builder.Property(p => p.PostagemId).IsRequired();
+            builder.Property(sc => sc.PostagemId).IsRequired();
 
-            builder.OwnsOne(p => p.Corpo,
-                            c => c.Property(p => p.Conteudo)
+            builder.OwnsOne(sc => sc.Corpo,
+                            c => c.Property(sc => sc.Conteudo)
                                   .HasColumnType($"varchar({ComentariosConstantes.TAMANHO_MAX_COMENTARIO})")
                                   .HasColumnName("Corpo")
                                   .IsRequired());
 
-            builder.OwnsOne(p => p.DetalhesModificacao,
+            builder.OwnsOne(sc => sc.DetalhesModificacao,
                             dm =>
                             {
-                                dm.Property(p => p.DataCriacao).HasColumnType("datetime").HasColumnName("DataCriacao").IsRequired();
-                                dm.Property(p => p.DataModificacao).HasColumnType("datetime").HasColumnName("DataModificacao");
+                                dm.Property(sc => sc.DataCriacao).HasColumnType("datetime").HasColumnName("DataCriacao").IsRequired();
+                                dm.Property(sc => sc.DataModificacao).HasColumnType("datetime").HasColumnName("DataModificacao");
                             });
 
-            builder.HasMany(p => p.Reacoes).WithOne().OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(sc => sc.Reacoes).WithOne().OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("SubComentarios");
 

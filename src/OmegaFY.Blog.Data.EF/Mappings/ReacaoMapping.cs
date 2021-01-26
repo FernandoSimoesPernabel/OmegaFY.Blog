@@ -11,15 +11,15 @@ namespace OmegaFY.Blog.Data.EF.Mappings
         public void Configure(EntityTypeBuilder<Reacao> builder)
         {
 
-            builder.Property(p => p.Id).ValueGeneratedNever();
+            builder.Property(r => r.Id).ValueGeneratedNever();
 
-            builder.Property(p => p.UsuarioId).IsRequired();
+            builder.Property(r => r.UsuarioId).IsRequired();
 
-            builder.Property(p => p.ComentarioId).IsRequired();
+            builder.Property(r => r.ComentarioId).IsRequired();
 
-            builder.Property(p => p.SubComentarioId);
+            builder.Property(r => r.SubComentarioId);
 
-            builder.Property(p => p.ReacaoUsuario).HasConversion<byte>().IsRequired();
+            builder.Property(r => r.ReacaoUsuario).HasConversion<byte>().IsRequired();
 
             builder.ToTable("Reacoes");
 

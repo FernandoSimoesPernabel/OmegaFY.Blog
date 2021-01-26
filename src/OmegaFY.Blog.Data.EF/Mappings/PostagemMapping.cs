@@ -63,6 +63,8 @@ namespace OmegaFY.Blog.Data.EF.Mappings
                 .HasForeignKey(p => p.PostagemId)
                 .HasConstraintName("FK_CompartilhamentoPostagemId");
 
+            builder.HasQueryFilter(p => !p.Oculta);
+
             builder.ToTable("Postagens");
 
         }
