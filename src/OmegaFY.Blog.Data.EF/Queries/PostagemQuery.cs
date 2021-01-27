@@ -29,7 +29,7 @@ namespace OmegaFY.Blog.Data.EF.Queries
                 .Include(p => p.Compartilhamentos)
                 .FirstOrDefaultAsync(p => p.Id == query.Id);
 
-            return postagem == null ? null : _mapper.MapToObject<Postagem, ObterPostagemQueryResult>(postagem);
+            return postagem is null ? null : _mapper.MapToObject<Postagem, ObterPostagemQueryResult>(postagem);
         }
 
         public async Task<ListarPostagensRecentesQueryResult> ListarPostagensRecentesAsync(ListarPostagensRecentesQuery query)

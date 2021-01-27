@@ -225,7 +225,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         private void Modificado()
         {
-            if (DetalhesModificacao != null)
+            if (DetalhesModificacao is not null)
                 DetalhesModificacao = new DetalhesModificacao(DetalhesModificacao.DataCriacao);
         }
 

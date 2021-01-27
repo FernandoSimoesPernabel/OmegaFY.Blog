@@ -29,7 +29,7 @@ namespace OmegaFY.Blog.Application.Commands.Postagens
         {
             Postagem postagem = await _postagemRepository.PesquisarPostagemPeloId(id);
 
-            if (postagem == null)
+            if (postagem is null)
                 throw new NotFoundException("Não foi possível encontrar a postagem informada em nossa base de dados.");
 
             return postagem;

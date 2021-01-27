@@ -26,7 +26,7 @@ namespace OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem
         {
             ObterPostagemQueryResult result = await _postagemQuery.ObterPostagemAsync(request);
 
-            if (result == null)
+            if (result is null)
                 throw new NotFoundException("Não foi possível encontrar a postagem informada em nossa base de dados.");
 
             return await Task.FromResult(result);

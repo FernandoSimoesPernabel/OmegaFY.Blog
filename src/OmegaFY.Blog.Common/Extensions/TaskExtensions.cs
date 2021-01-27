@@ -14,7 +14,7 @@ namespace OmegaFY.Blog.Common.Extensions
             {
                 await task;
             }
-            catch (Exception ex) when (exceptionHandler != null)
+            catch (Exception ex) when (exceptionHandler is not null)
             {
                 exceptionHandler(ex);
             }
