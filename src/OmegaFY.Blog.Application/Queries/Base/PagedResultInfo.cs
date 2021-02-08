@@ -1,27 +1,31 @@
-﻿namespace OmegaFY.Blog.Application.Queries.Base
+﻿using System;
+
+namespace OmegaFY.Blog.Application.Queries.Base
 {
 
     public class PagedResultInfo
     {
 
-        public int PaginaAtual { get; private set; }
+        public int CurrentPage { get; private set; }
 
-        public int TotalDePaginas { get; private set; }
+        public int TotalPages { get; private set; }
 
-        public int QuantidadeItensNaPagina { get; private set; }
+        public int PageSize { get; private set; }
 
-        public int TotalDeItens { get; private set; }
+        public int TotalOfItens { get; private set; }
 
-        public bool TemProximaPagina => PaginaAtual < TotalDePaginas;
+        public bool HasPrevius => CurrentPage < TotalPages;
 
-        public bool TemPaginaAnterior => PaginaAtual > 1;
+        public bool HasNext => CurrentPage > 1;
 
-        public PagedResultInfo(int paginaAtual, int totalDePaginas, int quantidadeItensNaPagina, int totalDeItens)
+        public PagedResultInfo(PagedRequest pagedRequest, int totalOfItens) : this(pagedRequest.PageNumber, pagedRequest.PageSize, totalOfItens) { }
+
+        public PagedResultInfo(int currentPage, int pageSize, int totalOfItens)
         {
-            PaginaAtual = paginaAtual;
-            TotalDePaginas = totalDePaginas;
-            QuantidadeItensNaPagina = quantidadeItensNaPagina;
-            TotalDeItens = totalDeItens;
+            CurrentPage = currentPage;
+            PageSize = pageSize;
+            TotalOfItens = totalOfItens;
+            TotalPages = (int)Math.Ceiling(pageSize / (double)totalOfItens);
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensPorUsuario;
 using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes;
 using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem;
 using OmegaFY.Blog.Domain.Entities.Postagens;
@@ -32,6 +33,7 @@ namespace OmegaFY.Blog.Infra.Configuration
                 });
 
             CreateMap<ListarPostagensRecentesViewModel, ListarPostagensRecentesQuery>();
+            CreateMap<ListarPostagensPorUsuarioViewModel, ListarPostagensPorUsuarioQuery>();
 
             //CreateMap<Postagem, PostagemDTO>()
             //    .ConstructUsing(postagem => new PostagemDTO()

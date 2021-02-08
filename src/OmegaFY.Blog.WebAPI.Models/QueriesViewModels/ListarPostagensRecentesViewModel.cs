@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OmegaFY.Blog.Application.Queries.Base;
 
 namespace OmegaFY.Blog.WebAPI.Models.QueriesViewModels
 {
@@ -8,7 +7,7 @@ namespace OmegaFY.Blog.WebAPI.Models.QueriesViewModels
     {
 
         [FromQuery]
-        public PagedRequest PagedRequest { get; set; }
+        public int QuantidadeDePostagens { get; set; }
 
     }
 

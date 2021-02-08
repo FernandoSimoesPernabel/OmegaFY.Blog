@@ -1,14 +1,16 @@
-﻿using System;
+﻿using OmegaFY.Blog.Application.Queries.Base;
+using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensPorUsuario.DTOs;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensPorUsuario
 {
 
-    public class ListarPostagensPorUsuarioQueryResult
+    public class ListarPostagensPorUsuarioQueryResult : PagedResult
     {
+
+        public IEnumerable<PostagensDoUsuarioDTO> PostagensDoUsuario { get; set; }
+
+        public ListarPostagensPorUsuarioQueryResult(PagedResultInfo resultInfo) : base(resultInfo) { }
 
     }
 

@@ -9,7 +9,8 @@ namespace OmegaFY.Blog.Application.Validations.Postagens
 
         public ListarPostagensRecentesQueryValidator()
         {
-            RuleFor(x => x.PagedRequest).NotNull();
+            RuleFor(x => x.QuantidadeDePostagens).GreaterThanOrEqualTo(1);
+            RuleFor(x => x.QuantidadeDePostagens).LessThanOrEqualTo(50);
         }
 
     }

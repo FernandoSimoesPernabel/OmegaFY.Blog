@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OmegaFY.Blog.Application.Queries.Base;
+using System;
 
 namespace OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensPorUsuario
 {
-    class ListarPostagensPorUsuarioQuery
+
+    public class ListarPostagensPorUsuarioQuery : QueryRequestMediatRBase<ListarPostagensPorUsuarioQueryResult>
     {
+
+        public Guid UsuarioId { get; set; }
+
+        public PagedRequest PagedRequest { get; set; }
+
     }
+
 }

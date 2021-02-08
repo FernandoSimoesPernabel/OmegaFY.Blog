@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Application.Queries.Interfaces;
+using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensPorUsuario;
+using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensPorUsuario.DTOs;
 using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes;
 using OmegaFY.Blog.Application.Queries.Postagens.ListarPostagensRecentes.DTOs;
 using OmegaFY.Blog.Application.Queries.Postagens.ObterPostagem;
@@ -36,19 +38,38 @@ namespace OmegaFY.Blog.Data.EF.Queries
         {
             int totalDePostagens = await _dbSet.AsNoTracking().CountAsync();
 
-            PagedResultInfo resultInfo = new PagedResultInfo(0, 0, 0, totalDePostagens);
-
-            ListarPostagensRecentesQueryResult result = new ListarPostagensRecentesQueryResult(resultInfo)
+            ListarPostagensRecentesQueryResult result = new ListarPostagensRecentesQueryResult()
             {
-                PostagensRecentes = await _dbSet.AsNoTracking().Select(p => new PostagensRecentesDTO(p.Id,
-                                                                                                     p.UsuarioId.ToString(),
-                                                                                                     p.Cabecalho.Titulo,
-                                                                                                     p.DetalhesModificacao.DataCriacao,
-                                                                                                     p.DetalhesModificacao.DataModificacao)).ToListAsync()
+                PostagensRecentes =
+                    await _dbSet.AsNoTracking()
+                                .Select(p => new PostagensRecentesDTO(p.Id,
+                                                                      p.UsuarioId.ToString(),
+                                                                      p.Cabecalho.Titulo,
+                                                                      p.DetalhesModificacao.DataCriacao,
+                                                                      p.DetalhesModificacao.DataModificacao))
+                                .Take(query.QuantidadeDePostagens)
+                                .ToListAsync()
             };
 
             return result;
 
+        }
+
+        public async Task<ListarPostagensPorUsuarioQueryResult> ListarPostagensPorUsuarioAsync(ListarPostagensPorUsuarioQuery query)
+        {
+            int totalDePostagensDoUsuario = await _dbSet.AsNoTracking().Where(p => p.UsuarioId == query.UsuarioId).CountAsync();
+
+            PagedResultInfo resultInfo = new PagedResultInfo(0, 0, totalDePostagensDoUsuario);
+
+            ListarPostagensPorUsuarioQueryResult result = new ListarPostagensPorUsuarioQueryResult(resultInfo)
+            {
+                PostagensDoUsuario = await _dbSet.AsNoTracking()
+                                                 .Where(p => p.UsuarioId == query.UsuarioId)
+                                                 .Select(p => new PostagensDoUsuarioDTO(p.Id, p.UsuarioId.ToString(), p.Cabecalho.Titulo, p.DetalhesModificacao.DataCriacao))
+                                                 .ToListAsync()
+            };
+
+            return result;
         }
 
     }
