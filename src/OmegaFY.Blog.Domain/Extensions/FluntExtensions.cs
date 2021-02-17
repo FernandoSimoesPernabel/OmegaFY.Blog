@@ -9,25 +9,25 @@ namespace OmegaFY.Blog.Domain.Extensions
     public static class FluntExtensions
     {
 
-        public static string NotificationsToSingleMessage(this Contract contract)
+        public static string NotificationsToSingleMessage<T>(this Contract<T> contract)
         {
-            return contract.Valid ?
+            return contract.IsValid ?
                 string.Empty :
                 string.Join(Environment.NewLine, contract.Notifications.Select(notification => notification.Message));
         }
 
-        public static Contract EnsureContractIsValid(this Contract contract) 
-            => EnsureContractIsValid<DomainArgumentException>(contract);
+        public static Contract<T> EnsureContractIsValid<T>(this Contract<T> contract)
+            => EnsureContractIsValid<T, DomainArgumentException>(contract);
 
-        public static Contract EnsureContractIsValid<TException>(this Contract contract) where TException : Exception
+        public static Contract<T> EnsureContractIsValid<T, TException>(this Contract<T> contract) where TException : Exception
         {
-            if (contract.Invalid)
-                throw (TException)Activator.CreateInstance(typeof(TException), new object[] { contract.NotificationsToSingleMessage() });
+            if (contract.IsValid)
+                return contract;
 
-            return contract;
+            throw (TException)Activator.CreateInstance(typeof(TException), new object[] { contract.NotificationsToSingleMessage() });
         }
 
-        public static Contract IsBetween(this Contract contract, string val, int min, int max, string property, string message)
+        public static Contract<T> IsBetweenLength<T>(this Contract<T> contract, string val, int min, int max, string property, string message)
         {
             val ??= string.Empty;
 

@@ -37,7 +37,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
 
         internal void Editar(string comentario)
         {
-            new Contract().ValidarComentario(comentario).EnsureContractIsValid();
+            new Contract<ComentarioBase>().ValidarComentario(comentario).EnsureContractIsValid();
 
             Corpo = comentario;
             DetalhesModificacao = new DetalhesModificacao(DetalhesModificacao.DataCriacao);
@@ -45,7 +45,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
 
         internal void Reagir(Reacao reacao)
         {
-            new Contract()
+            new Contract<ComentarioBase>()
                 .IsNotNull(reacao, nameof(reacao), "Não foi informado nenhuma reação para esse comentário.")
                 .EnsureContractIsValid();
 
@@ -56,14 +56,14 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios.Base
         {
             Reacao reacaoQueSeraRemovida = _reacoes.FirstOrDefault(c => c.Id == reacaoId);
 
-            new Contract()
+            new Contract<ComentarioBase>()
                 .IsNotNull(reacaoQueSeraRemovida, nameof(reacaoQueSeraRemovida), "A reação informada não existe.")
                 .EnsureContractIsValid()
                 .AreEquals(reacaoQueSeraRemovida.UsuarioId,
                            usuarioId,
                            nameof(usuarioId),
                            "O reação apenas pode ser removida pelo usuário que o realizou.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<ComentarioBase, DomainInvalidOperationException>();
 
             _reacoes.Remove(reacaoQueSeraRemovida);
         }

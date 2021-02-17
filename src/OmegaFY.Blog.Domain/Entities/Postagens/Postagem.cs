@@ -45,9 +45,9 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
             _compartilhamentos = new List<Compartilhamento>();
         }
 
-        public Postagem(Guid usuarioId, Cabecalho cabecalho, string conteudoPostagem)
+        public Postagem(Guid usuarioId, Cabecalho cabecalho, string conteudoPostagem) : this()
         {
-            new Contract()
+            new Contract<Postagem>()
                 .ValidarUsuarioId(usuarioId)
                 .EnsureContractIsValid();
 
@@ -57,16 +57,12 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
             DefinirCorpoDaPostagem(conteudoPostagem);
 
-            _avaliacoes = new List<Avaliacao>();
-            _comentarios = new List<Comentario>();
-            _compartilhamentos = new List<Compartilhamento>();
-
             DetalhesModificacao = new DetalhesModificacao();
         }
 
         public void DefinirCabecalho(Cabecalho cabecalho)
         {
-            new Contract().IsNotNull(cabecalho, nameof(cabecalho), "Não foi informado o Título e Subtítulo da postagem").EnsureContractIsValid();
+            new Contract<Postagem>().IsNotNull(cabecalho, nameof(cabecalho), "Não foi informado o Título e Subtítulo da postagem").EnsureContractIsValid();
 
             Cabecalho = cabecalho;
 
@@ -75,8 +71,8 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public void DefinirCorpoDaPostagem(string conteudoPostagem)
         {
-            new Contract()
-                .IsBetween(conteudoPostagem,
+            new Contract<Postagem>()
+                .IsBetweenLength(conteudoPostagem,
                            PostagensConstantes.TAMANHO_MIN_CORPO,
                            PostagensConstantes.TAMANHO_MAX_CORPO,
                            nameof(conteudoPostagem),
@@ -90,18 +86,18 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public void Ocultar()
         {
-            new Contract()
+            new Contract<Postagem>()
                 .IsFalse(Oculta, nameof(Oculta), $"A Postagem '{Cabecalho.Titulo}' já está oculta e não pode ser ocultada novamente.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Postagem, DomainInvalidOperationException>();
 
             Oculta = true;
         }
 
         public void Desocultar()
         {
-            new Contract()
+            new Contract<Postagem>()
                 .IsTrue(Oculta, nameof(Oculta), $"A Postagem '{Cabecalho.Titulo}' já está visível e não pode ser desocultada novamente.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Postagem, DomainInvalidOperationException>();
 
             Oculta = false;
         }
@@ -120,14 +116,14 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         {
             Comentario comentarioQueSeraEditado = _comentarios.FirstOrDefault(c => c.Id == comentarioId);
 
-            new Contract()
+            new Contract<Postagem>()
                 .IsNotNull(comentarioQueSeraEditado, nameof(comentarioQueSeraEditado), "O comentário informado não existe.")
                 .EnsureContractIsValid()
                 .AreEquals(comentarioQueSeraEditado.UsuarioId,
                            usuarioModificacaoId,
                            nameof(usuarioModificacaoId),
                            "O comentário apenas pode ser editado pelo autor do comentário.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Postagem, DomainInvalidOperationException>();
 
             comentarioQueSeraEditado.Editar(comentario);
         }
@@ -136,7 +132,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         {
             Comentario comentarioPai = ObterComentarioDaPostagem(comentarioId);
 
-            new Contract()
+            new Contract<Postagem>()
                 .IsNotNull(comentarioPai, nameof(comentarioPai), "Não foi encontrado o comentário informado nessa postagem.")
                 .EnsureContractIsValid();
 
@@ -147,14 +143,14 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         {
             Comentario comentarioQueSeraRemovido = _comentarios.FirstOrDefault(c => c.Id == comentarioId);
 
-            new Contract()
+            new Contract<Postagem>()
                 .IsNotNull(comentarioQueSeraRemovido, nameof(comentarioQueSeraRemovido), "O comentário informado não existe.")
                 .EnsureContractIsValid()
                 .AreEquals(comentarioQueSeraRemovido.UsuarioId,
                            usuarioId,
                            nameof(usuarioId),
                            "O comentário apenas pode ser removido pelo autor do comentário.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Postagem, DomainInvalidOperationException>();
 
             _comentarios.Remove(comentarioQueSeraRemovido);
         }
@@ -165,7 +161,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public void Compartilhar(Compartilhamento compartilhamento)
         {
-            new Contract()
+            new Contract<Postagem>()
                 .IsNotNull(compartilhamento, nameof(compartilhamento), "Não foi informado nenhum compartilhamento para essa postagem.")
                 .EnsureContractIsValid();
 
@@ -178,14 +174,14 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         {
             Compartilhamento compartilhamentoQueSeraRemovido = _compartilhamentos.FirstOrDefault(c => c.Id == compartilhamentoId);
 
-            new Contract()
+            new Contract<Postagem>()
                 .IsNotNull(compartilhamentoQueSeraRemovido, nameof(compartilhamentoQueSeraRemovido), "O compartilhamento informado não existe.")
                 .EnsureContractIsValid()
                 .AreEquals(compartilhamentoQueSeraRemovido.UsuarioId,
                            usuarioId,
                            nameof(usuarioId),
                            "O compartilhamento apenas pode ser descompartilhado pelo usuário que o realizou.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Postagem, DomainInvalidOperationException>();
 
             _compartilhamentos.Remove(compartilhamentoQueSeraRemovido);
         }
@@ -203,14 +199,14 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         {
             Avaliacao avaliacaoQueSeraRemovida = _avaliacoes.FirstOrDefault(c => c.Id == avaliacaoId);
 
-            new Contract()
+            new Contract<Postagem>()
                 .IsNotNull(avaliacaoQueSeraRemovida, nameof(avaliacaoQueSeraRemovida), "A avaliação informada não existe.")
                 .EnsureContractIsValid()
                 .AreEquals(avaliacaoQueSeraRemovida.UsuarioId,
                            usuarioId,
                            nameof(usuarioId),
                            "A avaliação apenas pode ser removida pelo usuário que a realizou.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Postagem, DomainInvalidOperationException>();
 
             _avaliacoes.Remove(avaliacaoQueSeraRemovida);
         }
@@ -232,9 +228,9 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
         private bool VerificarSeAcaoFoiRealizadaPeloAutor(Guid usuarioId) => usuarioId == UsuarioId;
 
         private void CriticarSeAcaoFoiRealizadaPeloAutor(Guid usuarioId, string mensagemCritica) =>
-            new Contract()
+            new Contract<Postagem>()
                 .IsFalse(VerificarSeAcaoFoiRealizadaPeloAutor(usuarioId), nameof(usuarioId), mensagemCritica)
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Postagem, DomainInvalidOperationException>();
 
         public override string ToString() => Corpo.ToString();
 

@@ -19,7 +19,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public Compartilhamento(Guid usuarioId, Guid postagemId)
         {
-            new Contract()
+            new Contract<Compartilhamento>()
                 .ValidarUsuarioId(usuarioId)
                 .ValidarPostagemId(postagemId)
                 .EnsureContractIsValid();

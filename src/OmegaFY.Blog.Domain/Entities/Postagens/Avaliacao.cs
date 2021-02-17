@@ -23,7 +23,7 @@ namespace OmegaFY.Blog.Domain.Entities.Postagens
 
         public Avaliacao(Guid usuarioId, Guid postagemId, Estrelas estrelas)
         {
-            new Contract()
+            new Contract<Avaliacao>()
                 .ValidarUsuarioId(usuarioId)
                 .ValidarPostagemId(postagemId)
                 .EnsureContractIsValid();

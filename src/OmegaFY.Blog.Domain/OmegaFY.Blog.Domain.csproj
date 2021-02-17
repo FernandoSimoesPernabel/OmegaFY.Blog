@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Flunt" Version="1.0.5" />
+    <PackageReference Include="Flunt" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
