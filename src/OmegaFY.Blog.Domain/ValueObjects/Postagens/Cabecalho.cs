@@ -13,7 +13,7 @@ namespace OmegaFY.Blog.Domain.ValueObjects.Postagens
 
         public Cabecalho(string titulo, string subTitulo)
         {
-            new Contract()
+            new Contract<Cabecalho>()
                 .ValidarTitulo(titulo)
                 .ValidarSubTitulo(subTitulo)
                 .EnsureContractIsValid();

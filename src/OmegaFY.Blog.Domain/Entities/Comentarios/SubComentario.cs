@@ -16,7 +16,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
 
         public SubComentario(Guid usuarioId, Guid postagemId, Guid comentarioId, string comentario) : base(usuarioId, postagemId)
         {
-            new Contract()
+            new Contract<SubComentario>()
                 .ValidarUsuarioId(usuarioId)
                 .ValidarPostagemId(postagemId)
                 .ValidarComentarioId(comentarioId)

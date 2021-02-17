@@ -21,7 +21,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
 
         public Comentario(Guid usuarioId, Guid postagemId, Corpo comentario) : base(usuarioId, postagemId)
         {
-            new Contract()
+            new Contract<Comentario>()
                 .ValidarUsuarioId(usuarioId)
                 .ValidarPostagemId(postagemId)
                 .ValidarComentario(comentario)
@@ -35,7 +35,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
 
         internal void Comentar(SubComentario subComentario)
         {
-            new Contract()
+            new Contract<Comentario>()
                 .IsNotNull(subComentario, nameof(subComentario), "Não foi informado nenhum SubComentário.")
                 .EnsureContractIsValid();
 
@@ -46,14 +46,14 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
         {
             SubComentario subComentarioQueSeraEditado = _subComentarios.FirstOrDefault(c => c.Id == subComentarioId);
 
-            new Contract()
+            new Contract<Comentario>()
                 .IsNotNull(subComentarioQueSeraEditado, nameof(subComentarioQueSeraEditado), "O SubComentário informado não existe.")
                 .EnsureContractIsValid()
                 .AreEquals(subComentarioQueSeraEditado.UsuarioId,
                            usuarioModificacaoId,
                            nameof(usuarioModificacaoId),
                            "O subComentário apenas pode ser editado pelo autor do SubComentário.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Comentario, DomainInvalidOperationException>();
 
             subComentarioQueSeraEditado.Editar(comentario);
         }
@@ -62,14 +62,14 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
         {
             SubComentario subComentarioQueSeraRemovido = _subComentarios.FirstOrDefault(c => c.Id == subComentarioId);
 
-            new Contract()
+            new Contract<Comentario>()
                 .IsNotNull(subComentarioQueSeraRemovido, nameof(subComentarioQueSeraRemovido), "O SubComentário informado não existe.")
                 .EnsureContractIsValid()
                 .AreEquals(subComentarioQueSeraRemovido.UsuarioId,
                            usuarioId,
                            nameof(usuarioId),
                            "O SubComentário apenas pode ser removido pelo autor do comentário.")
-                .EnsureContractIsValid<DomainInvalidOperationException>();
+                .EnsureContractIsValid<Comentario, DomainInvalidOperationException>();
 
             _subComentarios.Remove(subComentarioQueSeraRemovido);
         }

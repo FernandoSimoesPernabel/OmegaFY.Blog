@@ -21,7 +21,7 @@ namespace OmegaFY.Blog.Domain.Entities.Comentarios
 
         public Reacao(Guid usuarioId, Guid comentarioId, Guid? subComentarioId, Reacoes reacaoUsuario)
         {
-            Contract contract = new Contract();
+            Contract<Reacao> contract = new Contract<Reacao>();
 
             contract
                 .ValidarUsuarioId(usuarioId)

@@ -15,7 +15,7 @@ namespace OmegaFY.Blog.Domain.ValueObjects.Shared
 
         public Email(string email)
         {
-            new Contract()
+            new Contract<Email>()
                 .IsEmail(email, nameof(email), $"O e-mail '{email}' não é um endereço valído.")
                 .EnsureContractIsValid();
 
