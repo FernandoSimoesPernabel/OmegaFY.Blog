@@ -5,23 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Autenticacao\" />
-    <Folder Include="Events\Postagens\" />
-    <Folder Include="Queries\Postagens\ListarComentariosPostagem\" />
-    <Folder Include="Queries\Postagens\ObterComentario\" />
-    <Folder Include="Queries\Autenticacao\" />
-    <Folder Include="Validations\Autenticacao\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="9.5.1" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj" />
   </ItemGroup>
