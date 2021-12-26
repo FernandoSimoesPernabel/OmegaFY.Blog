@@ -2,7 +2,7 @@
 using OmegaFY.Blog.Domain.Request;
 using OmegaFY.Blog.Domain.Result;
 
-namespace OmegaFY.Blog.Domain.Infra;
+namespace OmegaFY.Blog.Domain.Bus;
 
 public interface IServiceBus
 {
