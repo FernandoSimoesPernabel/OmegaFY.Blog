@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.Cache;
 
-public interface ISharedCacheManager
+public interface ICacheManager
 {
 
 }
