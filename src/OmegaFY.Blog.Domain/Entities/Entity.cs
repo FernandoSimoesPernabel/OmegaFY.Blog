@@ -8,7 +8,7 @@ public abstract class Entity : IEntity, IComparable, IEquatable<Entity>
 
     public override bool Equals(object obj)
     {
-        if (!(obj is Entity entity)) return false;
+        if (obj is not Entity entity) return false;
         return CompareEquality(this, entity);
     }
 
