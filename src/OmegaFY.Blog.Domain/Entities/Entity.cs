@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.Entities;
 
-public abstract class Entity : IEntity, IComparable, IEquatable<Entity>
+public abstract class Entity : IComparable, IEquatable<Entity>
 {
     public Guid Id { get; }
 
