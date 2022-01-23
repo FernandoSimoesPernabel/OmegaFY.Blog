@@ -11,18 +11,18 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-    <Folder Include="FIlters\" />
-    <Folder Include="Middlewares\" />
     <Folder Include="Extensions\" />
     <Folder Include="Configurations\" />
-    <Folder Include="Requests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OmegaFY.Blog.Application\OmegaFY.Blog.Application.csproj" />
   </ItemGroup>
 
 </Project>

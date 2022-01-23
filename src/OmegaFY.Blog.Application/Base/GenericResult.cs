@@ -10,9 +10,9 @@ public abstract class GenericResult : IResult
 
     public void AddError(string code, string message) => _errors.Add(new ValidationError(code, message));
 
-    public bool Success() => _errors?.Count == 0;
+    public bool Succeeded() => _errors?.Count == 0;
 
-    public bool Fail() => !Success();
+    public bool Failed() => !Succeeded();
 
     public IReadOnlyCollection<ValidationError> Errors() => _errors.AsReadOnly();
 
