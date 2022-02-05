@@ -1,4 +1,6 @@
-﻿namespace OmegaFY.Blog.Domain.Entities.Posts;
+﻿using OmegaFY.Blog.Domain.ValueObjects.Posts;
+
+namespace OmegaFY.Blog.Domain.Entities.Posts;
 
 public class PostWithComments : Post
 {
@@ -6,7 +8,7 @@ public class PostWithComments : Post
 
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
-    public PostWithComments()
+    public PostWithComments(Author author, Header header, Body body) : base(author, header, body)
     {
         _comments = new List<Comment>();
     }

@@ -1,4 +1,6 @@
-﻿namespace OmegaFY.Blog.Domain.Entities.Posts;
+﻿using OmegaFY.Blog.Domain.ValueObjects.Posts;
+
+namespace OmegaFY.Blog.Domain.Entities.Posts;
 
 public class PostWithShares : Post
 {
@@ -6,7 +8,7 @@ public class PostWithShares : Post
 
     public IReadOnlyCollection<Shared> Shareds => _shareds.AsReadOnly();
 
-    public PostWithShares()
+    public PostWithShares(Author author, Header header, Body body) : base(author, header, body)
     {
         _shareds = new List<Shared>();
     }
