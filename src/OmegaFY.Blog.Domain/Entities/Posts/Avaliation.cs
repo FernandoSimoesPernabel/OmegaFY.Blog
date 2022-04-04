@@ -20,6 +20,4 @@ public class Avaliation : Entity
         DateAndTimeOfAvaliation = DateTime.UtcNow;
         Rate = rate;
     }
-
-    public void ChangeAuthorAvaliation(Stars newRate) => Rate = newRate;
 }
