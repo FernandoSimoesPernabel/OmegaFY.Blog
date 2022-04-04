@@ -9,14 +9,17 @@ public class Avaliation : Entity
 
     public Author Author { get; }
 
-    public Stars Grade { get; private set; }
+    public DateTime DateAndTimeOfAvaliation { get; }
 
-    public Avaliation(Guid postId, Author author, Stars grade)
+    public Stars Rate { get; private set; }
+
+    public Avaliation(Guid postId, Author author, Stars rate)
     {
         PostId = postId;
         Author = author;
-        Grade = grade;
+        DateAndTimeOfAvaliation = DateTime.UtcNow;
+        Rate = rate;
     }
 
-    public void ChangeAuthorAvaliation(Stars newGrade) => Grade = newGrade;
+    public void ChangeAuthorAvaliation(Stars newRate) => Rate = newRate;
 }

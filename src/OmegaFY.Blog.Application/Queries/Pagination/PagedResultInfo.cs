@@ -4,13 +4,13 @@ public class PagedResultInfo
 {
     public int CurrentPage { get; }
 
-    public int TotalPages { get; }
-
     public int PageSize { get; }
+
+    public int TotalPages { get; }
 
     public int TotalOfItens { get; }
 
-    public bool HasPrevius => CurrentPage < TotalPages;
+    public bool HasPrevious => CurrentPage < TotalPages;
 
     public bool HasNext => CurrentPage > 1;
 
@@ -23,4 +23,6 @@ public class PagedResultInfo
         TotalOfItens = totalOfItens;
         TotalPages = (int)Math.Ceiling(pageSize / (double)totalOfItens);
     }
+
+    public int ItemsToSkip() => Math.Max(PageSize * (CurrentPage - 1), 0);
 }

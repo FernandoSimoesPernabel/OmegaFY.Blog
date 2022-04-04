@@ -15,5 +15,4 @@ public abstract class GenericResult : IResult
     public bool Failed() => !Succeeded();
 
     public IReadOnlyCollection<ValidationError> Errors() => _errors.AsReadOnly();
-
 }

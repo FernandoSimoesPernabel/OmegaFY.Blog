@@ -13,7 +13,7 @@ public class Post : Entity, IAggregateRoot<Post>
 
     public ModificationDetails ModificationDetails { get; private set; }
 
-    public bool IsHidden { get; private set; }
+    public bool Hidden { get; private set; }
 
     public Post(Author author, Header header, Body body)
     {
@@ -21,6 +21,6 @@ public class Post : Entity, IAggregateRoot<Post>
         Header = header;
         Body = body;
         ModificationDetails = new ModificationDetails();
-        IsHidden = false;
+        Hidden = false;
     }
 }

@@ -8,9 +8,8 @@ using OmegaFY.Blog.Domain.Extensions;
 
 namespace OmegaFY.Blog.Application.PipelineBehaviors;
 
-public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, TResult> where TResult : GenericResult
+public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, TResult> where TRequest : IRequest<TResult> where TResult : GenericResult
 {
-
     private readonly IValidator<TRequest> _validator;
 
     public ValidationRequestBehavior(IValidator<TRequest> validator) => _validator = validator;
@@ -55,5 +54,4 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
     private static async Task<TResult> CreateTaskResult(TResult result) => await Task.FromResult(result);
 
     private static TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult), Array.Empty<object>());
-
 }
