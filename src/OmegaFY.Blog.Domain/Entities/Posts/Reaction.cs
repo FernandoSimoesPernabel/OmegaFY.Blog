@@ -9,14 +9,16 @@ public class Reaction : Entity
 
     public Author Author { get; }
 
-    public Reactions AuthorReaction { get; private set; }
+    public Reactions CommentReaction { get; private set; }
 
-    public Reaction(Guid commentId, Author author, Reactions authorReaction)
+    protected Reaction() { }
+
+    public Reaction(Guid commentId, Author author, Reactions commentReaction)
     {
         CommentId = commentId;
         Author = author;
-        AuthorReaction = authorReaction;
+        CommentReaction = commentReaction;
     }
 
-    public void ChangeAuthorReaction(Reactions newAuthorReaction) => AuthorReaction = newAuthorReaction;
+    public void ChangeCommentReaction(Reactions newCommentReaction) => CommentReaction = newCommentReaction;
 }

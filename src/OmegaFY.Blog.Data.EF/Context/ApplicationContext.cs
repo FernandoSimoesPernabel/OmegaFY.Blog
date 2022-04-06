@@ -10,9 +10,6 @@ public class ApplicationContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
 
-        //foreach (IMutableForeignKey relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-        //    relationship.DeleteBehavior = DeleteBehavior.Restrict;
-
         base.OnModelCreating(modelBuilder);
     }
 }

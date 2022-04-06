@@ -10,6 +10,8 @@ public class Shared : Entity
 
     public DateTime DateAndTimeOfShare { get; }
 
+    protected Shared() { }
+
     public Shared(Guid postId, Author author, DateTime dateAndTimeOfShare)
     {
         PostId = postId;

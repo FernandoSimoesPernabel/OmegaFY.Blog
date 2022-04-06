@@ -1,5 +1,5 @@
 ﻿namespace OmegaFY.Blog.Domain.ValueObjects.Shared;
 
-public readonly struct Password
+public class Password
 {
 }

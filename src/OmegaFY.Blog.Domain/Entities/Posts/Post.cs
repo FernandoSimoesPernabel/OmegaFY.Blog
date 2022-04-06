@@ -15,6 +15,8 @@ public class Post : Entity, IAggregateRoot<Post>
 
     public bool Hidden { get; private set; }
 
+    protected Post() { }
+
     public Post(Author author, Header header, Body body)
     {
         Author = author;

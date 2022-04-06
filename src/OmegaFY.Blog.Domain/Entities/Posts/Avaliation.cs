@@ -14,11 +14,19 @@ public class Avaliation : Entity
 
     public Stars Rate { get; private set; }
 
+    protected Avaliation() { }
+
     public Avaliation(Guid postId, Author author, Stars rate)
     {
         PostId = postId;
         Author = author;
         ModificationDetails = new ModificationDetails();
         Rate = rate;
+    }
+
+    internal void ChangeRating(Stars newRate)
+    {
+        Rate = newRate;
+        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 }

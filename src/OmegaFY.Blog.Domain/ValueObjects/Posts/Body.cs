@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-public readonly struct Body
+public class Body
 {
     public string Content { get; }
 

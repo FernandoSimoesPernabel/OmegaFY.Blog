@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.ValueObjects.Shared;
 
-public readonly struct ModificationDetails
+public class ModificationDetails
 {
     public DateTime DateOfCreation { get; }
 
@@ -12,9 +12,9 @@ public readonly struct ModificationDetails
         DateOfModification = null;
     }
 
-    public ModificationDetails(DateTime dateOfCreation, DateTime dateOfModification)
+    public ModificationDetails(DateTime dateOfCreation)
     {
         DateOfCreation = dateOfCreation;
-        DateOfModification = dateOfModification;
+        DateOfModification = DateTime.UtcNow;
     }
 }
