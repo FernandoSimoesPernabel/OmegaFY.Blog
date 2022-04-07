@@ -21,5 +21,7 @@ public class AvaliationMapping : IEntityTypeConfiguration<Avaliation>
             modificationDetails.Property(x => x.DateOfCreation).HasColumnType("datetime").HasColumnName("DateOfCreation").IsRequired();
             modificationDetails.Property(x => x.DateOfModification).HasColumnType("datetime").HasColumnName("DateOfModification").IsRequired();
         });
+
+        builder.ToTable("Avaliations");
     }
 }
