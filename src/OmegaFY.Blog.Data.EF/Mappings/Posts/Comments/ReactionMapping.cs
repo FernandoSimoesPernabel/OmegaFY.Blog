@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OmegaFY.Blog.Domain.Entities.Posts;
+using OmegaFY.Blog.Domain.Entities.Posts.Comments;
 
-namespace OmegaFY.Blog.Data.EF.Mappings.Posts;
+namespace OmegaFY.Blog.Data.EF.Mappings.Posts.Comments;
 
 public class ReactionMapping : IEntityTypeConfiguration<Reaction>
 {

@@ -2,17 +2,17 @@
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts;
+namespace OmegaFY.Blog.Domain.Entities.Posts.Comments;
 
-public class PostWithComments : Post
+public class PostComments : Post
 {
     private readonly List<Comment> _comments;
 
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
-    protected PostWithComments() { }
+    protected PostComments() { }
 
-    public PostWithComments(Author author, Header header, Body body) : base(author, header, body)
+    public PostComments(Author author, Header header, Body body) : base(author, header, body)
     {
         _comments = new List<Comment>();
     }

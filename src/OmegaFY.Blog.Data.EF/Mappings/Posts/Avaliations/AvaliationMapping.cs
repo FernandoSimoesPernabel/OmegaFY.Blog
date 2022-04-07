@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OmegaFY.Blog.Domain.Entities.Posts;
+using OmegaFY.Blog.Domain.Entities.Posts.Avaliations;
 
-namespace OmegaFY.Blog.Data.EF.Mappings.Posts;
+namespace OmegaFY.Blog.Data.EF.Mappings.Posts.Avaliations;
 
-public class CommentMapping : IEntityTypeConfiguration<Comment>
+public class AvaliationMapping : IEntityTypeConfiguration<Avaliation>
 {
-    public void Configure(EntityTypeBuilder<Comment> builder)
+    public void Configure(EntityTypeBuilder<Avaliation> builder)
     {
         builder.HasKey(x => x.Id);
 
@@ -14,7 +14,7 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
 
         builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnName("AuthorId").IsRequired());
 
-        builder.OwnsOne(x => x.Body, body => body.Property(x => x.Content).HasColumnType("varchar(500)").HasColumnName("Content").IsRequired());
+        builder.Property(x => x.Rate).HasConversion<byte>().IsRequired();
 
         builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
         {
@@ -22,8 +22,6 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
             modificationDetails.Property(x => x.DateOfModification).HasColumnType("datetime").HasColumnName("DateOfModification").IsRequired();
         });
 
-        builder.HasMany(x => x.Reactions).WithOne().HasForeignKey(x => x.CommentId).OnDelete(DeleteBehavior.NoAction);
-
-        builder.ToTable("Comments");
+        builder.ToTable("Avaliations");
     }
 }

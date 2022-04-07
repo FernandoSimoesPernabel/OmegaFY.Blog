@@ -1,17 +1,17 @@
 ﻿using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts;
+namespace OmegaFY.Blog.Domain.Entities.Posts.Shares;
 
-public class PostWithShares : Post
+public class PostShares : Post
 {
     private readonly List<Shared> _shareds;
 
     public IReadOnlyCollection<Shared> Shareds => _shareds.AsReadOnly();
 
-    protected PostWithShares() { }
+    protected PostShares() { }
 
-    public PostWithShares(Author author, Header header, Body body) : base(author, header, body)
+    public PostShares(Author author, Header header, Body body) : base(author, header, body)
     {
         _shareds = new List<Shared>();
     }

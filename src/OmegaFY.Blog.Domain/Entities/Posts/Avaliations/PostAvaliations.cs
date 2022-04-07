@@ -2,9 +2,9 @@
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts;
+namespace OmegaFY.Blog.Domain.Entities.Posts.Avaliations;
 
-public class PostWithAvaliations : Post
+public class PostAvaliations : Post
 {
     private readonly List<Avaliation> _avaliations;
 
@@ -12,9 +12,9 @@ public class PostWithAvaliations : Post
 
     public int AverageRate { get; private set; }
 
-    protected PostWithAvaliations() { }
+    protected PostAvaliations() { }
 
-    public PostWithAvaliations(Author author, Header header, Body body) : base(author, header, body)
+    public PostAvaliations(Author author, Header header, Body body) : base(author, header, body)
     {
         _avaliations = new List<Avaliation>();
     }

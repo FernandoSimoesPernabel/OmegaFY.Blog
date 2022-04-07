@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts;
+namespace OmegaFY.Blog.Domain.Entities.Posts.Shares;
 
 public class Shared : Entity
 {

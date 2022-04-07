@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OmegaFY.Blog.Domain.Entities.Posts;
+using OmegaFY.Blog.Domain.Entities.Posts.Avaliations;
 
-namespace OmegaFY.Blog.Data.EF.Mappings.Posts;
+namespace OmegaFY.Blog.Data.EF.Mappings.Posts.Avaliations;
 
-public class PostWithAvaliationsMapping : IEntityTypeConfiguration<PostWithAvaliations>
+public class PostAvaliationsMapping : IEntityTypeConfiguration<PostAvaliations>
 {
-    public void Configure(EntityTypeBuilder<PostWithAvaliations> builder)
+    public void Configure(EntityTypeBuilder<PostAvaliations> builder)
     {
         builder.Property(x => x.AverageRate).IsRequired();
 
