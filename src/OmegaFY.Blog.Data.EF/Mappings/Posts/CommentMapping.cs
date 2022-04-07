@@ -23,5 +23,7 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
         });
 
         builder.HasMany(x => x.Reactions).WithOne().HasForeignKey(x => x.CommentId).OnDelete(DeleteBehavior.NoAction);
+
+        builder.ToTable("Comments");
     }
 }
