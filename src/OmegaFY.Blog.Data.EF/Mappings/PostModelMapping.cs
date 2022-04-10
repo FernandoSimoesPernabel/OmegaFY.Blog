@@ -18,7 +18,7 @@ public class PostModelMapping : IEntityTypeConfiguration<PostModel>
 
         builder.Property(x => x.SubTitle).HasColumnName("SubTitle").HasColumnType("varchar(50)").IsRequired();
 
-        builder.Property(x => x.Content).HasColumnType("varchar(1000)").HasColumnName("Content").IsRequired();
+        builder.Property(x => x.Content).HasColumnType("varchar(1000)").IsRequired();
 
         builder.Property(x => x.DateOfCreation).HasColumnType("datetime").IsRequired();
         
