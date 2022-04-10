@@ -2,7 +2,7 @@
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts.Avaliations;
+namespace OmegaFY.Blog.Domain.Entities.Avaliations;
 
 public class Avaliation : Entity
 {

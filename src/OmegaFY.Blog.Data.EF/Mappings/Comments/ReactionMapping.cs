@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OmegaFY.Blog.Domain.Entities.Posts.Comments;
+using OmegaFY.Blog.Domain.Entities.Comments;
 
-namespace OmegaFY.Blog.Data.EF.Mappings.Posts.Comments;
+namespace OmegaFY.Blog.Data.EF.Mappings.Comments;
 
 public class ReactionMapping : IEntityTypeConfiguration<Reaction>
 {
@@ -10,9 +10,11 @@ public class ReactionMapping : IEntityTypeConfiguration<Reaction>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(a => a.CommentId).IsRequired();
+        builder.Property(x => x.Id).HasColumnType("varchar(36)");
 
-        builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnName("AuthorId").IsRequired());
+        builder.Property(a => a.CommentId).HasColumnType("varchar(36)").IsRequired();
+
+        builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
 
         builder.Property(x => x.CommentReaction).HasColumnType("varchar(50)").HasConversion<string>().IsRequired();
 

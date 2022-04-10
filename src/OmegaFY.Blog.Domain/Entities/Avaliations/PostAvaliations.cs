@@ -1,10 +1,9 @@
 ﻿using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts.Avaliations;
+namespace OmegaFY.Blog.Domain.Entities.Avaliations;
 
-public class PostAvaliations : Post
+public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 {
     private readonly List<Avaliation> _avaliations;
 
@@ -12,12 +11,7 @@ public class PostAvaliations : Post
 
     public int AverageRate { get; private set; }
 
-    protected PostAvaliations() { }
-
-    public PostAvaliations(Author author, Header header, Body body) : base(author, header, body)
-    {
-        _avaliations = new List<Avaliation>();
-    }
+    protected PostAvaliations() => _avaliations = new List<Avaliation>();
 
     public Avaliation FindAvaliationAndThrowIfNotFound(Guid avaliationId)
     {

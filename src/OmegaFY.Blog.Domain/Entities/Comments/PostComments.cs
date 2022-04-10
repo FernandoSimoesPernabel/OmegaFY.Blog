@@ -2,20 +2,15 @@
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts.Comments;
+namespace OmegaFY.Blog.Domain.Entities.Comments;
 
-public class PostComments : Post
+public class PostComments : Entity, IAggregateRoot<PostComments>
 {
     private readonly List<Comment> _comments;
 
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
-    protected PostComments() { }
-
-    public PostComments(Author author, Header header, Body body) : base(author, header, body)
-    {
-        _comments = new List<Comment>();
-    }
+    protected PostComments() => _comments = new List<Comment>();
 
     public Comment FindCommentAndThrowIfNotFound(Guid commentId)
     {

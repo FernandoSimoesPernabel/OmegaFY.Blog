@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OmegaFY.Blog.Domain.Entities.Posts.Shares;
+using OmegaFY.Blog.Domain.Entities.Shares;
 
-namespace OmegaFY.Blog.Data.EF.Mappings.Posts.Shares;
+namespace OmegaFY.Blog.Data.EF.Mappings.Shares;
 
 public class ShareMapping : IEntityTypeConfiguration<Shared>
 {
@@ -10,9 +10,9 @@ public class ShareMapping : IEntityTypeConfiguration<Shared>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(a => a.PostId).IsRequired();
+        builder.Property(a => a.PostId).HasColumnType("varchar(36)").IsRequired();
 
-        builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnName("AuthorId").IsRequired());
+        builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
 
         builder.Property(x => x.DateAndTimeOfShare).HasColumnType("datetime").IsRequired();
 

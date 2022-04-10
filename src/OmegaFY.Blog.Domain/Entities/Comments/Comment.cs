@@ -3,7 +3,7 @@ using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts.Comments;
+namespace OmegaFY.Blog.Domain.Entities.Comments;
 
 public class Comment : Entity
 {

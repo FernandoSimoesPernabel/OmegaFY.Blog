@@ -1,7 +1,7 @@
 ﻿using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Posts.Comments;
+namespace OmegaFY.Blog.Domain.Entities.Comments;
 
 public class Reaction : Entity
 {
