@@ -10,6 +10,8 @@ public class SharedModelMapping : IEntityTypeConfiguration<SharedModel>
     {
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired();
+
         builder.Property(x => x.PostId).HasColumnType("varchar(36)").IsRequired();
 
         builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
