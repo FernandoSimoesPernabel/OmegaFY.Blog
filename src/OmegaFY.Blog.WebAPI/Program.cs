@@ -10,7 +10,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite("Data Source=blog.db"));
+builder.Services.AddDbContext<AvaliationsContext>(options => options.UseSqlite("Data Source=blog.db"));
+builder.Services.AddDbContext<CommentsContext>(options => options.UseSqlite("Data Source=blog.db"));
+builder.Services.AddDbContext<DonationsContext>(options => options.UseSqlite("Data Source=blog.db"));
+builder.Services.AddDbContext<PostsContext>(options => options.UseSqlite("Data Source=blog.db"));
+builder.Services.AddDbContext<SharesContext>(options => options.UseSqlite("Data Source=blog.db"));
+builder.Services.AddDbContext<UsersContext>(options => options.UseSqlite("Data Source=blog.db"));
 
 var app = builder.Build();
 

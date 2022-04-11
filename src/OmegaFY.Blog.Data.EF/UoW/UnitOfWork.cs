@@ -5,9 +5,9 @@ namespace OmegaFY.Blog.Data.EF.UoW;
 
 internal class UnitOfWork : IUnitOfWork
 {
-    private readonly ApplicationContext _applicationContext;
+    private readonly UsersContext _applicationContext;
 
-    public UnitOfWork(ApplicationContext applicationContext) => _applicationContext = applicationContext;
+    public UnitOfWork(UsersContext applicationContext) => _applicationContext = applicationContext;
 
     public async Task SaveChangesAsync() => await _applicationContext.SaveChangesAsync();
 }
