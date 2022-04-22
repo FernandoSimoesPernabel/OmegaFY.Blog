@@ -10,7 +10,7 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).HasColumnType("varchar(36)");
+        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
         builder.Property(a => a.PostId).HasColumnType("varchar(36)").IsRequired();
 
