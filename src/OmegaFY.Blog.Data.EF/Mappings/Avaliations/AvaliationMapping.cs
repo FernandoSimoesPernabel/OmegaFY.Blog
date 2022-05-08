@@ -12,7 +12,7 @@ public class AvaliationMapping : IEntityTypeConfiguration<Avaliation>
 
         builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
-        builder.Property(a => a.PostId).HasColumnType("varchar(36)").IsRequired();
+        builder.Property(x => x.PostId).HasColumnType("varchar(36)").IsRequired();
 
         builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
 

@@ -1,8 +1,6 @@
-﻿using OmegaFY.Blog.Domain.ValueObjects.Posts;
+﻿namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-namespace OmegaFY.Blog.Domain.Entities.Shares;
-
-public class Shared : Entity
+public record class Shared
 {
     public Guid PostId { get; }
 

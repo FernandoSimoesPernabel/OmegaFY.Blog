@@ -1,4 +1,5 @@
 ﻿using OmegaFY.Blog.Domain.Exceptions;
+using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 namespace OmegaFY.Blog.Domain.Entities.Shares;
 
