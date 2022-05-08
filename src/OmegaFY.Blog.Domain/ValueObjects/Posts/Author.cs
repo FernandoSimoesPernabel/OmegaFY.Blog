@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-public class Author
+public record class Author
 {
     public Guid Id { get; }
 
@@ -8,4 +8,6 @@ public class Author
     {
         Id = id;
     }
+
+    public static implicit operator Guid(Author author) => author.Id;
 }

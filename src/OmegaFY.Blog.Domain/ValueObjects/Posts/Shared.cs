@@ -4,16 +4,16 @@ public record class Shared
 {
     public Guid PostId { get; }
 
-    public Author Author { get; }
+    public Guid AuthorId { get; }
 
     public DateTime DateAndTimeOfShare { get; }
 
     protected Shared() { }
 
-    public Shared(Guid postId, Author author, DateTime dateAndTimeOfShare)
+    public Shared(Guid postId, Guid authorId, DateTime dateAndTimeOfShare)
     {
         PostId = postId;
-        Author = author;
+        AuthorId = authorId;
         DateAndTimeOfShare = dateAndTimeOfShare;
     }
 }
