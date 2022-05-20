@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Application.Base;
+﻿namespace OmegaFY.Blog.Domain.Result.Base;
 
 public class ValidationError
 {

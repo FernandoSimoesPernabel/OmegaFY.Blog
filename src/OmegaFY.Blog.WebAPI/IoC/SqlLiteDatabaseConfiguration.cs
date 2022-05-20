@@ -9,6 +9,7 @@ public class SqlLiteDatabaseConfiguration : IDependencyInjectionRegister
     {
         services.AddEntityFrameworkContexts(configuration);
         services.AddEntityFrameworkRepositories();
+        services.AddEntityFrameworkQueryProviders();
 
         return services;
     }

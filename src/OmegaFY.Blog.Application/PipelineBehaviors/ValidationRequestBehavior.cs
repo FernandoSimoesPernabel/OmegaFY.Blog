@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using OmegaFY.Blog.Application.Base;
 using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Extensions;
+using OmegaFY.Blog.Domain.Result.Base;
 
 namespace OmegaFY.Blog.Application.PipelineBehaviors;
 

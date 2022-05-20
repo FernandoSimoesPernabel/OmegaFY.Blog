@@ -2,7 +2,7 @@
 using OmegaFY.Blog.Domain.Entities;
 using OmegaFY.Blog.Domain.Repositories;
 
-namespace OmegaFY.Blog.Data.EF.Base;
+namespace OmegaFY.Blog.Data.EF.Repositories.Base;
 
 public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot<TEntity>
 {

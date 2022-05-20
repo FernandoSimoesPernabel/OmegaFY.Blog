@@ -1,6 +1,6 @@
-﻿using OmegaFY.Blog.Application.Base;
-using OmegaFY.Blog.Domain.Constantes;
+﻿using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Extensions;
+using OmegaFY.Blog.Domain.Result.Base;
 
 namespace OmegaFY.Blog.WebAPI.Models.Responses;
 

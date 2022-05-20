@@ -1,5 +1,5 @@
-﻿using OmegaFY.Blog.Application.Base;
-using OmegaFY.Blog.Domain.Queries;
+﻿using OmegaFY.Blog.Domain.Queries;
+using OmegaFY.Blog.Domain.Result.Base;
 
 namespace OmegaFY.Blog.Application.Queries.Pagination;
 

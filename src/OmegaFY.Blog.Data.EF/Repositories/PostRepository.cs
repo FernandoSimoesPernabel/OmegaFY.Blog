@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OmegaFY.Blog.Data.EF.Base;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Repositories.Base;
 using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Repositories.Posts;
 

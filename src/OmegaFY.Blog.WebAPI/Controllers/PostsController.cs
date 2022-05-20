@@ -2,6 +2,7 @@
 using OmegaFY.Blog.Application.Commands.PublishPost;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Domain.Bus;
+using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
 using OmegaFY.Blog.WebAPI.Models.Responses;
@@ -16,9 +17,9 @@ public class PostsController : ApiControllerBase<PostsController>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetPostQueryResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 404)]
-    public async Task<IActionResult> GetPost([FromRoute] Guid postId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPost([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        GetPostQuery query = new GetPostQuery(postId);
+        GetPostQuery query = new GetPostQuery(id);
 
         GetPostQueryResult result =
                         await _serviceBus.SendMessageAsync<GetPostQuery, GetPostQueryResult>(query, cancellationToken);
