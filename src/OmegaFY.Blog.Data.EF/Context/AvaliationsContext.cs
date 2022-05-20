@@ -3,7 +3,7 @@ using OmegaFY.Blog.Data.EF.Mappings.Avaliations;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
-public class AvaliationsContext : DbContext
+internal class AvaliationsContext : DbContext
 {
     public AvaliationsContext(DbContextOptions<AvaliationsContext> options) : base(options) { }
 

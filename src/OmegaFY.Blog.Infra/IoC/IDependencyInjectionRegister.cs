@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace OmegaFY.Blog.Domain.IoC;
+namespace OmegaFY.Blog.Infra.IoC;
 
 public interface IDependencyInjectionRegister
 {

@@ -21,7 +21,7 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
 
     public void Unshare(Author author)
     {
-        Shared shared = _shareds.FirstOrDefault(x => x.AuthorId == author);
+        Shared shared = _shareds.FirstOrDefault(x => x.AuthorId == author.Id);
 
         if (shared is not null)
             _shareds.Remove(shared);

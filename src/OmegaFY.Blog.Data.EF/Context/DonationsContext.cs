@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
-public class DonationsContext : DbContext
+internal class DonationsContext : DbContext
 {
     public DonationsContext(DbContextOptions<DonationsContext> options) : base(options) { }
 

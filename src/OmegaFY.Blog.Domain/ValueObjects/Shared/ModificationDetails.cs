@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.ValueObjects.Shared;
 
-public class ModificationDetails
+public record class ModificationDetails
 {
     public DateTime DateOfCreation { get; }
 

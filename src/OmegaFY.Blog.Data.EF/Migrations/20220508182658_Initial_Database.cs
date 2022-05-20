@@ -20,7 +20,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     DateOfCreation = table.Column<DateTime>(type: "datetime", nullable: true),
                     DateOfModification = table.Column<DateTime>(type: "datetime", nullable: true),
                     Hidden = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AverageRate = table.Column<int>(type: "INTEGER", nullable: false)
+                    AverageRate = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {

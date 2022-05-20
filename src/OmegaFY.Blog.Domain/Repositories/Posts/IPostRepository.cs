@@ -2,6 +2,9 @@
 
 namespace OmegaFY.Blog.Domain.Repositories.Posts;
 
-public class IPostRepository : IRepository<Post>
+public interface IPostRepository : IRepository<Post>
 {
+    public Task<Post> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+    public Task CreatePostAsync(Post post, CancellationToken cancellationToken);
 }

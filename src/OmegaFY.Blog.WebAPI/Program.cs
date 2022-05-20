@@ -1,21 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Infra.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<AvaliationsContext>(options => options.UseSqlite("Data Source=blog.db"));
-builder.Services.AddDbContext<CommentsContext>(options => options.UseSqlite("Data Source=blog.db"));
-builder.Services.AddDbContext<DonationsContext>(options => options.UseSqlite("Data Source=blog.db"));
-builder.Services.AddDbContext<PostsContext>(options => options.UseSqlite("Data Source=blog.db"));
-builder.Services.AddDbContext<SharesContext>(options => options.UseSqlite("Data Source=blog.db"));
-builder.Services.AddDbContext<UsersContext>(options => options.UseSqlite("Data Source=blog.db"));
+builder.Services.AddDependencyInjectionRegister(typeof(Program).Assembly, builder.Configuration);
 
 var app = builder.Build();
 

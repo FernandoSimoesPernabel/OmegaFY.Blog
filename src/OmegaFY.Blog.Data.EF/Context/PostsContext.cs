@@ -3,7 +3,7 @@ using OmegaFY.Blog.Data.EF.Mappings.Posts;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
-public class PostsContext : DbContext
+internal class PostsContext : DbContext
 {
     public PostsContext(DbContextOptions<PostsContext> options) : base(options) { }
 

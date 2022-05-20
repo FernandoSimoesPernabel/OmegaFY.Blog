@@ -3,7 +3,7 @@ using OmegaFY.Blog.Data.EF.Mappings.Shares;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
-public class SharesContext : DbContext
+internal class SharesContext : DbContext
 {
     public SharesContext(DbContextOptions<SharesContext> options) : base(options) { }
 

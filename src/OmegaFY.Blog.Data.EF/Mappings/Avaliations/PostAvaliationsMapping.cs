@@ -12,7 +12,7 @@ public class PostAvaliationsMapping : IEntityTypeConfiguration<PostAvaliations>
 
         builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
-        builder.Property(x => x.AverageRate).IsRequired();
+        builder.Property(x => x.AverageRate).IsRequired().HasDefaultValue(0);
 
         builder.HasMany(x => x.Avaliations).WithOne().HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.NoAction);
 

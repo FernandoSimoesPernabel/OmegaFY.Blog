@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Entities.Posts;
 
 namespace OmegaFY.Blog.Data.EF.Mappings.Posts;
@@ -20,8 +21,8 @@ public class PostMapping : IEntityTypeConfiguration<Post>
 
         builder.OwnsOne(x => x.Header, header =>
         {
-            header.Property(x => x.Title).HasColumnName("Title").HasColumnType("varchar(50)").IsRequired();
-            header.Property(x => x.SubTitle).HasColumnName("SubTitle").HasColumnType("varchar(50)").IsRequired();
+            header.Property(x => x.Title).HasColumnName("Title").HasColumnType($"varchar({PostConstants.MAX_TITLE_SIZE})").IsRequired();
+            header.Property(x => x.SubTitle).HasColumnName("SubTitle").HasColumnType($"varchar({PostConstants.MAX_SUBTITLE_SIZE})").IsRequired();
         });
 
         builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>

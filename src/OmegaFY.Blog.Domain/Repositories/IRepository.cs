@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Domain.Repositories;
 
-public interface IRepository<TEntity> where TEntity : Entity, IAggregateRoot<TEntity>
+public interface IRepository<TEntity> : IUnitOfWork where TEntity : Entity, IAggregateRoot<TEntity>
 {
 }

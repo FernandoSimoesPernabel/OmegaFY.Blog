@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-public class Header
+public record class Header
 {
     public string Title { get; }
 

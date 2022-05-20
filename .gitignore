@@ -339,3 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 *.db
+/src/OmegaFY.Blog.WebAPI/blog.db-wal
+/src/OmegaFY.Blog.WebAPI/blog.db-shm

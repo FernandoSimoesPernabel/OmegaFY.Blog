@@ -3,7 +3,7 @@ using OmegaFY.Blog.Data.EF.Mappings.Comments;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
-public class CommentsContext : DbContext
+internal class CommentsContext : DbContext
 {
     public CommentsContext(DbContextOptions<CommentsContext> options) : base(options) { }
 

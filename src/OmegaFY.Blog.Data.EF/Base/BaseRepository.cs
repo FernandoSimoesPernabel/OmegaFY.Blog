@@ -15,4 +15,6 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEnti
         _context = dbContext;
         _dbSet = dbContext.Set<TEntity>();
     }
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
 }

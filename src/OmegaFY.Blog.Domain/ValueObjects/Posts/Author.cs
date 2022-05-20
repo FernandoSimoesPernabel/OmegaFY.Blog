@@ -10,4 +10,6 @@ public record class Author
     }
 
     public static implicit operator Guid(Author author) => author.Id;
+
+    public static implicit operator Author(Guid authorId) => new Author(authorId);
 }
