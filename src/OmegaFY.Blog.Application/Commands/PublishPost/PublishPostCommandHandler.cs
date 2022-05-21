@@ -7,7 +7,7 @@ using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 namespace OmegaFY.Blog.Application.Commands.PublishPost;
 
-public class PublishPostCommandHandler : CommandHandlerMediatRBase<PublishPostCommandHandler, PublishPostCommand, PublishPostCommandResult>
+internal class PublishPostCommandHandler : CommandHandlerMediatRBase<PublishPostCommandHandler, PublishPostCommand, PublishPostCommandResult>
 {
     private readonly IPostRepository _repository;
 

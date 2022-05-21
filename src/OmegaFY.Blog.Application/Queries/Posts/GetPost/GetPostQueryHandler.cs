@@ -7,7 +7,7 @@ using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetPost;
 
-public class GetPostQueryHandler : QueryHandlerMediatRBase<GetPostQueryHandler, GetPostQuery, GetPostQueryResult>
+internal class GetPostQueryHandler : QueryHandlerMediatRBase<GetPostQueryHandler, GetPostQuery, GetPostQueryResult>
 {
     private readonly IPostQueryProvider _postQueryProvider;
 

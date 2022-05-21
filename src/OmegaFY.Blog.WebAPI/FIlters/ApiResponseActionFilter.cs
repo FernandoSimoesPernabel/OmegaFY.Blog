@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using OmegaFY.Blog.Application.Queries.Pagination;
 using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Extensions;
+using OmegaFY.Blog.Domain.Pagination;
 using OmegaFY.Blog.Domain.Result.Base;
 using OmegaFY.Blog.WebAPI.Models.Responses;
 
@@ -10,11 +10,7 @@ namespace OmegaFY.Blog.WebAPI.FIlters;
 
 public class ApiResponseActionFilter : IActionFilter
 {
-
-    public void OnActionExecuting(ActionExecutingContext context)
-    {
-
-    }
+    public void OnActionExecuting(ActionExecutingContext context) { }
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
@@ -37,23 +33,20 @@ public class ApiResponseActionFilter : IActionFilter
             {
                 ApiResponse response = new ApiResponse(genericResult.Errors());
                 context.Result = new ObjectResult(response) { StatusCode = response.StatusCode() };
-            }
-            else
-            {
-                AddPaginationHeaderInformationIfPageResponse(result, context.HttpContext.Response.Headers);
-                result.Value = new ApiResponse(result.Value);
+                return;
             }
 
+            AddPaginationHeaderInformationIfPageResponse(result, context.HttpContext.Response.Headers);
+            result.Value = new ApiResponse(result.Value);
         }
     }
 
     private void AddPaginationHeaderInformationIfPageResponse(ObjectResult result, IHeaderDictionary headers)
     {
-        if (result.Value is PagedResult pagedResult)
+        if (result.Value is IPagedResult pagedResult)
             AddPaginationHeader(headers, pagedResult);
     }
 
-    private static void AddPaginationHeader(IHeaderDictionary headers, PagedResult pagedResult)
+    private static void AddPaginationHeader(IHeaderDictionary headers, IPagedResult pagedResult)
         => headers.Add(HttpHeadersConstantes.HTTP_PAGINATION_HEADER, pagedResult.PaginationInformation().ToJson());
-
 }

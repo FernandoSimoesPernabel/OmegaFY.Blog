@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Application.Queries.Pagination;
+﻿namespace OmegaFY.Blog.Domain.Pagination;
 
 public class PagedResultInfo
 {
@@ -19,9 +19,9 @@ public class PagedResultInfo
     public PagedResultInfo(int currentPage, int pageSize, int totalOfItens)
     {
         CurrentPage = currentPage;
-        PageSize = pageSize;
+        PageSize = Math.Max(pageSize, 1);
         TotalOfItens = totalOfItens;
-        TotalPages = (int)Math.Ceiling(pageSize / (double)totalOfItens);
+        TotalPages = (int)Math.Ceiling((double)totalOfItens / pageSize);
     }
 
     public int ItemsToSkip() => Math.Max(PageSize * (CurrentPage - 1), 0);

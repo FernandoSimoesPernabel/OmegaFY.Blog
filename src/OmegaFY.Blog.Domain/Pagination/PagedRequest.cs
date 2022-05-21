@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Application.Queries.Pagination;
+﻿namespace OmegaFY.Blog.Domain.Pagination;
 
 public class PagedRequest
 {

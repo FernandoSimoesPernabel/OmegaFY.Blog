@@ -10,6 +10,7 @@ internal class QueryContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<GetPostQueryResult>().HasNoKey();
+        modelBuilder.Entity<GetAllPostsQueryResult>().HasNoKey(); 
 
         base.OnModelCreating(modelBuilder);
     }

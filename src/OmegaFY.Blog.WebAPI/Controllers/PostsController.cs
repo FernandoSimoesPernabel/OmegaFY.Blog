@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Commands.PublishPost;
+using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Domain.Bus;
+using OmegaFY.Blog.Domain.Pagination;
 using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
+using OmegaFY.Blog.WebAPI.Models.Queries;
 using OmegaFY.Blog.WebAPI.Models.Responses;
 
 namespace OmegaFY.Blog.WebAPI.Controllers;
@@ -13,6 +16,18 @@ namespace OmegaFY.Blog.WebAPI.Controllers;
 public class PostsController : ApiControllerBase<PostsController>
 {
     public PostsController(ILogger<PostsController> logger, IServiceBus serviceBus) : base(logger, serviceBus) { }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<GetAllPostsQueryResult>>), 200)]
+    public async Task<IActionResult> GetAllPosts([FromQuery] GetAllPostsInputModel inputModel, CancellationToken cancellationToken)
+    {
+        GetAllPostsQuery query = inputModel.ToCommand();
+
+        PagedResult<GetAllPostsQueryResult> result =
+                        await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(query, cancellationToken);
+
+        return Ok(result);
+    }
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetPostQueryResult>), 200)]
@@ -30,9 +45,9 @@ public class PostsController : ApiControllerBase<PostsController>
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponse<PublishPostCommandResult>), 201)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> PublicarPostagemAsync(PublishPostViewModel viewModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> PublicarPostagemAsync(PublishPostInputModel inputModel, CancellationToken cancellationToken)
     {
-        PublishPostCommand command = viewModel.ToCommand();
+        PublishPostCommand command = inputModel.ToCommand();
 
         PublishPostCommandResult result =
                         await _serviceBus.SendMessageAsync<PublishPostCommand, PublishPostCommandResult>(command, cancellationToken);

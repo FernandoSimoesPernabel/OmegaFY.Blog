@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.WebAPI.Models.Commands;
 
-public class PublishPostViewModel
+public class PublishPostInputModel
 {
     public string Title { get; set; }
 
