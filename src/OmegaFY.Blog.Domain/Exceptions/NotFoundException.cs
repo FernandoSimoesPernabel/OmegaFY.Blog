@@ -1,11 +1,10 @@
-﻿using OmegaFY.Blog.Common.Constantes;
+﻿using OmegaFY.Blog.Domain.Constantes;
 
-namespace OmegaFY.Blog.Domain.Exceptions
+namespace OmegaFY.Blog.Domain.Exceptions;
+
+public class NotFoundException : DomainException
 {
+    public NotFoundException() : this(string.Empty) { }
 
-    public class NotFoundException : DomainException
-    {
-        public NotFoundException(string message) : base(DomainErrorCodes.NOT_FOUND_ERROR_CODE, message) { }
-    }
-
+    public NotFoundException(string message) : base(DomainErrorCodes.NOT_FOUND_ERROR_CODE, message) { }
 }

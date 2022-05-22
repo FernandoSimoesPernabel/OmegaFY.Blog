@@ -1,15 +1,13 @@
-﻿using OmegaFY.Blog.Common.Constantes;
-using System;
+﻿using OmegaFY.Blog.Domain.Constantes;
 
-namespace OmegaFY.Blog.Domain.Exceptions
+namespace OmegaFY.Blog.Domain.Exceptions;
+
+public abstract class DomainException : Exception
 {
-    public abstract class DomainException : Exception
-    {
-        public string ErrorCode { get; set; }
+    public string ErrorCode { get; set; }
 
-        public DomainException(string message) : this(DomainErrorCodes.GENERIC_DOMAIN_ERROR_CODE, message) { }
+    public DomainException(string message) : this(DomainErrorCodes.GENERIC_DOMAIN_ERROR_CODE, message) { }
 
-        public DomainException(string erroCode, string message) : base(message) => ErrorCode = erroCode;
+    public DomainException(string erroCode, string message) : base(message) => ErrorCode = erroCode;
 
-    }
 }

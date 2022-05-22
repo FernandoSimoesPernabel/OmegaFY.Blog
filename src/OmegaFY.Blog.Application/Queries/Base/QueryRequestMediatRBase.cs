@@ -1,11 +1,7 @@
 ﻿using MediatR;
 
-namespace OmegaFY.Blog.Application.Queries.Base
+namespace OmegaFY.Blog.Application.Queries.Base;
+
+public abstract class QueryRequestMediatRBase<TResult> : IQueryRequest, IRequest<TResult>
 {
-
-    public abstract class QueryRequestMediatRBase<TResult> : QueryRequestBase, IRequest<TResult>
-    {
-
-    }
-
 }

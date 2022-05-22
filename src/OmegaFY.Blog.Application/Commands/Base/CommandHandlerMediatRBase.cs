@@ -1,24 +1,24 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using OmegaFY.Blog.Domain.Core.Authentication;
-using OmegaFY.Blog.Domain.Core.Services;
-using System.Threading;
-using System.Threading.Tasks;
+using OmegaFY.Blog.Infra.Authentication;
 
-namespace OmegaFY.Blog.Application.Commands.Base
+namespace OmegaFY.Blog.Application.Commands.Base;
+
+public abstract class CommandHandlerMediatRBase<TCommandHandler, TCommand, TCommandResult> : IRequestHandler<TCommand, TCommandResult>, ICommandHandler<TCommand, TCommandResult>
+    where TCommand : ICommand, IRequest<TCommandResult>
+    where TCommandResult : ICommandResult
 {
+    protected readonly IUserInformation _currentUser;
 
-    public abstract class CommandHandlerMediatRBase<THandler, TCommand, TResult> 
-        : CommandHandlerBase<THandler>, IRequestHandler<TCommand, TResult> where TCommand : IRequest<TResult>
+    protected readonly ILogger<TCommandHandler> _logger;
+
+    public CommandHandlerMediatRBase(IUserInformation currentUser, ILogger<TCommandHandler> logger)
     {
-
-        public CommandHandlerMediatRBase(IUserInformation user, 
-                                         ILogger<THandler> logger, 
-                                         IMapperServices mapper)
-            : base(user, logger, mapper) { }
-
-        public abstract Task<TResult> Handle(TCommand request, CancellationToken cancellationToken);
-
+        _currentUser = currentUser;
+        _logger = logger;
     }
 
+    public async Task<TCommandResult> Handle(TCommand request, CancellationToken cancellationToken) => await HandleAsync(request, cancellationToken);
+
+    public abstract Task<TCommandResult> HandleAsync(TCommand command, CancellationToken cancellationToken);
 }

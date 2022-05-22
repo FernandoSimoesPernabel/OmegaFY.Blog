@@ -1,0 +1,17 @@
+﻿using FluentValidation;
+using OmegaFY.Blog.Application.Commands.PublishPost;
+using OmegaFY.Blog.Domain.Constantes;
+
+namespace OmegaFY.Blog.Application.Validations.Commands;
+
+public class GetPostQueryValidator : AbstractValidator<PublishPostCommand>
+{
+    public GetPostQueryValidator()
+    {
+        RuleFor(x => x.Title).NotEmpty().Length(PostConstants.MIN_TITLE_SIZE, PostConstants.MAX_TITLE_SIZE);
+
+        RuleFor(x => x.SubTitle).NotEmpty().Length(PostConstants.MIN_SUBTITLE_SIZE, PostConstants.MAX_SUBTITLE_SIZE);
+
+        RuleFor(x => x.Body).NotEmpty().Length(PostConstants.MIN_BODY_SIZE, PostConstants.MAX_BODY_SIZE);
+    }
+}

@@ -1,21 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="ValueObjects\Comentarios\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Flunt" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\OmegaFY.Blog.Common\OmegaFY.Blog.Common.csproj" />
-    <ProjectReference Include="..\OmegaFY.Blog.Domain.Core\OmegaFY.Blog.Domain.Core.csproj" />
+    <Compile Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
   </ItemGroup>
 
 </Project>

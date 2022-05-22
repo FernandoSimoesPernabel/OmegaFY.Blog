@@ -1,25 +1,43 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using OmegaFY.Blog.Application.Queries.Interfaces;
-using OmegaFY.Blog.Data.EF.Queries;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
+using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.QueryProviders;
 using OmegaFY.Blog.Data.EF.Repositories;
-using OmegaFY.Blog.Data.EF.UoW;
-using OmegaFY.Blog.Domain.Core.Repositories;
-using OmegaFY.Blog.Domain.Repositories;
+using OmegaFY.Blog.Domain.Repositories.Posts;
 
-namespace OmegaFY.Blog.Data.EF.Extensions
+namespace OmegaFY.Blog.Data.EF.Extensions;
+
+public static class EFServiceCollectionExtensions
 {
-
-    public static class EFServiceCollectionExtensions
+    public static IServiceCollection AddEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration)
     {
+        string sqlLiteConnectionString = configuration.GetConnectionString("SqlLite");
 
-        public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)
-        {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPostagemRepository, PostagemRepository>();
-            services.AddScoped<IPostagemQuery, PostagemQuery>();
-            return services;
-        }
+        services.AddDbContextPool<AvaliationsContext>(options => options.UseSqlite(sqlLiteConnectionString));
+        services.AddDbContextPool<CommentsContext>(options => options.UseSqlite(sqlLiteConnectionString));
+        services.AddDbContextPool<DonationsContext>(options => options.UseSqlite(sqlLiteConnectionString));
+        services.AddDbContextPool<PostsContext>(options => options.UseSqlite(sqlLiteConnectionString));
+        services.AddDbContextPool<SharesContext>(options => options.UseSqlite(sqlLiteConnectionString));
+        services.AddDbContextPool<UsersContext>(options => options.UseSqlite(sqlLiteConnectionString));
 
+        services.AddDbContextPool<QueryContext>(options => options.UseSqlite(sqlLiteConnectionString));
+
+        return services;
     }
 
+    public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IPostRepository, PostRepository>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddEntityFrameworkQueryProviders(this IServiceCollection services)
+    {
+        services.AddScoped<IPostQueryProvider, PostQueryProvider>();
+
+        return services;
+    }
 }

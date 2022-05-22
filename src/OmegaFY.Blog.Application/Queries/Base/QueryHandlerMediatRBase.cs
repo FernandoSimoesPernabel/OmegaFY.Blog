@@ -1,20 +1,26 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using OmegaFY.Blog.Domain.Core.Authentication;
-using System.Threading;
-using System.Threading.Tasks;
+using OmegaFY.Blog.Infra.Authentication;
 
-namespace OmegaFY.Blog.Application.Queries.Base
+namespace OmegaFY.Blog.Application.Queries.Base;
+
+public abstract class QueryHandlerMediatRBase<TQueryHandler, TQueryRequest, TQueryResult> : IRequestHandler<TQueryRequest, TQueryResult>, IQueryHandler<TQueryRequest, TQueryResult>
+    where TQueryRequest : IQueryRequest, IRequest<TQueryResult>
+    where TQueryResult : IQueryResult
 {
 
-    public abstract class QueryHandlerMediatRBase<THandler, TCommand, TResult>
-        : QueryHandlerBase<THandler>, IRequestHandler<TCommand, TResult> where TCommand : IRequest<TResult>
+    protected readonly IUserInformation _currentUser;
+
+    protected readonly ILogger<TQueryHandler> _logger;
+
+    public QueryHandlerMediatRBase(IUserInformation currentUser, ILogger<TQueryHandler> logger)
     {
-
-        public QueryHandlerMediatRBase(IUserInformation user, ILogger<THandler> logger) : base(user, logger) { }
-
-        public abstract Task<TResult> Handle(TCommand request, CancellationToken cancellationToken);
-
+        _currentUser = currentUser;
+        _logger = logger;
     }
+
+    public async Task<TQueryResult> Handle(TQueryRequest request, CancellationToken cancellationToken) => await HandleAsync(request, cancellationToken);
+
+    public abstract Task<TQueryResult> HandleAsync(TQueryRequest request, CancellationToken cancellationToken);
 
 }
