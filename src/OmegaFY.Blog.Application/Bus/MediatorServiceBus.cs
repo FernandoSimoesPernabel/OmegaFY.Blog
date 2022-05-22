@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using OmegaFY.Blog.Domain.Bus;
 using OmegaFY.Blog.Domain.Events;
 using OmegaFY.Blog.Domain.Result;
 
@@ -15,7 +14,7 @@ internal class MediatorServiceBus : IServiceBus
         => await _mediator.Publish(domainEvent);
 
     public async Task<TResult> SendMessageAsync<TRequest, TResult>(TRequest request, CancellationToken cancellationToken)
-        where TRequest : Domain.Request.IRequest
+        where TRequest : Request.IRequest
         where TResult : IResult
         => (TResult)await _mediator.Send(request, cancellationToken);
 }

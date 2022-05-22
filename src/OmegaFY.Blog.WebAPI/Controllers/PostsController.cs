@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OmegaFY.Blog.Application.Bus;
 using OmegaFY.Blog.Application.Commands.PublishPost;
+using OmegaFY.Blog.Application.Queries.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
-using OmegaFY.Blog.Domain.Bus;
-using OmegaFY.Blog.Domain.Pagination;
-using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
 using OmegaFY.Blog.WebAPI.Models.Queries;

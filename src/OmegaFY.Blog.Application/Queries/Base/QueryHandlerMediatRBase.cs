@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using OmegaFY.Blog.Domain.Authentication;
-using OmegaFY.Blog.Domain.Queries;
+using OmegaFY.Blog.Infra.Authentication;
 
 namespace OmegaFY.Blog.Application.Queries.Base;
 
@@ -14,9 +13,9 @@ public abstract class QueryHandlerMediatRBase<TQueryHandler, TQueryRequest, TQue
 
     protected readonly ILogger<TQueryHandler> _logger;
 
-    public QueryHandlerMediatRBase(IUserInformation user, ILogger<TQueryHandler> logger)
+    public QueryHandlerMediatRBase(IUserInformation currentUser, ILogger<TQueryHandler> logger)
     {
-        _currentUser = user;
+        _currentUser = currentUser;
         _logger = logger;
     }
 

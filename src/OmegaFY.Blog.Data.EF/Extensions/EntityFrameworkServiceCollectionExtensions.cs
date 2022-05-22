@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.QueryProviders;
 using OmegaFY.Blog.Data.EF.Repositories;
-using OmegaFY.Blog.Domain.QueryProviders.Posts;
 using OmegaFY.Blog.Domain.Repositories.Posts;
 
 namespace OmegaFY.Blog.Data.EF.Extensions;

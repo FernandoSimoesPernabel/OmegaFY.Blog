@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Queries.Base;
-using OmegaFY.Blog.Domain.Authentication;
-using OmegaFY.Blog.Domain.Pagination;
-using OmegaFY.Blog.Domain.QueryProviders.Posts;
-using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
+using OmegaFY.Blog.Application.Queries.Pagination;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
+using OmegaFY.Blog.Infra.Authentication;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 
@@ -18,12 +17,6 @@ internal class GetAllPostsQueryHandler : QueryHandlerMediatRBase<GetAllPostsQuer
 
     public override async Task<PagedResult<GetAllPostsQueryResult>> HandleAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        return await _postQueryProvider.GetAllPostsQueryResultAsync(
-            request.StartDateOfCreation, 
-            request.EndDateOfCreation, 
-            request.AuthorId,
-            request.PageNumber, 
-            request.PageSize, 
-            cancellationToken);
+        return await _postQueryProvider.GetAllPostsQueryResultAsync(request, cancellationToken);
     }
 }

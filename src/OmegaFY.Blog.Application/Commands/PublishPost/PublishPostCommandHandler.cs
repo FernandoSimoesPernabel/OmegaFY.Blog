@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Commands.Base;
-using OmegaFY.Blog.Domain.Authentication;
 using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Repositories.Posts;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
+using OmegaFY.Blog.Infra.Authentication;
 
 namespace OmegaFY.Blog.Application.Commands.PublishPost;
 

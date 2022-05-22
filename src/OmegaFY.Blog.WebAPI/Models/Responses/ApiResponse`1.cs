@@ -1,6 +1,6 @@
-﻿using OmegaFY.Blog.Domain.Constantes;
-using OmegaFY.Blog.Domain.Extensions;
-using OmegaFY.Blog.Domain.Result.Base;
+﻿using OmegaFY.Blog.Application.Result;
+using OmegaFY.Blog.Common.Extensions;
+using OmegaFY.Blog.Domain.Constantes;
 
 namespace OmegaFY.Blog.WebAPI.Models.Responses;
 
@@ -37,5 +37,4 @@ public class ApiResponse<T>
 
         return StatusCodes.Status500InternalServerError;
     }
-
 }

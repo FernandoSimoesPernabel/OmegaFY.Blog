@@ -1,5 +1,4 @@
 ﻿using OmegaFY.Blog.Application.Queries.Base;
-using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetPost;
 

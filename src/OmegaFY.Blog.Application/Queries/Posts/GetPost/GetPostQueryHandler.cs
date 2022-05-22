@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Queries.Base;
-using OmegaFY.Blog.Domain.Authentication;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.QueryProviders.Posts;
-using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
+using OmegaFY.Blog.Infra.Authentication;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetPost;
 
@@ -11,7 +10,7 @@ internal class GetPostQueryHandler : QueryHandlerMediatRBase<GetPostQueryHandler
 {
     private readonly IPostQueryProvider _postQueryProvider;
 
-    public GetPostQueryHandler(IUserInformation user, ILogger<GetPostQueryHandler> logger, IPostQueryProvider postQueryProvider) : base(user, logger)
+    public GetPostQueryHandler(IUserInformation currentUser, ILogger<GetPostQueryHandler> logger, IPostQueryProvider postQueryProvider) : base(currentUser, logger)
     {
         _postQueryProvider = postQueryProvider;
     }

@@ -1,6 +1,5 @@
 ﻿using OmegaFY.Blog.Application.Queries.Base;
-using OmegaFY.Blog.Domain.Pagination;
-using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
+using OmegaFY.Blog.Application.Queries.Pagination;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.Extensions;
 using OmegaFY.Blog.WebAPI.Models.Responses;
 
 namespace OmegaFY.Blog.WebAPI.FIlters;

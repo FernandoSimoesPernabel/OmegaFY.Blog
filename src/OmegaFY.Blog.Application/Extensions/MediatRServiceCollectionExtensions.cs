@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OmegaFY.Blog.Application.Bus;
 using OmegaFY.Blog.Application.PipelineBehaviors;
-using OmegaFY.Blog.Domain.Bus;
 
 namespace OmegaFY.Blog.Application.Extensions;
 

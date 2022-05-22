@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OmegaFY.Blog.Application.Queries.Pagination;
+using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
+using OmegaFY.Blog.Application.Queries.Posts.GetPost;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Data.EF.Context;
-using OmegaFY.Blog.Domain.Pagination;
-using OmegaFY.Blog.Domain.QueryProviders.Posts;
-using OmegaFY.Blog.Domain.QueryProviders.Posts.QueryResults;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -15,17 +16,11 @@ internal class PostQueryProvider : IPostQueryProvider
         _context = context;
     }
 
-    public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(
-        DateTime? startDateOfCreation,
-        DateTime? endDateOfCreation,
-        Guid? authorId,
-        int pageNumber,
-        int pageSize,
-        CancellationToken cancellationToken)
+    public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
         int totalOfItens = await _context.Set<GetAllPostsQueryResult>().FromSqlInterpolated($"SELECT * FROM Posts").CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(pageNumber, pageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
 
         GetAllPostsQueryResult[] results = await _context.Set<GetAllPostsQueryResult>()
             .FromSqlInterpolated(@$"
@@ -42,7 +37,7 @@ internal class PostQueryProvider : IPostQueryProvider
                     DateOfCreation DESC
 
                 LIMIT 
-                    {pageSize} 
+                    {request.PageSize} 
 
                 OFFSET 
                     {pagedResultInfo.ItemsToSkip()}")

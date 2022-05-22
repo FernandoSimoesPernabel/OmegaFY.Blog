@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using OmegaFY.Blog.Application.Queries.Pagination;
+using OmegaFY.Blog.Application.Result;
+using OmegaFY.Blog.Common.Constantes;
+using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Constantes;
-using OmegaFY.Blog.Domain.Extensions;
-using OmegaFY.Blog.Domain.Pagination;
-using OmegaFY.Blog.Domain.Result.Base;
 using OmegaFY.Blog.WebAPI.Models.Responses;
 
 namespace OmegaFY.Blog.WebAPI.FIlters;

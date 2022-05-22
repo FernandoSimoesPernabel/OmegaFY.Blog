@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.WebAPI", "src\OmegaFY.Blog.WebAPI\OmegaFY.Blog.WebAPI.csproj", "{F7DD491C-6C1C-44E4-AD78-AB94FEC47CFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.WebAPI", "src\OmegaFY.Blog.WebAPI\OmegaFY.Blog.WebAPI.csproj", "{F7DD491C-6C1C-44E4-AD78-AB94FEC47CFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Application", "src\OmegaFY.Blog.Application\OmegaFY.Blog.Application.csproj", "{8C0FBAD4-2AE2-49E3-B7A8-52143B4719A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Application", "src\OmegaFY.Blog.Application\OmegaFY.Blog.Application.csproj", "{8C0FBAD4-2AE2-49E3-B7A8-52143B4719A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Data.EF", "src\OmegaFY.Blog.Data.EF\OmegaFY.Blog.Data.EF.csproj", "{A3F84DEF-38D4-469C-B565-D981B91AEB6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Data.EF", "src\OmegaFY.Blog.Data.EF\OmegaFY.Blog.Data.EF.csproj", "{A3F84DEF-38D4-469C-B565-D981B91AEB6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Data.MongoDB", "src\OmegaFY.Blog.Data.MongoDB\OmegaFY.Blog.Data.MongoDB.csproj", "{6A3DA3D0-F941-4021-AC31-9E96F2C5F392}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Data.MongoDB", "src\OmegaFY.Blog.Data.MongoDB\OmegaFY.Blog.Data.MongoDB.csproj", "{6A3DA3D0-F941-4021-AC31-9E96F2C5F392}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Domain", "src\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj", "{24DFF6EA-B28B-4439-BAA4-A8C80CCBE9B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Domain", "src\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj", "{24DFF6EA-B28B-4439-BAA4-A8C80CCBE9B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Infra", "src\OmegaFY.Blog.Infra\OmegaFY.Blog.Infra.csproj", "{93A60FB3-86BB-4048-9958-5A61AB42A542}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Infra", "src\OmegaFY.Blog.Infra\OmegaFY.Blog.Infra.csproj", "{93A60FB3-86BB-4048-9958-5A61AB42A542}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - API", "0 - API", "{F27E7608-0314-4D88-B230-C4929DF0DD4D}"
 EndProject
@@ -25,13 +25,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Data", "3 - Data", "{51
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Infra", "2 - Infra", "{0369D14D-A636-4E00-9C08-DFBCB7CCBDE5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9 - Tests", "9 - Tests", "{7E937FDD-5974-4C41-8FAA-345620CC661B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7 - Tests", "7 - Tests", "{7E937FDD-5974-4C41-8FAA-345620CC661B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Test.Benchmark", "tests\OmegaFY.Blog.Test.Benchmark\OmegaFY.Blog.Test.Benchmark.csproj", "{2DEE1AFD-EA89-447D-A240-256B1ACE2010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Test.Benchmark", "tests\OmegaFY.Blog.Test.Benchmark\OmegaFY.Blog.Test.Benchmark.csproj", "{2DEE1AFD-EA89-447D-A240-256B1ACE2010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Test.Integrated", "tests\OmegaFY.Blog.Test.Integrated\OmegaFY.Blog.Test.Integrated.csproj", "{A9830DCD-0DC1-493D-8D27-21C71899853C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Test.Integrated", "tests\OmegaFY.Blog.Test.Integrated\OmegaFY.Blog.Test.Integrated.csproj", "{A9830DCD-0DC1-493D-8D27-21C71899853C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Test.Unit", "tests\OmegaFY.Blog.Test.Unit\OmegaFY.Blog.Test.Unit.csproj", "{7C9F5DCB-C719-4022-A2D0-3021236C5E98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmegaFY.Blog.Test.Unit", "tests\OmegaFY.Blog.Test.Unit\OmegaFY.Blog.Test.Unit.csproj", "{7C9F5DCB-C719-4022-A2D0-3021236C5E98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9 - Common", "9 - Common", "{0140AC74-C7B7-466B-8A28-039EB3DFB958}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmegaFY.Blog.Common", "src\OmegaFY.Blog.Common\OmegaFY.Blog.Common.csproj", "{9DD0B9C0-0B7F-4CCD-BD07-3B89486B1DED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +79,10 @@ Global
 		{7C9F5DCB-C719-4022-A2D0-3021236C5E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C9F5DCB-C719-4022-A2D0-3021236C5E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C9F5DCB-C719-4022-A2D0-3021236C5E98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DD0B9C0-0B7F-4CCD-BD07-3B89486B1DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DD0B9C0-0B7F-4CCD-BD07-3B89486B1DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DD0B9C0-0B7F-4CCD-BD07-3B89486B1DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DD0B9C0-0B7F-4CCD-BD07-3B89486B1DED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +97,7 @@ Global
 		{2DEE1AFD-EA89-447D-A240-256B1ACE2010} = {7E937FDD-5974-4C41-8FAA-345620CC661B}
 		{A9830DCD-0DC1-493D-8D27-21C71899853C} = {7E937FDD-5974-4C41-8FAA-345620CC661B}
 		{7C9F5DCB-C719-4022-A2D0-3021236C5E98} = {7E937FDD-5974-4C41-8FAA-345620CC661B}
+		{9DD0B9C0-0B7F-4CCD-BD07-3B89486B1DED} = {0140AC74-C7B7-466B-8A28-039EB3DFB958}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7FF76F4-FB63-42C7-98F4-C16DFFF6E001}

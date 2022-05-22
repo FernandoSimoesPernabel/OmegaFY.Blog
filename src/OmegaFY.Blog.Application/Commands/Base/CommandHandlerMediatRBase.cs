@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using OmegaFY.Blog.Domain.Authentication;
-using OmegaFY.Blog.Domain.Commands;
+using OmegaFY.Blog.Infra.Authentication;
 
 namespace OmegaFY.Blog.Application.Commands.Base;
 

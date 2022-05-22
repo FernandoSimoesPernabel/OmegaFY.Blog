@@ -1,4 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Authentication;
+﻿using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.IoC;
 
 namespace OmegaFY.Blog.WebAPI.IoC;

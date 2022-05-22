@@ -1,5 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Commands;
-using OmegaFY.Blog.Domain.Result.Base;
+﻿using OmegaFY.Blog.Application.Result;
 
 namespace OmegaFY.Blog.Application.Commands.PublishPost;
 

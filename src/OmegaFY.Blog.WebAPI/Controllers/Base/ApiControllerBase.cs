@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OmegaFY.Blog.Domain.Bus;
+using OmegaFY.Blog.Application.Bus;
 
 namespace OmegaFY.Blog.WebAPI.Controllers.Base;
 

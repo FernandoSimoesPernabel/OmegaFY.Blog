@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using OmegaFY.Blog.Application.Result;
+using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.Extensions;
-using OmegaFY.Blog.Domain.Result.Base;
 
 namespace OmegaFY.Blog.Application.PipelineBehaviors;
 
@@ -40,7 +40,7 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         foreach (ValidationFailure failure in failures)
             result.AddError(failure.ErrorCode, failure.ErrorMessage);
 
-        return await CreateTaskResult(result);
+        return await result.ToTaskResult();
     }
 
     private static async Task<TResult> ErrorsFromException(string errorCode, string errorMessage)
@@ -48,10 +48,8 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         TResult result = CreateInstanceOfTResult();
         result.AddError(errorCode, errorMessage);
 
-        return await CreateTaskResult(result);
+        return await result.ToTaskResult();
     }
-
-    private static async Task<TResult> CreateTaskResult(TResult result) => await Task.FromResult(result);
 
     private static TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult), Array.Empty<object>());
 }
