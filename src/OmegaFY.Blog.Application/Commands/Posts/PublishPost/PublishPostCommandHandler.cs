@@ -5,7 +5,7 @@ using OmegaFY.Blog.Domain.Repositories.Posts;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 using OmegaFY.Blog.Infra.Authentication;
 
-namespace OmegaFY.Blog.Application.Commands.PublishPost;
+namespace OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 
 internal class PublishPostCommandHandler : CommandHandlerMediatRBase<PublishPostCommandHandler, PublishPostCommand, PublishPostCommandResult>
 {
@@ -25,10 +25,10 @@ internal class PublishPostCommandHandler : CommandHandlerMediatRBase<PublishPost
         await _repository.SaveChangesAsync(cancellationToken);
 
         return new PublishPostCommandResult(
-            newPost.Id, 
+            newPost.Id,
             newPost.Author,
-            newPost.Header.Title, 
-            newPost.Header.SubTitle, 
+            newPost.Header.Title,
+            newPost.Header.SubTitle,
             newPost.Body,
             newPost.ModificationDetails.DateOfCreation);
     }

@@ -1,4 +1,4 @@
-﻿using OmegaFY.Blog.Application.Commands.PublishPost;
+﻿using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 
 namespace OmegaFY.Blog.WebAPI.Models.Commands;
 

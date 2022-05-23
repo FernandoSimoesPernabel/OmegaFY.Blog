@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Application.Result;
 
-namespace OmegaFY.Blog.Application.Commands.PublishPost;
+namespace OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 
 public class PublishPostCommandResult : GenericResult, ICommandResult
 {
