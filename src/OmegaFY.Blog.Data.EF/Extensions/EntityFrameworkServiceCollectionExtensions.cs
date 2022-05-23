@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
@@ -23,6 +24,13 @@ public static class EFServiceCollectionExtensions
         services.AddDbContextPool<UsersContext>(options => options.UseSqlite(sqlLiteConnectionString));
 
         services.AddDbContextPool<QueryContext>(options => options.UseSqlite(sqlLiteConnectionString));
+
+        return services;
+    }
+
+    public static IServiceCollection AddIdentityUserConfiguration(this IServiceCollection services)
+    {
+        services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UsersContext>().AddDefaultTokenProviders();
 
         return services;
     }

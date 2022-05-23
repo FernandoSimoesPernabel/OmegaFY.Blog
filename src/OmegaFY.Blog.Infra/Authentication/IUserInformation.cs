@@ -2,5 +2,5 @@
 
 public interface IUserInformation
 {
-    public Guid CurrentRequestUserId { get; set; }
+    public Guid CurrentRequestUserId { get; }
 }
