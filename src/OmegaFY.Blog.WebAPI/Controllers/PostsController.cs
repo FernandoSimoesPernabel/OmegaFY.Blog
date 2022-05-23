@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
-using OmegaFY.Blog.Application.Commands.PublishPost;
+using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Application.Queries.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
