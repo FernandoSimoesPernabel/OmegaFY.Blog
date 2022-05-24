@@ -7,6 +7,6 @@ public class GetAllPostsQueryValidator : AbstractValidator<GetAllPostsQuery>
 {
     public GetAllPostsQueryValidator()
     {
-
+        //TODO criar validações
     }
 }

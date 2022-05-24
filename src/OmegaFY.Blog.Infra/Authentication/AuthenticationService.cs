@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace OmegaFY.Blog.Infra.Authentication;
 
@@ -11,20 +8,17 @@ internal class AuthenticationService : IAuthenticationService
 {
     private readonly UserManager<IdentityUser> _userManager;
 
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IJwtProvider _jwtProvider;
 
-    private readonly JwtSettings _jwtSettings;
-
-    public AuthenticationService(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JwtSettings> options)
+    public AuthenticationService(UserManager<IdentityUser> userManager, IJwtProvider jwtProvider)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
-        _jwtSettings = options.Value;
+        _jwtProvider = jwtProvider;
     }
 
-    public async Task RegisterNewUserAsync(string email, string username, string password, CancellationToken cancellationToken)
+    public async Task RegisterNewUserAsync(string email, string password, CancellationToken cancellationToken)
     {
-        bool userAlreadyRegister = await _userManager.FindByEmailAsync(email) is null;
+        bool userAlreadyRegister = await _userManager.FindByEmailAsync(email) is not null;
 
         if (userAlreadyRegister) throw new InvalidOperationException(); //TODO ver exception
 
@@ -34,7 +28,7 @@ internal class AuthenticationService : IAuthenticationService
         {
             Email = email,
             SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = username
+            UserName = email
         };
 
         IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, password);
@@ -46,33 +40,17 @@ internal class AuthenticationService : IAuthenticationService
     {
         IdentityUser identityUser = await _userManager.FindByEmailAsync(email);
 
-        if (identityUser is not null && await _userManager.CheckPasswordAsync(identityUser, password)) throw new InvalidOperationException(); //TODO ver exception
+        if (identityUser is not null && !await _userManager.CheckPasswordAsync(identityUser, password)) throw new InvalidOperationException(); //TODO ver exception
 
         //TODO Rever claims
 
         Claim[] userClaims = new Claim[]
         {
-            new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Email, identityUser.Email),
             new Claim(ClaimTypes.Name, identityUser.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
-        JwtSecurityToken token = GenerateUserAuthenticationToken(userClaims);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    private JwtSecurityToken GenerateUserAuthenticationToken(Claim[] userClaims)
-    {
-        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
-
-        JwtSecurityToken token = new JwtSecurityToken(
-            issuer: _jwtSettings.ValidIssuer,
-            audience: _jwtSettings.ValidAudience,
-            expires: DateTime.UtcNow.AddHours(3),
-            claims: userClaims,
-            signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
-
-        return token;
+        return _jwtProvider.WriteTokenAsString(_jwtProvider.GenerateUserAuthenticationToken(userClaims));
     }
 }

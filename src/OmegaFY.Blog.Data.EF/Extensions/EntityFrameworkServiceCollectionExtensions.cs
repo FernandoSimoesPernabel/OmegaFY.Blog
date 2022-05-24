@@ -7,6 +7,7 @@ using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.QueryProviders;
 using OmegaFY.Blog.Data.EF.Repositories;
 using OmegaFY.Blog.Domain.Repositories.Posts;
+using OmegaFY.Blog.Domain.Repositories.Users;
 
 namespace OmegaFY.Blog.Data.EF.Extensions;
 
@@ -28,7 +29,7 @@ public static class EFServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddIdentityUserConfiguration(this IServiceCollection services)
+    public static IServiceCollection AddEntityFrameworkIdentityUserConfiguration(this IServiceCollection services)
     {
         services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UsersContext>().AddDefaultTokenProviders();
 
@@ -38,6 +39,7 @@ public static class EFServiceCollectionExtensions
     public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)
     {
         services.AddScoped<IPostRepository, PostRepository>();
+        services.AddScoped<IUserRepository, UserRepository>(); 
 
         return services;
     }

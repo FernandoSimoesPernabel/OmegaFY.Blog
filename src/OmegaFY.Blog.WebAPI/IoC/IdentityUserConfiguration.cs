@@ -1,4 +1,5 @@
-﻿using OmegaFY.Blog.Infra.Authentication;
+﻿using OmegaFY.Blog.Data.EF.Extensions;
+using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Extensions;
 using OmegaFY.Blog.Infra.IoC;
 
@@ -8,6 +9,9 @@ public class IdentityUserConfiguration : IDependencyInjectionRegister
 {
     public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
     {
-        return services.AddIdentityUserConfiguration(configuration);
+        services.AddIdentityUserConfiguration(configuration);
+        services.AddEntityFrameworkIdentityUserConfiguration();
+
+        return services;
     }
 }

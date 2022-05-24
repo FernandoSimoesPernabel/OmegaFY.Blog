@@ -44,7 +44,7 @@ public class PostsController : ApiControllerBase<PostsController>
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponse<PublishPostCommandResult>), 201)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> PublicarPostagemAsync(PublishPostInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> PublicarPostagem(PublishPostInputModel inputModel, CancellationToken cancellationToken)
     {
         PublishPostCommand command = inputModel.ToCommand();
 

@@ -26,8 +26,12 @@ public static class DependencyInjectionExtensions
 
     public static IServiceCollection AddIdentityUserConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
         services.AddHttpContextAccessor();
         services.AddScoped<IUserInformation, HttpContextAccessorUserInformation>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IJwtProvider, JwtSecurityTokenProvider>();
 
         services.AddAuthentication(options =>
         {
