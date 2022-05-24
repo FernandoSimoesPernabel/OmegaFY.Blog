@@ -18,6 +18,8 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
+        //TODO mapear para classes e usar LINQ
+
         int totalOfItens = await _context.Set<GetAllPostsQueryResult>().FromSqlInterpolated($"SELECT * FROM Posts").CountAsync(cancellationToken);
 
         PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
@@ -48,6 +50,8 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
     {
+        //TODO mapear para classes e usar LINQ
+
         return await _context.Set<GetPostQueryResult>()
             .FromSqlInterpolated(@$"
                 SELECT 

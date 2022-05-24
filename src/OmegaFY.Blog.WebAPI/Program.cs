@@ -1,4 +1,4 @@
-using OmegaFY.Blog.Infra.IoC;
+using OmegaFY.Blog.Infra.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -4,9 +4,9 @@ using OmegaFY.Blog.Domain.Constantes;
 
 namespace OmegaFY.Blog.Application.Validations.Commands;
 
-public class GetPostQueryValidator : AbstractValidator<PublishPostCommand>
+public class PublishPostValidator : AbstractValidator<PublishPostCommand>
 {
-    public GetPostQueryValidator()
+    public PublishPostValidator()
     {
         RuleFor(x => x.Title).NotEmpty().Length(PostConstants.MIN_TITLE_SIZE, PostConstants.MAX_TITLE_SIZE);
 
