@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using OmegaFY.Blog.Infra.Authentication.Configs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -16,41 +17,32 @@ internal class AuthenticationService : IAuthenticationService
         _jwtProvider = jwtProvider;
     }
 
-    public async Task RegisterNewUserAsync(string email, string password, CancellationToken cancellationToken)
+    public async Task<AuthenticationToken> RegisterNewUserAsync(LoginOptions loginOptions, CancellationToken cancellationToken)
     {
-        bool userAlreadyRegister = await _userManager.FindByEmailAsync(email) is not null;
+        bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginOptions.Email) is not null;
 
         if (userAlreadyRegister) throw new InvalidOperationException(); //TODO ver exception
 
-        //TODO ver melhor as opções
-
         IdentityUser identityUser = new()
         {
-            Email = email,
+            Email = loginOptions.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = email
+            UserName = loginOptions.Email
         };
 
-        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, password);
+        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginOptions.Password);
 
         if (!createUserResult.Succeeded) throw new InvalidOperationException(); //TODO ver exception
+
+        return await LoginAsync(loginOptions);
     }
 
-    public async Task<string> LoginAsync(string email, string password, CancellationToken cancellationToken)
+    public async Task<AuthenticationToken> LoginAsync(LoginOptions loginOptions)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(email);
+        IdentityUser identityUser = await _userManager.FindByEmailAsync(loginOptions.Email);
 
-        if (identityUser is not null && !await _userManager.CheckPasswordAsync(identityUser, password)) throw new InvalidOperationException(); //TODO ver exception
+        if (identityUser is not null && !await _userManager.CheckPasswordAsync(identityUser, loginOptions.Password)) throw new InvalidOperationException(); //TODO ver exception
 
-        //TODO Rever claims
-
-        Claim[] userClaims = new Claim[]
-        {
-            new Claim(ClaimTypes.Email, identityUser.Email),
-            new Claim(ClaimTypes.Name, identityUser.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-
-        return _jwtProvider.WriteTokenAsString(_jwtProvider.GenerateUserAuthenticationToken(userClaims));
+        return _jwtProvider.WriteToken(loginOptions);
     }
 }

@@ -21,6 +21,7 @@ public class WebApiConfiguration : IDependencyInjectionRegister
             })
             .AddJsonOptions(jsonOptions =>
             {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
                 jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
 

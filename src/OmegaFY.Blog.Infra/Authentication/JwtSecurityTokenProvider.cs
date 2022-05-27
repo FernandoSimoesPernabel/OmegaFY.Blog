@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using OmegaFY.Blog.Infra.Authentication.Configs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -10,24 +11,41 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 {
     private readonly JwtSettings _jwtSettings;
 
-    public JwtSecurityTokenProvider(IOptions<JwtSettings> options)
+    public JwtSecurityTokenProvider(IOptions<JwtSettings> options) => _jwtSettings = options.Value;
+
+    public AuthenticationToken WriteToken(LoginOptions loginOptions)
     {
-        _jwtSettings = options.Value;
+        JwtSecurityToken jwtSecurityToken = GenerateUserAuthenticationToken(loginOptions);
+        return new AuthenticationToken(new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken), "");
     }
 
-    public JwtSecurityToken GenerateUserAuthenticationToken(Claim[] userClaims)
+    private JwtSecurityToken GenerateUserAuthenticationToken(LoginOptions loginOptions)
     {
-        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
+        long issuedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+        long expiresInUnixTimeInSeconds = DateTimeOffset.UtcNow.Add(_jwtSettings.TimeToExpire).ToUnixTimeSeconds();
+
+        DateTime expiresIn = DateTimeOffset.FromUnixTimeSeconds(expiresInUnixTimeInSeconds).UtcDateTime;
+
+        Claim[] userClaims = new Claim[]
+        {
+                    new Claim(JwtRegisteredClaimNames.Sub, loginOptions.UserId.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
+                    new Claim(JwtRegisteredClaimNames.Exp, expiresInUnixTimeInSeconds.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
+                    new Claim(JwtRegisteredClaimNames.Email, loginOptions.Email),
+                    new Claim(JwtRegisteredClaimNames.Name, loginOptions.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
         JwtSecurityToken token = new JwtSecurityToken(
             issuer: _jwtSettings.ValidIssuer,
             audience: _jwtSettings.ValidAudience,
-            expires: DateTime.UtcNow.AddHours(3),
+            expires: expiresIn,
             claims: userClaims,
-            signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)), SecurityAlgorithms.HmacSha256Signature));
 
         return token;
     }
-
-    public string WriteTokenAsString(JwtSecurityToken token) => new JwtSecurityTokenHandler().WriteToken(token);
 }
