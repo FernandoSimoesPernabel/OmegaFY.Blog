@@ -4,6 +4,7 @@ using OmegaFY.Blog.Domain.Entities.Users;
 using OmegaFY.Blog.Domain.Repositories.Users;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
 

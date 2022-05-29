@@ -8,11 +8,11 @@ public class RegisterNewUserCommandResult : GenericResult, ICommandResult
 
     public string Token { get; set; }
 
-    public string RefreshToken { get; set; }
+    public Guid RefreshToken { get; set; }
 
     public RegisterNewUserCommandResult() { }
 
-    public RegisterNewUserCommandResult(Guid id, string token, string refreshToken)
+    public RegisterNewUserCommandResult(Guid id, string token, Guid refreshToken)
     {
         Id = id;
         Token = token;

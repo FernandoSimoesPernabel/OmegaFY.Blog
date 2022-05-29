@@ -2,7 +2,7 @@
 using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Infra.Authentication;
+using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetPost;
 

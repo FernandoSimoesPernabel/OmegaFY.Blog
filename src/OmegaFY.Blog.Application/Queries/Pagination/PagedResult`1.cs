@@ -2,19 +2,17 @@
 
 namespace OmegaFY.Blog.Application.Queries.Pagination;
 
-public class PagedResult<TResult> : GenericResult, IQueryResult, IPagedResult
+public class PagedResult<TResult> : GenericResult, IQueryResult
 {
-    private readonly PagedResultInfo _resultInfo;
-
     public TResult[] Results { get; }
+
+    public PagedResultInfo ResultInfo { get; }
 
     protected PagedResult() { }
 
     public PagedResult(PagedResultInfo resultInfo, TResult[] results)
     {
-        _resultInfo = resultInfo;
+        ResultInfo = resultInfo;
         Results = results;
     }
-
-    public PagedResultInfo PaginationInformation() => _resultInfo;
 }

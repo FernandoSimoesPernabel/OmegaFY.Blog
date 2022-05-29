@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Token;
+using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
 using System.Reflection;
 using System.Text;

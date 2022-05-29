@@ -4,11 +4,11 @@ public readonly struct AuthenticationToken
 {
     public string Token { get; }
 
-    public string RefreshToken { get; }
+    public Guid RefreshToken { get; }
 
-    public AuthenticationToken(string token, string refreshToken)
+    public AuthenticationToken(string token)
     {
         Token = token;
-        RefreshToken = refreshToken;
+        RefreshToken = Guid.NewGuid();
     }
 }

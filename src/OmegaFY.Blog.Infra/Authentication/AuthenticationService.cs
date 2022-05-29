@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Token;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 

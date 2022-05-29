@@ -3,7 +3,7 @@ using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Repositories.Posts;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
-using OmegaFY.Blog.Infra.Authentication;
+using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 

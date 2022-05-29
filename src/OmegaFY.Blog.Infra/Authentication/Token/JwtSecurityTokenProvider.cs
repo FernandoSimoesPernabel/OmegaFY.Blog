@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace OmegaFY.Blog.Infra.Authentication;
+namespace OmegaFY.Blog.Infra.Authentication.Token;
 
 internal class JwtSecurityTokenProvider : IJwtProvider
 {
@@ -16,7 +16,7 @@ internal class JwtSecurityTokenProvider : IJwtProvider
     public AuthenticationToken WriteToken(LoginOptions loginOptions)
     {
         JwtSecurityToken jwtSecurityToken = GenerateUserAuthenticationToken(loginOptions);
-        return new AuthenticationToken(new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken), "");
+        return new AuthenticationToken(new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken));
     }
 
     private JwtSecurityToken GenerateUserAuthenticationToken(LoginOptions loginOptions)
@@ -29,14 +29,14 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 
         Claim[] userClaims = new Claim[]
         {
-                    new Claim(JwtRegisteredClaimNames.Sub, loginOptions.UserId.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
-                    new Claim(JwtRegisteredClaimNames.Exp, expiresInUnixTimeInSeconds.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
-                    new Claim(JwtRegisteredClaimNames.Email, loginOptions.Email),
-                    new Claim(JwtRegisteredClaimNames.Name, loginOptions.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Sub, loginOptions.UserId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
+            new Claim(JwtRegisteredClaimNames.Exp, expiresInUnixTimeInSeconds.ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToString()),
+            new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
+            new Claim(JwtRegisteredClaimNames.Email, loginOptions.Email),
+            new Claim(JwtRegisteredClaimNames.Name, loginOptions.UserName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         JwtSecurityToken token = new JwtSecurityToken(

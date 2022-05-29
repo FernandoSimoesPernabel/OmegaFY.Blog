@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Infra.Authentication;
+﻿namespace OmegaFY.Blog.Infra.Authentication.Users;
 
 public interface IUserInformation
 {
