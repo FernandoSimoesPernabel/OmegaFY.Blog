@@ -2,7 +2,7 @@
 using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Application.Queries.Pagination;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
-using OmegaFY.Blog.Infra.Authentication;
+using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 

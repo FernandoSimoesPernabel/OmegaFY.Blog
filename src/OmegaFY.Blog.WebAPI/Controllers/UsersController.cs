@@ -32,9 +32,17 @@ public class UsersController : ApiControllerBase<PostsController>
         return Ok();
     }
 
-    [HttpPost(nameof(Logoff))]
+    [HttpDelete(nameof(Logoff))]
     [ProducesResponseType(typeof(ApiResponse<>), 200)]
     public async Task<IActionResult> Logoff(CancellationToken cancellationToken)
+    {
+        return Ok();
+    }
+
+    [HttpPost(nameof(RefreshToken))]
+    [ProducesResponseType(typeof(ApiResponse<>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
     {
         return Ok();
     }

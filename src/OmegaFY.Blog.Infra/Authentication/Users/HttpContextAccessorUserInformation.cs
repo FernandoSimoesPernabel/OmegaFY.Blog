@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OmegaFY.Blog.Infra.Authentication;
+namespace OmegaFY.Blog.Infra.Authentication.Users;
 
 internal class HttpContextAccessorUserInformation : IUserInformation
 {

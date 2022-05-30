@@ -6,10 +6,16 @@ public class RegisterNewUserCommandResult : GenericResult, ICommandResult
 {
     public Guid Id { get; set; }
 
+    public string Token { get; set; }
+
+    public Guid RefreshToken { get; set; }
+
     public RegisterNewUserCommandResult() { }
 
-    public RegisterNewUserCommandResult(Guid id)
+    public RegisterNewUserCommandResult(Guid id, string token, Guid refreshToken)
     {
         Id = id;
+        Token = token;
+        RefreshToken = refreshToken;
     }
 }

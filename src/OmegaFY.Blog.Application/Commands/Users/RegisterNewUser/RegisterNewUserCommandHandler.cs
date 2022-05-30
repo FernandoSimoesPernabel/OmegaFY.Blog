@@ -3,6 +3,8 @@ using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Entities.Users;
 using OmegaFY.Blog.Domain.Repositories.Users;
 using OmegaFY.Blog.Infra.Authentication;
+using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
 
@@ -28,10 +30,12 @@ public class RegisterNewUserCommandHandler : CommandHandlerMediatRBase<RegisterN
 
         await _userRepository.CreateUserAsync(newUser, cancellationToken);
 
-        await _authenticationService.RegisterNewUserAsync(command.Email, command.Password, cancellationToken);
+        AuthenticationToken authenticationToken = await _authenticationService.RegisterNewUserAsync(
+            new LoginOptions(newUser.Id, newUser.Email, command.Password, newUser.DisplayName),
+            cancellationToken);
 
         await _userRepository.SaveChangesAsync(cancellationToken);
 
-        return new RegisterNewUserCommandResult(newUser.Id);
+        return new RegisterNewUserCommandResult(newUser.Id, authenticationToken.Token, authenticationToken.RefreshToken);
     }
 }

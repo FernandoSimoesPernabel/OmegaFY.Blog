@@ -10,15 +10,15 @@ public class PagedResultInfo
 
     public int TotalOfItens { get; }
 
-    public bool HasPrevious => CurrentPage < TotalPages;
+    public bool HasPrevious => CurrentPage > 1;
 
-    public bool HasNext => CurrentPage > 1;
+    public bool HasNext => CurrentPage < TotalPages;
 
     public PagedResultInfo(PagedRequest pagedRequest, int totalOfItens) : this(pagedRequest.PageNumber, pagedRequest.PageSize, totalOfItens) { }
 
     public PagedResultInfo(int currentPage, int pageSize, int totalOfItens)
     {
-        CurrentPage = currentPage;
+        CurrentPage = Math.Max(currentPage, 1);
         PageSize = Math.Max(pageSize, 1);
         TotalOfItens = totalOfItens;
         TotalPages = (int)Math.Ceiling((double)totalOfItens / pageSize);
