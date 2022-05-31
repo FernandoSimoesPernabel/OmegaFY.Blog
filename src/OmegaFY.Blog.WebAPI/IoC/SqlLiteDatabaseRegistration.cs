@@ -3,7 +3,7 @@ using OmegaFY.Blog.Infra.IoC;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
 
-public class SqlLiteDatabaseConfiguration : IDependencyInjectionRegister
+public class SqlLiteDatabaseRegistration : IDependencyInjectionRegister
 {
     public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
     {

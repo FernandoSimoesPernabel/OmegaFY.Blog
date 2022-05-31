@@ -29,11 +29,11 @@ public static class EFServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddEntityFrameworkIdentityUserConfiguration(this IServiceCollection services)
+    public static IdentityBuilder AddEntityFrameworkIdentityUserConfiguration(this IdentityBuilder identityBuilder)
     {
-        services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UsersContext>().AddDefaultTokenProviders();
+        identityBuilder.AddEntityFrameworkStores<UsersContext>().AddDefaultTokenProviders();
 
-        return services;
+        return identityBuilder;
     }
 
     public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)

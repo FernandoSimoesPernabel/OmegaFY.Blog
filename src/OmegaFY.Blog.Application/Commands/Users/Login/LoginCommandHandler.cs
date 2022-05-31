@@ -2,15 +2,16 @@
 using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Entities.Users;
+using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Repositories.Users;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.Cache;
 
-namespace OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
+namespace OmegaFY.Blog.Application.Commands.Users.Login;
 
-public class RegisterNewUserCommandHandler : CommandHandlerMediatRBase<RegisterNewUserCommandHandler, RegisterNewUserCommand, RegisterNewUserCommandResult>
+public class LoginCommandHandler : CommandHandlerMediatRBase<LoginCommandHandler, LoginCommand, LoginCommandResult>
 {
     private readonly IAuthenticationService _authenticationService;
 
@@ -18,9 +19,9 @@ public class RegisterNewUserCommandHandler : CommandHandlerMediatRBase<RegisterN
 
     private readonly IDistributedCache _distributedCache;
 
-    public RegisterNewUserCommandHandler(
+    public LoginCommandHandler(
         IUserInformation currentUser,
-        ILogger<RegisterNewUserCommandHandler> logger,
+        ILogger<LoginCommandHandler> logger,
         IAuthenticationService authenticationService,
         IUserRepository repository,
         IDistributedCache distributedCache) : base(currentUser, logger)
@@ -30,23 +31,20 @@ public class RegisterNewUserCommandHandler : CommandHandlerMediatRBase<RegisterN
         _distributedCache = distributedCache;
     }
 
-    public override async Task<RegisterNewUserCommandResult> HandleAsync(RegisterNewUserCommand command, CancellationToken cancellationToken)
+    public override async Task<LoginCommandResult> HandleAsync(LoginCommand command, CancellationToken cancellationToken)
     {
-        User newUser = new User(command.Email, command.DisplayName);
+        User user = await _repository.GetByEmailAsync(command.Email, cancellationToken);
 
-        await _repository.CreateUserAsync(newUser, cancellationToken);
+        if (user is null)
+            throw new NotFoundException();
 
-        AuthenticationToken authenticationToken = await _authenticationService.RegisterNewUserAsync(
-            new LoginOptions(newUser.Id, newUser.Email, command.Password, newUser.DisplayName),
-            cancellationToken);
-
-        await _repository.SaveChangesAsync(cancellationToken);
+        AuthenticationToken authenticationToken = await _authenticationService.LoginAsync(new LoginOptions(user.Id, user.Email, command.Password, user.DisplayName));
 
         await _distributedCache.SetStringAsync(
             CacheKeyGenerator.RefreshTokenKey(authenticationToken.RefreshToken),
             authenticationToken.RefreshToken.ToString(),
             cancellationToken);
 
-        return new RegisterNewUserCommandResult(newUser.Id, authenticationToken.Token, authenticationToken.RefreshToken);
+        return new LoginCommandResult(authenticationToken.Token, authenticationToken.RefreshToken);
     }
 }

@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
 
-public class WebApiConfiguration : IDependencyInjectionRegister
+public class WebApiRegistration : IDependencyInjectionRegister
 {
     public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
     {
@@ -21,7 +21,6 @@ public class WebApiConfiguration : IDependencyInjectionRegister
             })
             .AddJsonOptions(jsonOptions =>
             {
-                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
                 jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
 

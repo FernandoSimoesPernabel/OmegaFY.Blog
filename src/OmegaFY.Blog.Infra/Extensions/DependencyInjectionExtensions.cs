@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -56,5 +57,33 @@ public static class DependencyInjectionExtensions
         });
 
         return services;
+    }
+
+    public static IdentityBuilder AddIdentity(this IServiceCollection services)
+    {
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequiredLength = 10;
+            options.Password.RequiredUniqueChars = 1;
+
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+            options.Lockout.MaxFailedAccessAttempts = 3;
+
+            options.User.RequireUniqueEmail = true;
+
+            //options.SignIn.RequireConfirmedEmail = true;
+            //options.SignIn.RequireConfirmedAccount = true;
+        });
+
+        return services.AddIdentity<IdentityUser, IdentityRole>();
+    }
+
+    public static IServiceCollection AddDistributedCache(this IServiceCollection services)
+    {
+        return services.AddDistributedMemoryCache();
     }
 }
