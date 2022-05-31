@@ -5,12 +5,12 @@ using OmegaFY.Blog.Infra.IoC;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
 
-public class IdentityUserConfiguration : IDependencyInjectionRegister
+public class IdentityUserRegistration : IDependencyInjectionRegister
 {
     public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
     {
         services.AddIdentityUserConfiguration(configuration);
-        services.AddEntityFrameworkIdentityUserConfiguration();
+        services.AddIdentity().AddEntityFrameworkIdentityUserConfiguration();
 
         return services;
     }
