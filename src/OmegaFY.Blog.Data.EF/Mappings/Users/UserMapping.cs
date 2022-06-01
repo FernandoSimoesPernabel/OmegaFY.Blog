@@ -11,6 +11,8 @@ internal class UserMapping : IEntityTypeConfiguration<User>
     {
         builder.HasKey(x => x.Id);
 
+        builder.HasIndex(x => x.Email).IsUnique();
+
         builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
         builder.Property(x => x.Email).HasColumnType($"varchar({UserConstants.MAX_EMAIL_SIZE})").IsRequired();
