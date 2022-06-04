@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Infra.Cache;
+﻿namespace OmegaFY.Blog.Infra.Cache.Keys;
 
 public static class CacheKeyGenerator
 {

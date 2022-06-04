@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OmegaFY.Blog.Infra.Cache;
+namespace OmegaFY.Blog.Infra.Cache.Keys;
 
 internal class CacheKeysConstants
 {

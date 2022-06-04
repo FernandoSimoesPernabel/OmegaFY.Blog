@@ -4,9 +4,9 @@ using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Entities.Users;
 using OmegaFY.Blog.Domain.Repositories.Users;
 using OmegaFY.Blog.Infra.Authentication;
-using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Authentication.Users;
-using OmegaFY.Blog.Infra.Cache;
+using OmegaFY.Blog.Infra.Extensions;
 
 namespace OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
 
@@ -36,17 +36,14 @@ public class RegisterNewUserCommandHandler : CommandHandlerMediatRBase<RegisterN
 
         await _repository.CreateUserAsync(newUser, cancellationToken);
 
-        AuthenticationToken authenticationToken = await _authenticationService.RegisterNewUserAsync(
-            new LoginOptions(newUser.Id, newUser.Email, command.Password, newUser.DisplayName),
+        AuthenticationToken authToken = await _authenticationService.RegisterNewUserAsync(
+            new LoginInput(newUser.Id, newUser.Email, command.Password, newUser.DisplayName),
             cancellationToken);
 
         await _repository.SaveChangesAsync(cancellationToken);
 
-        await _distributedCache.SetStringAsync(
-            CacheKeyGenerator.RefreshTokenKey(authenticationToken.RefreshToken),
-            authenticationToken.RefreshToken.ToString(),
-            cancellationToken);
+        await _distributedCache.SetAuthenticationTokenCacheAsync(authToken, cancellationToken);
 
-        return new RegisterNewUserCommandResult(newUser.Id, authenticationToken.Token, authenticationToken.RefreshToken);
+        return new RegisterNewUserCommandResult(newUser.Id, authToken.Token, authToken.TokenExpirationDate, authToken.RefreshToken, authToken.RefreshTokenExpirationDate);
     }
 }

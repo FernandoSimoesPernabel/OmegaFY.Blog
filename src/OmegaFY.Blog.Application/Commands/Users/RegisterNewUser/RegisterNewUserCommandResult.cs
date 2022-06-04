@@ -8,14 +8,20 @@ public class RegisterNewUserCommandResult : GenericResult, ICommandResult
 
     public string Token { get; set; }
 
+    public DateTime TokenExpirationDate { get; set; }
+
     public Guid RefreshToken { get; set; }
+
+    public DateTime RefreshTokenExpirationDate { get; set; }
 
     public RegisterNewUserCommandResult() { }
 
-    public RegisterNewUserCommandResult(Guid id, string token, Guid refreshToken)
+    public RegisterNewUserCommandResult(Guid id, string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
     {
         Id = id;
         Token = token;
+        TokenExpirationDate = tokenExpirationDate;
         RefreshToken = refreshToken;
+        RefreshTokenExpirationDate = refreshTokenExpirationDate;
     }
 }

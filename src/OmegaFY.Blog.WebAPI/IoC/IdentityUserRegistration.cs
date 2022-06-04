@@ -10,7 +10,7 @@ public class IdentityUserRegistration : IDependencyInjectionRegister
     public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
     {
         services.AddIdentityUserConfiguration(configuration);
-        services.AddIdentity().AddEntityFrameworkIdentityUserConfiguration();
+        services.AddIdentity(configuration).AddEntityFrameworkIdentityUserConfiguration();
 
         return services;
     }

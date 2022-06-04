@@ -5,9 +5,9 @@ using OmegaFY.Blog.Domain.Entities.Users;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Repositories.Users;
 using OmegaFY.Blog.Infra.Authentication;
-using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Authentication.Users;
-using OmegaFY.Blog.Infra.Cache;
+using OmegaFY.Blog.Infra.Extensions;
 
 namespace OmegaFY.Blog.Application.Commands.Users.Login;
 
@@ -38,13 +38,10 @@ public class LoginCommandHandler : CommandHandlerMediatRBase<LoginCommandHandler
         if (user is null)
             throw new NotFoundException();
 
-        AuthenticationToken authenticationToken = await _authenticationService.LoginAsync(new LoginOptions(user.Id, user.Email, command.Password, user.DisplayName));
+        AuthenticationToken authToken = await _authenticationService.LoginAsync(new LoginInput(user.Id, user.Email, command.Password, user.DisplayName));
 
-        await _distributedCache.SetStringAsync(
-            CacheKeyGenerator.RefreshTokenKey(authenticationToken.RefreshToken),
-            authenticationToken.RefreshToken.ToString(),
-            cancellationToken);
+        await _distributedCache.SetAuthenticationTokenCacheAsync(authToken, cancellationToken);
 
-        return new LoginCommandResult(authenticationToken.Token, authenticationToken.RefreshToken);
+        return new LoginCommandResult(authToken.Token, authToken.TokenExpirationDate, authToken.RefreshToken, authToken.RefreshTokenExpirationDate);
     }
 }
