@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
+using OmegaFY.Blog.Infra.Authentication.Policies;
 
 namespace OmegaFY.Blog.WebAPI.Controllers.Base;
 
 [ApiController]
 [ApiConventionType(typeof(DefaultApiConventions))]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(PoliciesNamesConstants.BEARER_JWT_POLICY)]
 [Route("api/[controller]")]
 public abstract class ApiControllerBase<TController> : ControllerBase
 {

@@ -12,5 +12,7 @@ internal class JwtSettings
 
     public string Secret { get; set; }
 
-    public TimeSpan TimeToExpire { get; set; }
+    public TimeSpan TimeToExpireToken { get; set; }
+
+    public TimeSpan TimeToExpireRefreshToken { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,19 +14,15 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 
     public JwtSecurityTokenProvider(IOptions<JwtSettings> options) => _jwtSettings = options.Value;
 
-    public AuthenticationToken WriteToken(LoginOptions loginOptions)
-    {
-        JwtSecurityToken jwtSecurityToken = GenerateUserAuthenticationToken(loginOptions);
-        return new AuthenticationToken(new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken));
-    }
-
-    private JwtSecurityToken GenerateUserAuthenticationToken(LoginOptions loginOptions)
+    public AuthenticationToken WriteToken(LoginInput loginOptions)
     {
         long issuedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        long expiresInUnixTimeInSeconds = DateTimeOffset.UtcNow.Add(_jwtSettings.TimeToExpire).ToUnixTimeSeconds();
+        long expiresInUnixTimeInSeconds = DateTimeOffset.UtcNow.Add(_jwtSettings.TimeToExpireToken).ToUnixTimeSeconds();
 
-        DateTime expiresIn = DateTimeOffset.FromUnixTimeSeconds(expiresInUnixTimeInSeconds).UtcDateTime;
+        DateTime tokenExpiresIn = DateTimeOffset.FromUnixTimeSeconds(expiresInUnixTimeInSeconds).UtcDateTime;
+
+        DateTime refreshExpiresIn = tokenExpiresIn.Add(_jwtSettings.TimeToExpireRefreshToken);
 
         Claim[] userClaims = new Claim[]
         {
@@ -42,10 +39,10 @@ internal class JwtSecurityTokenProvider : IJwtProvider
         JwtSecurityToken token = new JwtSecurityToken(
             issuer: _jwtSettings.ValidIssuer,
             audience: _jwtSettings.ValidAudience,
-            expires: expiresIn,
+            expires: tokenExpiresIn,
             claims: userClaims,
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)), SecurityAlgorithms.HmacSha256Signature));
 
-        return token;
+        return new AuthenticationToken(new JwtSecurityTokenHandler().WriteToken(token), tokenExpiresIn, refreshExpiresIn);
     }
 }

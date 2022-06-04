@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,7 +18,7 @@ internal class AuthenticationService : IAuthenticationService
         _jwtProvider = jwtProvider;
     }
 
-    public async Task<AuthenticationToken> RegisterNewUserAsync(LoginOptions loginOptions, CancellationToken cancellationToken)
+    public async Task<AuthenticationToken> RegisterNewUserAsync(LoginInput loginOptions, CancellationToken cancellationToken)
     {
         bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginOptions.Email) is not null;
 
@@ -38,7 +38,7 @@ internal class AuthenticationService : IAuthenticationService
         return await LoginAsync(loginOptions);
     }
 
-    public async Task<AuthenticationToken> LoginAsync(LoginOptions loginOptions)
+    public async Task<AuthenticationToken> LoginAsync(LoginInput loginOptions)
     {
         IdentityUser identityUser = await _userManager.FindByEmailAsync(loginOptions.Email);
 

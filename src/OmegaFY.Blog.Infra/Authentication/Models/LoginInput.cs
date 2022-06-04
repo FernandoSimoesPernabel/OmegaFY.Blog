@@ -1,6 +1,6 @@
-﻿namespace OmegaFY.Blog.Infra.Authentication.Configs;
+﻿namespace OmegaFY.Blog.Infra.Authentication.Models;
 
-public readonly struct LoginOptions
+public readonly struct LoginInput
 {
     public Guid UserId { get; }
 
@@ -10,7 +10,7 @@ public readonly struct LoginOptions
 
     public string UserName { get; }
 
-    public LoginOptions(Guid userId, string email, string password, string userName)
+    public LoginInput(Guid userId, string email, string password, string userName)
     {
         UserId = userId;
         Email = email;

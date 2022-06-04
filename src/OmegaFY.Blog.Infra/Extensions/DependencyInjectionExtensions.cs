@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,13 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IJwtProvider, JwtSecurityTokenProvider>();
 
+        services.AddAuthorization(auth =>
+        {
+            auth.AddBearerJwtPolicy();
+        });
+
+        JwtSettings jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
+
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -48,35 +56,39 @@ public static class DependencyInjectionExtensions
             options.RequireHttpsMetadata = true;
             options.TokenValidationParameters = new TokenValidationParameters()
             {
+                ClockSkew = TimeSpan.Zero,
+                ValidateLifetime = true,
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidAudience = configuration["JwtSettings:ValidAudience"],
-                ValidIssuer = configuration["JwtSettings:ValidIssuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JwtSettings:Secret"]))
+                ValidAudience = jwtSettings.ValidAudience,
+                ValidIssuer = jwtSettings.ValidIssuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
             };
         });
 
         return services;
     }
 
-    public static IdentityBuilder AddIdentity(this IServiceCollection services)
+    public static IdentityBuilder AddIdentity(this IServiceCollection services, IConfiguration configuration)
     {
+        AuthenticationSettings authSettings = configuration.GetSection(nameof(AuthenticationSettings)).Get<AuthenticationSettings>();
+
         services.Configure<IdentityOptions>(options =>
         {
-            options.Password.RequireDigit = true;
-            options.Password.RequireLowercase = true;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = true;
-            options.Password.RequiredLength = 10;
-            options.Password.RequiredUniqueChars = 1;
+            options.Password.RequireDigit = authSettings.PasswordRequireDigit;
+            options.Password.RequireLowercase = authSettings.PasswordRequireLowercase;
+            options.Password.RequireNonAlphanumeric = authSettings.PasswordRequireNonAlphanumeric;
+            options.Password.RequireUppercase = authSettings.PasswordRequireUppercase;
+            options.Password.RequiredLength = authSettings.PasswordMinRequiredLength;
+            options.Password.RequiredUniqueChars = authSettings.PasswordRequiredUniqueChars;
 
-            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-            options.Lockout.MaxFailedAccessAttempts = 3;
+            options.Lockout.DefaultLockoutTimeSpan = authSettings.DefaultLockoutTimeSpan;
+            options.Lockout.MaxFailedAccessAttempts = authSettings.MaxFailedAccessAttempts;
 
-            options.User.RequireUniqueEmail = true;
+            options.User.RequireUniqueEmail = authSettings.RequireUniqueEmail;
 
-            //options.SignIn.RequireConfirmedEmail = true;
-            //options.SignIn.RequireConfirmedAccount = true;
+            options.SignIn.RequireConfirmedEmail = authSettings.RequireConfirmedEmail;
+            options.SignIn.RequireConfirmedAccount = authSettings.RequireConfirmedAccount;
         });
 
         return services.AddIdentity<IdentityUser, IdentityRole>();

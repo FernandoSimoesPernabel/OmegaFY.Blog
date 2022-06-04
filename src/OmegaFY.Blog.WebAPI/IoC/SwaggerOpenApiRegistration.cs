@@ -26,7 +26,7 @@ public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
-                Description = "Please enter a valid JWT",
+                Description = "JWT Authorization header using the Bearer scheme. Example: Authorization: Bearer token",
                 Name = "Authorization",
                 Type = SecuritySchemeType.Http,
                 BearerFormat = "JWT",
