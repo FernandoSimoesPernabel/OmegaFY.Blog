@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
 using OmegaFY.Blog.Application.Commands.Users.Login;
+using OmegaFY.Blog.Application.Commands.Users.Logoff;
+using OmegaFY.Blog.Application.Commands.Users.RefreshToken;
 using OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
@@ -30,7 +32,8 @@ public class UsersController : ApiControllerBase<PostsController>
 
     [AllowAnonymous]
     [HttpPost(nameof(Login))]
-    [ProducesResponseType(typeof(ApiResponse<>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<LoginCommandResult>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
     public async Task<IActionResult> Login(LoginInputModel inputModel, CancellationToken cancellationToken)
     {
         LoginCommand command = inputModel.ToCommand();
@@ -40,18 +43,26 @@ public class UsersController : ApiControllerBase<PostsController>
         return Ok(result);
     }
 
-    [HttpDelete(nameof(Logoff))]
-    [ProducesResponseType(typeof(ApiResponse<>), 200)]
-    public async Task<IActionResult> Logoff(CancellationToken cancellationToken)
+    [HttpDelete("[action]/{refreshToken:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<LogoffCommandResult>), 200)]
+    public async Task<IActionResult> Logoff([FromRoute] LogoffInputModel inputModel, CancellationToken cancellationToken)
     {
-        return Ok();
+        LogoffCommand command = inputModel.ToCommand();
+
+        LogoffCommandResult result = await _serviceBus.SendMessageAsync<LogoffCommand, LogoffCommandResult>(command, cancellationToken);
+
+        return Ok(result);
     }
 
     [HttpPost(nameof(RefreshToken))]
-    [ProducesResponseType(typeof(ApiResponse<>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<RefreshTokenCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
+    public async Task<IActionResult> RefreshToken([FromRoute] RefreshTokenInputModel inputModel, CancellationToken cancellationToken)
     {
-        return Ok();
+        RefreshTokenCommand command = inputModel.ToCommand();
+
+        RefreshTokenCommandResult result = await _serviceBus.SendMessageAsync<RefreshTokenCommand, RefreshTokenCommandResult>(command, cancellationToken);
+
+        return Ok(result);
     }
 }

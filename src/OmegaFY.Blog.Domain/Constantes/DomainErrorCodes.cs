@@ -2,6 +2,8 @@
 
 public class DomainErrorCodes
 {
+    public const string UNAUTHORIZED_ERROR_CODE = "401";
+
     public const string DOMAIN_ARGUMENT_ERROR_CODE = "400";
 
     public const string GENERIC_DOMAIN_ERROR_CODE = "400";

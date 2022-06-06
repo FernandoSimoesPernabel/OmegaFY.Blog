@@ -2,7 +2,7 @@
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Domain.Constantes;
 
-namespace OmegaFY.Blog.Application.Validations.Commands;
+namespace OmegaFY.Blog.Application.Validations.Commands.Posts;
 
 public class PublishPostValidator : AbstractValidator<PublishPostCommand>
 {

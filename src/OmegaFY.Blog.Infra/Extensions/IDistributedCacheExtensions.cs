@@ -24,10 +24,14 @@ public static class IDistributedCacheExtensions
         await distributedCache.SetStringAsync(key, valueAsJsonString, options, cancellationToken);
     }
 
-    public static async Task SetAuthenticationTokenCacheAsync(this IDistributedCache distributedCache, AuthenticationToken authToken, CancellationToken cancellationToken)
+    public static async Task SetAuthenticationTokenCacheAsync(
+        this IDistributedCache distributedCache, 
+        Guid userId, 
+        AuthenticationToken authToken, 
+        CancellationToken cancellationToken)
     {
         await distributedCache.SetAsync(
-            CacheKeyGenerator.RefreshTokenKey(authToken.RefreshToken),
+            CacheKeyGenerator.RefreshTokenKey(userId, authToken.RefreshToken),
             authToken,
             new DistributedCacheEntryOptions() { AbsoluteExpiration = authToken.RefreshTokenExpirationDate },
             cancellationToken);

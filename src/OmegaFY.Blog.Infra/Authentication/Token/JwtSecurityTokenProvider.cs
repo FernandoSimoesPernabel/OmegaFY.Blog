@@ -14,6 +14,11 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 
     public JwtSecurityTokenProvider(IOptions<JwtSettings> options) => _jwtSettings = options.Value;
 
+    public AuthenticationToken RefreshToken(string currentToken)
+    {
+        throw new NotImplementedException();
+    }
+
     public AuthenticationToken WriteToken(LoginInput loginOptions)
     {
         long issuedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
