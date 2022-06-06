@@ -32,6 +32,9 @@ public class ApiResponse<T>
         if (_errors.Any(erro => erro.Code == DomainErrorCodes.NOT_FOUND_ERROR_CODE))
             return StatusCodes.Status404NotFound;
 
+        if (_errors.Any(erro => erro.Code == DomainErrorCodes.UNAUTHORIZED_ERROR_CODE))
+            return StatusCodes.Status401Unauthorized;
+
         if (Succeeded)
             return StatusCodes.Status200OK;
 

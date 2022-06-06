@@ -2,6 +2,7 @@
 using FluentValidation.Results;
 using MediatR;
 using OmegaFY.Blog.Application.Result;
+using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Exceptions;
@@ -23,9 +24,9 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
             ValidationResult validationResult = _validator.Validate(request);
             return !validationResult.IsValid ? await ErrosFromValidationFailure(validationResult.Errors) : await next();
         }
-        catch (DomainException domainException)
+        catch (ErrorCodeException errorCodeException)
         {
-            return await ErrorsFromException(domainException.ErrorCode, domainException.GetErrorsMessagesFromInnerExceptions());
+            return await ErrorsFromException(errorCodeException.ErrorCode, errorCodeException.GetErrorsMessagesFromInnerExceptions());
         }
         catch (Exception ex)
         {

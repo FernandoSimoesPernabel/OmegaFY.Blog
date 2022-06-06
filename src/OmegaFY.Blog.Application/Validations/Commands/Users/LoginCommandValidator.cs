@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OmegaFY.Blog.Application.Validations.Commands;
+namespace OmegaFY.Blog.Application.Validations.Commands.Users;
 
 public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {

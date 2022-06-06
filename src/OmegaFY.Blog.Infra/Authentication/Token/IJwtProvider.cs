@@ -6,5 +6,7 @@ namespace OmegaFY.Blog.Infra.Authentication.Token;
 
 public interface IJwtProvider
 {
+    public AuthenticationToken RefreshToken(string currentToken);
+
     public AuthenticationToken WriteToken(LoginInput loginOptions);
 }
