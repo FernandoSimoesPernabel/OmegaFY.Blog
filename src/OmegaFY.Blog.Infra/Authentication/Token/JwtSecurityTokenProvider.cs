@@ -21,9 +21,11 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 
     public AuthenticationToken WriteToken(LoginInput loginOptions)
     {
-        long issuedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        DateTimeOffset utcNow = DateTimeOffset.UtcNow;
 
-        long expiresInUnixTimeInSeconds = DateTimeOffset.UtcNow.Add(_jwtSettings.TimeToExpireToken).ToUnixTimeSeconds();
+        long issuedAt = utcNow.ToUnixTimeSeconds();
+
+        long expiresInUnixTimeInSeconds = utcNow.Add(_jwtSettings.TimeToExpireToken).ToUnixTimeSeconds();
 
         DateTime tokenExpiresIn = DateTimeOffset.FromUnixTimeSeconds(expiresInUnixTimeInSeconds).UtcDateTime;
 
@@ -31,20 +33,18 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 
         Claim[] userClaims = new Claim[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, loginOptions.UserId.ToString()),
-            new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
-            new Claim(JwtRegisteredClaimNames.Exp, expiresInUnixTimeInSeconds.ToString()),
-            new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToString()),
             new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
+            new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
+            new Claim(JwtRegisteredClaimNames.Sub, loginOptions.UserId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, loginOptions.Email),
             new Claim(JwtRegisteredClaimNames.Name, loginOptions.UserName),
+            new Claim(JwtRegisteredClaimNames.Exp, expiresInUnixTimeInSeconds.ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToString()),
+            new Claim(JwtRegisteredClaimNames.Nbf, issuedAt.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         JwtSecurityToken token = new JwtSecurityToken(
-            issuer: _jwtSettings.ValidIssuer,
-            audience: _jwtSettings.ValidAudience,
-            expires: tokenExpiresIn,
             claims: userClaims,
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.Secret)), SecurityAlgorithms.HmacSha256Signature));
 
