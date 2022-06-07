@@ -60,8 +60,8 @@ public static class DependencyInjectionExtensions
                 ValidateLifetime = true,
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidAudience = jwtSettings.ValidAudience,
-                ValidIssuer = jwtSettings.ValidIssuer,
+                ValidAudience = jwtSettings.Audience,
+                ValidIssuer = jwtSettings.Issuer,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
             };
         });
