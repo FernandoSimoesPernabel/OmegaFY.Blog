@@ -18,32 +18,41 @@ internal class AuthenticationService : IAuthenticationService
         _jwtProvider = jwtProvider;
     }
 
-    public async Task<AuthenticationToken> RegisterNewUserAsync(LoginInput loginOptions, CancellationToken cancellationToken)
+    public async Task<AuthenticationToken> RegisterNewUserAsync(LoginInput loginInput, CancellationToken cancellationToken)
     {
-        bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginOptions.Email) is not null;
+        bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginInput.Email) is not null;
 
         if (userAlreadyRegister) throw new InvalidOperationException(); //TODO ver exception
 
         IdentityUser identityUser = new()
         {
-            Email = loginOptions.Email,
+            Email = loginInput.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = loginOptions.Email
+            UserName = loginInput.Email
         };
 
-        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginOptions.Password);
+        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginInput.Password);
 
         if (!createUserResult.Succeeded) throw new InvalidOperationException(); //TODO ver exception
 
-        return await LoginAsync(loginOptions);
+        return await LoginAsync(loginInput);
     }
 
-    public async Task<AuthenticationToken> LoginAsync(LoginInput loginOptions)
+    public async Task<AuthenticationToken> LoginAsync(LoginInput loginInput)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(loginOptions.Email);
+        IdentityUser identityUser = await _userManager.FindByEmailAsync(loginInput.Email);
 
-        if (identityUser is not null && !await _userManager.CheckPasswordAsync(identityUser, loginOptions.Password)) throw new InvalidOperationException(); //TODO ver exception
+        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password)) throw new InvalidOperationException(); //TODO ver exception
 
-        return _jwtProvider.WriteToken(loginOptions);
+        return _jwtProvider.WriteToken(loginInput);
+    }
+
+    public async Task<AuthenticationToken> RefreshTokenAsync(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput)
+    {
+        IdentityUser identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email);
+
+        if (identityUser is null) throw new InvalidOperationException(); //TODO ver exception
+
+        return _jwtProvider.RefreshToken(currentToken, refreshTokenInput);
     }
 }

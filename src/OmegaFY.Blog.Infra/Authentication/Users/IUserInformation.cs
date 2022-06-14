@@ -3,4 +3,6 @@
 public interface IUserInformation
 {
     public Guid? CurrentRequestUserId { get; }
+
+    public string Email { get; }
 }

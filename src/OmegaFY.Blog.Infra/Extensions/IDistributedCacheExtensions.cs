@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Cache.Keys;
 using System;
@@ -20,14 +21,14 @@ public static class IDistributedCacheExtensions
 
     public static async Task SetAsync<T>(this IDistributedCache distributedCache, string key, T value, DistributedCacheEntryOptions options, CancellationToken cancellationToken)
     {
-        string valueAsJsonString = JsonSerializer.Serialize(value);
+        string valueAsJsonString = value.ToJson();
         await distributedCache.SetStringAsync(key, valueAsJsonString, options, cancellationToken);
     }
 
     public static async Task SetAuthenticationTokenCacheAsync(
-        this IDistributedCache distributedCache, 
-        Guid userId, 
-        AuthenticationToken authToken, 
+        this IDistributedCache distributedCache,
+        Guid userId,
+        AuthenticationToken authToken,
         CancellationToken cancellationToken)
     {
         await distributedCache.SetAsync(

@@ -25,7 +25,7 @@ public class UsersController : ApiControllerBase<PostsController>
         RegisterNewUserCommand command = inputModel.ToCommand();
 
         RegisterNewUserCommandResult result =
-                        await _serviceBus.SendMessageAsync<RegisterNewUserCommand, RegisterNewUserCommandResult>(command, cancellationToken);
+            await _serviceBus.SendMessageAsync<RegisterNewUserCommand, RegisterNewUserCommandResult>(command, cancellationToken);
 
         return Ok(result);
     }
@@ -54,10 +54,11 @@ public class UsersController : ApiControllerBase<PostsController>
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpPost(nameof(RefreshToken))]
     [ProducesResponseType(typeof(ApiResponse<RefreshTokenCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> RefreshToken([FromRoute] RefreshTokenInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenInputModel inputModel, CancellationToken cancellationToken)
     {
         RefreshTokenCommand command = inputModel.ToCommand();
 
