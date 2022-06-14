@@ -22,34 +22,34 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         try
         {
             ValidationResult validationResult = _validator.Validate(request);
-            return !validationResult.IsValid ? await ErrosFromValidationFailure(validationResult.Errors) : await next();
+            return !validationResult.IsValid ? ErrosFromValidationFailure(validationResult.Errors) : await next();
         }
         catch (ErrorCodeException errorCodeException)
         {
-            return await ErrorsFromException(errorCodeException.ErrorCode, errorCodeException.GetErrorsMessagesFromInnerExceptions());
+            return ErrorsFromException(errorCodeException.ErrorCode, errorCodeException.GetErrorsMessagesFromInnerExceptions());
         }
         catch (Exception ex)
         {
-            return await ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
+            return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
         }
     }
 
-    private static async Task<TResult> ErrosFromValidationFailure(IEnumerable<ValidationFailure> failures)
+    private static TResult ErrosFromValidationFailure(IEnumerable<ValidationFailure> failures)
     {
         TResult result = CreateInstanceOfTResult();
 
         foreach (ValidationFailure failure in failures)
             result.AddError(failure.ErrorCode, failure.ErrorMessage);
 
-        return await result.ToTaskResult();
+        return result;
     }
 
-    private static async Task<TResult> ErrorsFromException(string errorCode, string errorMessage)
+    private static TResult ErrorsFromException(string errorCode, string errorMessage)
     {
         TResult result = CreateInstanceOfTResult();
         result.AddError(errorCode, errorMessage);
 
-        return await result.ToTaskResult();
+        return result;
     }
 
     private static TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult), Array.Empty<object>());

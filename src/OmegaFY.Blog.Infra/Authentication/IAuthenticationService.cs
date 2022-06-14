@@ -4,7 +4,9 @@ namespace OmegaFY.Blog.Infra.Authentication;
 
 public interface IAuthenticationService
 {
-    public Task<AuthenticationToken> RegisterNewUserAsync(LoginInput loginOptions, CancellationToken cancellationToken);
+    public Task<AuthenticationToken> RefreshTokenAsync(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput);
 
-    public Task<AuthenticationToken> LoginAsync(LoginInput loginOptions);
+    public Task<AuthenticationToken> RegisterNewUserAsync(LoginInput loginInput, CancellationToken cancellationToken);
+
+    public Task<AuthenticationToken> LoginAsync(LoginInput loginInput);
 }

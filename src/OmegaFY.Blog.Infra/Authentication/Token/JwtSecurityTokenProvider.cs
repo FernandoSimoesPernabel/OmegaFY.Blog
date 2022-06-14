@@ -12,14 +12,35 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 {
     private readonly JwtSettings _jwtSettings;
 
-    public JwtSecurityTokenProvider(IOptions<JwtSettings> options) => _jwtSettings = options.Value;
+    private readonly TokenValidationParameters _tokenValidationParameters;
 
-    public AuthenticationToken RefreshToken(string currentToken)
+    public JwtSecurityTokenProvider(IOptions<JwtSettings> options, TokenValidationParameters tokenValidationParameters)
     {
-        throw new NotImplementedException();
+        _jwtSettings = options.Value;
+        _tokenValidationParameters = tokenValidationParameters;
     }
 
-    public AuthenticationToken WriteToken(LoginInput loginOptions)
+    public AuthenticationToken RefreshToken(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput)
+    {
+        ClaimsPrincipal claims = new JwtSecurityTokenHandler().ValidateToken(currentToken.Token, _tokenValidationParameters, out SecurityToken securityToken);
+
+        if (claims is null)
+            throw new InvalidOperationException();
+
+        if (!(securityToken is JwtSecurityToken jwtSecurityToken && jwtSecurityToken.Header.Alg == SecurityAlgorithms.HmacSha256Signature))
+            throw new InvalidCastException();
+
+        if (currentToken.RefreshTokenExpirationDate < DateTime.UtcNow)
+            throw new InvalidOperationException();
+
+        AuthenticationToken newToken = WriteToken(refreshTokenInput.UserId, refreshTokenInput.Email, refreshTokenInput.UserName);
+
+        return new AuthenticationToken(newToken.Token, newToken.TokenExpirationDate, currentToken.RefreshToken, currentToken.RefreshTokenExpirationDate);
+    }
+
+    public AuthenticationToken WriteToken(LoginInput loginInput) => WriteToken(loginInput.UserId, loginInput.Email, loginInput.UserName);
+
+    public AuthenticationToken WriteToken(Guid userId, string email, string username)
     {
         DateTimeOffset utcNow = DateTimeOffset.UtcNow;
 
@@ -35,9 +56,9 @@ internal class JwtSecurityTokenProvider : IJwtProvider
         {
             new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
             new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
-            new Claim(JwtRegisteredClaimNames.Sub, loginOptions.UserId.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, loginOptions.Email),
-            new Claim(JwtRegisteredClaimNames.Name, loginOptions.UserName),
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, email),
+            new Claim(JwtRegisteredClaimNames.Name, username),
             new Claim(JwtRegisteredClaimNames.Exp, expiresInUnixTimeInSeconds.ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToString()),
             new Claim(JwtRegisteredClaimNames.Nbf, issuedAt.ToString()),

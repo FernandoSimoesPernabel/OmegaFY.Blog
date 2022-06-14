@@ -4,9 +4,11 @@ using System.Security.Claims;
 
 namespace OmegaFY.Blog.Infra.Authentication.Token;
 
-public interface IJwtProvider
+internal interface IJwtProvider
 {
-    public AuthenticationToken RefreshToken(string currentToken);
+    public AuthenticationToken RefreshToken(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput);
 
     public AuthenticationToken WriteToken(LoginInput loginOptions);
+
+    public AuthenticationToken WriteToken(Guid userId, string email, string username);
 }

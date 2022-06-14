@@ -11,10 +11,14 @@ public readonly struct AuthenticationToken
     public DateTime RefreshTokenExpirationDate { get; }
 
     public AuthenticationToken(string token, DateTime tokenExpirationDate, DateTime refreshTokenExpirationDate)
+        : this(token, tokenExpirationDate, Guid.NewGuid(), refreshTokenExpirationDate) { }
+
+    [System.Text.Json.Serialization.JsonConstructor]
+    public AuthenticationToken(string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
     {
         Token = token;
         TokenExpirationDate = tokenExpirationDate;
-        RefreshToken = Guid.NewGuid();
+        RefreshToken = refreshToken;
         RefreshTokenExpirationDate = refreshTokenExpirationDate;
     }
 }

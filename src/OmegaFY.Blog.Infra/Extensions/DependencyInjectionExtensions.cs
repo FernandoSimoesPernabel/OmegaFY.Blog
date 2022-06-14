@@ -45,6 +45,17 @@ public static class DependencyInjectionExtensions
 
         JwtSettings jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
 
+        TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
+        {
+            ClockSkew = TimeSpan.Zero,
+            ValidateLifetime = true,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidAudience = jwtSettings.Audience,
+            ValidIssuer = jwtSettings.Issuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
+        };
+
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,17 +65,10 @@ public static class DependencyInjectionExtensions
         {
             options.SaveToken = true;
             options.RequireHttpsMetadata = true;
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ClockSkew = TimeSpan.Zero,
-                ValidateLifetime = true,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidAudience = jwtSettings.Audience,
-                ValidIssuer = jwtSettings.Issuer,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
-            };
+            options.TokenValidationParameters = tokenValidationParameters;
         });
+
+        services.AddSingleton(tokenValidationParameters);
 
         return services;
     }
