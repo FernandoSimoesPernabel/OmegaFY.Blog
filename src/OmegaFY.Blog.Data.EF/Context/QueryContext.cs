@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
-using OmegaFY.Blog.Application.Queries.Posts.GetPost;
+using OmegaFY.Blog.Data.EF.Mappings.Queries;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
@@ -10,8 +9,13 @@ internal class QueryContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<GetPostQueryResult>().HasNoKey();
-        modelBuilder.Entity<GetAllPostsQueryResult>().HasNoKey();
+        modelBuilder.ApplyConfiguration(new AvaliationDatabaseModelMapping());
+        modelBuilder.ApplyConfiguration(new CommentDatabaseModelMapping());
+        //modelBuilder.ApplyConfiguration(new DonationDatabaseModelMapping());
+        modelBuilder.ApplyConfiguration(new PostDatabaseModelMapping());
+        modelBuilder.ApplyConfiguration(new ReactionDatabaseModelMapping());
+        modelBuilder.ApplyConfiguration(new SharedDatabaseModelMapping());
+        modelBuilder.ApplyConfiguration(new UserDatabaseModelMapping());
 
         base.OnModelCreating(modelBuilder);
     }
