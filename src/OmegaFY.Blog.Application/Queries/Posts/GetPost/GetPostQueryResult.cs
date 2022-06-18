@@ -8,6 +8,8 @@ public class GetPostQueryResult : GenericResult, IQueryResult
 
     public Guid AuthorId { get; set; }
 
+    public string AuthorName { get; set; }
+
     public string Title { get; set; }
 
     public string SubTitle { get; set; }

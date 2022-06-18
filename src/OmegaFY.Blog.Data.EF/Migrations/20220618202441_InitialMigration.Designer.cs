@@ -11,7 +11,7 @@ using OmegaFY.Blog.Data.EF.Context;
 namespace OmegaFY.Blog.Data.EF.Migrations
 {
     [DbContext(typeof(QueryContext))]
-    [Migration("20220618194659_InitialMigration")]
+    [Migration("20220618202441_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.HasIndex("PostId");
 
                     b.ToTable("Avaliations", (string)null);
@@ -68,6 +70,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("PostId");
 
@@ -110,6 +114,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Posts", (string)null);
                 });
 
@@ -129,6 +135,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CommentId");
 
@@ -150,6 +158,8 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("PostId", "AuthorId");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("PostId");
 
@@ -179,38 +189,81 @@ namespace OmegaFY.Blog.Data.EF.Migrations
 
             modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.AvaliationDatabaseModel", b =>
                 {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Avaliations")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
                         .WithMany("Avaliations")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", b =>
                 {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", b =>
+                {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Posts")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.ReactionDatabaseModel", b =>
                 {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Reactions")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", null)
                         .WithMany("Reactions")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.SharedDatabaseModel", b =>
                 {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Shareds")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
                         .WithMany("Shareds")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", b =>
@@ -223,6 +276,19 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.Navigation("Avaliations");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("Shareds");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", b =>
+                {
+                    b.Navigation("Avaliations");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Reactions");
 
                     b.Navigation("Shareds");
                 });

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OmegaFY.Blog.Data.EF.Mappings.Queries;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
-internal class QueryContext : DbContext
+internal class QueryContext : IdentityDbContext<IdentityUser>
 {
     public QueryContext(DbContextOptions<QueryContext> options) : base(options) { }
 

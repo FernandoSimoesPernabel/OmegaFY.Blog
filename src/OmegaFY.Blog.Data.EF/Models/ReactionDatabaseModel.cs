@@ -10,5 +10,7 @@ public class ReactionDatabaseModel
 
     public Guid AuthorId { get; set; }
 
+    public UserDatabaseModel Author { get; set; }
+
     public Reactions CommentReaction { get; set; }
 }

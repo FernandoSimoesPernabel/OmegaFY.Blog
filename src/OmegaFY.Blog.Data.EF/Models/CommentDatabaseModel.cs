@@ -8,6 +8,8 @@ public class CommentDatabaseModel
 
     public Guid AuthorId { get; set; }
 
+    public UserDatabaseModel Author { get; set; }
+
     public string Content { get; set; }
 
     public DateTime DateOfCreation { get; set; }

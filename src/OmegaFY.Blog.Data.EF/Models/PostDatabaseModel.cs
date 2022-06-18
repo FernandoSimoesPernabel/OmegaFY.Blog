@@ -12,6 +12,8 @@ public class PostDatabaseModel
 
     public Guid AuthorId { get; set; }
 
+    public UserDatabaseModel Author { get; set; }
+
     public string Title { get; set; }
 
     public string SubTitle { get; set; }

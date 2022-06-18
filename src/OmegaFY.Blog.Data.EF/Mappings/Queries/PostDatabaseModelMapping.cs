@@ -13,9 +13,9 @@ public class PostDatabaseModelMapping : IEntityTypeConfiguration<PostDatabaseMod
 
         builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
-        builder.Property(x => x.Hidden).IsRequired();
-
         builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
+
+        builder.Property(x => x.Hidden).IsRequired();
 
         builder.Property(x => x.Content).HasColumnType("text").IsRequired();
 
@@ -28,6 +28,8 @@ public class PostDatabaseModelMapping : IEntityTypeConfiguration<PostDatabaseMod
         builder.Property(x => x.DateOfModification).HasColumnType("datetime").IsRequired(false);
 
         builder.Property(x => x.AverageRate).HasColumnType("numeric").IsRequired().HasDefaultValue(0);
+
+        builder.HasOne(x => x.Author).WithMany(x => x.Posts).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(x => x.Avaliations).WithOne().HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.NoAction);
 

@@ -10,6 +10,8 @@ public class AvaliationDatabaseModel
 
     public Guid AuthorId { get; set; }
 
+    public UserDatabaseModel Author { get; set; }
+
     public DateTime DateOfCreation { get; set; }
 
     public DateTime? DateOfModification { get; set; }

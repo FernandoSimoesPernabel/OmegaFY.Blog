@@ -4,6 +4,7 @@ using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Models;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -11,67 +12,57 @@ internal class PostQueryProvider : IPostQueryProvider
 {
     private readonly QueryContext _context;
 
-    public PostQueryProvider(QueryContext context)
-    {
-        _context = context;
-    }
+    public PostQueryProvider(QueryContext context) => _context = context;
 
     public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        //TODO mapear para classes e usar LINQ
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking();
 
-        int totalOfItens = await _context.Set<GetAllPostsQueryResult>().FromSqlInterpolated($"SELECT * FROM Posts").CountAsync(cancellationToken);
+        if (request.StartDateOfCreation.HasValue && request.EndDateOfCreation.HasValue)
+            query = query.Where(x => x.DateOfCreation >= request.StartDateOfCreation.Value && x.DateOfCreation <= request.EndDateOfCreation.Value);
+
+        if (request.AuthorId.HasValue)
+            query = query.Where(x => x.Author.Id == request.AuthorId.Value);
+
+        int totalOfItens = await query.CountAsync(cancellationToken);
 
         PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
 
-        GetAllPostsQueryResult[] results = await _context.Set<GetAllPostsQueryResult>()
-            .FromSqlInterpolated(@$"
-                SELECT
-                    Id,
-                    Title,
-                    AuthorId,
-                    DateOfCreation
-
-                FROM
-                    Posts
-
-                ORDER BY
-                    DateOfCreation DESC
-
-                LIMIT 
-                    {request.PageSize} 
-
-                OFFSET 
-                    {pagedResultInfo.ItemsToSkip()}")
+        GetAllPostsQueryResult[] result =
+            await query.Select(x => new GetAllPostsQueryResult()
+            {
+                Id = x.Id,
+                AuthorId = x.Author.Id,
+                AuthorName = x.Author.DisplayName,
+                DateOfCreation = x.DateOfCreation,
+                Title = x.Title
+            })
+            .Skip(pagedResultInfo.ItemsToSkip())
+            .Take(request.PageSize)
             .ToArrayAsync(cancellationToken);
 
-        return new PagedResult<GetAllPostsQueryResult>(pagedResultInfo, results);
+        return new PagedResult<GetAllPostsQueryResult>(pagedResultInfo, result);
     }
 
     public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
     {
-        //TODO mapear para classes e usar LINQ
-
-        return await _context.Set<GetPostQueryResult>()
-            .FromSqlInterpolated(@$"
-                SELECT 
-                    Id,
-                    AuthorId,
-                    Title, 
-                    SubTitle,
-                    Content,
-                    DateOfCreation,
-                    DateOfModification,
-                    AverageRate,
-                    (SELECT COUNT(1) AS Q FROM Avaliations WHERE PostId = P.Id) AS Avaliations,
-                    (SELECT COUNT(1) AS Q FROM Comments WHERE PostId = P.Id) AS Comments,
-                    (SELECT COUNT(1) AS Q FROM Shares WHERE PostId = P.Id) AS Shares
-
-                FROM 
-                    Posts AS P
-
-                WHERE 
-                    Id = {id}")
+        return await _context.Set<PostDatabaseModel>().AsNoTracking()
+            .Where(x => x.Id == id)
+            .Select(x => new GetPostQueryResult()
+            {
+                Id = x.Id,
+                AuthorId = x.Author.Id,
+                AuthorName = x.Author.DisplayName,
+                Avaliations = x.Avaliations.Count,
+                AverageRate = x.AverageRate,
+                Comments = x.Comments.Count,
+                Content = x.Content,
+                DateOfCreation = x.DateOfCreation,
+                DateOfModification = x.DateOfModification,
+                Shares = x.Shareds.Count,
+                SubTitle = x.SubTitle,
+                Title = x.Title
+            })
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

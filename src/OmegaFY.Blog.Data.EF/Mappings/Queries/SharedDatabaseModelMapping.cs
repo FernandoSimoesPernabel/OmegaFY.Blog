@@ -16,7 +16,11 @@ public class SharedDatabaseModelMapping : IEntityTypeConfiguration<SharedDatabas
 
         builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
 
+        builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
+
         builder.Property(x => x.DateAndTimeOfShare).HasColumnType("datetime").IsRequired();
+
+        builder.HasOne(x => x.Author).WithMany(x => x.Shareds).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.NoAction);
 
         builder.ToTable("Shares");
     }

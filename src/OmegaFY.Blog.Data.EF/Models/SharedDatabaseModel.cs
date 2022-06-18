@@ -8,5 +8,7 @@ public class SharedDatabaseModel
 
     public Guid AuthorId { get; set; }
 
+    public UserDatabaseModel Author { get; set; }
+
     public DateTime DateAndTimeOfShare { get; set; }
 }

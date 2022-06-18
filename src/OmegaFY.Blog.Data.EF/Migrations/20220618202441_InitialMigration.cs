@@ -10,6 +10,19 @@ namespace OmegaFY.Blog.Data.EF.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    Email = table.Column<string>(type: "varchar(320)", nullable: false),
+                    DisplayName = table.Column<string>(type: "varchar(100)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -26,19 +39,11 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    Email = table.Column<string>(type: "varchar(320)", nullable: false),
-                    DisplayName = table.Column<string>(type: "varchar(100)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -59,6 +64,11 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         name: "FK_Avaliations_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Avaliations_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -81,6 +91,11 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -99,6 +114,11 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         name: "FK_Shares_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Shares_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -119,7 +139,17 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reactions_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Avaliations_AuthorId",
+                table: "Avaliations",
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Avaliations_PostId",
@@ -127,14 +157,34 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_AuthorId",
+                table: "Comments",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
                 table: "Comments",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Posts_AuthorId",
+                table: "Posts",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reactions_AuthorId",
+                table: "Reactions",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reactions_CommentId",
                 table: "Reactions",
                 column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shares_AuthorId",
+                table: "Shares",
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shares_PostId",
@@ -160,13 +210,13 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "Shares");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
