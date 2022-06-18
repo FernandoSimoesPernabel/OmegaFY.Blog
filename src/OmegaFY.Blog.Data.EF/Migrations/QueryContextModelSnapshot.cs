@@ -2,22 +2,20 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OmegaFY.Blog.Data.EF.Context;
 
 #nullable disable
 
-namespace OmegaFY.Blog.Data.EF.Migrations.Users
+namespace OmegaFY.Blog.Data.EF.Migrations
 {
-    [DbContext(typeof(UsersContext))]
-    [Migration("20220601172541_Add_Email_Index_Unique")]
-    partial class Add_Email_Index_Unique
+    [DbContext(typeof(QueryContext))]
+    partial class QueryContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -211,7 +209,154 @@ namespace OmegaFY.Blog.Data.EF.Migrations.Users
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("OmegaFY.Blog.Domain.Entities.Users.User", b =>
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.AvaliationDatabaseModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DateOfModification")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<byte>("Rate")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Avaliations", (string)null);
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DateOfModification")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("varchar(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments", (string)null);
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<decimal>("AverageRate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("numeric")
+                        .HasDefaultValue(0m);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DateOfModification")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("Hidden")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Posts", (string)null);
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.ReactionDatabaseModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<Guid>("CommentId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("CommentReaction")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("Reactions", (string)null);
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.SharedDatabaseModel", b =>
+                {
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<DateTime>("DateAndTimeOfShare")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PostId", "AuthorId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Shares", (string)null);
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("varchar(36)");
@@ -281,6 +426,112 @@ namespace OmegaFY.Blog.Data.EF.Migrations.Users
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.AvaliationDatabaseModel", b =>
+                {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Avaliations")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
+                        .WithMany("Avaliations")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", b =>
+                {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", b =>
+                {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Posts")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.ReactionDatabaseModel", b =>
+                {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Reactions")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", null)
+                        .WithMany("Reactions")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.SharedDatabaseModel", b =>
+                {
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
+                        .WithMany("Shareds")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
+                        .WithMany("Shareds")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", b =>
+                {
+                    b.Navigation("Reactions");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", b =>
+                {
+                    b.Navigation("Avaliations");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Shareds");
+                });
+
+            modelBuilder.Entity("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", b =>
+                {
+                    b.Navigation("Avaliations");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("Shareds");
                 });
 #pragma warning restore 612, 618
         }

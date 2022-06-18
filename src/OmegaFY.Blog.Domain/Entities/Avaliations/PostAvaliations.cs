@@ -9,7 +9,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public IReadOnlyCollection<Avaliation> Avaliations => _avaliations.AsReadOnly();
 
-    public int AverageRate { get; private set; }
+    public decimal AverageRate { get; private set; }
 
     protected PostAvaliations() => _avaliations = new List<Avaliation>();
 
@@ -30,7 +30,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
         _avaliations.Add(avaliation);
 
-        AverageRate = (int)_avaliations.Average(x => (int)x.Rate);
+        AverageRate = _avaliations.Average(x => (decimal)x.Rate);
     }
 
     public void ChangeUserRating(Guid avaliationId, Stars newRate)

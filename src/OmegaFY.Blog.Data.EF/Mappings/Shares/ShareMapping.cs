@@ -16,7 +16,7 @@ public class ShareMapping : IEntityTypeConfiguration<Shared>
 
         builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
 
-        builder.Property(x => x.DateAndTimeOfShare).HasColumnType("datetime").IsRequired();
+        builder.Property(x => x.DateAndTimeOfShare).IsRequired();
 
         builder.ToTable("Shares");
     }

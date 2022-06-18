@@ -28,7 +28,7 @@ public class PostMapping : IEntityTypeConfiguration<Post>
         builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
         {
             modificationDetails.Property(x => x.DateOfCreation).HasColumnType("datetime").HasColumnName("DateOfCreation").IsRequired();
-            modificationDetails.Property(x => x.DateOfModification).HasColumnType("datetime").HasColumnName("DateOfModification").IsRequired();
+            modificationDetails.Property(x => x.DateOfModification).HasColumnType("datetime").HasColumnName("DateOfModification").IsRequired(false);
         });
 
         builder.ToTable("Posts");

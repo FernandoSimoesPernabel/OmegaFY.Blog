@@ -8,6 +8,8 @@ public class GetPostQueryResult : GenericResult, IQueryResult
 
     public Guid AuthorId { get; set; }
 
+    public string AuthorName { get; set; }
+
     public string Title { get; set; }
 
     public string SubTitle { get; set; }
@@ -18,7 +20,7 @@ public class GetPostQueryResult : GenericResult, IQueryResult
 
     public DateTime? DateOfModification { get; set; }
 
-    public int AverageRate { get; set; }
+    public decimal AverageRate { get; set; }
 
     public int Avaliations { get; set; }
 

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace OmegaFY.Blog.Data.EF.Migrations.Users
+namespace OmegaFY.Blog.Data.EF.Migrations
 {
-    public partial class AspnetIdentity_Initial_Database : Migration
+    public partial class AddIndentityTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
