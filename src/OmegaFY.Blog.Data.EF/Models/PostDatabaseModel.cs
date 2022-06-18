@@ -24,6 +24,8 @@ public class PostDatabaseModel
 
     public bool Hidden { get; set; }
 
+    public decimal AverageRate { get; set; }
+
     public ICollection<AvaliationDatabaseModel> Avaliations { get; set; }
 
     public ICollection<CommentDatabaseModel> Comments { get; set; }
