@@ -13,4 +13,6 @@ public class DomainErrorCodes
     public const string NOT_DOMAIN_ERROR_CODE = "500";
 
     public const string NOT_FOUND_ERROR_CODE = "404";
+
+    public const string ENTITY_CONFLICTED_ERROR_CODE = "409";
 }

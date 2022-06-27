@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace OmegaFY.Blog.Infra.Authentication.Configs;
 
-namespace OmegaFY.Blog.Infra.Authentication.Configs;
-
-internal class AuthenticationSettings
+public class AuthenticationSettings
 {
     public bool PasswordRequireDigit { get; set; }
 
@@ -17,6 +11,8 @@ internal class AuthenticationSettings
     public bool PasswordRequireUppercase { get; set; }
 
     public byte PasswordMinRequiredLength { get; set; }
+
+    public byte PasswordMaxRequiredLength { get; set; }
 
     public byte PasswordRequiredUniqueChars { get; set; }
 

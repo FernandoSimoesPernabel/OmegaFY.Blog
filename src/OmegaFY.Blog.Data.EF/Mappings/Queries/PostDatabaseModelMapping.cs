@@ -19,9 +19,9 @@ public class PostDatabaseModelMapping : IEntityTypeConfiguration<PostDatabaseMod
 
         builder.Property(x => x.Content).HasColumnType("text").IsRequired();
 
-        builder.Property(x => x.Title).HasColumnType($"varchar({PostConstants.MAX_TITLE_SIZE})").IsRequired();
+        builder.Property(x => x.Title).HasColumnType($"varchar({PostConstants.MAX_TITLE_LENGTH})").IsRequired();
 
-        builder.Property(x => x.SubTitle).HasColumnType($"varchar({PostConstants.MAX_SUBTITLE_SIZE})").IsRequired();
+        builder.Property(x => x.SubTitle).HasColumnType($"varchar({PostConstants.MAX_SUBTITLE_LENGTH})").IsRequired();
 
         builder.Property(x => x.DateOfCreation).HasColumnType("datetime").IsRequired();
 

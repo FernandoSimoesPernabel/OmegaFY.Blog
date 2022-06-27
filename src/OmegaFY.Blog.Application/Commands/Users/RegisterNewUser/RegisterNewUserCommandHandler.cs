@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Domain.Entities.Users;
+using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Repositories.Users;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Models;
@@ -32,6 +33,9 @@ public class RegisterNewUserCommandHandler : CommandHandlerMediatRBase<RegisterN
 
     public override async Task<RegisterNewUserCommandResult> HandleAsync(RegisterNewUserCommand command, CancellationToken cancellationToken)
     {
+        if (await _repository.CheckIfUserAlreadyExistsAsync(command.Email, cancellationToken))
+            throw new ConflictedException();
+
         User newUser = new User(command.Email, command.DisplayName);
 
         await _repository.CreateUserAsync(newUser, cancellationToken);
