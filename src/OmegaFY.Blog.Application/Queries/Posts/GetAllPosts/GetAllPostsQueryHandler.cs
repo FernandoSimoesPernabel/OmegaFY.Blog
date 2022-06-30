@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Queries.Base;
-using OmegaFY.Blog.Application.Queries.Pagination;
+using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Infra.Authentication.Users;
 

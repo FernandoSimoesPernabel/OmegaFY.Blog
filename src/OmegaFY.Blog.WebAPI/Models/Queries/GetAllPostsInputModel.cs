@@ -1,4 +1,4 @@
-﻿using OmegaFY.Blog.Application.Queries.Pagination;
+﻿using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 
 namespace OmegaFY.Blog.WebAPI.Models.Queries;

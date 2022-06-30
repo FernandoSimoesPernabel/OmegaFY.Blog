@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using OmegaFY.Blog.Application.Queries.Pagination;
+using OmegaFY.Blog.Application.Queries.Base.Pagination;
 
 namespace OmegaFY.Blog.Application.Queries.Base;
 
