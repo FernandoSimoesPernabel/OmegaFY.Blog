@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OmegaFY.Blog.Application.Queries.Pagination;
+using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
@@ -62,7 +62,6 @@ internal class PostQueryProvider : IPostQueryProvider
                 Shares = x.Shareds.Count,
                 SubTitle = x.SubTitle,
                 Title = x.Title
-            })
-            .FirstOrDefaultAsync(cancellationToken);
+            }).FirstOrDefaultAsync(cancellationToken);
     }
 }
