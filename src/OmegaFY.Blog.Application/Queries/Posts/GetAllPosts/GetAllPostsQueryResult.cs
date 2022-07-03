@@ -13,4 +13,6 @@ public class GetAllPostsQueryResult : GenericResult, IQueryResult
     public string AuthorName { get; set; }
 
     public DateTime DateOfCreation { get; set; }
+
+    public decimal AverageRate { get; set; }
 }

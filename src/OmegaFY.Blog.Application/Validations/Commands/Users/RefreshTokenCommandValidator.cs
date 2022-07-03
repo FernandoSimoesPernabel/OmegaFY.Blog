@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
 using OmegaFY.Blog.Application.Commands.Users.RefreshToken;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Validations.Commands.Users;
 
@@ -12,6 +7,10 @@ public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenComman
 {
     public RefreshTokenCommandValidator()
     {
+        RuleFor(x => x.RefreshToken).NotEmpty();
 
+        RuleFor(x => x.CurrentToken).NotEmpty();
+
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

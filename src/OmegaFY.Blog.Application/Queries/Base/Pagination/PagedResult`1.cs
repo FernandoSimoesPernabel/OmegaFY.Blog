@@ -8,7 +8,7 @@ public class PagedResult<TResult> : GenericResult, IQueryResult
 
     public PagedResultInfo ResultInfo { get; }
 
-    protected PagedResult() { }
+    public PagedResult() { }
 
     public PagedResult(PagedResultInfo resultInfo, TResult[] results)
     {

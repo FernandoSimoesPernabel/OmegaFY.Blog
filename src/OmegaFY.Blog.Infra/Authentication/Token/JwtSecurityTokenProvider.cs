@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Models;
+using OmegaFY.Blog.Infra.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -25,13 +26,13 @@ internal class JwtSecurityTokenProvider : IJwtProvider
         ClaimsPrincipal claims = new JwtSecurityTokenHandler().ValidateToken(currentToken.Token, _tokenValidationParameters, out SecurityToken securityToken);
 
         if (claims is null)
-            throw new InvalidOperationException();
+            throw new UnauthorizedException();
 
         if (!(securityToken is JwtSecurityToken jwtSecurityToken && jwtSecurityToken.Header.Alg == SecurityAlgorithms.HmacSha256Signature))
-            throw new InvalidCastException();
+            throw new UnauthorizedException();
 
         if (currentToken.RefreshTokenExpirationDate < DateTime.UtcNow)
-            throw new InvalidOperationException();
+            throw new UnauthorizedException();
 
         AuthenticationToken newToken = WriteToken(refreshTokenInput.UserId, refreshTokenInput.Email, refreshTokenInput.UserName);
 

@@ -32,6 +32,7 @@ internal class PostQueryProvider : IPostQueryProvider
             await query.Select(x => new GetAllPostsQueryResult()
             {
                 Id = x.Id,
+                AverageRate = x.AverageRate,
                 AuthorId = x.Author.Id,
                 AuthorName = x.Author.DisplayName,
                 DateOfCreation = x.DateOfCreation,

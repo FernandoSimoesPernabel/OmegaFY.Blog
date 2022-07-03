@@ -21,8 +21,8 @@ public class PostMapping : IEntityTypeConfiguration<Post>
 
         builder.OwnsOne(x => x.Header, header =>
         {
-            header.Property(x => x.Title).HasColumnName("Title").HasColumnType($"varchar({PostConstants.MAX_TITLE_SIZE})").IsRequired();
-            header.Property(x => x.SubTitle).HasColumnName("SubTitle").HasColumnType($"varchar({PostConstants.MAX_SUBTITLE_SIZE})").IsRequired();
+            header.Property(x => x.Title).HasColumnName("Title").HasColumnType($"varchar({PostConstants.MAX_TITLE_LENGTH})").IsRequired();
+            header.Property(x => x.SubTitle).HasColumnName("SubTitle").HasColumnType($"varchar({PostConstants.MAX_SUBTITLE_LENGTH})").IsRequired();
         });
 
         builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>

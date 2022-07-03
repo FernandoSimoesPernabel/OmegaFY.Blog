@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Authentication.Token;
+using OmegaFY.Blog.Infra.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -22,7 +23,8 @@ internal class AuthenticationService : IAuthenticationService
     {
         bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginInput.Email) is not null;
 
-        if (userAlreadyRegister) throw new InvalidOperationException(); //TODO ver exception
+        if (userAlreadyRegister)
+            throw new ConflictedException();
 
         IdentityUser identityUser = new()
         {
@@ -33,7 +35,8 @@ internal class AuthenticationService : IAuthenticationService
 
         IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginInput.Password);
 
-        if (!createUserResult.Succeeded) throw new InvalidOperationException(); //TODO ver exception
+        if (!createUserResult.Succeeded)
+            throw new UnableToCreateUserOnIdentityException();
 
         return await LoginAsync(loginInput);
     }
@@ -42,7 +45,8 @@ internal class AuthenticationService : IAuthenticationService
     {
         IdentityUser identityUser = await _userManager.FindByEmailAsync(loginInput.Email);
 
-        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password)) throw new InvalidOperationException(); //TODO ver exception
+        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password))
+            throw new UnauthorizedException();
 
         return _jwtProvider.WriteToken(loginInput);
     }
@@ -51,7 +55,8 @@ internal class AuthenticationService : IAuthenticationService
     {
         IdentityUser identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email);
 
-        if (identityUser is null) throw new InvalidOperationException(); //TODO ver exception
+        if (identityUser is null)
+            throw new UnauthorizedException();
 
         return _jwtProvider.RefreshToken(currentToken, refreshTokenInput);
     }

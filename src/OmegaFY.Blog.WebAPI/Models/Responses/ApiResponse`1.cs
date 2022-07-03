@@ -22,21 +22,23 @@ public class ApiResponse<T>
 
     public ApiResponse(string code, string mesage) : this() => _errors.Add(new ValidationError(code, mesage));
 
+    //TODO pensar melhor nisso do codigo, provavelmente trocar para texto mesmo (NotFound, BadRequest).
     public int StatusCode()
     {
-        if (_errors.Any(erro => erro.Code.In(DomainErrorCodes.GENERIC_DOMAIN_ERROR_CODE,
-                                             DomainErrorCodes.INVALID_OPERATION_ERROR_CODE,
-                                             DomainErrorCodes.DOMAIN_ARGUMENT_ERROR_CODE)))
-            return StatusCodes.Status400BadRequest;
-
-        if (_errors.Any(erro => erro.Code == DomainErrorCodes.NOT_FOUND_ERROR_CODE))
-            return StatusCodes.Status404NotFound;
-
-        if (_errors.Any(erro => erro.Code == DomainErrorCodes.UNAUTHORIZED_ERROR_CODE))
-            return StatusCodes.Status401Unauthorized;
-
         if (Succeeded)
             return StatusCodes.Status200OK;
+
+        if (_errors.Any(erro => erro.Code == "400"))
+            return StatusCodes.Status400BadRequest;
+
+        if (_errors.Any(erro => erro.Code == "404"))
+            return StatusCodes.Status404NotFound;
+
+        if (_errors.Any(erro => erro.Code == "409"))
+            return StatusCodes.Status409Conflict;
+
+        if (_errors.Any(erro => erro.Code == "401"))
+            return StatusCodes.Status401Unauthorized;
 
         return StatusCodes.Status500InternalServerError;
     }

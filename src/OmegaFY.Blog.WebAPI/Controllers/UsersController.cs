@@ -20,6 +20,7 @@ public class UsersController : ApiControllerBase<PostsController>
     [HttpPost(nameof(RegisterNewUser))]
     [ProducesResponseType(typeof(ApiResponse<RegisterNewUserCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
+    [ProducesResponseType(typeof(ApiResponse), 409)]
     public async Task<IActionResult> RegisterNewUser(RegisterNewUserInputModel inputModel, CancellationToken cancellationToken)
     {
         RegisterNewUserCommand command = inputModel.ToCommand();
