@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Application.Result;
 
-namespace OmegaFY.Blog.Application.Queries.Pagination;
+namespace OmegaFY.Blog.Application.Queries.Base.Pagination;
 
 public class PagedResult<TResult> : GenericResult, IQueryResult
 {
