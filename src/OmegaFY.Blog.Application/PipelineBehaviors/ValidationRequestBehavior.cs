@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.Extensions.Hosting;
 using OmegaFY.Blog.Application.Result;
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Common.Extensions;
@@ -13,7 +14,13 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
 {
     private readonly IValidator<TRequest> _validator;
 
-    public ValidationRequestBehavior(IValidator<TRequest> validator) => _validator = validator;
+    private readonly IHostEnvironment _environment;
+
+    public ValidationRequestBehavior(IValidator<TRequest> validator, IHostEnvironment environment)
+    {
+        _validator = validator;
+        _environment = environment;
+    }
 
     public async Task<TResult> Handle(TRequest request,
                                       CancellationToken cancellationToken,
@@ -30,7 +37,10 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         }
         catch (Exception ex)
         {
-            return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
+            if (_environment.IsDevelopment())
+                return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
+
+            return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ""); //TODO
         }
     }
 
@@ -52,5 +62,5 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         return result;
     }
 
-    private static TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult), Array.Empty<object>());
+    private static TResult CreateInstanceOfTResult() => (TResult)Activator.CreateInstance(typeof(TResult));
 }

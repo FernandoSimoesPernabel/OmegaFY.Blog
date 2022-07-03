@@ -48,6 +48,9 @@ public static class DependencyInjectionExtensions
         TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
         {
             ClockSkew = TimeSpan.Zero,
+            RequireAudience = true,
+            RequireExpirationTime = true,
+            RequireSignedTokens = true,
             ValidateLifetime = true,
             ValidateIssuer = true,
             ValidateAudience = true,
