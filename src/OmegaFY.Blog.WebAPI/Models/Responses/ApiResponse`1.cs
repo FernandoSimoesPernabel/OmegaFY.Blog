@@ -22,6 +22,7 @@ public class ApiResponse<T>
 
     public ApiResponse(string code, string mesage) : this() => _errors.Add(new ValidationError(code, mesage));
 
+    //TODO pensar melhor nisso do codigo, provavelmente trocar para texto mesmo (NotFound, BadRequest).
     public int StatusCode()
     {
         if (Succeeded)

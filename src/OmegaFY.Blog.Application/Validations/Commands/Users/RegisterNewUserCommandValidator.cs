@@ -23,6 +23,7 @@ public class RegisterNewUserCommandValidator : AbstractValidator<RegisterNewUser
             {
                 char[] passwordAsChars = password.ToCharArray();
 
+                //TODO mensagens
                 if (authenticationSettings.PasswordRequireDigit && passwordAsChars.Any(c => char.IsDigit(c)))
                     context.AddFailure("");
 
