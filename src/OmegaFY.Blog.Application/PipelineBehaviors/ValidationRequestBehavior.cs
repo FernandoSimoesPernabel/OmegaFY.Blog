@@ -3,10 +3,9 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using OmegaFY.Blog.Application.Result;
+using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Common.Extensions;
-using OmegaFY.Blog.Domain.Constantes;
-using OmegaFY.Blog.Domain.Exceptions;
 
 namespace OmegaFY.Blog.Application.PipelineBehaviors;
 
@@ -38,9 +37,9 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         catch (Exception ex)
         {
             if (_environment.IsDevelopment())
-                return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
+                return ErrorsFromException(ApplicationErrorCodes.NOT_DOMAIN_ERROR, ex.GetErrorsMessagesFromInnerExceptions());
 
-            return ErrorsFromException(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ""); //TODO
+            return ErrorsFromException(ApplicationErrorCodes.NOT_DOMAIN_ERROR, ""); //TODO
         }
     }
 
@@ -49,7 +48,7 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         TResult result = CreateInstanceOfTResult();
 
         foreach (ValidationFailure failure in failures)
-            result.AddError(failure.ErrorCode, failure.ErrorMessage);
+            result.AddError(ApplicationErrorCodes.DOMAIN_ARGUMENT_INVALID, failure.ErrorMessage);
 
         return result;
     }

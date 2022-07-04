@@ -1,4 +1,5 @@
-﻿using OmegaFY.Blog.Domain.Enums;
+﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 
 namespace OmegaFY.Blog.Domain.Entities.Avaliations;
@@ -18,7 +19,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         Avaliation avaliation = _avaliations.FirstOrDefault(x => x.Id == avaliationId);
 
         if (avaliation is null)
-            throw new NotFoundException("");
+            throw new NotFoundException();
 
         return avaliation;
     }

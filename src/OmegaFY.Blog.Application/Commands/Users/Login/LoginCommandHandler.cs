@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Commands.Base;
+using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Domain.Entities.Users;
-using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.Repositories.Users;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Models;

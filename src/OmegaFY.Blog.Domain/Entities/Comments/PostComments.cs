@@ -1,4 +1,5 @@
-﻿using OmegaFY.Blog.Domain.Enums;
+﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
@@ -17,7 +18,7 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
         Comment comment = _comments.FirstOrDefault(x => x.Id == commentId);
 
         if (comment is null)
-            throw new NotFoundException("");
+            throw new NotFoundException();
 
         return comment;
     }
