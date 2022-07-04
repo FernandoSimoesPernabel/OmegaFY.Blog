@@ -1,4 +1,5 @@
-﻿using OmegaFY.Blog.Domain.Enums;
+﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
@@ -36,7 +37,7 @@ public class Comment : Entity
         Reaction reaction = _reactions.FirstOrDefault(x => x.Id == reactionId);
 
         if (reaction is null)
-            throw new NotFoundException("");
+            throw new NotFoundException();
 
         return reaction;
     }

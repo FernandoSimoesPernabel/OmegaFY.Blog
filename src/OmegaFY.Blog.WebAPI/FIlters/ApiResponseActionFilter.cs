@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OmegaFY.Blog.Application.Result;
+using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Common.Extensions;
-using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.WebAPI.Models.Responses;
 
 namespace OmegaFY.Blog.WebAPI.FIlters;
@@ -29,7 +29,7 @@ public class ApiResponseActionFilter : IActionFilter
         }
         catch (Exception ex)
         {
-            ApiResponse response = new ApiResponse(DomainErrorCodes.NOT_DOMAIN_ERROR_CODE, ex.GetErrorsMessagesFromInnerExceptions());
+            ApiResponse response = new ApiResponse(ApplicationErrorCodes.NOT_DOMAIN_ERROR, ex.GetErrorsMessagesFromInnerExceptions());
             context.Result = new ObjectResult(response) { StatusCode = StatusCodes.Status500InternalServerError };
         }
     }

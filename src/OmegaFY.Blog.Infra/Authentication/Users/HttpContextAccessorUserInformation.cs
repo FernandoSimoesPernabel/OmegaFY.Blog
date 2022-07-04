@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using OmegaFY.Blog.Infra.Exceptions;
+using OmegaFY.Blog.Common.Exceptions;
 using System.Security.Claims;
 
 namespace OmegaFY.Blog.Infra.Authentication.Users;

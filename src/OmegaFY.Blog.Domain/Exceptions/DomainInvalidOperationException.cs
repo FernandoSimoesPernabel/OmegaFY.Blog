@@ -1,8 +1,8 @@
-﻿using OmegaFY.Blog.Domain.Constantes;
+﻿using OmegaFY.Blog.Common.Constantes;
 
 namespace OmegaFY.Blog.Domain.Exceptions;
 
 public class DomainInvalidOperationException : DomainException
 {
-    public DomainInvalidOperationException(string message) : base(DomainErrorCodes.INVALID_OPERATION_ERROR_CODE, message) { }
+    public DomainInvalidOperationException(string message) : base(ApplicationErrorCodes.INVALID_OPERATION, message) { }
 }

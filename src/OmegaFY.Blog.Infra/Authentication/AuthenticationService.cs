@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Exceptions;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace OmegaFY.Blog.Infra.Authentication;
 
