@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Entities.Comments;
 
 namespace OmegaFY.Blog.Data.EF.Mappings.Comments;
@@ -16,7 +17,7 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
 
         builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
 
-        builder.OwnsOne(x => x.Body, body => body.Property(x => x.Content).HasColumnType("varchar(500)").HasColumnName("Content").IsRequired());
+        builder.OwnsOne(x => x.Body, body => body.Property(x => x.Content).HasColumnType($"varchar({PostConstants.MAX_COMMENT_BODY_LENGTH})").HasColumnName("Content").IsRequired());
 
         builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
         {

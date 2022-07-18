@@ -1,4 +1,6 @@
-﻿using OmegaFY.Blog.Domain.Enums;
+﻿using OmegaFY.Blog.Common.Extensions;
+using OmegaFY.Blog.Domain.Enums;
+using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
@@ -18,15 +20,27 @@ public class Avaliation : Entity
 
     public Avaliation(Guid postId, Author author, Stars rate)
     {
+        if (postId == Guid.Empty)
+            throw new DomainArgumentException("");
+
+        if (author is null)
+            throw new DomainArgumentException("");
+
+        ChangeRating(rate);
         PostId = postId;
         Author = author;
         ModificationDetails = new ModificationDetails();
-        Rate = rate;
+
     }
 
-    internal void ChangeRating(Stars newRate)
+    internal void ChangeRating(Stars rate)
     {
-        Rate = newRate;
-        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
+        if (!rate.IsDefined())
+            throw new DomainArgumentException("");
+
+        Rate = rate;
+
+        if (ModificationDetails is not null)
+            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 }
