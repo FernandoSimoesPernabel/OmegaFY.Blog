@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OmegaFY.Blog.Data.EF.Models;
+using OmegaFY.Blog.Domain.Constantes;
 
 namespace OmegaFY.Blog.Data.EF.Mappings.Queries;
 
@@ -16,7 +17,7 @@ public class CommentDatabaseModelMapping : IEntityTypeConfiguration<CommentDatab
 
         builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
 
-        builder.Property(x => x.Content).HasColumnType("varchar(500)").IsRequired();
+        builder.Property(x => x.Content).HasColumnType($"varchar({PostConstants.MAX_COMMENT_BODY_LENGTH})").IsRequired();
 
         builder.Property(x => x.DateOfCreation).HasColumnType("datetime").IsRequired();
 

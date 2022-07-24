@@ -1,4 +1,6 @@
-﻿namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
+﻿using OmegaFY.Blog.Domain.Exceptions;
+
+namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 public record class Body
 {
@@ -6,6 +8,9 @@ public record class Body
 
     public Body(string content)
     {
+        if (string.IsNullOrWhiteSpace(content))
+            throw new DomainArgumentException("");
+
         Content = content;
     }
 

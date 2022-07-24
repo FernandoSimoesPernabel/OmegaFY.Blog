@@ -13,16 +13,6 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
 
     protected PostComments() => _comments = new List<Comment>();
 
-    public Comment FindCommentAndThrowIfNotFound(Guid commentId)
-    {
-        Comment comment = _comments.FirstOrDefault(x => x.Id == commentId);
-
-        if (comment is null)
-            throw new NotFoundException();
-
-        return comment;
-    }
-
     public void Comment(Comment comment)
     {
         if (comment is null)
@@ -34,7 +24,7 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
     public void EditComment(Guid commentId, Body body)
     {
         Comment comment = FindCommentAndThrowIfNotFound(commentId);
-        comment.EditBodyContent(body);
+        comment.ChangeContent(body);
     }
 
     public void RemoveComment(Guid commentId)
@@ -59,5 +49,15 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
     {
         Comment comment = FindCommentAndThrowIfNotFound(commentId);
         comment.RemoveReaction(reactionId);
+    }
+
+    internal Comment FindCommentAndThrowIfNotFound(Guid commentId)
+    {
+        Comment comment = _comments.FirstOrDefault(x => x.Id == commentId);
+
+        if (comment is null)
+            throw new NotFoundException();
+
+        return comment;
     }
 }

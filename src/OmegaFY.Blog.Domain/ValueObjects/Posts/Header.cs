@@ -1,4 +1,7 @@
-﻿namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
+﻿using OmegaFY.Blog.Domain.Constantes;
+using OmegaFY.Blog.Domain.Exceptions;
+
+namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 public record class Header
 {
@@ -8,6 +11,12 @@ public record class Header
 
     public Header(string title, string subTitle)
     {
+        if (string.IsNullOrWhiteSpace(title) || title.Length > PostConstants.MAX_TITLE_LENGTH)
+            throw new DomainArgumentException("");
+
+        if (string.IsNullOrWhiteSpace(subTitle) || subTitle.Length > PostConstants.MAX_SUBTITLE_LENGTH)
+            throw new DomainArgumentException("");
+
         Title = title;
         SubTitle = subTitle;
     }

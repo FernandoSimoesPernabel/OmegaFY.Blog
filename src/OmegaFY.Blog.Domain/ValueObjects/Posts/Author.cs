@@ -1,4 +1,6 @@
-﻿namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
+﻿using OmegaFY.Blog.Domain.Exceptions;
+
+namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 public record class Author
 {
@@ -6,6 +8,9 @@ public record class Author
 
     public Author(Guid id)
     {
+        if (id == Guid.Empty)
+            throw new DomainArgumentException("");
+
         Id = id;
     }
 

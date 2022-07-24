@@ -1,4 +1,5 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
@@ -20,15 +21,19 @@ public class Comment : Entity
 
     public IReadOnlyCollection<Reaction> Reactions => _reactions.AsReadOnly();
 
-    protected Comment() { }
+    protected Comment() => _reactions = new List<Reaction>();
 
-    public Comment(Guid postId, Author author, Body body)
+    public Comment(Guid postId, Author author, Body body) : this()
     {
-        _reactions = new List<Reaction>();
+        if (postId == Guid.Empty)
+            throw new DomainArgumentException("");
 
+        if (author is null)
+            throw new DomainArgumentException("");
+
+        ChangeContent(body);
         PostId = postId;
         Author = author;
-        Body = body;
         ModificationDetails = new ModificationDetails();
     }
 
@@ -42,13 +47,15 @@ public class Comment : Entity
         return reaction;
     }
 
-    internal void EditBodyContent(Body newBody)
+    internal void ChangeContent(Body body)
     {
-        if (newBody is null)
+        if (string.IsNullOrWhiteSpace(body?.Content) || body.Content.Length > PostConstants.MAX_COMMENT_BODY_LENGTH)
             throw new DomainArgumentException("");
 
-        Body = newBody;
-        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
+        Body = body;
+
+        if (ModificationDetails is not null)
+            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 
     internal void React(Reaction reaction)
