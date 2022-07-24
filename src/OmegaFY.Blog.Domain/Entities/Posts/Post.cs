@@ -22,7 +22,7 @@ public class Post : Entity, IAggregateRoot<Post>
     public Post(Author author, Header header, Body body)
     {
         if (author is null)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("Não foi informado corretamente um autor para esse post.");
 
         ChangeContent(header, body);
         Author = author;
@@ -33,10 +33,10 @@ public class Post : Entity, IAggregateRoot<Post>
     public void ChangeContent(Header header, Body body)
     {
         if (header is null)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("Não foi informado corretamente um cabeçalho para esse post.");
 
         if (string.IsNullOrWhiteSpace(body?.Content) || body.Content.Length > PostConstants.MAX_POST_BODY_LENGTH)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("O conteúdo desse post foi informado incorretamente.");
 
         Header = header;
         Body = body;
