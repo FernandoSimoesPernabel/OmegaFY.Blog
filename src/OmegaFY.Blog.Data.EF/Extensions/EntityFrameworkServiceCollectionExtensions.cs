@@ -24,7 +24,7 @@ public static class EFServiceCollectionExtensions
         services.AddDbContextPool<SharesContext>(options => options.UseSqlite(sqlLiteConnectionString));
         services.AddDbContextPool<UsersContext>(options => options.UseSqlite(sqlLiteConnectionString));
 
-        services.AddDbContextPool<QueryContext>(options => options.UseSqlite(sqlLiteConnectionString));
+        services.AddDbContextPool<QueryContext>(options => options.UseSqlite(sqlLiteConnectionString).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
         return services;
     }
@@ -39,7 +39,7 @@ public static class EFServiceCollectionExtensions
     public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)
     {
         services.AddScoped<IPostRepository, PostRepository>();
-        services.AddScoped<IUserRepository, UserRepository>(); 
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
