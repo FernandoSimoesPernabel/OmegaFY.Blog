@@ -36,6 +36,7 @@ internal class PostQueryProvider : IPostQueryProvider
                 AuthorId = x.Author.Id,
                 AuthorName = x.Author.DisplayName,
                 DateOfCreation = x.DateOfCreation,
+                DateOfModification = x.DateOfModification,
                 Title = x.Title
             })
             .Skip(pagedResultInfo.ItemsToSkip())

@@ -4,7 +4,7 @@ public static class ObjectExtensions
 {
     public static bool In<T>(this T value, params T[] valuesToCompare)
     {
-        if (valuesToCompare.IsEmpty()) return false;
+        if (valuesToCompare is null || valuesToCompare.IsEmpty()) return false;
 
         return valuesToCompare.Any(x => x.Equals(value));
     }

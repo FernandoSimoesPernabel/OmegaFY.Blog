@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
+using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
@@ -20,11 +21,7 @@ public class PostsController : ApiControllerBase<PostsController>
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetAllPostsQueryResult>>), 200)]
     public async Task<IActionResult> GetAllPosts([FromQuery] GetAllPostsInputModel inputModel, CancellationToken cancellationToken)
     {
-        GetAllPostsQuery query = inputModel.ToCommand();
-
-        PagedResult<GetAllPostsQueryResult> result =
-                        await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(query, cancellationToken);
-
+        PagedResult<GetAllPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(inputModel.ToCommand(), cancellationToken);
         return Ok(result);
     }
 
@@ -33,24 +30,25 @@ public class PostsController : ApiControllerBase<PostsController>
     [ProducesResponseType(typeof(ApiResponse), 404)]
     public async Task<IActionResult> GetPost([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        GetPostQuery query = new GetPostQuery(id);
-
-        GetPostQueryResult result =
-                        await _serviceBus.SendMessageAsync<GetPostQuery, GetPostQueryResult>(query, cancellationToken);
-
+        GetPostQueryResult result = await _serviceBus.SendMessageAsync<GetPostQuery, GetPostQueryResult>(new GetPostQuery(id), cancellationToken);
         return Ok(result);
     }
 
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponse<PublishPostCommandResult>), 201)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> PublicarPostagem(PublishPostInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> PublishPost(PublishPostInputModel inputModel, CancellationToken cancellationToken)
     {
-        PublishPostCommand command = inputModel.ToCommand();
-
-        PublishPostCommandResult result =
-                        await _serviceBus.SendMessageAsync<PublishPostCommand, PublishPostCommandResult>(command, cancellationToken);
-
+        PublishPostCommandResult result = await _serviceBus.SendMessageAsync<PublishPostCommand, PublishPostCommandResult>(inputModel.ToCommand(), cancellationToken);
         return CreatedAtAction(nameof(GetPost), new { id = result.Id }, result);
+    }
+
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<ChangePostContentCommandResult>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> ChangePostContent(Guid id, ChangePostContentInputModel inputModel, CancellationToken cancellationToken)
+    {
+        ChangePostContentCommandResult result = await _serviceBus.SendMessageAsync<ChangePostContentCommand, ChangePostContentCommandResult>(inputModel.ToCommand(id), cancellationToken);
+        return Ok(result);
     }
 }

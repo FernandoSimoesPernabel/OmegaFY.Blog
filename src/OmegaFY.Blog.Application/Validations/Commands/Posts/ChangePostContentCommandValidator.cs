@@ -1,13 +1,15 @@
 ﻿using FluentValidation;
-using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
+using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 using OmegaFY.Blog.Domain.Constantes;
 
 namespace OmegaFY.Blog.Application.Validations.Commands.Posts;
 
-public class PublishPostCommandValidator : AbstractValidator<PublishPostCommand>
+public class ChangePostContentCommandValidator : AbstractValidator<ChangePostContentCommand>
 {
-    public PublishPostCommandValidator()
+    public ChangePostContentCommandValidator()
     {
+        RuleFor(x => x.Id).NotEmpty();
+
         RuleFor(x => x.Title).NotEmpty().Length(PostConstants.MIN_TITLE_LENGTH, PostConstants.MAX_TITLE_LENGTH);
 
         RuleFor(x => x.SubTitle).NotEmpty().Length(PostConstants.MIN_SUBTITLE_LENGTH, PostConstants.MAX_SUBTITLE_LENGTH);
