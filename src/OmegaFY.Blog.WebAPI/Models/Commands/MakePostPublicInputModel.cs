@@ -1,5 +1,5 @@
 ﻿namespace OmegaFY.Blog.WebAPI.Models.Commands;
 
-public class UnhidePostInputModel
+public class MakePostPublicInputModel
 {
 }

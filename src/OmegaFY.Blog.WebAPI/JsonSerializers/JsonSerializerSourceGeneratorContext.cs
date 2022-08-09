@@ -9,9 +9,9 @@ using OmegaFY.Blog.Application.Commands.Comments.RemoveComment;
 using OmegaFY.Blog.Application.Commands.Comments.RemoveReaction;
 using OmegaFY.Blog.Application.Commands.Donations.BuyMeCoffe;
 using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
-using OmegaFY.Blog.Application.Commands.Posts.HidePost;
+using OmegaFY.Blog.Application.Commands.Posts.MakePostPrivate;
+using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
-using OmegaFY.Blog.Application.Commands.Posts.UnhidePost;
 using OmegaFY.Blog.Application.Commands.Shares.SharePost;
 using OmegaFY.Blog.Application.Commands.Shares.UnsharePost;
 using OmegaFY.Blog.Application.Commands.Users.ExcludeAccount;
@@ -43,7 +43,7 @@ namespace OmegaFY.Blog.WebAPI.JsonSerializers;
 [JsonSerializable(typeof(EditCommentInputModel))]
 [JsonSerializable(typeof(ChangePostContentInputModel))]
 [JsonSerializable(typeof(ExcludeAccountInputModel))]
-[JsonSerializable(typeof(HidePostInputModel))]
+[JsonSerializable(typeof(MakePostPrivateInputModel))]
 [JsonSerializable(typeof(LoginInputModel))]
 [JsonSerializable(typeof(LogoffInputModel))]
 [JsonSerializable(typeof(MakeCommentInputModel))]
@@ -56,7 +56,7 @@ namespace OmegaFY.Blog.WebAPI.JsonSerializers;
 [JsonSerializable(typeof(RemoveRatingInputModel))]
 [JsonSerializable(typeof(RemoveReactionInputModel))]
 [JsonSerializable(typeof(SharePostInputModel))]
-[JsonSerializable(typeof(UnhidePostInputModel))]
+[JsonSerializable(typeof(MakePostPublicInputModel))]
 [JsonSerializable(typeof(UnsharePostInputModel))]
 [JsonSerializable(typeof(GetAllPostsInputModel))]
 [JsonSerializable(typeof(GetDonationsMadeInputModel))]
@@ -79,9 +79,9 @@ namespace OmegaFY.Blog.WebAPI.JsonSerializers;
 [JsonSerializable(typeof(ApiResponse<RemoveReactionCommandResult>))]
 [JsonSerializable(typeof(ApiResponse<BuyMeCoffeCommandResult>))]
 [JsonSerializable(typeof(ApiResponse<ChangePostContentCommandResult>))]
-[JsonSerializable(typeof(ApiResponse<HidePostCommandResult>))]
+[JsonSerializable(typeof(ApiResponse<MakePostPrivateCommandResult>))]
+[JsonSerializable(typeof(ApiResponse<MakePostPublicCommandResult>))]
 [JsonSerializable(typeof(ApiResponse<PublishPostCommandResult>))]
-[JsonSerializable(typeof(ApiResponse<UnhidePostCommandResult>))]
 [JsonSerializable(typeof(ApiResponse<SharePostCommandResult>))]
 [JsonSerializable(typeof(ApiResponse<UnsharePostCommandResult>))]
 [JsonSerializable(typeof(ApiResponse<ExcludeAccountCommandResult>))]

@@ -15,7 +15,7 @@ public class Post : Entity, IAggregateRoot<Post>
 
     public ModificationDetails ModificationDetails { get; private set; }
 
-    public bool Hidden { get; private set; }
+    public bool Private { get; private set; }
 
     protected Post() { }
 
@@ -26,7 +26,7 @@ public class Post : Entity, IAggregateRoot<Post>
 
         ChangeContent(header, body);
         Author = author;
-        Hidden = false;
+        Private = false;
         ModificationDetails = new ModificationDetails();
     }
 
@@ -45,7 +45,7 @@ public class Post : Entity, IAggregateRoot<Post>
             ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 
-    public void MakePrivate() => Hidden = true;
+    public void MakePrivate() => Private = true;
 
-    public void MakePublic() => Hidden = false;
+    public void MakePublic() => Private = false;
 }

@@ -16,5 +16,5 @@ public static class PostConstants
 
     public const short MIN_COMMENT_BODY_LENGTH = 1;
 
-    public const short MAX_COMMENT_BODY_LENGTH = 1;
+    public const short MAX_COMMENT_BODY_LENGTH = 500;
 }

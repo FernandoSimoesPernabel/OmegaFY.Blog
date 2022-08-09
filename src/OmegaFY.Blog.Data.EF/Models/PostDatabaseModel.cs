@@ -24,7 +24,7 @@ public class PostDatabaseModel
 
     public DateTime? DateOfModification { get; set; }
 
-    public bool Hidden { get; set; }
+    public bool Private { get; set; }
 
     public decimal AverageRate { get; set; }
 

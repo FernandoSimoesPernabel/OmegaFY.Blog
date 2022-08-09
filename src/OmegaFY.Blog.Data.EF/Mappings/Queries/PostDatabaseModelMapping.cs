@@ -15,7 +15,7 @@ public class PostDatabaseModelMapping : IEntityTypeConfiguration<PostDatabaseMod
 
         builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
 
-        builder.Property(x => x.Hidden).IsRequired();
+        builder.Property(x => x.Private).IsRequired();
 
         builder.Property(x => x.Content).HasColumnType("text").IsRequired();
 

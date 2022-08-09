@@ -16,7 +16,7 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking();
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking().Where(x => !x.Private);
 
         if (request.StartDateOfCreation.HasValue && request.EndDateOfCreation.HasValue)
             query = query.Where(x => x.DateOfCreation >= request.StartDateOfCreation.Value && x.DateOfCreation <= request.EndDateOfCreation.Value);
