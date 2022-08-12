@@ -21,39 +21,39 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
         _comments.Add(comment);
     }
 
-    public void EditComment(Guid commentId, Body body)
+    public void EditComment(Guid commentId, Guid authorId, Body body)
     {
-        Comment comment = FindCommentAndThrowIfNotFound(commentId);
+        Comment comment = FindCommentAndThrowIfNotFound(commentId, authorId);
         comment.ChangeContent(body);
     }
 
-    public void RemoveComment(Guid commentId)
+    public void RemoveComment(Guid commentId, Guid authorId)
     {
-        Comment comment = FindCommentAndThrowIfNotFound(commentId);
+        Comment comment = FindCommentAndThrowIfNotFound(commentId, authorId);
         _comments.Remove(comment);
     }
 
-    public void ReactToComment(Guid commentId, Reaction reaction)
+    public void ReactToComment(Guid commentId, Guid authorId, Reaction reaction)
     {
-        Comment comment = FindCommentAndThrowIfNotFound(commentId);
+        Comment comment = FindCommentAndThrowIfNotFound(commentId, authorId);
         comment.React(reaction);
     }
 
-    public void ChangeReactionToComment(Guid commentId, Guid reactionId, Reactions newCommentReaction)
+    public void ChangeReactionToComment(Guid commentId, Guid authorId, Guid reactionId, Reactions newCommentReaction)
     {
-        Comment comment = FindCommentAndThrowIfNotFound(commentId);
-        comment.ChangeReaction(reactionId, newCommentReaction);
+        Comment comment = FindCommentAndThrowIfNotFound(commentId, authorId);
+        comment.ChangeReaction(reactionId, authorId, newCommentReaction);
     }
 
-    public void RemoveReactionFromComment(Guid commentId, Guid reactionId)
+    public void RemoveReactionFromComment(Guid commentId, Guid authorId, Guid reactionId)
     {
-        Comment comment = FindCommentAndThrowIfNotFound(commentId);
-        comment.RemoveReaction(reactionId);
+        Comment comment = FindCommentAndThrowIfNotFound(commentId, authorId);
+        comment.RemoveReaction(reactionId, authorId);
     }
 
-    internal Comment FindCommentAndThrowIfNotFound(Guid commentId)
+    internal Comment FindCommentAndThrowIfNotFound(Guid commentId, Guid authorId)
     {
-        Comment comment = _comments.FirstOrDefault(x => x.Id == commentId);
+        Comment comment = _comments.FirstOrDefault(x => x.Id == commentId && x.Author.Id == authorId);
 
         if (comment is null)
             throw new NotFoundException();

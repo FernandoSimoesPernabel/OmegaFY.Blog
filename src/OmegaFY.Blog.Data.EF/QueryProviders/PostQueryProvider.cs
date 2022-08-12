@@ -61,6 +61,7 @@ internal class PostQueryProvider : IPostQueryProvider
                 Content = x.Content,
                 DateOfCreation = x.DateOfCreation,
                 DateOfModification = x.DateOfModification,
+                Private = x.Private,
                 Shares = x.Shareds.Count,
                 SubTitle = x.SubTitle,
                 Title = x.Title

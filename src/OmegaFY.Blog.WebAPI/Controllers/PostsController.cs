@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
 using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
+using OmegaFY.Blog.Application.Commands.Posts.MakePostPrivate;
+using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
@@ -30,7 +32,7 @@ public class PostsController : ApiControllerBase<PostsController>
     [ProducesResponseType(typeof(ApiResponse), 404)]
     public async Task<IActionResult> GetPost([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        GetPostQueryResult result = await _serviceBus.SendMessageAsync<GetPostQuery, GetPostQueryResult>(new GetPostQuery(id), cancellationToken);
+        GetPostQueryResult result = await _serviceBus.SendMessageAsync<GetPostQuery, GetPostQueryResult>(new(id), cancellationToken);
         return Ok(result);
     }
 
@@ -49,6 +51,24 @@ public class PostsController : ApiControllerBase<PostsController>
     public async Task<IActionResult> ChangePostContent(Guid id, ChangePostContentInputModel inputModel, CancellationToken cancellationToken)
     {
         ChangePostContentCommandResult result = await _serviceBus.SendMessageAsync<ChangePostContentCommand, ChangePostContentCommandResult>(inputModel.ToCommand(id), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPatch("{id:guid}/MakePrivate")]
+    [ProducesResponseType(typeof(ApiResponse<>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> MakePostPrivate(Guid id, CancellationToken cancellationToken)
+    {
+        MakePostPrivateCommandResult result = await _serviceBus.SendMessageAsync<MakePostPrivateCommand, MakePostPrivateCommandResult>(new(id), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPatch("{id:guid}/MakePublic")]
+    [ProducesResponseType(typeof(ApiResponse<>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> MakePostPublic(Guid id, CancellationToken cancellationToken)
+    {
+        MakePostPublicCommandResult result = await _serviceBus.SendMessageAsync<MakePostPublicCommand, MakePostPublicCommandResult>(new(id), cancellationToken);
         return Ok(result);
     }
 }

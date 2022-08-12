@@ -20,6 +20,8 @@ public class GetPostQueryResult : GenericResult, IQueryResult
 
     public DateTime? DateOfModification { get; set; }
 
+    public bool Private { get; set; }
+
     public decimal AverageRate { get; set; }
 
     public int Avaliations { get; set; }
