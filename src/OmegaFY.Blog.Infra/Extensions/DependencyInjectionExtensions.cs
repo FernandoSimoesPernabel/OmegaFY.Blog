@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
@@ -110,7 +111,7 @@ public static class DependencyInjectionExtensions
         return services.AddDistributedMemoryCache();
     }
 
-    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         return services.AddOpenTelemetryTracing(builder =>
         {
@@ -127,8 +128,7 @@ public static class DependencyInjectionExtensions
                     honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
                 });
 
-            //TODO apenas se for development.
-            if (true)
+            if (environment.IsDevelopment())
                 builder.AddConsoleExporter();
         });
     }
