@@ -7,11 +7,9 @@ namespace OmegaFY.Blog.WebAPI.IoC;
 
 public class IdentityUserRegistration : IDependencyInjectionRegister
 {
-    public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
+    public void Register(WebApplicationBuilder builder)
     {
-        services.AddIdentityUserConfiguration(configuration);
-        services.AddIdentity(configuration).AddEntityFrameworkIdentityUserConfiguration();
-
-        return services;
+        builder.Services.AddIdentityUserConfiguration(builder.Configuration);
+        builder.Services.AddIdentity(builder.Configuration).AddEntityFrameworkIdentityUserConfiguration();
     }
 }

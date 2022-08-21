@@ -1,9 +1,11 @@
 ﻿using Honeycomb.OpenTelemetry;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
@@ -20,15 +22,14 @@ namespace OmegaFY.Blog.Infra.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddDependencyInjectionRegister(this IServiceCollection services, Assembly assembly, IConfiguration configuration)
+    public static IServiceCollection AddDependencyInjectionRegister(this IServiceCollection services, Assembly assembly, WebApplicationBuilder builder)
     {
-        assembly?
-            .ExportedTypes
+        assembly?.ExportedTypes
             .Where(t => typeof(IDependencyInjectionRegister).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
             .Select(Activator.CreateInstance)
             .Cast<IDependencyInjectionRegister>()
             .ToList()
-            .ForEach(iocRegister => iocRegister.Register(services, configuration));
+            .ForEach(iocRegister => iocRegister.Register(builder));
 
         return services;
     }
@@ -110,7 +111,7 @@ public static class DependencyInjectionExtensions
         return services.AddDistributedMemoryCache();
     }
 
-    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         return services.AddOpenTelemetryTracing(builder =>
         {
@@ -127,8 +128,7 @@ public static class DependencyInjectionExtensions
                     honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
                 });
 
-            //TODO apenas se for development.
-            if (true)
+            if (environment.IsDevelopment())
                 builder.AddConsoleExporter();
         });
     }
