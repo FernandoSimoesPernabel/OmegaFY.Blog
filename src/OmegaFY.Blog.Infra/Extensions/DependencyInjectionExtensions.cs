@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,15 +17,14 @@ namespace OmegaFY.Blog.Infra.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddDependencyInjectionRegister(this IServiceCollection services, Assembly assembly, IConfiguration configuration)
+    public static IServiceCollection AddDependencyInjectionRegister(this IServiceCollection services, Assembly assembly, WebApplicationBuilder builder)
     {
-        assembly?
-            .ExportedTypes
+        assembly?.ExportedTypes
             .Where(t => typeof(IDependencyInjectionRegister).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
             .Select(Activator.CreateInstance)
             .Cast<IDependencyInjectionRegister>()
             .ToList()
-            .ForEach(iocRegister => iocRegister.Register(services, configuration));
+            .ForEach(iocRegister => iocRegister.Register(builder));
 
         return services;
     }

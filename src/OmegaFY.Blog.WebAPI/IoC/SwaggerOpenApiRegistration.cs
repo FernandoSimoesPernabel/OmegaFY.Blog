@@ -5,11 +5,11 @@ namespace OmegaFY.Blog.WebAPI.IoC;
 
 public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
 {
-    public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
+    public void Register(WebApplicationBuilder builder)
     {
-        services.AddEndpointsApiExplorer();
+        builder.Services.AddEndpointsApiExplorer();
 
-        services.AddSwaggerGen(options =>
+        builder.Services.AddSwaggerGen(options =>
         {
             Version version = System.Reflection.Assembly.GetAssembly(typeof(Program)).GetName().Version;
 
@@ -56,7 +56,5 @@ public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
                 }
             });
         });
-
-        return services;
     }
 }

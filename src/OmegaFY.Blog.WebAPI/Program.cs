@@ -3,7 +3,7 @@ using OmegaFY.Blog.Infra.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDependencyInjectionRegister(typeof(Program).Assembly, builder.Configuration);
+builder.Services.AddDependencyInjectionRegister(typeof(Program).Assembly, builder);
 
 var app = builder.Build();
 
