@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Honeycomb.OpenTelemetry;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,9 @@ using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
+using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System.Reflection;
 using System.Text;
 
@@ -104,5 +108,28 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddDistributedCache(this IServiceCollection services)
     {
         return services.AddDistributedMemoryCache();
+    }
+
+    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
+    {
+        return services.AddOpenTelemetryTracing(builder =>
+        {
+            OpenTelemetrySettings openTelemetrySettings = configuration.GetSection(nameof(OpenTelemetrySettings)).Get<OpenTelemetrySettings>();
+
+            builder.AddSource(openTelemetrySettings.ServiceName)
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName))
+                .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.Contains("api/"))
+                .AddHttpClientInstrumentation()
+                .AddEntityFrameworkCoreInstrumentation(efOptions => efOptions.SetDbStatementForText = true)
+                .AddHoneycomb(honeycombOptions =>
+                {
+                    honeycombOptions.ServiceName = openTelemetrySettings.ServiceName;
+                    honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
+                });
+
+            //TODO apenas se for development.
+            if (true)
+                builder.AddConsoleExporter();
+        });
     }
 }
