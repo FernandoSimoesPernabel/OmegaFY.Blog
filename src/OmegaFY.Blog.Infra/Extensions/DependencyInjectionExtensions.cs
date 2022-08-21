@@ -118,15 +118,16 @@ public static class DependencyInjectionExtensions
 
             builder.AddSource(openTelemetrySettings.ServiceName)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName))
-                .AddAspNetCoreInstrumentation()
+                .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.Contains("api/"))
                 .AddHttpClientInstrumentation()
-                .AddSqlClientInstrumentation()
+                .AddEntityFrameworkCoreInstrumentation(efOptions => efOptions.SetDbStatementForText = true)
                 .AddHoneycomb(honeycombOptions =>
                 {
                     honeycombOptions.ServiceName = openTelemetrySettings.ServiceName;
                     honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
                 });
 
+            //TODO apenas se for development.
             if (true)
                 builder.AddConsoleExporter();
         });
