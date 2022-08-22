@@ -12,6 +12,7 @@ public static class MediatRServiceCollectionExtensions
     {
         services.AddScoped<IServiceBus, MediatorServiceBus>();
 
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(OpenTelemetryInstrumentationBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationRequestBehavior<,>));
 
         services.AddMediatR(typeof(MediatRServiceCollectionExtensions).Assembly);

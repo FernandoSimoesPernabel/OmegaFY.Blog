@@ -12,7 +12,9 @@ using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
+using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
+using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Reflection;
@@ -36,7 +38,7 @@ public static class DependencyInjectionExtensions
 
     public static IServiceCollection AddIdentityUserConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
 
         services.AddHttpContextAccessor();
         services.AddScoped<IUserInformation, HttpContextAccessorUserInformation>();
@@ -113,10 +115,14 @@ public static class DependencyInjectionExtensions
 
     public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
+        OpenTelemetrySettings openTelemetrySettings = configuration.GetSection(nameof(OpenTelemetrySettings)).Get<OpenTelemetrySettings>();
+
+        services.Configure<OpenTelemetrySettings>(configuration.GetSection(nameof(OpenTelemetrySettings)));
+        
+        services.AddSingleton<IOpenTelemetryRegisterProvider, OpenTelemetryActivitySourceProvider>();
+
         return services.AddOpenTelemetryTracing(builder =>
         {
-            OpenTelemetrySettings openTelemetrySettings = configuration.GetSection(nameof(OpenTelemetrySettings)).Get<OpenTelemetrySettings>();
-
             builder.AddSource(openTelemetrySettings.ServiceName)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName))
                 .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.Contains("api/"))
