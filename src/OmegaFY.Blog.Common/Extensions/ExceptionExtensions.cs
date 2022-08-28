@@ -2,11 +2,5 @@
 
 public static class ExceptionExtensions
 {
-    public static string GetErrorsMessagesFromInnerExceptions(this Exception ex)
-    {
-        if (ex.InnerException is null)
-            return ex.Message;
-
-        return $"{ex.Message}{Environment.NewLine}{ex.InnerException.GetErrorsMessagesFromInnerExceptions()}";
-    }
+    public static string GetSafeErrorMessageWhenInProd(this Exception ex, bool isDevelopment) => isDevelopment ? ex.ToString() : "Ops ¯ _ (ツ) _ / ¯";
 }

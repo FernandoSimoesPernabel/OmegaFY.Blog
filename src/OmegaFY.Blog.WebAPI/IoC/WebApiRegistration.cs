@@ -15,8 +15,8 @@ public class WebApiRegistration : IDependencyInjectionRegister
     {
         builder.Services.AddControllers(controllerOptions =>
         {
-            controllerOptions.Filters.Add(new ApiResponseActionFilter());
-            controllerOptions.Filters.Add(new ErrorHandlerExceptionFilter());
+            controllerOptions.Filters.Add(new ApiResponseActionFilter(builder.Environment));
+            controllerOptions.Filters.Add(new ErrorHandlerExceptionFilter(builder.Environment));
             controllerOptions.SuppressAsyncSuffixInActionNames = false;
         })
         .AddJsonOptions(jsonOptions =>
