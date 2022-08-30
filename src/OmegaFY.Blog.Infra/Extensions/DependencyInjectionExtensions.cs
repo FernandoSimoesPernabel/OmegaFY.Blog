@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Token;
@@ -118,13 +119,13 @@ public static class DependencyInjectionExtensions
         OpenTelemetrySettings openTelemetrySettings = configuration.GetSection(nameof(OpenTelemetrySettings)).Get<OpenTelemetrySettings>();
 
         services.Configure<OpenTelemetrySettings>(configuration.GetSection(nameof(OpenTelemetrySettings)));
-        
+
         services.AddSingleton<IOpenTelemetryRegisterProvider, OpenTelemetryActivitySourceProvider>();
 
         return services.AddOpenTelemetryTracing(builder =>
         {
             builder.AddSource(openTelemetrySettings.ServiceName)
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName))
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName, serviceVersion: ProjectVersion.Instance.ToString()))
                 .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.Contains("api/"))
                 .AddHttpClientInstrumentation()
                 .AddEntityFrameworkCoreInstrumentation(efOptions => efOptions.SetDbStatementForText = true)
@@ -132,6 +133,7 @@ public static class DependencyInjectionExtensions
                 {
                     honeycombOptions.ServiceName = openTelemetrySettings.ServiceName;
                     honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
+                    honeycombOptions.ServiceVersion = ProjectVersion.Instance.ToString();
                 });
 
             if (environment.IsDevelopment())

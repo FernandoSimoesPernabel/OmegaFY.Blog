@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.IoC;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
@@ -11,8 +12,6 @@ public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
 
         builder.Services.AddSwaggerGen(options =>
         {
-            Version version = System.Reflection.Assembly.GetAssembly(typeof(Program)).GetName().Version;
-
             options.SwaggerDoc("v1", new OpenApiInfo()
             {
                 Contact = new OpenApiContact()
@@ -28,7 +27,7 @@ public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
                     Name = "GNU General Public License version 3",
                     Url = new Uri("https://www.gnu.org/licenses/gpl-3.0.html")
                 },
-                Version = $"{version.Major}.{version.Minor}.{version.Revision}.{version.Build}"
+                Version = ProjectVersion.Instance.ToString()
             });
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
