@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using System.Diagnostics;
 
@@ -9,7 +10,7 @@ internal class OpenTelemetryActivitySourceProvider : IOpenTelemetryRegisterProvi
     private readonly ActivitySource _activitySource;
 
     public OpenTelemetryActivitySourceProvider(IOptions<OpenTelemetrySettings> openTelemetrySettings)
-        => _activitySource = new ActivitySource(openTelemetrySettings.Value.ServiceName);
+        => _activitySource = new ActivitySource(openTelemetrySettings.Value.ServiceName, ProjectVersion.Instance.ToString());
 
     public Activity StartActivity(string activityName) => _activitySource.StartActivity(activityName);
 }
