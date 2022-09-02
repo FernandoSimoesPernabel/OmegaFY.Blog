@@ -12,9 +12,9 @@ using OmegaFY.Blog.WebAPI.Models.Responses;
 namespace OmegaFY.Blog.WebAPI.Controllers;
 
 [ApiVersion("1.0")]
-public class UsersController : ApiControllerBase<PostsController>
+public class UsersController : ApiControllerBase
 {
-    public UsersController(ILogger<PostsController> logger, IServiceBus serviceBus) : base(logger, serviceBus) { }
+    public UsersController(IServiceBus serviceBus) : base(serviceBus) { }
 
     [AllowAnonymous]
     [HttpPost(nameof(RegisterNewUser))]

@@ -10,15 +10,9 @@ namespace OmegaFY.Blog.WebAPI.Controllers.Base;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Authorize(PoliciesNamesConstants.BEARER_JWT_POLICY)]
 [Route("api/[controller]")]
-public abstract class ApiControllerBase<TController> : ControllerBase
+public abstract class ApiControllerBase : ControllerBase
 {
-    protected readonly ILogger<TController> _logger;
-
     protected readonly IServiceBus _serviceBus;
 
-    public ApiControllerBase(ILogger<TController> logger, IServiceBus serviceBus)
-    {
-        _logger = logger;
-        _serviceBus = serviceBus;
-    }
+    public ApiControllerBase(IServiceBus serviceBus) => _serviceBus = serviceBus;
 }
