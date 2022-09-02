@@ -1,8 +1,8 @@
 ﻿using OmegaFY.Blog.Application.Result;
 
-namespace OmegaFY.Blog.Application.Commands.Posts.PublishPost;
+namespace OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 
-public class PublishPostCommandResult : GenericResult, ICommandResult
+public class ChangePostContentCommandResult : GenericResult, ICommandResult
 {
     public Guid Id { get; set; }
 
@@ -16,9 +16,11 @@ public class PublishPostCommandResult : GenericResult, ICommandResult
 
     public DateTime CreationDate { get; set; }
 
-    public PublishPostCommandResult() { }
+    public DateTime ModificationDate { get; set; }
 
-    public PublishPostCommandResult(Guid id, Guid authorId, string title, string subTitle, string body, DateTime creationDate)
+    public ChangePostContentCommandResult() { }
+
+    public ChangePostContentCommandResult(Guid id, Guid authorId, string title, string subTitle, string body, DateTime creationDate, DateTime modificationDate)
     {
         Id = id;
         AuthorId = authorId;
@@ -26,5 +28,6 @@ public class PublishPostCommandResult : GenericResult, ICommandResult
         SubTitle = subTitle;
         Body = body;
         CreationDate = creationDate;
+        ModificationDate = modificationDate;
     }
 }

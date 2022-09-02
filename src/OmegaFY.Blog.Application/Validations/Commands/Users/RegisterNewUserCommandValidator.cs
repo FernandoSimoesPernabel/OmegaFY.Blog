@@ -24,24 +24,24 @@ public class RegisterNewUserCommandValidator : AbstractValidator<RegisterNewUser
                 char[] passwordAsChars = password.ToCharArray();
 
                 //TODO mensagens
-                if (authenticationSettings.PasswordRequireDigit && passwordAsChars.Any(c => char.IsDigit(c)))
-                    context.AddFailure("");
+                if (authenticationSettings.PasswordRequireDigit && !passwordAsChars.Any(c => char.IsDigit(c)))
+                    context.AddFailure("PasswordRequireDigit");
 
-                if (authenticationSettings.PasswordRequireLowercase && passwordAsChars.Any(c => char.IsLower(c)))
-                    context.AddFailure("");
+                if (authenticationSettings.PasswordRequireLowercase && !passwordAsChars.Any(c => char.IsLower(c)))
+                    context.AddFailure("PasswordRequireLowercase");
 
-                if (authenticationSettings.PasswordRequireUppercase && passwordAsChars.Any(c => char.IsUpper(c)))
-                    context.AddFailure("");
+                if (authenticationSettings.PasswordRequireUppercase && !passwordAsChars.Any(c => char.IsUpper(c)))
+                    context.AddFailure("PasswordRequireUppercase");
 
-                if (authenticationSettings.PasswordRequireNonAlphanumeric && passwordAsChars.Any(c => !char.IsLetterOrDigit(c)))
-                    context.AddFailure("");
+                if (authenticationSettings.PasswordRequireNonAlphanumeric && !passwordAsChars.Any(c => !char.IsLetterOrDigit(c)))
+                    context.AddFailure("PasswordRequireNonAlphanumeric");
 
                 if (authenticationSettings.PasswordRequiredUniqueChars > 0)
                 {
                     IEnumerable<char> distinctCharacteres = passwordAsChars.Distinct();
 
-                    if (distinctCharacteres.Count() == authenticationSettings.PasswordRequiredUniqueChars)
-                        context.AddFailure("");
+                    if (distinctCharacteres.Count() < authenticationSettings.PasswordRequiredUniqueChars)
+                        context.AddFailure("PasswordRequiredUniqueChars");
                 }
             });
     }

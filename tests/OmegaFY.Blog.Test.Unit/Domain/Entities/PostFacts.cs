@@ -218,7 +218,7 @@ public class PostFacts
         sut.MakePrivate();
 
         //Assert
-        sut.Hidden.Should().BeTrue();
+        sut.Private.Should().BeTrue();
     }
 
     [Fact]
@@ -232,20 +232,20 @@ public class PostFacts
         sut.MakePrivate();
 
         //Assert
-        sut.Hidden.Should().BeTrue();
+        sut.Private.Should().BeTrue();
     }
 
     [Fact]
     public void MakePublic_PrivatePost_ShouldBecomePublic()
     {
         //Arrange
-        Post sut = CreatePost(excluded: true);
+        Post sut = CreatePost(@private: true);
 
         //Act
         sut.MakePublic();
 
         //Assert
-        sut.Hidden.Should().BeFalse();
+        sut.Private.Should().BeFalse();
     }
 
     [Fact]
@@ -258,10 +258,10 @@ public class PostFacts
         sut.MakePublic();
 
         //Assert
-        sut.Hidden.Should().BeFalse();
+        sut.Private.Should().BeFalse();
     }
 
-    private static Post CreatePost(Author author = null, Header header = null, Body body = null, bool excluded = false)
+    private static Post CreatePost(Author author = null, Header header = null, Body body = null, bool @private = false)
     {
         Post post = null;
 
@@ -273,7 +273,7 @@ public class PostFacts
 
         post = new Post(author, header, body);
 
-        if (excluded)
+        if (@private)
             post.MakePrivate();
 
         return post;

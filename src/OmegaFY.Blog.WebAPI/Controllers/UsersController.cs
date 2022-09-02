@@ -12,9 +12,9 @@ using OmegaFY.Blog.WebAPI.Models.Responses;
 namespace OmegaFY.Blog.WebAPI.Controllers;
 
 [ApiVersion("1.0")]
-public class UsersController : ApiControllerBase<PostsController>
+public class UsersController : ApiControllerBase
 {
-    public UsersController(ILogger<PostsController> logger, IServiceBus serviceBus) : base(logger, serviceBus) { }
+    public UsersController(IServiceBus serviceBus) : base(serviceBus) { }
 
     [AllowAnonymous]
     [HttpPost(nameof(RegisterNewUser))]
@@ -23,11 +23,7 @@ public class UsersController : ApiControllerBase<PostsController>
     [ProducesResponseType(typeof(ApiResponse), 409)]
     public async Task<IActionResult> RegisterNewUser(RegisterNewUserInputModel inputModel, CancellationToken cancellationToken)
     {
-        RegisterNewUserCommand command = inputModel.ToCommand();
-
-        RegisterNewUserCommandResult result =
-            await _serviceBus.SendMessageAsync<RegisterNewUserCommand, RegisterNewUserCommandResult>(command, cancellationToken);
-
+        RegisterNewUserCommandResult result = await _serviceBus.SendMessageAsync<RegisterNewUserCommand, RegisterNewUserCommandResult>(inputModel.ToCommand(), cancellationToken);
         return Ok(result);
     }
 
@@ -37,10 +33,7 @@ public class UsersController : ApiControllerBase<PostsController>
     [ProducesResponseType(typeof(ApiResponse), 400)]
     public async Task<IActionResult> Login(LoginInputModel inputModel, CancellationToken cancellationToken)
     {
-        LoginCommand command = inputModel.ToCommand();
-
-        LoginCommandResult result = await _serviceBus.SendMessageAsync<LoginCommand, LoginCommandResult>(command, cancellationToken);
-
+        LoginCommandResult result = await _serviceBus.SendMessageAsync<LoginCommand, LoginCommandResult>(inputModel.ToCommand(), cancellationToken);
         return Ok(result);
     }
 
@@ -48,10 +41,7 @@ public class UsersController : ApiControllerBase<PostsController>
     [ProducesResponseType(typeof(ApiResponse<LogoffCommandResult>), 200)]
     public async Task<IActionResult> Logoff([FromRoute] LogoffInputModel inputModel, CancellationToken cancellationToken)
     {
-        LogoffCommand command = inputModel.ToCommand();
-
-        LogoffCommandResult result = await _serviceBus.SendMessageAsync<LogoffCommand, LogoffCommandResult>(command, cancellationToken);
-
+        LogoffCommandResult result = await _serviceBus.SendMessageAsync<LogoffCommand, LogoffCommandResult>(inputModel.ToCommand(), cancellationToken);
         return Ok(result);
     }
 
@@ -61,10 +51,7 @@ public class UsersController : ApiControllerBase<PostsController>
     [ProducesResponseType(typeof(ApiResponse), 400)]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenInputModel inputModel, CancellationToken cancellationToken)
     {
-        RefreshTokenCommand command = inputModel.ToCommand();
-
-        RefreshTokenCommandResult result = await _serviceBus.SendMessageAsync<RefreshTokenCommand, RefreshTokenCommandResult>(command, cancellationToken);
-
+        RefreshTokenCommandResult result = await _serviceBus.SendMessageAsync<RefreshTokenCommand, RefreshTokenCommandResult>(inputModel.ToCommand(), cancellationToken);
         return Ok(result);
     }
 }

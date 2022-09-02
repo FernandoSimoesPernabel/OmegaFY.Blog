@@ -37,9 +37,9 @@ public class Comment : Entity
         ModificationDetails = new ModificationDetails();
     }
 
-    internal Reaction FindReactionAndThrowIfNotFound(Guid reactionId)
+    internal Reaction FindReactionAndThrowIfNotFound(Guid reactionId, Guid authorId)
     {
-        Reaction reaction = _reactions.FirstOrDefault(x => x.Id == reactionId);
+        Reaction reaction = _reactions.FirstOrDefault(x => x.Id == reactionId && x.Author.Id == authorId);
 
         if (reaction is null)
             throw new NotFoundException();
@@ -66,15 +66,15 @@ public class Comment : Entity
         _reactions.Add(reaction);
     }
 
-    internal void ChangeReaction(Guid reactionId, Reactions newCommentReaction)
+    internal void ChangeReaction(Guid reactionId, Guid authorId, Reactions newCommentReaction)
     {
-        Reaction reaction = FindReactionAndThrowIfNotFound(reactionId);
+        Reaction reaction = FindReactionAndThrowIfNotFound(reactionId, authorId);
         reaction.ChangeCommentReaction(newCommentReaction);
     }
 
-    internal void RemoveReaction(Guid reactionId)
+    internal void RemoveReaction(Guid reactionId, Guid authorId)
     {
-        Reaction reaction = FindReactionAndThrowIfNotFound(reactionId);
+        Reaction reaction = FindReactionAndThrowIfNotFound(reactionId, authorId);
         _reactions.Remove(reaction);
     }
 }

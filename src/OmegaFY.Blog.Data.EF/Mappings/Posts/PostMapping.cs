@@ -13,7 +13,7 @@ public class PostMapping : IEntityTypeConfiguration<Post>
 
         builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
-        builder.Property(x => x.Hidden).IsRequired();
+        builder.Property(x => x.Private).IsRequired();
 
         builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
 

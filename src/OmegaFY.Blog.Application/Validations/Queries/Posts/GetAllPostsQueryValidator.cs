@@ -27,6 +27,6 @@ public class GetAllPostsQueryValidator : AbstractValidator<GetAllPostsQuery>
 
         RuleFor(x => x.PageNumber).GreaterThan(0);
 
-        RuleFor(x => x.PageSize).InclusiveBetween(10, 50);
+        RuleFor(x => x.PageSize).InclusiveBetween(5, 50);
     }
 }

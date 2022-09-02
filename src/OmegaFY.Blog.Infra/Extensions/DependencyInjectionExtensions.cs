@@ -86,6 +86,8 @@ public static class DependencyInjectionExtensions
 
     public static IdentityBuilder AddIdentity(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<AuthenticationSettings>(configuration.GetSection(nameof(AuthenticationSettings)));
+
         AuthenticationSettings authSettings = configuration.GetSection(nameof(AuthenticationSettings)).Get<AuthenticationSettings>();
 
         services.Configure<IdentityOptions>(options =>

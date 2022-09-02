@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
+using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Data.EF.Context;
@@ -16,7 +17,7 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking();
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking().Where(x => !x.Private);
 
         if (request.StartDateOfCreation.HasValue && request.EndDateOfCreation.HasValue)
             query = query.Where(x => x.DateOfCreation >= request.StartDateOfCreation.Value && x.DateOfCreation <= request.EndDateOfCreation.Value);
@@ -36,6 +37,7 @@ internal class PostQueryProvider : IPostQueryProvider
                 AuthorId = x.Author.Id,
                 AuthorName = x.Author.DisplayName,
                 DateOfCreation = x.DateOfCreation,
+                DateOfModification = x.DateOfModification,
                 Title = x.Title
             })
             .Skip(pagedResultInfo.ItemsToSkip())
@@ -43,6 +45,33 @@ internal class PostQueryProvider : IPostQueryProvider
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetAllPostsQueryResult>(pagedResultInfo, result);
+    }
+
+    public async Task<PagedResult<GetMostRecentPublishedPostsQueryResult>> GetMostRecentPublishedPostsQueryResultAsync(
+        GetMostRecentPublishedPostsQuery request, 
+        CancellationToken cancellationToken)
+    {
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()
+            .Where(x => !x.Private)
+            .OrderByDescending(x => x.DateOfCreation);
+
+        int totalOfItens = await query.CountAsync(cancellationToken);
+
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+
+        GetMostRecentPublishedPostsQueryResult[] result =
+            await query.Select(x => new GetMostRecentPublishedPostsQueryResult()
+            {
+                Id = x.Id,
+                AuthorName = x.Author.DisplayName,
+                DateOfCreation = x.DateOfCreation,
+                Title = x.Title
+            })
+            .Skip(pagedResultInfo.ItemsToSkip())
+            .Take(request.PageSize)
+            .ToArrayAsync(cancellationToken);
+
+        return new PagedResult<GetMostRecentPublishedPostsQueryResult>(pagedResultInfo, result);
     }
 
     public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
@@ -60,6 +89,7 @@ internal class PostQueryProvider : IPostQueryProvider
                 Content = x.Content,
                 DateOfCreation = x.DateOfCreation,
                 DateOfModification = x.DateOfModification,
+                Private = x.Private,
                 Shares = x.Shareds.Count,
                 SubTitle = x.SubTitle,
                 Title = x.Title
