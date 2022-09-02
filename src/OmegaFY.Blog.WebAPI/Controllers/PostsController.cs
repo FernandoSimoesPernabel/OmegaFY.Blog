@@ -6,6 +6,7 @@ using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
+using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
@@ -24,6 +25,14 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> GetAllPosts([FromQuery] GetAllPostsInputModel inputModel, CancellationToken cancellationToken)
     {
         PagedResult<GetAllPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet("MostRecentPublishedPosts")]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentPublishedPostsQueryResult>>), 200)]
+    public async Task<IActionResult> GetMostRecentPublishedPosts([FromQuery] GetMostRecentPublishedPostsInputModel inputModel, CancellationToken cancellationToken)
+    {
+        PagedResult<GetMostRecentPublishedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentPublishedPostsQuery, PagedResult<GetMostRecentPublishedPostsQueryResult>>(inputModel.ToCommand(), cancellationToken);
         return Ok(result);
     }
 
