@@ -17,7 +17,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers;
 [ApiVersion("1.0")]
 public class PostsController : ApiControllerBase
 {
-    public PostsController(ILogger<PostsController> logger, IServiceBus serviceBus) : base(serviceBus) { }
+    public PostsController(IServiceBus serviceBus) : base(serviceBus) { }
 
     [HttpGet]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetAllPostsQueryResult>>), 200)]
