@@ -1,14 +1,23 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Honeycomb.OpenTelemetry;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
+using OmegaFY.Blog.Infra.OpenTelemetry;
+using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
+using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System.Reflection;
 using System.Text;
 
@@ -16,15 +25,14 @@ namespace OmegaFY.Blog.Infra.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddDependencyInjectionRegister(this IServiceCollection services, Assembly assembly, IConfiguration configuration)
+    public static IServiceCollection AddDependencyInjectionRegister(this IServiceCollection services, Assembly assembly, WebApplicationBuilder builder)
     {
-        assembly?
-            .ExportedTypes
+        assembly?.ExportedTypes
             .Where(t => typeof(IDependencyInjectionRegister).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
             .Select(Activator.CreateInstance)
             .Cast<IDependencyInjectionRegister>()
             .ToList()
-            .ForEach(iocRegister => iocRegister.Register(services, configuration));
+            .ForEach(iocRegister => iocRegister.Register(builder));
 
         return services;
     }
@@ -106,5 +114,32 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddDistributedCache(this IServiceCollection services)
     {
         return services.AddDistributedMemoryCache();
+    }
+
+    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+    {
+        OpenTelemetrySettings openTelemetrySettings = configuration.GetSection(nameof(OpenTelemetrySettings)).Get<OpenTelemetrySettings>();
+
+        services.Configure<OpenTelemetrySettings>(configuration.GetSection(nameof(OpenTelemetrySettings)));
+
+        services.AddSingleton<IOpenTelemetryRegisterProvider, OpenTelemetryActivitySourceProvider>();
+
+        return services.AddOpenTelemetryTracing(builder =>
+        {
+            builder.AddSource(openTelemetrySettings.ServiceName)
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName, serviceVersion: ProjectVersion.Instance.ToString()))
+                .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.Contains("api/"))
+                .AddHttpClientInstrumentation()
+                .AddEntityFrameworkCoreInstrumentation(efOptions => efOptions.SetDbStatementForText = true)
+                .AddHoneycomb(honeycombOptions =>
+                {
+                    honeycombOptions.ServiceName = openTelemetrySettings.ServiceName;
+                    honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
+                    honeycombOptions.ServiceVersion = ProjectVersion.Instance.ToString();
+                });
+
+            if (environment.IsDevelopment())
+                builder.AddConsoleExporter();
+        });
     }
 }

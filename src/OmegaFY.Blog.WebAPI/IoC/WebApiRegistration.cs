@@ -11,29 +11,26 @@ namespace OmegaFY.Blog.WebAPI.IoC;
 
 public class WebApiRegistration : IDependencyInjectionRegister
 {
-    public IServiceCollection Register(IServiceCollection services, IConfiguration configuration)
+    public void Register(WebApplicationBuilder builder)
     {
-        services
-            .AddControllers(controllerOptions =>
-            {
-                controllerOptions.Filters.Add(new ApiResponseActionFilter());
-                controllerOptions.Filters.Add(new ErrorHandlerExceptionFilter());
-                controllerOptions.SuppressAsyncSuffixInActionNames = false;
-            })
-            .AddJsonOptions(jsonOptions =>
-            {
-                jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                jsonOptions.JsonSerializerOptions.AddContext<JsonSerializerSourceGeneratorContext>();
-            });
+        builder.Services.AddControllers(controllerOptions =>
+        {
+            controllerOptions.Filters.Add(new ApiResponseActionFilter(builder.Environment));
+            controllerOptions.Filters.Add(new ErrorHandlerExceptionFilter(builder.Environment));
+            controllerOptions.SuppressAsyncSuffixInActionNames = false;
+        })
+        .AddJsonOptions(jsonOptions =>
+        {
+            jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            jsonOptions.JsonSerializerOptions.AddContext<JsonSerializerSourceGeneratorContext>();
+        });
 
-        services.AddApiVersioning(options =>
+        builder.Services.AddApiVersioning(options =>
         {
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = ApiVersion.Default;
             options.ApiVersionReader = new MediaTypeApiVersionReader(HttpHeadersConstantes.HTTP_API_VERSION_HEADER);
             options.ReportApiVersions = true;
         });
-
-        return services;
     }
 }

@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace OmegaFY.Blog.Infra.IoC;
 
 public interface IDependencyInjectionRegister
 {
-    public IServiceCollection Register(IServiceCollection services, IConfiguration configuration);
+    public void Register(WebApplicationBuilder builder);
 }

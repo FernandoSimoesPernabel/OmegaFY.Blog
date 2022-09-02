@@ -3,10 +3,10 @@ using OmegaFY.Blog.Infra.IoC;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
 
-public class CacheRegistration : IDependencyInjectionRegister
+public class OpenTelemetryRegistration : IDependencyInjectionRegister
 {
     public void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddDistributedCache();
+        builder.Services.AddOpenTelemetry(builder.Configuration, builder.Environment);
     }
 }

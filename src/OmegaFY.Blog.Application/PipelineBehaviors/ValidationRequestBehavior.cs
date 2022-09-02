@@ -32,14 +32,11 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         }
         catch (ErrorCodeException errorCodeException)
         {
-            return ErrorsFromException(errorCodeException.ErrorCode, errorCodeException.GetErrorsMessagesFromInnerExceptions());
+            return ErrorsFromException(errorCodeException.ErrorCode, errorCodeException.Message);
         }
         catch (Exception ex)
         {
-            if (_environment.IsDevelopment())
-                return ErrorsFromException(ApplicationErrorCodes.NOT_DOMAIN_ERROR, ex.GetErrorsMessagesFromInnerExceptions());
-
-            return ErrorsFromException(ApplicationErrorCodes.NOT_DOMAIN_ERROR, ""); //TODO
+            return ErrorsFromException(ApplicationErrorCodes.NOT_DOMAIN_ERROR, ex.GetSafeErrorMessageWhenInProd(_environment.IsDevelopment()));
         }
     }
 

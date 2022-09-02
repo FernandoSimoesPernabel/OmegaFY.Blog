@@ -15,4 +15,6 @@ public abstract class GenericResult : IResult
     public bool Failed() => !Succeeded();
 
     public IReadOnlyCollection<ValidationError> Errors() => _errors.AsReadOnly();
+
+    public string GetErrorsAsStringSeparatedByNewLine() => string.Join(Environment.NewLine, _errors.Select(x => x.Message));
 }
