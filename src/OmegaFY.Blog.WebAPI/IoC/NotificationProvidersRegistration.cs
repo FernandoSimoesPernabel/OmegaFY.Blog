@@ -5,5 +5,5 @@ namespace OmegaFY.Blog.WebAPI.IoC;
 
 public class NotificationProvidersRegistration : IDependencyInjectionRegister
 {
-    public void Register(WebApplicationBuilder builder) => builder.Services.AddNotificationProviders(builder.Configuration);
+    public void Register(WebApplicationBuilder builder) => builder.Services.AddMultipleNotificationProviders(builder.Configuration);
 }
