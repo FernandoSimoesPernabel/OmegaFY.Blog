@@ -13,6 +13,10 @@ using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
+using OmegaFY.Blog.Infra.Notifications;
+using OmegaFY.Blog.Infra.Notifications.Emails;
+using OmegaFY.Blog.Infra.Notifications.Sms;
+using OmegaFY.Blog.Infra.Notifiers.Sms;
 using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
@@ -141,5 +145,19 @@ public static class DependencyInjectionExtensions
             if (environment.IsDevelopment())
                 builder.AddConsoleExporter();
         });
+    }
+
+    public static IServiceCollection AddNotificationProviders(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IMultipleNotificationProvidersHandler, MultipleNotificationProvidersHandler>();
+
+        services.AddScoped<IEmailNotificationProvider, EmailNotificationProvider>();
+        services.AddScoped<INotificationProvider, EmailNotificationProvider>();
+
+        services.AddScoped<ISmsNotificationProvider, SmsNotificationProvider>();
+        services.AddScoped<INotificationProvider, SmsNotificationProvider>();
+
+
+        return services;
     }
 }

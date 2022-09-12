@@ -5,8 +5,5 @@ namespace OmegaFY.Blog.WebAPI.IoC;
 
 public class ServiceBusRegistration : IDependencyInjectionRegister
 {
-    public void Register(WebApplicationBuilder builder)
-    {
-        builder.Services.AddServiceBusMediatR();
-    }
+    public void Register(WebApplicationBuilder builder) => builder.Services.AddServiceBusMediatR();
 }

@@ -5,8 +5,5 @@ namespace OmegaFY.Blog.WebAPI.IoC;
 
 public class OpenTelemetryRegistration : IDependencyInjectionRegister
 {
-    public void Register(WebApplicationBuilder builder)
-    {
-        builder.Services.AddOpenTelemetry(builder.Configuration, builder.Environment);
-    }
+    public void Register(WebApplicationBuilder builder) => builder.Services.AddOpenTelemetry(builder.Configuration, builder.Environment);
 }
