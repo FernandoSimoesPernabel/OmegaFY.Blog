@@ -1,3 +1,6 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Infra.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,13 @@ var app = builder.Build();
 app.UseSwagger();
 
 app.UseSwaggerUI();
+
+app.UseHealthChecks(HealthCheckConstants.API_ENDPOINT, new HealthCheckOptions()
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.UseHealthChecksUI(options => options.UIPath = HealthCheckConstants.UI_ENDPOINT);
 
 app.UseHttpsRedirection();
 
