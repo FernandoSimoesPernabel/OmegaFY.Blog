@@ -3,6 +3,7 @@ using SendGrid.Helpers.Mail;
 using SendGrid;
 using OmegaFY.Blog.Infra.Notifications.Configs;
 using Microsoft.Extensions.Options;
+using OmegaFY.Blog.Infra.Notifications.Models;
 
 namespace OmegaFY.Blog.Infra.Notifications.Emails;
 
@@ -10,24 +11,27 @@ internal class SendGridEmailNotificationProvider : IEmailNotificationProvider
 {
     private readonly ISendGridClient _sendGridClient;
 
-    private readonly SendGridSettings _sendGridSettings;
+    private readonly EmailAddress _fromEmailAddress;
 
     public SendGridEmailNotificationProvider(ISendGridClient sendGridClient, IOptions<SendGridSettings> optionsSendGridSettings)
     {
         _sendGridClient = sendGridClient;
-        _sendGridSettings = optionsSendGridSettings.Value;
+        _fromEmailAddress = new EmailAddress(optionsSendGridSettings.Value.FromEmail, optionsSendGridSettings.Value.FromEmailDisplayName);
     }
 
-    //public async Task SendEmailAsync()
-    //{
-    //    SendGridMessage msg = new SendGridMessage()
-    //    {
-    //        From = new EmailAddress(_sendGridSettings.FromEmail, _sendGridSettings.FromEmailDisplayName),
-    //        Subject = "Sending with Twilio SendGrid is Fun"
-    //    };
+    public async Task<bool> SendNotificationAsync(Notification notification, CancellationToken cancellationToken)
+    {
+        SendGridMessage emailMessage = new SendGridMessage()
+        {
+            From = _fromEmailAddress,
+            Subject = notification.Subject,
+            PlainTextContent = notification.Message
+        };
+        
+        emailMessage.AddTo(new EmailAddress(notification.Email, notification.Username));
 
-    //    msg.AddContent(MimeType.Text, "and easy to do anywhere, even with C#");
-    //    msg.AddTo(new EmailAddress("test@example.com", "Example User"));
-    //    Response response = await _sendGridClient.SendEmailAsync(msg);
-    //}
+        Response response = await _sendGridClient.SendEmailAsync(emailMessage, cancellationToken);
+
+        return response.IsSuccessStatusCode;
+    }
 }
