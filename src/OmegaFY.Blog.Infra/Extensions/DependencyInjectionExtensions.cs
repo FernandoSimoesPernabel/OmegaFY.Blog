@@ -164,7 +164,7 @@ public static class DependencyInjectionExtensions
     {
         SendGridSettings sendGridSettings = configuration.GetSection(nameof(SendGridSettings)).Get<SendGridSettings>();
 
-        services.Configure<OpenTelemetrySettings>(configuration.GetSection(nameof(SendGridSettings)));
+        services.Configure<SendGridSettings>(configuration.GetSection(nameof(SendGridSettings)));
 
         services.AddScoped<IEmailNotificationProvider, SendGridEmailNotificationProvider>();
         services.AddScoped<INotificationProvider, SendGridEmailNotificationProvider>();
