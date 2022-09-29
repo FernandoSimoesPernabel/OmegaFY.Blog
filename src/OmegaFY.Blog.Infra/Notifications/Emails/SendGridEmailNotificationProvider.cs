@@ -13,10 +13,10 @@ internal class SendGridEmailNotificationProvider : IEmailNotificationProvider
 
     private readonly EmailAddress _fromEmailAddress;
 
-    public SendGridEmailNotificationProvider(ISendGridClient sendGridClient, IOptions<SendGridSettings> optionsSendGridSettings)
+    public SendGridEmailNotificationProvider(ISendGridClient sendGridClient, EmailAddress fromEmailAddress)
     {
         _sendGridClient = sendGridClient;
-        _fromEmailAddress = new EmailAddress(optionsSendGridSettings.Value.FromEmail, optionsSendGridSettings.Value.FromEmailDisplayName);
+        _fromEmailAddress = fromEmailAddress;
     }
 
     public async Task<bool> SendNotificationAsync(Notification notification, CancellationToken cancellationToken)

@@ -24,6 +24,7 @@ using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SendGrid.Extensions.DependencyInjection;
+using SendGrid.Helpers.Mail;
 using System.Reflection;
 using System.Text;
 
@@ -164,8 +165,7 @@ public static class DependencyInjectionExtensions
     {
         SendGridSettings sendGridSettings = configuration.GetSection(nameof(SendGridSettings)).Get<SendGridSettings>();
 
-        services.Configure<SendGridSettings>(configuration.GetSection(nameof(SendGridSettings)));
-
+        services.AddSingleton(new EmailAddress(sendGridSettings.FromEmail, sendGridSettings.FromEmailDisplayName));
         services.AddScoped<IEmailNotificationProvider, SendGridEmailNotificationProvider>();
         services.AddScoped<INotificationProvider, SendGridEmailNotificationProvider>();
         services.AddSendGrid(options => options.ApiKey = sendGridSettings.ApiKey);
