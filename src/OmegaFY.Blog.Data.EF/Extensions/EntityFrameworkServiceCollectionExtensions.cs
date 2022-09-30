@@ -15,7 +15,7 @@ public static class EFServiceCollectionExtensions
 {
     public static IServiceCollection AddEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration)
     {
-        string sqlLiteConnectionString = configuration.GetConnectionString("SqlLite");
+        string sqlLiteConnectionString = configuration.GetSqlLiteConnectionString();
 
         services.AddDbContextPool<AvaliationsContext>(options => options.UseSqlite(sqlLiteConnectionString));
         services.AddDbContextPool<CommentsContext>(options => options.UseSqlite(sqlLiteConnectionString));
