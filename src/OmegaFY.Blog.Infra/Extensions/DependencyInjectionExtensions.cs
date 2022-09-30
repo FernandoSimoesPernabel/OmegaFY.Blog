@@ -13,11 +13,18 @@ using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
+using OmegaFY.Blog.Infra.Notifications;
+using OmegaFY.Blog.Infra.Notifications.Configs;
+using OmegaFY.Blog.Infra.Notifications.Emails;
+using OmegaFY.Blog.Infra.Notifications.Sms;
+using OmegaFY.Blog.Infra.Notifiers.Sms;
 using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using SendGrid.Extensions.DependencyInjection;
+using SendGrid.Helpers.Mail;
 using System.Reflection;
 using System.Text;
 
@@ -141,5 +148,36 @@ public static class DependencyInjectionExtensions
             if (environment.IsDevelopment())
                 builder.AddConsoleExporter();
         });
+    }
+
+    public static IServiceCollection AddMultipleNotificationProviders(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IMultipleNotificationProvidersHandler, MultipleNotificationProvidersHandler>();
+
+        services.AddSendGridEmailNotificationProvider(configuration);
+
+        services.AddSmsNotificationProvider();
+
+        return services;
+    }
+
+    public static IServiceCollection AddSendGridEmailNotificationProvider(this IServiceCollection services, IConfiguration configuration)
+    {
+        SendGridSettings sendGridSettings = configuration.GetSection(nameof(SendGridSettings)).Get<SendGridSettings>();
+
+        services.AddSingleton(new EmailAddress(sendGridSettings.FromEmail, sendGridSettings.FromEmailDisplayName));
+        services.AddScoped<IEmailNotificationProvider, SendGridEmailNotificationProvider>();
+        services.AddScoped<INotificationProvider, SendGridEmailNotificationProvider>();
+        services.AddSendGrid(options => options.ApiKey = sendGridSettings.ApiKey);
+
+        return services;
+    }
+
+    public static IServiceCollection AddSmsNotificationProvider(this IServiceCollection services)
+    {
+        services.AddScoped<ISmsNotificationProvider, SmsNotificationProvider>();
+        services.AddScoped<INotificationProvider, SmsNotificationProvider>();
+
+        return services;
     }
 }
