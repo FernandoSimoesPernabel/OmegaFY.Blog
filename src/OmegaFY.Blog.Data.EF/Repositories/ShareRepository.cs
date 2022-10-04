@@ -7,7 +7,10 @@ namespace OmegaFY.Blog.Data.EF.Repositories;
 
 internal class ShareRepository : BaseRepository<PostShares>, IShareRepository
 {
-    public ShareRepository(SharesContext dbContext) : base(dbContext)
+    public ShareRepository(SharesContext dbContext) : base(dbContext) { }
+
+    public Task<PostShares> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
     }
 }

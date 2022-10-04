@@ -11,6 +11,8 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
 
     protected PostShares() => _shareds = new List<Shared>();
 
+    public bool AuthorHasAlredySharedPost(Author author) => _shareds.Any(share => share.AuthorId == author.Id);
+
     public void Share(Shared shared)
     {
         if (shared is null)
