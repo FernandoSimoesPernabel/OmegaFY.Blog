@@ -1,8 +1,8 @@
 ﻿using OmegaFY.Blog.Domain.Exceptions;
 
-namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
+namespace OmegaFY.Blog.Domain.Entities.Shares;
 
-public record class Shared
+public class Shared : Entity
 {
     public Guid PostId { get; }
 

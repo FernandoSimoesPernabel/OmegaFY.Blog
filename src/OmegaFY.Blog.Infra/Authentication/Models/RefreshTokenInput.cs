@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Infra.Authentication.Models;
 
-public readonly struct RefreshTokenInput
+public readonly record struct RefreshTokenInput
 {
     public Guid UserId { get; }
 

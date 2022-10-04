@@ -1,8 +1,8 @@
 ﻿using OmegaFY.Blog.Application.Result;
 
-namespace OmegaFY.Blog.Application.Commands.Shares.SharePost;
+namespace OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 
-public class SharePostCommandResult : GenericResult, ICommandResult
+public class GetShareQueryResult : GenericResult, IQueryResult
 {
     public Guid Id { get; set; }
 
@@ -12,9 +12,9 @@ public class SharePostCommandResult : GenericResult, ICommandResult
 
     public DateTime DateAndTimeOfShare { get; set; }
 
-    public SharePostCommandResult() { }
+    public GetShareQueryResult() { }
 
-    public SharePostCommandResult(Guid id, Guid postId, Guid authorId, DateTime dateAndTimeOfShare)
+    public GetShareQueryResult(Guid id, Guid postId, Guid authorId, DateTime dateAndTimeOfShare)
     {
         Id = id;
         PostId = postId;

@@ -54,7 +54,7 @@ namespace OmegaFY.Blog.WebAPI.JsonSerializers;
 [JsonSerializable(typeof(RemoveCommentInputModel))]
 [JsonSerializable(typeof(RemoveRatingInputModel))]
 [JsonSerializable(typeof(RemoveReactionInputModel))]
-[JsonSerializable(typeof(SharePostInputModel))]
+[JsonSerializable(typeof(GetShareQueryResult))]
 [JsonSerializable(typeof(UnsharePostInputModel))]
 [JsonSerializable(typeof(GetAllPostsInputModel))]
 [JsonSerializable(typeof(GetDonationsMadeInputModel))]
@@ -97,5 +97,5 @@ namespace OmegaFY.Blog.WebAPI.JsonSerializers;
 [JsonSerializable(typeof(ApiResponse<PagedResult<GetAllPostsQueryResult>>))]
 [JsonSerializable(typeof(ApiResponse<GetMostRecentPublishedPostsQueryResult>))]
 [JsonSerializable(typeof(ApiResponse<GetPostQueryResult>))]
-[JsonSerializable(typeof(ApiResponse<GetMostRecentSharesQueryResult>))]
+[JsonSerializable(typeof(ApiResponse<GetShareQueryResult>))]
 internal partial class JsonSerializerSourceGeneratorContext : JsonSerializerContext { }

@@ -7,6 +7,7 @@ using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.QueryProviders;
 using OmegaFY.Blog.Data.EF.Repositories;
 using OmegaFY.Blog.Domain.Repositories.Posts;
+using OmegaFY.Blog.Domain.Repositories.Shares;
 using OmegaFY.Blog.Domain.Repositories.Users;
 
 namespace OmegaFY.Blog.Data.EF.Extensions;
@@ -40,6 +41,7 @@ public static class EFServiceCollectionExtensions
     {
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IShareRepository, ShareRepository>();
 
         return services;
     }

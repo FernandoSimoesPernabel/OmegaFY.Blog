@@ -4,10 +4,14 @@ using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPrivate;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
+using OmegaFY.Blog.Application.Commands.Shares.SharePost;
+using OmegaFY.Blog.Application.Commands.Shares.UnsharePost;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
+using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
+using OmegaFY.Blog.Domain.Entities.Shares;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
 using OmegaFY.Blog.WebAPI.Models.Queries;
@@ -79,5 +83,32 @@ public class PostsController : ApiControllerBase
     {
         MakePostPublicCommandResult result = await _serviceBus.SendMessageAsync<MakePostPublicCommand, MakePostPublicCommandResult>(new(id), cancellationToken);
         return Ok(result);
+    }
+
+    [HttpGet("{postId:guid}/Shares/{shareId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<GetShareQueryResult>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 404)]
+    public async Task<IActionResult> GetShare([FromRoute] GetShareInputModel inputModel, CancellationToken cancellationToken)
+    {
+        GetShareQueryResult result = await _serviceBus.SendMessageAsync<GetShareQuery, GetShareQueryResult>(inputModel.ToCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost("{id:guid}/Shares")]
+    [ProducesResponseType(typeof(ApiResponse<SharePostCommandResult>), 201)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> SharePost(Guid id, CancellationToken cancellationToken)
+    {
+        SharePostCommandResult result = await _serviceBus.SendMessageAsync<SharePostCommand, SharePostCommandResult>(new(id), cancellationToken);
+        return CreatedAtAction(nameof(GetShare), new { postId = result.PostId, shareId = result.Id }, result);
+    }
+
+    [HttpDelete("{postId:guid}/Shares/{shareId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<UnsharePostCommandResult>), 201)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> UnsharePost([FromRoute] UnsharePostInputModel inputModel, CancellationToken cancellationToken)
+    {
+        UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(inputModel.ToCommand(), cancellationToken);
+        return NoContent();
     }
 }
