@@ -8,7 +8,9 @@ public class SharedDatabaseModelMapping : IEntityTypeConfiguration<SharedDatabas
 {
     public void Configure(EntityTypeBuilder<SharedDatabaseModel> builder)
     {
-        builder.HasKey(x => new { x.PostId, x.AuthorId });
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
         builder.HasIndex(x => x.PostId);
 
