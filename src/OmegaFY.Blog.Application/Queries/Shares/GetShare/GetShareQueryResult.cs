@@ -10,15 +10,7 @@ public class GetShareQueryResult : GenericResult, IQueryResult
 
     public Guid AuthorId { get; set; }
 
+    public string AuthorName { get; set; }
+
     public DateTime DateAndTimeOfShare { get; set; }
-
-    public GetShareQueryResult() { }
-
-    public GetShareQueryResult(Guid id, Guid postId, Guid authorId, DateTime dateAndTimeOfShare)
-    {
-        Id = id;
-        PostId = postId;
-        AuthorId = authorId;
-        DateAndTimeOfShare = dateAndTimeOfShare;
-    }
 }

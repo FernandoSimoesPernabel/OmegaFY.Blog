@@ -86,7 +86,7 @@ public class PostsController : ApiControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{postId:guid}/Shares/{shareId:guid}")]
+    [HttpGet("{PostId:guid}/Shares/{ShareId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetShareQueryResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 404)]
     public async Task<IActionResult> GetShare([FromRoute] GetShareInputModel inputModel, CancellationToken cancellationToken)
@@ -110,10 +110,6 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> UnsharePost([FromRoute] UnsharePostInputModel inputModel, CancellationToken cancellationToken)
     {
         UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(inputModel.ToCommand(), cancellationToken);
-
-        if (result.Failed())
-            return BadRequest(result);
-
-        return NoContent();
+        return result.Failed() ? BadRequest(result) : NoContent();
     }
 }
