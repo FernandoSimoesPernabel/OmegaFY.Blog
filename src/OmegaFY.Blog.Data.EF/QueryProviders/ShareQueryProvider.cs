@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OmegaFY.Blog.Application.Queries.Posts.GetPost;
+using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 using OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.Models;
-using OmegaFY.Blog.Domain.Entities.Shares;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -23,6 +22,34 @@ internal class ShareQueryProvider : IShareQueryProvider
             .FirstOrDefaultAsync(cancellationToken);
 
         return new CurrentUserHasSharedPostQueryResult(postId, shareId);
+    }
+
+    public async Task<PagedResult<GetMostRecentSharesQueryResult>> GetMostRecentSharesQueryResultAsync(GetMostRecentSharesQuery request, CancellationToken cancellationToken)
+    {
+        IQueryable<SharedDatabaseModel> query = _context.Set<SharedDatabaseModel>().AsNoTracking()
+            .OrderByDescending(x => x.DateAndTimeOfShare)
+            .Where(share => !share.Post.Private);
+
+        int totalOfItens = await query.CountAsync(cancellationToken);
+
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+
+        GetMostRecentSharesQueryResult[] result =
+            await query.Select(share => new GetMostRecentSharesQueryResult()
+            {
+                Id = share.Id,
+                AuthorId = share.AuthorId,
+                AuthorName = share.Author.DisplayName,
+                DateAndTimeOfShare = share.DateAndTimeOfShare,
+                PostId = share.PostId,
+                PostSubTitle = share.Post.SubTitle,
+                PostTitle = share.Post.Title
+            })
+            .Skip(pagedResultInfo.ItemsToSkip())
+            .Take(request.PageSize)
+            .ToArrayAsync(cancellationToken);
+
+        return new PagedResult<GetMostRecentSharesQueryResult>(pagedResultInfo, result);
     }
 
     public async Task<GetShareQueryResult> GetShareQueryResultAsync(Guid shareId, Guid authorId, CancellationToken cancellationToken)

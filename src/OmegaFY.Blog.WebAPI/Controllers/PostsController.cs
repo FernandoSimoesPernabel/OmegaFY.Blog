@@ -42,6 +42,14 @@ public class PostsController : ApiControllerBase
         return Ok(result);
     }
 
+    [HttpGet("MostRecentShares")]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentSharesQueryResult>>), 200)]
+    public async Task<IActionResult> GetMostRecentSharesQueryResult([FromQuery] GetMostRecentSharesInputModel inputModel, CancellationToken cancellationToken)
+    {
+        PagedResult<GetMostRecentSharesQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentSharesQuery, PagedResult<GetMostRecentSharesQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        return Ok(result);
+    }
+
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetPostQueryResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 404)]

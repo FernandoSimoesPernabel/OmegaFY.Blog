@@ -24,6 +24,8 @@ public class SharedDatabaseModelMapping : IEntityTypeConfiguration<SharedDatabas
 
         builder.HasOne(x => x.Author).WithMany(x => x.Shareds).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(x => x.Post).WithMany(x => x.Shareds).HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
+
         builder.ToTable("Shares");
     }
 }

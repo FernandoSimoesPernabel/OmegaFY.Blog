@@ -5,7 +5,7 @@ using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 
-public class CurrentUserHasSharedPostQueryHandler : QueryHandlerMediatRBase<CurrentUserHasSharedPostQueryHandler, CurrentUserHasSharedPostQuery, CurrentUserHasSharedPostQueryResult>
+internal class CurrentUserHasSharedPostQueryHandler : QueryHandlerMediatRBase<CurrentUserHasSharedPostQueryHandler, CurrentUserHasSharedPostQuery, CurrentUserHasSharedPostQueryResult>
 {
     private readonly IShareQueryProvider _shareQueryProvider;
 
