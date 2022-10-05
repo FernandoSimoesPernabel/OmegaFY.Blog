@@ -24,7 +24,7 @@ internal class UnsharePostCommandHandler : CommandHandlerMediatRBase<UnsharePost
         if (postToShare is null)
             throw new NotFoundException();
 
-        postToShare.Unshare(_currentUser.CurrentRequestUserId.Value);
+        postToShare.Unshare(command.ShareId, _currentUser.CurrentRequestUserId.Value);
 
         await _repository.SaveChangesAsync(cancellationToken);
 

@@ -25,9 +25,9 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
         _shareds.Add(shared);
     }
 
-    public void Unshare(Author author)
+    public void Unshare(Guid shareId, Author author)
     {
-        Shared shared = _shareds.FirstOrDefault(x => x.AuthorId == author.Id);
+        Shared shared = _shareds.FirstOrDefault(share => share.Id == shareId && share.AuthorId == author.Id);
 
         if (shared is null)
             throw new NotFoundException();
