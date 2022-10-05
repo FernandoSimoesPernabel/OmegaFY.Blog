@@ -12,7 +12,7 @@ public class PostSharesMapping : IEntityTypeConfiguration<PostShares>
 
         builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
-        builder.HasMany(x => x.Shareds).WithOne().HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.NoAction);
+        builder.HasMany(x => x.Shareds).WithOne().HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
 
         builder.ToTable("Posts");
     }

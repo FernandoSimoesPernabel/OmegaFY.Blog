@@ -1,4 +1,5 @@
 ﻿using OmegaFY.Blog.Domain.Exceptions;
+using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 namespace OmegaFY.Blog.Domain.Entities.Shares;
 
@@ -12,16 +13,16 @@ public class Shared : Entity
 
     protected Shared() { }
 
-    public Shared(Guid postId, Guid authorId)
+    public Shared(Guid postId, Author author)
     {
         if (postId == Guid.Empty)
             throw new DomainArgumentException("");
 
-        if (authorId == Guid.Empty)
+        if (author is null)
             throw new DomainArgumentException("");
 
         PostId = postId;
-        AuthorId = authorId;
+        AuthorId = author;
         DateAndTimeOfShare = DateTime.UtcNow;
     }
 }

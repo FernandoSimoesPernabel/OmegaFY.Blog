@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
 using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPrivate;
@@ -68,7 +69,7 @@ public class PostsController : ApiControllerBase
     }
 
     [HttpPatch("{id:guid}/MakePrivate")]
-    [ProducesResponseType(typeof(ApiResponse<>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<MakePostPrivateCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
     public async Task<IActionResult> MakePostPrivate(Guid id, CancellationToken cancellationToken)
     {
@@ -77,7 +78,7 @@ public class PostsController : ApiControllerBase
     }
 
     [HttpPatch("{id:guid}/MakePublic")]
-    [ProducesResponseType(typeof(ApiResponse<>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<MakePostPublicCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
     public async Task<IActionResult> MakePostPublic(Guid id, CancellationToken cancellationToken)
     {
@@ -103,12 +104,16 @@ public class PostsController : ApiControllerBase
         return CreatedAtAction(nameof(GetShare), new { postId = result.PostId, shareId = result.Id }, result);
     }
 
-    [HttpDelete("{postId:guid}/Shares/{shareId:guid}")]
-    [ProducesResponseType(typeof(ApiResponse<UnsharePostCommandResult>), 201)]
+    [HttpDelete("{PostId:guid}/Shares/{ShareId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse), 204)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
     public async Task<IActionResult> UnsharePost([FromRoute] UnsharePostInputModel inputModel, CancellationToken cancellationToken)
     {
         UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(inputModel.ToCommand(), cancellationToken);
+
+        if (result.Failed())
+            return BadRequest(result);
+
         return NoContent();
     }
 }

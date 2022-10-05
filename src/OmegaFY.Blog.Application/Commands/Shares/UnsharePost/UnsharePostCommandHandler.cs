@@ -15,16 +15,13 @@ internal class UnsharePostCommandHandler : CommandHandlerMediatRBase<UnsharePost
     public UnsharePostCommandHandler(
         IUserInformation currentUser,
         ILogger<UnsharePostCommandHandler> logger,
-        IShareRepository repository) : base(currentUser, logger)
-    {
-        _repository = repository;
-    }
+        IShareRepository repository) : base(currentUser, logger) => _repository = repository;
 
     public override async Task<UnsharePostCommandResult> HandleAsync(UnsharePostCommand command, CancellationToken cancellationToken)
     {
         PostShares postToShare = await _repository.GetPostByIdAsync(command.PostId, cancellationToken);
 
-        if (postToShare is null || !postToShare.AuthorHasAlredySharedPost(_currentUser.CurrentRequestUserId.Value))
+        if (postToShare is null)
             throw new NotFoundException();
 
         postToShare.Unshare(_currentUser.CurrentRequestUserId.Value);

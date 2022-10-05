@@ -1,4 +1,5 @@
-﻿using OmegaFY.Blog.Domain.Exceptions;
+﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 namespace OmegaFY.Blog.Domain.Entities.Shares;
@@ -11,12 +12,15 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
 
     protected PostShares() => _shareds = new List<Shared>();
 
-    public bool AuthorHasAlredySharedPost(Author author) => _shareds.Any(share => share.AuthorId == author.Id);
+    public bool HasAuthorAlredySharedPost(Author author) => _shareds.Any(share => share.AuthorId == author.Id);
 
     public void Share(Shared shared)
     {
         if (shared is null)
             throw new DomainArgumentException("");
+
+        if (HasAuthorAlredySharedPost(shared.AuthorId))
+            throw new ConflictedException();
 
         _shareds.Add(shared);
     }
@@ -25,7 +29,9 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
     {
         Shared shared = _shareds.FirstOrDefault(x => x.AuthorId == author.Id);
 
-        if (shared is not null)
-            _shareds.Remove(shared);
+        if (shared is null)
+            throw new NotFoundException();
+
+        _shareds.Remove(shared);
     }
 }

@@ -11,7 +11,7 @@ using OmegaFY.Blog.Data.EF.Context;
 namespace OmegaFY.Blog.Data.EF.Migrations
 {
     [DbContext(typeof(QueryContext))]
-    [Migration("20221004202346_InitialMigration")]
+    [Migration("20221005141044_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -435,13 +435,13 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Avaliations")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
                         .WithMany("Avaliations")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -452,13 +452,13 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -469,7 +469,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -480,13 +480,13 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Reactions")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", null)
                         .WithMany("Reactions")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -497,13 +497,13 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Shareds")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", null)
                         .WithMany("Shareds")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");

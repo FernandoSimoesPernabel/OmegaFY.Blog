@@ -15,10 +15,7 @@ internal class SharePostCommandHandler : CommandHandlerMediatRBase<SharePostComm
     public SharePostCommandHandler(
         IUserInformation currentUser,
         ILogger<SharePostCommandHandler> logger,
-        IShareRepository repository) : base(currentUser, logger)
-    {
-        _repository = repository;
-    }
+        IShareRepository repository) : base(currentUser, logger) => _repository = repository;
 
     public override async Task<SharePostCommandResult> HandleAsync(SharePostCommand command, CancellationToken cancellationToken)
     {
@@ -26,9 +23,6 @@ internal class SharePostCommandHandler : CommandHandlerMediatRBase<SharePostComm
 
         if (postToShare is null)
             throw new NotFoundException();
-
-        if (postToShare.AuthorHasAlredySharedPost(_currentUser.CurrentRequestUserId.Value))
-            throw new ConflictedException();
 
         Shared postShareFromCurrentUser = new Shared(postToShare.Id, _currentUser.CurrentRequestUserId.Value);
 
