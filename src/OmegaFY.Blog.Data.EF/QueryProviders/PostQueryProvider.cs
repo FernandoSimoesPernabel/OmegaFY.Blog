@@ -20,25 +20,25 @@ internal class PostQueryProvider : IPostQueryProvider
         IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking().Where(x => !x.Private);
 
         if (request.StartDateOfCreation.HasValue && request.EndDateOfCreation.HasValue)
-            query = query.Where(x => x.DateOfCreation >= request.StartDateOfCreation.Value && x.DateOfCreation <= request.EndDateOfCreation.Value);
+            query = query.Where(post => post.DateOfCreation >= request.StartDateOfCreation.Value && post.DateOfCreation <= request.EndDateOfCreation.Value);
 
         if (request.AuthorId.HasValue)
-            query = query.Where(x => x.Author.Id == request.AuthorId.Value);
+            query = query.Where(post => post.Author.Id == request.AuthorId.Value);
 
         int totalOfItens = await query.CountAsync(cancellationToken);
 
         PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
 
         GetAllPostsQueryResult[] result =
-            await query.Select(x => new GetAllPostsQueryResult()
+            await query.Select(post => new GetAllPostsQueryResult()
             {
-                Id = x.Id,
-                AverageRate = x.AverageRate,
-                AuthorId = x.Author.Id,
-                AuthorName = x.Author.DisplayName,
-                DateOfCreation = x.DateOfCreation,
-                DateOfModification = x.DateOfModification,
-                Title = x.Title
+                Id = post.Id,
+                AverageRate = post.AverageRate,
+                AuthorId = post.Author.Id,
+                AuthorName = post.Author.DisplayName,
+                DateOfCreation = post.DateOfCreation,
+                DateOfModification = post.DateOfModification,
+                Title = post.Title
             })
             .Skip(pagedResultInfo.ItemsToSkip())
             .Take(request.PageSize)
@@ -52,8 +52,8 @@ internal class PostQueryProvider : IPostQueryProvider
         CancellationToken cancellationToken)
     {
         IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()
-            .Where(x => !x.Private)
-            .OrderByDescending(x => x.DateOfCreation);
+            .Where(post => !post.Private)
+            .OrderByDescending(post => post.DateOfCreation);
 
         int totalOfItens = await query.CountAsync(cancellationToken);
 
@@ -77,22 +77,22 @@ internal class PostQueryProvider : IPostQueryProvider
     public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _context.Set<PostDatabaseModel>().AsNoTracking()
-            .Where(x => x.Id == id)
-            .Select(x => new GetPostQueryResult()
+            .Where(post => post.Id == id)
+            .Select(post => new GetPostQueryResult()
             {
-                Id = x.Id,
-                AuthorId = x.Author.Id,
-                AuthorName = x.Author.DisplayName,
-                Avaliations = x.Avaliations.Count,
-                AverageRate = x.AverageRate,
-                Comments = x.Comments.Count,
-                Content = x.Content,
-                DateOfCreation = x.DateOfCreation,
-                DateOfModification = x.DateOfModification,
-                Private = x.Private,
-                Shares = x.Shareds.Count,
-                SubTitle = x.SubTitle,
-                Title = x.Title
+                Id = post.Id,
+                AuthorId = post.Author.Id,
+                AuthorName = post.Author.DisplayName,
+                Avaliations = post.Avaliations.Count,
+                AverageRate = post.AverageRate,
+                Comments = post.Comments.Count,
+                Content = post.Content,
+                DateOfCreation = post.DateOfCreation,
+                DateOfModification = post.DateOfModification,
+                Private = post.Private,
+                Shares = post.Shareds.Count,
+                SubTitle = post.SubTitle,
+                Title = post.Title
             }).FirstOrDefaultAsync(cancellationToken);
     }
 }

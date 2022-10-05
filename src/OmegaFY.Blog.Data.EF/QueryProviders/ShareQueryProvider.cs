@@ -27,7 +27,7 @@ internal class ShareQueryProvider : IShareQueryProvider
     public async Task<PagedResult<GetMostRecentSharesQueryResult>> GetMostRecentSharesQueryResultAsync(GetMostRecentSharesQuery request, CancellationToken cancellationToken)
     {
         IQueryable<SharedDatabaseModel> query = _context.Set<SharedDatabaseModel>().AsNoTracking()
-            .OrderByDescending(x => x.DateAndTimeOfShare)
+            .OrderByDescending(share => share.DateAndTimeOfShare)
             .Where(share => !share.Post.Private);
 
         int totalOfItens = await query.CountAsync(cancellationToken);
