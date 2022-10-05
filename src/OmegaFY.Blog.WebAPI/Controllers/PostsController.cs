@@ -11,6 +11,7 @@ using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
+using OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 using OmegaFY.Blog.Domain.Entities.Shares;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
@@ -92,6 +93,14 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> GetShare([FromRoute] GetShareInputModel inputModel, CancellationToken cancellationToken)
     {
         GetShareQueryResult result = await _serviceBus.SendMessageAsync<GetShareQuery, GetShareQueryResult>(inputModel.ToCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet("{id:guid}/Shares/CurrentUserHasSharedPost")]
+    [ProducesResponseType(typeof(ApiResponse<CurrentUserHasSharedPostQueryResult>), 200)]
+    public async Task<IActionResult> CurrentUserHasSharedPost([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        CurrentUserHasSharedPostQueryResult result = await _serviceBus.SendMessageAsync<CurrentUserHasSharedPostQuery, CurrentUserHasSharedPostQueryResult>(new(id), cancellationToken);
         return Ok(result);
     }
 
