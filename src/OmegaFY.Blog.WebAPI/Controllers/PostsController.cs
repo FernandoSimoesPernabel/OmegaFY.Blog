@@ -105,7 +105,7 @@ public class PostsController : ApiControllerBase
     }
 
     [HttpDelete("{PostId:guid}/Shares/{ShareId:guid}")]
-    [ProducesResponseType(typeof(ApiResponse), 204)]
+    [ProducesResponseType(204)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
     public async Task<IActionResult> UnsharePost([FromRoute] UnsharePostInputModel inputModel, CancellationToken cancellationToken)
     {
