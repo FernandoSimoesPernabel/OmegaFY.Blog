@@ -5,5 +5,7 @@ namespace OmegaFY.Blog.WebAPI.Models.Queries;
 
 public class GetMostRecentSharesInputModel : PagedRequest
 {
-    public GetMostRecentSharesQuery ToCommand() => new GetMostRecentSharesQuery(PageNumber, PageSize);
+    public Guid? AuthorId { get; set; }
+
+    public GetMostRecentSharesQuery ToCommand() => new GetMostRecentSharesQuery(PageNumber, PageSize, AuthorId);
 }

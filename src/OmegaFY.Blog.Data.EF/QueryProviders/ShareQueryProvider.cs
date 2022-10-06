@@ -30,6 +30,9 @@ internal class ShareQueryProvider : IShareQueryProvider
             .OrderByDescending(share => share.DateAndTimeOfShare)
             .Where(share => !share.Post.Private);
 
+        if (request.AuthorId.HasValue)
+            query = query.Where(share => share.AuthorId == request.AuthorId.Value);
+
         int totalOfItens = await query.CountAsync(cancellationToken);
 
         PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
