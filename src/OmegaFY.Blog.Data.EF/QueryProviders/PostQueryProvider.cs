@@ -34,7 +34,6 @@ internal class PostQueryProvider : IPostQueryProvider
             {
                 Id = post.Id,
                 AverageRate = post.AverageRate,
-                AuthorId = post.Author.Id,
                 AuthorName = post.Author.DisplayName,
                 DateOfCreation = post.DateOfCreation,
                 DateOfModification = post.DateOfModification,

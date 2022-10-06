@@ -40,13 +40,13 @@ internal class ShareQueryProvider : IShareQueryProvider
         GetMostRecentSharesQueryResult[] result =
             await query.Select(share => new GetMostRecentSharesQueryResult()
             {
-                Id = share.Id,
-                AuthorId = share.AuthorId,
-                AuthorName = share.Author.DisplayName,
+                ShareId = share.Id,
+                ShareAuthorName = share.Author.DisplayName,
                 DateAndTimeOfShare = share.DateAndTimeOfShare,
                 PostId = share.PostId,
                 PostSubTitle = share.Post.SubTitle,
-                PostTitle = share.Post.Title
+                PostTitle = share.Post.Title,
+                PostAuthorName = share.Post.Author.DisplayName
             })
             .Skip(pagedResultInfo.ItemsToSkip())
             .Take(request.PageSize)
