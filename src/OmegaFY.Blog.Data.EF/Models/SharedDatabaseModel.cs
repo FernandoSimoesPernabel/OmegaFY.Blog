@@ -6,6 +6,8 @@ public class SharedDatabaseModel
 
     public Guid PostId { get; set; }
 
+    public PostDatabaseModel Post { get; set; }
+
     public Guid AuthorId { get; set; }
 
     public UserDatabaseModel Author { get; set; }

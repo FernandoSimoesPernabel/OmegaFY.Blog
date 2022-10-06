@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Infra.Authentication.Models;
 
-public readonly struct LoginInput
+public readonly record struct LoginInput
 {
     public Guid UserId { get; }
 

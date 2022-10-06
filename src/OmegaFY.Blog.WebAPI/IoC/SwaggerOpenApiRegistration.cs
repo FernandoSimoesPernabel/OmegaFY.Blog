@@ -38,7 +38,12 @@ public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
                 Name = "Authorization",
                 Type = SecuritySchemeType.Http,
                 BearerFormat = "JWT",
-                Scheme = "Bearer"
+                Scheme = "Bearer",
+                Reference = new OpenApiReference()
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement

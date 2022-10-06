@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OmegaFY.Blog.Data.EF.Migrations
 {
-    public partial class AddIndentityTables : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,19 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    Email = table.Column<string>(type: "varchar(320)", nullable: false),
+                    DisplayName = table.Column<string>(type: "varchar(100)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +167,139 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    Title = table.Column<string>(type: "varchar(50)", nullable: false),
+                    SubTitle = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime", nullable: false),
+                    DateOfModification = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Private = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AverageRate = table.Column<decimal>(type: "numeric", nullable: false, defaultValue: 0m)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Avaliations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    PostId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime", nullable: false),
+                    DateOfModification = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Rate = table.Column<byte>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Avaliations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Avaliations_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Avaliations_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    PostId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    Content = table.Column<string>(type: "varchar(500)", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime", nullable: false),
+                    DateOfModification = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shares",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    PostId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    DateAndTimeOfShare = table.Column<DateTime>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shares", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shares_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Shares_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    CommentId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
+                    CommentReaction = table.Column<string>(type: "varchar(50)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reactions_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reactions_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -190,6 +336,57 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Avaliations_AuthorId",
+                table: "Avaliations",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Avaliations_PostId",
+                table: "Avaliations",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AuthorId",
+                table: "Comments",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostId",
+                table: "Comments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_AuthorId",
+                table: "Posts",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reactions_AuthorId",
+                table: "Reactions",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reactions_CommentId",
+                table: "Reactions",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shares_AuthorId",
+                table: "Shares",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shares_PostId",
+                table: "Shares",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -210,10 +407,28 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Avaliations");
+
+            migrationBuilder.DropTable(
+                name: "Reactions");
+
+            migrationBuilder.DropTable(
+                name: "Shares");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

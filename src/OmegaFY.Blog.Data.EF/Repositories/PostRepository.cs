@@ -10,7 +10,7 @@ internal class PostRepository : BaseRepository<Post>, IPostRepository
 {
     public PostRepository(PostsContext postsContext) : base(postsContext) { }
 
-    public async Task CreatePostAsync(Post post, CancellationToken cancellationToken) => await _dbSet.AddAsync(post, cancellationToken);
+    public void AddPost(Post post) => _dbSet.Add(post);
 
     public async Task<Post> GetByIdAsync(Guid id, Guid authorId, CancellationToken cancellationToken)
         => await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.Author.Id == authorId, cancellationToken);

@@ -14,7 +14,7 @@ public class PostAvaliationsMapping : IEntityTypeConfiguration<PostAvaliations>
 
         builder.Property(x => x.AverageRate).HasColumnType("numeric").IsRequired().HasDefaultValue(0);
 
-        builder.HasMany(x => x.Avaliations).WithOne().HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.NoAction);
+        builder.HasMany(x => x.Avaliations).WithOne().HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
 
         builder.ToTable("Posts");
     }

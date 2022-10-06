@@ -25,7 +25,7 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
             modificationDetails.Property(x => x.DateOfModification).HasColumnType("datetime").HasColumnName("DateOfModification").IsRequired(false);
         });
 
-        builder.HasMany(x => x.Reactions).WithOne().HasForeignKey(x => x.CommentId).OnDelete(DeleteBehavior.NoAction);
+        builder.HasMany(x => x.Reactions).WithOne().HasForeignKey(x => x.CommentId).OnDelete(DeleteBehavior.Cascade);
 
         builder.ToTable("Comments");
     }
