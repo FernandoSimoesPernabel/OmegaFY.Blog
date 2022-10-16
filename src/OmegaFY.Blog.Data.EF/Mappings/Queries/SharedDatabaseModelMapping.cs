@@ -8,7 +8,9 @@ public class SharedDatabaseModelMapping : IEntityTypeConfiguration<SharedDatabas
 {
     public void Configure(EntityTypeBuilder<SharedDatabaseModel> builder)
     {
-        builder.HasKey(x => new { x.PostId, x.AuthorId });
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
 
         builder.HasIndex(x => x.PostId);
 
@@ -20,7 +22,9 @@ public class SharedDatabaseModelMapping : IEntityTypeConfiguration<SharedDatabas
 
         builder.Property(x => x.DateAndTimeOfShare).HasColumnType("datetime").IsRequired();
 
-        builder.HasOne(x => x.Author).WithMany(x => x.Shareds).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(x => x.Author).WithMany(x => x.Shareds).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.Post).WithMany(x => x.Shareds).HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
 
         builder.ToTable("Shares");
     }

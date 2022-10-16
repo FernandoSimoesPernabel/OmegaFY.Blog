@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Infra.Authentication.Models;
 
-public readonly struct AuthenticationToken
+public readonly record struct AuthenticationToken
 {
     public string Token { get; }
 

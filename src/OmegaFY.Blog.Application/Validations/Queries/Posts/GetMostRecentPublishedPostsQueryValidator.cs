@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Validations.Queries.Posts;
 
-public class GetMostRecentPublishedPostsQueryValidation : AbstractValidator<GetMostRecentPublishedPostsQuery>
+public class GetMostRecentPublishedPostsQueryValidator : AbstractValidator<GetMostRecentPublishedPostsQuery>
 {
-    public GetMostRecentPublishedPostsQueryValidation()
+    public GetMostRecentPublishedPostsQueryValidator()
     {
         RuleFor(x => x.PageNumber).GreaterThan(0);
 

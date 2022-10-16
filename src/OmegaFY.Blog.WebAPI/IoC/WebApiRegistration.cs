@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using OmegaFY.Blog.Common.Constantes;
-using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Infra.IoC;
 using OmegaFY.Blog.WebAPI.FIlters;
-using OmegaFY.Blog.WebAPI.JsonSerializers;
 using System.Text.Json.Serialization;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
@@ -17,12 +15,11 @@ public class WebApiRegistration : IDependencyInjectionRegister
         {
             controllerOptions.Filters.Add(new ApiResponseActionFilter(builder.Environment));
             controllerOptions.Filters.Add(new ErrorHandlerExceptionFilter(builder.Environment));
-            controllerOptions.SuppressAsyncSuffixInActionNames = false;
+            controllerOptions.SuppressAsyncSuffixInActionNames = true;
         })
         .AddJsonOptions(jsonOptions =>
         {
             jsonOptions.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-            jsonOptions.JsonSerializerOptions.AddContext<JsonSerializerSourceGeneratorContext>();
         });
 
         builder.Services.AddApiVersioning(options =>

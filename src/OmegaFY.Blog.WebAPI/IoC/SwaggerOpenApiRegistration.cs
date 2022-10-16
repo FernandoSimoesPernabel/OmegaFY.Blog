@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using OmegaFY.Blog.Common.Configs;
+using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Infra.IoC;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
@@ -21,7 +22,7 @@ public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
                     Email = "f_pernabel@hotmail.com"
                 },
                 Description = "For more information access https://github.com/FernandoSimoesPernabel/OmegaFY.Blog",
-                Title = "OmegaFY Blog WebAPI",
+                Title = ApplicationInfoConstants.APPLICATION_NAME,
                 License = new OpenApiLicense()
                 {
                     Name = "GNU General Public License version 3",
@@ -37,7 +38,12 @@ public class SwaggerOpenApiRegistration : IDependencyInjectionRegister
                 Name = "Authorization",
                 Type = SecuritySchemeType.Http,
                 BearerFormat = "JWT",
-                Scheme = "Bearer"
+                Scheme = "Bearer",
+                Reference = new OpenApiReference()
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement

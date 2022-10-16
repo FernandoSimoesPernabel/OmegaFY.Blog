@@ -11,16 +11,14 @@ internal class PublishPostCommandHandler : CommandHandlerMediatRBase<PublishPost
 {
     private readonly IPostRepository _repository;
 
-    public PublishPostCommandHandler(IUserInformation currentUser, ILogger<PublishPostCommandHandler> logger, IPostRepository repository) : base(currentUser, logger)
-    {
-        _repository = repository;
-    }
+    public PublishPostCommandHandler(IUserInformation currentUser, ILogger<PublishPostCommandHandler> logger, IPostRepository repository) 
+        : base(currentUser, logger) => _repository = repository;
 
     public async override Task<PublishPostCommandResult> HandleAsync(PublishPostCommand command, CancellationToken cancellationToken)
     {
         Post newPost = new Post(_currentUser.CurrentRequestUserId, new Header(command.Title, command.SubTitle), command.Body);
 
-        await _repository.CreatePostAsync(newPost, cancellationToken);
+        _repository.AddPost(newPost);
 
         await _repository.SaveChangesAsync(cancellationToken);
 
