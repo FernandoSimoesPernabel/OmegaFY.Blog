@@ -21,9 +21,7 @@ public class ValidationRequestBehavior<TRequest, TResult> : IPipelineBehavior<TR
         _environment = environment;
     }
 
-    public async Task<TResult> Handle(TRequest request,
-                                      CancellationToken cancellationToken,
-                                      RequestHandlerDelegate<TResult> next)
+    public async Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken)
     {
         try
         {
