@@ -1,6 +1,4 @@
-﻿using Honeycomb.OpenTelemetry;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -177,6 +175,15 @@ public static class DependencyInjectionExtensions
     {
         services.AddScoped<ISmsNotificationProvider, SmsNotificationProvider>();
         services.AddScoped<INotificationProvider, SmsNotificationProvider>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddWebApiRateLimiter(this IServiceCollection services)
+    {
+        services.AddRateLimiter(options =>
+        {
+        });
 
         return services;
     }
