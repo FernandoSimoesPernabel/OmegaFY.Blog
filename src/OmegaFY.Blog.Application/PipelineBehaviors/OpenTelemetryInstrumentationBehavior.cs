@@ -14,7 +14,7 @@ public class OpenTelemetryInstrumentationBehavior<TRequest, TResult> : IPipeline
     public OpenTelemetryInstrumentationBehavior(IOpenTelemetryRegisterProvider openTelemetryRegisterProvider)
         => _openTelemetryRegisterProvider = openTelemetryRegisterProvider;
 
-    public async Task<TResult> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResult> next)
+    public async Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken)
     {
         using Activity activity = _openTelemetryRegisterProvider.StartActivity(OpenTelemetryConstants.APPLICATION_HANDLER_KEY);
         

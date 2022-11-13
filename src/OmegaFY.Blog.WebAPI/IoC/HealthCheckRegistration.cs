@@ -9,14 +9,16 @@ public class HealthCheckRegistration : IDependencyInjectionRegister
 {
     public void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddHealthChecks().AddSqlLiteHealthCheck(builder.Configuration);
+        //TODO .NET 7 parou de funcionar
 
-        builder.Services.AddHealthChecksUI(options =>
-        {
-            options.SetEvaluationTimeInSeconds(10);
-            options.SetMinimumSecondsBetweenFailureNotifications(20);
+        //builder.Services.AddHealthChecks().AddSqlLiteHealthCheck(builder.Configuration);
 
-            options.AddHealthCheckEndpoint(ApplicationInfoConstants.APPLICATION_NAME, HealthCheckConstants.API_ENDPOINT);
-        }).AddInMemoryStorage();
+        //builder.Services.AddHealthChecksUI(options =>
+        //{
+        //    options.SetEvaluationTimeInSeconds(10);
+        //    options.SetMinimumSecondsBetweenFailureNotifications(20);
+
+        //    options.AddHealthCheckEndpoint(ApplicationInfoConstants.APPLICATION_NAME, HealthCheckConstants.API_ENDPOINT);
+        //}).AddInMemoryStorage();
     }
 }
