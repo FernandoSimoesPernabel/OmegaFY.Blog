@@ -6,6 +6,7 @@ using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.Models;
+using OmegaFY.Blog.Domain.Entities.Posts;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -17,7 +18,9 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking().Where(x => !x.Private);
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()
+            .Where(post => !post.Private)
+            .OrderByDescending(post => post.DateOfCreation);
 
         if (request.StartDateOfCreation.HasValue && request.EndDateOfCreation.HasValue)
             query = query.Where(post => post.DateOfCreation >= request.StartDateOfCreation.Value && post.DateOfCreation <= request.EndDateOfCreation.Value);
@@ -47,7 +50,7 @@ internal class PostQueryProvider : IPostQueryProvider
     }
 
     public async Task<PagedResult<GetMostRecentPublishedPostsQueryResult>> GetMostRecentPublishedPostsQueryResultAsync(
-        GetMostRecentPublishedPostsQuery request, 
+        GetMostRecentPublishedPostsQuery request,
         CancellationToken cancellationToken)
     {
         IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()

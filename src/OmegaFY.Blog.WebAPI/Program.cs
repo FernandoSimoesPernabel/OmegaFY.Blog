@@ -16,10 +16,11 @@ app.UseSwagger();
 
 app.UseSwaggerUI();
 
-app.UseHealthChecks(HealthCheckConstants.API_ENDPOINT, new HealthCheckOptions()
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+//TODO .NET 7 parou de funcionar
+//app.UseHealthChecks(HealthCheckConstants.API_ENDPOINT, new HealthCheckOptions()
+//{
+//    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+//});
 
 app.UseHealthChecksUI(options => options.UIPath = HealthCheckConstants.UI_ENDPOINT);
 
