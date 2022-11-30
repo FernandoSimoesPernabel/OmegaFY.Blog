@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Infra.Extensions;
 using System.Security.Claims;
 
 namespace OmegaFY.Blog.Infra.Authentication.Users;
@@ -12,12 +13,14 @@ internal class HttpContextAccessorUserInformation : IUserInformation
 
     public HttpContextAccessorUserInformation(IHttpContextAccessor httpContextAccessor)
     {
-        if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+        if (httpContextAccessor.HttpContext.User.IsAuthenticated())
         {
-            if (!Guid.TryParse(httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value, out Guid userId))
+            Guid? userId = httpContextAccessor.HttpContext.User.TryGetUserIdFromClaims();
+
+            if (userId is null)
                 throw new UnauthorizedException();
 
-            string email = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            string email = httpContextAccessor.HttpContext.User.TryGetEmailFromClaims();
 
             if (string.IsNullOrWhiteSpace(email))
                 throw new UnauthorizedException();
