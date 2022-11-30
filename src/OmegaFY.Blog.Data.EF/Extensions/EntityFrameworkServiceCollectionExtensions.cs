@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 using OmegaFY.Blog.Data.EF.Context;
@@ -15,20 +16,37 @@ namespace OmegaFY.Blog.Data.EF.Extensions;
 
 public static class EFServiceCollectionExtensions
 {
-    public static IServiceCollection AddEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         string sqlLiteConnectionString = configuration.GetSqlLiteConnectionString();
 
-        services.AddDbContextPool<AvaliationsContext>(options => options.UseSqlite(sqlLiteConnectionString));
-        services.AddDbContextPool<CommentsContext>(options => options.UseSqlite(sqlLiteConnectionString));
-        services.AddDbContextPool<DonationsContext>(options => options.UseSqlite(sqlLiteConnectionString));
-        services.AddDbContextPool<PostsContext>(options => options.UseSqlite(sqlLiteConnectionString));
-        services.AddDbContextPool<SharesContext>(options => options.UseSqlite(sqlLiteConnectionString));
-        services.AddDbContextPool<UsersContext>(options => options.UseSqlite(sqlLiteConnectionString));
+        services.AddDbContextPool<AvaliationsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
+        services.AddDbContextPool<CommentsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
+        services.AddDbContextPool<DonationsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
+        services.AddDbContextPool<PostsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
+        services.AddDbContextPool<SharesContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
+        services.AddDbContextPool<UsersContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
 
-        services.AddDbContextPool<QueryContext>(options => options.UseSqlite(sqlLiteConnectionString).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+        services.AddDbContextPool<QueryContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString, QueryTrackingBehavior.NoTracking));
 
         return services;
+    }
+
+    private static Action<DbContextOptionsBuilder> ConfigureSqlLiteOptions(
+        IHostEnvironment environment,
+        string sqlLiteConnectionString,
+        QueryTrackingBehavior trackingBehavior = QueryTrackingBehavior.TrackAll)
+    {
+        return options =>
+        {
+            options.UseSqlite(sqlLiteConnectionString).UseQueryTrackingBehavior(trackingBehavior);
+
+            if (environment.IsDevelopment())
+            {
+                options.EnableDetailedErrors();
+                options.EnableSensitiveDataLogging();
+            }
+        };
     }
 
     public static IdentityBuilder AddEntityFrameworkIdentityUserConfiguration(this IdentityBuilder identityBuilder)

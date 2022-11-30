@@ -7,7 +7,7 @@ public class SqlLiteDatabaseRegistration : IDependencyInjectionRegister
 {
     public void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddEntityFrameworkContexts(builder.Configuration);
+        builder.Services.AddEntityFrameworkContexts(builder.Configuration, builder.Environment);
         builder.Services.AddEntityFrameworkRepositories();
         builder.Services.AddEntityFrameworkQueryProviders();
     }
