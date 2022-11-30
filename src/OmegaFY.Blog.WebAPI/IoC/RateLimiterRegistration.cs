@@ -7,6 +7,6 @@ public class RateLimiterRegistration : IDependencyInjectionRegister
 {
     public void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddWebApiRateLimiter();
+        builder.Services.AddWebApiRateLimiter(builder.Configuration);
     }
 }
