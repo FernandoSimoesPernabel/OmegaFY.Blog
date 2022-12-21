@@ -7,4 +7,6 @@ public class OpenTelemetryConstants
     public const string REQUEST_TYPE_KEY = "RequestType";
 
     public const string RESULT_TYPE_KEY = "ResultType";
+
+    public const string API_ROUTE = "api/";
 }

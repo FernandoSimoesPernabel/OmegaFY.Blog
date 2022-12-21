@@ -12,14 +12,14 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
 
     protected PostShares() => _shareds = new List<Shared>();
 
-    public bool HasAuthorAlredySharedPost(Author author) => _shareds.Any(share => share.AuthorId == author.Id);
+    public bool HasAuthorAlreadySharedPost(Author author) => _shareds.Any(share => share.AuthorId == author.Id);
 
     public void Share(Shared shared)
     {
         if (shared is null)
             throw new DomainArgumentException("");
 
-        if (HasAuthorAlredySharedPost(shared.AuthorId))
+        if (HasAuthorAlreadySharedPost(shared.AuthorId))
             throw new ConflictedException();
 
         _shareds.Add(shared);

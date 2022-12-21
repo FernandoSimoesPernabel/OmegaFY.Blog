@@ -2,15 +2,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
-using OmegaFY.Blog.Infra.Authentication.Policies;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
@@ -23,11 +20,11 @@ using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
 using OmegaFY.Blog.Infra.RateLimiter.Configs;
+using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SendGrid.Extensions.DependencyInjection;
 using SendGrid.Helpers.Mail;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -135,12 +132,16 @@ public static class DependencyInjectionExtensions
 
         services.AddSingleton<IOpenTelemetryRegisterProvider, OpenTelemetryActivitySourceProvider>();
 
-        return services.AddOpenTelemetryTracing(builder =>
+        services.AddOpenTelemetry().WithTracing(builder =>
         {
             builder.AddSource(openTelemetrySettings.ServiceName)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName, serviceVersion: ProjectVersion.Instance.ToString()))
-                .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.Contains("api/"))
-                .AddHttpClientInstrumentation()
+                .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.ShouldMonitorRoute())
+                .AddHttpClientInstrumentation(httpClientOptions =>
+                {
+                    httpClientOptions.FilterHttpWebRequest = (context) => context.RequestUri.AbsolutePath.ShouldMonitorRoute();
+                    httpClientOptions.FilterHttpRequestMessage = (context) => context.RequestUri.AbsolutePath.ShouldMonitorRoute();
+                })
                 .AddEntityFrameworkCoreInstrumentation(efOptions => efOptions.SetDbStatementForText = true)
                 .AddHoneycomb(honeycombOptions =>
                 {
@@ -148,7 +149,9 @@ public static class DependencyInjectionExtensions
                     honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
                     honeycombOptions.ServiceVersion = ProjectVersion.Instance.ToString();
                 });
-        });
+        }).StartWithHost();
+
+        return services;
     }
 
     public static IServiceCollection AddMultipleNotificationProviders(this IServiceCollection services, IConfiguration configuration)
