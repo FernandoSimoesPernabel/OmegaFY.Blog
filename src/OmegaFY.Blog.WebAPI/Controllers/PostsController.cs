@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
+using OmegaFY.Blog.Application.Commands.Avaliations.RatePost;
 using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPrivate;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Application.Commands.Shares.SharePost;
 using OmegaFY.Blog.Application.Commands.Shares.UnsharePost;
+using OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliation;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
@@ -139,6 +141,21 @@ public class PostsController : ApiControllerBase
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 
+    [HttpGet("{id:guid}/Avaliations/{AvaliationId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<GetAvaliationQueryResult>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 404)]
+    public async Task<IActionResult> GetAvaliation([FromRoute] GetAvaliationInputModel inputModel, CancellationToken cancellationToken)
+    {
+        GetAvaliationQueryResult result = await _serviceBus.SendMessageAsync<GetAvaliationQuery, GetAvaliationQueryResult>(inputModel.ToQuery(), cancellationToken);
+        return Ok(result);
+    }
 
-
+    [HttpPost("{id:guid}/Avaliations")]
+    [ProducesResponseType(typeof(ApiResponse<RatePostCommandResult>), 201)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> RatePost(RatePostInputModel inputModel, CancellationToken cancellationToken)
+    {
+        RatePostCommandResult result = await _serviceBus.SendMessageAsync<RatePostCommand, RatePostCommandResult>(inputModel.ToCommand(), cancellationToken);
+        return CreatedAtAction(nameof(GetAvaliation), new { postId = result.PostId, avaliationId = result.Id }, result);
+    }
 }

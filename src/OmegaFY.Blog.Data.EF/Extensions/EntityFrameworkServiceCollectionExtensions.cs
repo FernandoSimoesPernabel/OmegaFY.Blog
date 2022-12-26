@@ -9,6 +9,7 @@ using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.QueryProviders;
 using OmegaFY.Blog.Data.EF.Repositories;
+using OmegaFY.Blog.Domain.Repositories.Avaliations;
 using OmegaFY.Blog.Domain.Repositories.Posts;
 using OmegaFY.Blog.Domain.Repositories.Shares;
 using OmegaFY.Blog.Domain.Repositories.Users;
@@ -62,6 +63,7 @@ public static class EFServiceCollectionExtensions
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IShareRepository, ShareRepository>();
+        services.AddScoped<IAvaliationRepository, AvaliationRepository>();
 
         return services;
     }

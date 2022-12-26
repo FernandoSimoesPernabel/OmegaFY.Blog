@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 
-namespace OmegaFY.Blog.WebAPI.Models.Commands;
+namespace OmegaFY.Blog.WebAPI.Models.Queries;
 
 public class GetShareInputModel
 {

@@ -1,4 +1,5 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Entities.Shares;
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 
@@ -14,10 +15,15 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     protected PostAvaliations() => _avaliations = new List<Avaliation>();
 
+    public bool HasAuthorAlreadyRatedPost(ReferenceId authorId) => _avaliations.Any(share => share.AuthorId == authorId);
+
     public void RatePost(Avaliation avaliation)
     {
         if (avaliation is null)
             throw new DomainArgumentException("");
+
+        if (HasAuthorAlreadyRatedPost(avaliation.AuthorId))
+            throw new ConflictedException();
 
         _avaliations.Add(avaliation);
 
