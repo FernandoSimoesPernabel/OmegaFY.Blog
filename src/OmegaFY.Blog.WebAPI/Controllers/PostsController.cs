@@ -7,6 +7,7 @@ using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Application.Commands.Shares.SharePost;
 using OmegaFY.Blog.Application.Commands.Shares.UnsharePost;
+using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
@@ -30,7 +31,7 @@ public class PostsController : ApiControllerBase
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetAllPostsQueryResult>>), 200)]
     public async Task<IActionResult> GetAllPosts([FromQuery] GetAllPostsInputModel inputModel, CancellationToken cancellationToken)
     {
-        PagedResult<GetAllPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        PagedResult<GetAllPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -38,15 +39,23 @@ public class PostsController : ApiControllerBase
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentPublishedPostsQueryResult>>), 200)]
     public async Task<IActionResult> GetMostRecentPublishedPosts([FromQuery] GetMostRecentPublishedPostsInputModel inputModel, CancellationToken cancellationToken)
     {
-        PagedResult<GetMostRecentPublishedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentPublishedPostsQuery, PagedResult<GetMostRecentPublishedPostsQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        PagedResult<GetMostRecentPublishedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentPublishedPostsQuery, PagedResult<GetMostRecentPublishedPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
         return Ok(result);
     }
 
     [HttpGet("MostRecentShares")]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentSharesQueryResult>>), 200)]
-    public async Task<IActionResult> GetMostRecentSharesQueryResult([FromQuery] GetMostRecentSharesInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMostRecentShares([FromQuery] GetMostRecentSharesInputModel inputModel, CancellationToken cancellationToken)
     {
-        PagedResult<GetMostRecentSharesQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentSharesQuery, PagedResult<GetMostRecentSharesQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        PagedResult<GetMostRecentSharesQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentSharesQuery, PagedResult<GetMostRecentSharesQueryResult>>(inputModel.ToQuery(), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet("TopRatedPosts")]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<GetTopRatedPostsQueryResult>>), 200)]
+    public async Task<IActionResult> GetTopRatedPostsQueryResult([FromQuery] GetTopRatedPostsInputModel inputModel, CancellationToken cancellationToken)
+    {
+        PagedResult<GetTopRatedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetTopRatedPostsQuery, PagedResult<GetTopRatedPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -129,4 +138,7 @@ public class PostsController : ApiControllerBase
         UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(inputModel.ToCommand(), cancellationToken);
         return result.Failed() ? BadRequest(result) : NoContent();
     }
+
+
+
 }

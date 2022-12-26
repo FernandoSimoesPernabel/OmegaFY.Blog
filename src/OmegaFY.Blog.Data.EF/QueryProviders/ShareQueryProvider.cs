@@ -44,7 +44,6 @@ internal class ShareQueryProvider : IShareQueryProvider
                 ShareAuthorName = share.Author.DisplayName,
                 DateAndTimeOfShare = share.DateAndTimeOfShare,
                 PostId = share.PostId,
-                PostSubTitle = share.Post.SubTitle,
                 PostTitle = share.Post.Title,
                 PostAuthorName = share.Post.Author.DisplayName
             })

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OmegaFY.Blog.Data.EF.Mappings.Users;
+using OmegaFY.Blog.Data.EF.ValueConverts;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
@@ -14,5 +15,10 @@ internal class UsersContext : IdentityDbContext<IdentityUser>
         modelBuilder.ApplyConfiguration(new UserMapping());
 
         base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<ReferenceId>().HaveConversion<ReferenceIdValueConverter>();
     }
 }

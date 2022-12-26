@@ -8,9 +8,9 @@ public class Donation : Entity, IAggregateRoot<Donation>
 
     public ReferenceId ToUserId { get; }
 
-    public decimal Ammount { get; }
+    public double Ammount { get; }
 
-    public Donation(ReferenceId fromUserId, ReferenceId toUserId, decimal ammount)
+    public Donation(ReferenceId fromUserId, ReferenceId toUserId, double ammount)
     {
         if (ammount <= 0)
             throw new DomainArgumentException("");

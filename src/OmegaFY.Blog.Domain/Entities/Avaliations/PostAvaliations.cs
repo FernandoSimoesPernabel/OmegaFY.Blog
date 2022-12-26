@@ -10,7 +10,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public IReadOnlyCollection<Avaliation> Avaliations => _avaliations.AsReadOnly();
 
-    public decimal AverageRate { get; private set; }
+    public double AverageRate { get; private set; }
 
     protected PostAvaliations() => _avaliations = new List<Avaliation>();
 
@@ -40,7 +40,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         CalculateAverageRate();
     }
 
-    internal void CalculateAverageRate() => AverageRate = _avaliations.Average(avaliation => (decimal)avaliation.Rate);
+    internal void CalculateAverageRate() => AverageRate = _avaliations.Average(avaliation => (double)avaliation.Rate);
 
     internal Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
     {

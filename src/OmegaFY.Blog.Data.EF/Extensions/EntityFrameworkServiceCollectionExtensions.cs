@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 using OmegaFY.Blog.Data.EF.Context;
@@ -69,6 +70,7 @@ public static class EFServiceCollectionExtensions
     {
         services.AddScoped<IPostQueryProvider, PostQueryProvider>();
         services.AddScoped<IShareQueryProvider, ShareQueryProvider>();
+        services.AddScoped<IAvaliationQueryProvider, AvaliationQueryProvider>();
 
         return services;
     }

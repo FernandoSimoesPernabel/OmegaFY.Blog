@@ -7,5 +7,5 @@ public class GetMostRecentSharesInputModel : PagedRequest
 {
     public Guid? AuthorId { get; set; }
 
-    public GetMostRecentSharesQuery ToCommand() => new GetMostRecentSharesQuery(PageNumber, PageSize, AuthorId);
+    public GetMostRecentSharesQuery ToQuery() => new GetMostRecentSharesQuery(PageNumber, PageSize, AuthorId);
 }

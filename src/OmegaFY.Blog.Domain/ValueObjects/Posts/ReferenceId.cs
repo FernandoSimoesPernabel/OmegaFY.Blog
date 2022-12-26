@@ -12,6 +12,10 @@ public readonly record struct ReferenceId
         Value = id;
     }
 
+    public override int GetHashCode() => Value.GetHashCode();
+
+    public override string ToString() => Value.ToString();
+
     public static implicit operator Guid(ReferenceId referenceId) => referenceId.Value;
 
     public static implicit operator ReferenceId(Guid guid) => new ReferenceId(guid);

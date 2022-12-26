@@ -6,5 +6,5 @@ using OmegaFY.Blog.Domain.ValueObjects.Posts;
 namespace OmegaFY.Blog.WebAPI.Models.Queries;
 public class GetMostRecentPublishedPostsInputModel : PagedRequest
 {
-    public GetMostRecentPublishedPostsQuery ToCommand() => new GetMostRecentPublishedPostsQuery(PageNumber, PageSize);
+    public GetMostRecentPublishedPostsQuery ToQuery() => new GetMostRecentPublishedPostsQuery(PageNumber, PageSize);
 }
