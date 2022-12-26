@@ -29,7 +29,7 @@ internal class ChangePostContentCommandHandler : CommandHandlerMediatRBase<Chang
 
         return new ChangePostContentCommandResult(
             existingPost.Id,
-            existingPost.Author.Id,
+            existingPost.AuthorId,
             existingPost.Header.Title,
             existingPost.Header.SubTitle,
             existingPost.Body,

@@ -7,25 +7,19 @@ namespace OmegaFY.Blog.Domain.Entities.Comments;
 
 public class Reaction : Entity
 {
-    public Guid CommentId { get; }
+    public ReferenceId CommentId { get; }
 
-    public Author Author { get; }
+    public ReferenceId AuthorId { get; }
 
     public Reactions CommentReaction { get; private set; }
 
     protected Reaction() { }
 
-    public Reaction(Guid commentId, Author author, Reactions commentReaction)
+    public Reaction(ReferenceId commentId, ReferenceId authorId, Reactions commentReaction)
     {
-        if (commentId == Guid.Empty)
-            throw new DomainArgumentException("");
-
-        if (author is null)
-            throw new DomainArgumentException("");
-
         ChangeCommentReaction(commentReaction);
         CommentId = commentId;
-        Author = author;
+        AuthorId = authorId;
     }
 
     public void ChangeCommentReaction(Reactions commentReaction)

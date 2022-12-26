@@ -7,7 +7,7 @@ namespace OmegaFY.Blog.Domain.Entities.Posts;
 
 public class Post : Entity, IAggregateRoot<Post>
 {
-    public Author Author { get; }
+    public ReferenceId AuthorId { get; }
 
     public Header Header { get; private set; }
 
@@ -19,13 +19,10 @@ public class Post : Entity, IAggregateRoot<Post>
 
     protected Post() { }
 
-    public Post(Author author, Header header, Body body)
+    public Post(ReferenceId authorId, Header header, Body body)
     {
-        if (author is null)
-            throw new DomainArgumentException("Não foi informado corretamente um autor para esse post.");
-
         ChangeContent(header, body);
-        Author = author;
+        AuthorId = authorId;
         Private = false;
         ModificationDetails = new ModificationDetails();
     }
@@ -35,7 +32,7 @@ public class Post : Entity, IAggregateRoot<Post>
         if (header is null)
             throw new DomainArgumentException("Não foi informado corretamente um cabeçalho para esse post.");
 
-        if (string.IsNullOrWhiteSpace(body?.Content) || body.Content.Length > PostConstants.MAX_POST_BODY_LENGTH)
+        if (body.Content.Length > PostConstants.MAX_POST_BODY_LENGTH)
             throw new DomainArgumentException("O conteúdo desse post foi informado incorretamente.");
 
         Header = header;

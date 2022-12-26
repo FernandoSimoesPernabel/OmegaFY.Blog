@@ -14,14 +14,14 @@ public class AvaliationMapping : IEntityTypeConfiguration<Avaliation>
 
         builder.Property(x => x.PostId).HasColumnType("varchar(36)").IsRequired();
 
-        builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
+        builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired();
 
         builder.Property(x => x.Rate).HasConversion<byte>().IsRequired();
 
         builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
         {
-            modificationDetails.Property(x => x.DateOfCreation).HasColumnType("datetime").HasColumnName("DateOfCreation").IsRequired();
-            modificationDetails.Property(x => x.DateOfModification).HasColumnType("datetime").HasColumnName("DateOfModification").IsRequired(false);
+            modificationDetails.Property(x => x.DateOfCreation).HasColumnName("DateOfCreation").IsRequired();
+            modificationDetails.Property(x => x.DateOfModification).HasColumnName("DateOfModification").IsRequired(false);
         });
 
         builder.ToTable("Avaliations");

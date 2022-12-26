@@ -15,9 +15,9 @@ public class PostMapping : IEntityTypeConfiguration<Post>
 
         builder.Property(x => x.Private).IsRequired();
 
-        builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
+        builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
 
-        builder.OwnsOne(x => x.Body, body => body.Property(x => x.Content).HasColumnType("text").HasColumnName("Content").IsRequired());
+        builder.Property(x => x.Body).HasColumnType("text").HasColumnName("Content").IsRequired();
 
         builder.OwnsOne(x => x.Header, header =>
         {
@@ -27,8 +27,8 @@ public class PostMapping : IEntityTypeConfiguration<Post>
 
         builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
         {
-            modificationDetails.Property(x => x.DateOfCreation).HasColumnType("datetime").HasColumnName("DateOfCreation").IsRequired();
-            modificationDetails.Property(x => x.DateOfModification).HasColumnType("datetime").HasColumnName("DateOfModification").IsRequired(false);
+            modificationDetails.Property(x => x.DateOfCreation).HasColumnName("DateOfCreation").IsRequired();
+            modificationDetails.Property(x => x.DateOfModification).HasColumnName("DateOfModification").IsRequired(false);
         });
 
         builder.ToTable("Posts");

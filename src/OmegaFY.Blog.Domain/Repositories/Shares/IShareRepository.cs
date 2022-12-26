@@ -5,5 +5,5 @@ namespace OmegaFY.Blog.Domain.Repositories.Shares;
 
 public interface IShareRepository : IRepository<PostShares>
 {
-    public Task<PostShares> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken);
+    public Task<PostShares> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken);
 }

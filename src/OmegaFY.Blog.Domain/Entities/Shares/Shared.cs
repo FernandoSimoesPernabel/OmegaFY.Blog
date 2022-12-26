@@ -5,24 +5,18 @@ namespace OmegaFY.Blog.Domain.Entities.Shares;
 
 public class Shared : Entity
 {
-    public Guid PostId { get; }
+    public ReferenceId PostId { get; }
 
-    public Guid AuthorId { get; }
+    public ReferenceId AuthorId { get; }
 
     public DateTime DateAndTimeOfShare { get; }
 
     protected Shared() { }
 
-    public Shared(Guid postId, Author author)
+    public Shared(Guid postId, ReferenceId authorId)
     {
-        if (postId == Guid.Empty)
-            throw new DomainArgumentException("");
-
-        if (author is null)
-            throw new DomainArgumentException("");
-
         PostId = postId;
-        AuthorId = author;
+        AuthorId = authorId;
         DateAndTimeOfShare = DateTime.UtcNow;
     }
 }

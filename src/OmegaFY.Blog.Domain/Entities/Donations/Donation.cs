@@ -4,20 +4,14 @@ namespace OmegaFY.Blog.Domain.Entities.Donations;
 
 public class Donation : Entity, IAggregateRoot<Donation>
 {
-    public Guid FromUserId { get; }
+    public ReferenceId FromUserId { get; }
 
-    public Guid ToUserId { get; }
+    public ReferenceId ToUserId { get; }
 
     public decimal Ammount { get; }
 
-    public Donation(Guid fromUserId, Guid toUserId, decimal ammount)
+    public Donation(ReferenceId fromUserId, ReferenceId toUserId, decimal ammount)
     {
-        if (fromUserId == Guid.Empty)
-            throw new DomainArgumentException("");
-
-        if (toUserId == Guid.Empty)
-            throw new DomainArgumentException("");
-
         if (ammount <= 0)
             throw new DomainArgumentException("");
 

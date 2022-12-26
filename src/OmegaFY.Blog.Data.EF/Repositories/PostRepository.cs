@@ -12,6 +12,6 @@ internal class PostRepository : BaseRepository<Post>, IPostRepository
 
     public void AddPost(Post post) => _dbSet.Add(post);
 
-    public async Task<Post> GetByIdAsync(Guid id, Guid authorId, CancellationToken cancellationToken)
-        => await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.Author.Id == authorId, cancellationToken);
+    public async Task<Post> GetByIdAsync(ReferenceId id, ReferenceId authorId, CancellationToken cancellationToken)
+        => await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.AuthorId == authorId, cancellationToken);
 }

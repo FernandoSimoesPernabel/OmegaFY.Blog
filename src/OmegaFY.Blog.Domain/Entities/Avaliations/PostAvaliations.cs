@@ -24,7 +24,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         CalculateAverageRate();
     }
 
-    public void ChangeUserRating(Guid avaliationId, Guid authorId, Stars rate)
+    public void ChangeUserRating(Guid avaliationId, ReferenceId authorId, Stars rate)
     {
         Avaliation currentAvaliation = FindAvaliationAndThrowIfNotFound(avaliationId, authorId);
         currentAvaliation.ChangeRating(rate);
@@ -32,7 +32,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         CalculateAverageRate();
     }
 
-    public void RemoveRating(Guid avaliationId, Guid authorId)
+    public void RemoveRating(ReferenceId avaliationId, ReferenceId authorId)
     {
         Avaliation avaliation = FindAvaliationAndThrowIfNotFound(avaliationId, authorId);
         _avaliations.Remove(avaliation);
@@ -42,9 +42,9 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     internal void CalculateAverageRate() => AverageRate = _avaliations.Average(avaliation => (decimal)avaliation.Rate);
 
-    internal Avaliation FindAvaliationAndThrowIfNotFound(Guid avaliationId, Guid authorId)
+    internal Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
     {
-        Avaliation avaliation = _avaliations.FirstOrDefault(x => x.Id == avaliationId && x.Author.Id == authorId);
+        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.Id == avaliationId && avaliation.AuthorId == authorId);
 
         if (avaliation is null)
             throw new NotFoundException();

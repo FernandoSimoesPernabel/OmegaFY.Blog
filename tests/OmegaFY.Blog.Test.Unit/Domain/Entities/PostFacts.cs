@@ -15,28 +15,14 @@ public class PostFacts
     public void Constructor_PassingValidAuthor_ShouldPublishedPost()
     {
         //Arrange
-        Guid authorId = Guid.NewGuid();
-        Author validAuthor = new Author(authorId);
+        ReferenceId authorId = Guid.NewGuid();
 
         //Act
-        Post sut = CreatePost(author: validAuthor);
+        Post sut = CreatePost(authorId: authorId);
 
         //Assert
-        sut.Author.Should().NotBeNull();
-        sut.Author.Id.Should().Be(authorId);
-    }
-
-    [Fact]
-    public void Constructor_PassingNullAuthor_ShouldThrowDomainArgumentException()
-    {
-        //Arrange
-        Author nullAuthor = null;
-
-        //Act
-        Action sut = () => new Post(nullAuthor, CreateHeader(), CreateBody());
-
-        //Assert
-        sut.Should().Throw<DomainArgumentException>();
+        sut.AuthorId.Should().NotBeNull();
+        sut.AuthorId.Should().Be(authorId);
     }
 
     [Fact]
@@ -78,19 +64,6 @@ public class PostFacts
         //Assert
         sut.Body.Should().NotBeNull();
         sut.Body.Should().BeEquivalentTo(validBody);
-    }
-
-    [Fact]
-    public void Constructor_PassingNullBody_ShouldThrowDomainArgumentException()
-    {
-        //Arrange
-        Body nullBody = null;
-
-        //Act
-        Action sut = () => new Post(CreateAuthor(), CreateHeader(), nullBody);
-
-        //Assert
-        sut.Should().Throw<DomainArgumentException>();
     }
 
     [Theory]
@@ -261,17 +234,17 @@ public class PostFacts
         sut.Private.Should().BeFalse();
     }
 
-    private static Post CreatePost(Author author = null, Header header = null, Body body = null, bool @private = false)
+    private static Post CreatePost(ReferenceId? authorId = null, Header header = null, Body? body = null, bool @private = false)
     {
         Post post = null;
 
-        author = CreateAuthor(author);
+        authorId = CreateAuthor(authorId);
 
         header = CreateHeader(header);
 
         body = CreateBody(body);
 
-        post = new Post(author, header, body);
+        post = new Post(authorId.Value, header, body.Value);
 
         if (@private)
             post.MakePrivate();
@@ -279,7 +252,7 @@ public class PostFacts
         return post;
     }
 
-    private static Author CreateAuthor(Author author = null) => author ?? new Author(Guid.NewGuid());
+    private static ReferenceId CreateAuthor(ReferenceId? authorId = null) => authorId ?? new ReferenceId(Guid.NewGuid());
 
     private static Header CreateHeader(Header header = null)
     {
@@ -296,7 +269,7 @@ public class PostFacts
         return header;
     }
 
-    private static Body CreateBody(Body body = null)
+    private static Body CreateBody(Body? body = null)
     {
         if (body is null)
         {
@@ -304,6 +277,6 @@ public class PostFacts
             body = content.Substring(0, Math.Min(content.Length, PostConstants.MAX_POST_BODY_LENGTH));
         }
 
-        return body;
+        return body.Value;
     }
 }

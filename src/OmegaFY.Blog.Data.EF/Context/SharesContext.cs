@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OmegaFY.Blog.Data.EF.Mappings.Shares;
+using OmegaFY.Blog.Data.EF.ValueConverts;
+using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
@@ -13,5 +15,10 @@ internal class SharesContext : DbContext
         modelBuilder.ApplyConfiguration(new ShareMapping());
 
         base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<ReferenceId>().HaveConversion<ReferenceIdValueConverter>();
     }
 }
