@@ -1,8 +1,8 @@
 ﻿namespace OmegaFY.Blog.Domain.Entities;
 
-public abstract class Entity : IComparable, IEquatable<Entity>
+public abstract class Entity : IEquatable<Entity>
 {
-    public Guid Id { get; }
+    public ReferenceId Id { get; }
 
     protected Entity() => Id = Guid.NewGuid();
 
@@ -17,8 +17,6 @@ public abstract class Entity : IComparable, IEquatable<Entity>
     public override int GetHashCode() => HashCode.Combine(Id);
 
     public override string ToString() => $"{GetType().Name}_{Id}";
-
-    public int CompareTo(object obj) => Id.CompareTo(obj);
 
     public static bool operator ==(Entity entity1, Entity entity2) => CompareEquality(entity1, entity2);
 

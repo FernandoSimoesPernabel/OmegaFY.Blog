@@ -1,5 +1,5 @@
 ﻿namespace OmegaFY.Blog.Test.Unit.Domain.ValuesObjects;
 
-public class AuthorFacts
+public class ReferenceIdFacts
 {
 }

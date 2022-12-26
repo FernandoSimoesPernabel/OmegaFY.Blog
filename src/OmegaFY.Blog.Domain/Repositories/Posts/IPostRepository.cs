@@ -6,5 +6,5 @@ public interface IPostRepository : IRepository<Post>
 {
     public void AddPost(Post post);
 
-    public Task<Post> GetByIdAsync(Guid id, Guid authorId, CancellationToken cancellationToken);
+    public Task<Post> GetByIdAsync(ReferenceId id, ReferenceId authorId, CancellationToken cancellationToken);
 }

@@ -16,7 +16,7 @@ internal class PublishPostCommandHandler : CommandHandlerMediatRBase<PublishPost
 
     public async override Task<PublishPostCommandResult> HandleAsync(PublishPostCommand command, CancellationToken cancellationToken)
     {
-        Post newPost = new Post(_currentUser.CurrentRequestUserId, new Header(command.Title, command.SubTitle), command.Body);
+        Post newPost = new Post(_currentUser.CurrentRequestUserId.Value, new Header(command.Title, command.SubTitle), command.Body);
 
         _repository.AddPost(newPost);
 
@@ -24,7 +24,7 @@ internal class PublishPostCommandHandler : CommandHandlerMediatRBase<PublishPost
 
         return new PublishPostCommandResult(
             newPost.Id,
-            newPost.Author,
+            newPost.AuthorId,
             newPost.Header.Title,
             newPost.Header.SubTitle,
             newPost.Body,

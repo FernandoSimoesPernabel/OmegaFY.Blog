@@ -8,9 +8,9 @@ namespace OmegaFY.Blog.Domain.Entities.Avaliations;
 
 public class Avaliation : Entity
 {
-    public Guid PostId { get; }
+    public ReferenceId PostId { get; }
 
-    public Author Author { get; }
+    public ReferenceId AuthorId { get; }
 
     public ModificationDetails ModificationDetails { get; private set; }
 
@@ -18,17 +18,11 @@ public class Avaliation : Entity
 
     protected Avaliation() { }
 
-    public Avaliation(Guid postId, Author author, Stars rate)
+    public Avaliation(ReferenceId postId, ReferenceId authorId, Stars rate)
     {
-        if (postId == Guid.Empty)
-            throw new DomainArgumentException("");
-
-        if (author is null)
-            throw new DomainArgumentException("");
-
         ChangeRating(rate);
         PostId = postId;
-        Author = author;
+        AuthorId = authorId;
         ModificationDetails = new ModificationDetails();
 
     }

@@ -12,7 +12,7 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
 
     protected PostShares() => _shareds = new List<Shared>();
 
-    public bool HasAuthorAlreadySharedPost(Author author) => _shareds.Any(share => share.AuthorId == author.Id);
+    public bool HasAuthorAlreadySharedPost(ReferenceId authorId) => _shareds.Any(share => share.AuthorId == authorId);
 
     public void Share(Shared shared)
     {
@@ -25,9 +25,9 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
         _shareds.Add(shared);
     }
 
-    public void Unshare(Guid shareId, Author author)
+    public void Unshare(ReferenceId shareId, ReferenceId authorId)
     {
-        Shared shared = _shareds.FirstOrDefault(share => share.Id == shareId && share.AuthorId == author.Id);
+        Shared shared = _shareds.FirstOrDefault(share => share.Id == shareId && share.AuthorId == authorId);
 
         if (shared is null)
             throw new NotFoundException();

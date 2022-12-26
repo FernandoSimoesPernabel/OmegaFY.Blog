@@ -11,9 +11,9 @@ public class Comment : Entity
 {
     private readonly List<Reaction> _reactions;
 
-    public Guid PostId { get; }
+    public ReferenceId PostId { get; }
 
-    public Author Author { get; }
+    public ReferenceId AuthorId { get; }
 
     public Body Body { get; private set; }
 
@@ -23,23 +23,17 @@ public class Comment : Entity
 
     protected Comment() => _reactions = new List<Reaction>();
 
-    public Comment(Guid postId, Author author, Body body) : this()
+    public Comment(ReferenceId postId, ReferenceId authorId, Body body) : this()
     {
-        if (postId == Guid.Empty)
-            throw new DomainArgumentException("");
-
-        if (author is null)
-            throw new DomainArgumentException("");
-
         ChangeContent(body);
         PostId = postId;
-        Author = author;
+        AuthorId = authorId;
         ModificationDetails = new ModificationDetails();
     }
 
-    internal Reaction FindReactionAndThrowIfNotFound(Guid reactionId, Guid authorId)
+    internal Reaction FindReactionAndThrowIfNotFound(ReferenceId reactionId, ReferenceId authorId)
     {
-        Reaction reaction = _reactions.FirstOrDefault(x => x.Id == reactionId && x.Author.Id == authorId);
+        Reaction reaction = _reactions.FirstOrDefault(reaction => reaction.Id == reactionId && reaction.AuthorId == authorId);
 
         if (reaction is null)
             throw new NotFoundException();
@@ -49,7 +43,7 @@ public class Comment : Entity
 
     internal void ChangeContent(Body body)
     {
-        if (string.IsNullOrWhiteSpace(body?.Content) || body.Content.Length > PostConstants.MAX_COMMENT_BODY_LENGTH)
+        if (body.Content.Length > PostConstants.MAX_COMMENT_BODY_LENGTH)
             throw new DomainArgumentException("");
 
         Body = body;

@@ -14,7 +14,7 @@ public class ReactionMapping : IEntityTypeConfiguration<Reaction>
 
         builder.Property(x => x.CommentId).HasColumnType("varchar(36)").IsRequired();
 
-        builder.OwnsOne(x => x.Author, author => author.Property(x => x.Id).HasColumnType("varchar(36)").HasColumnName("AuthorId").IsRequired());
+        builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
 
         builder.Property(x => x.CommentReaction).HasColumnType("varchar(50)").HasConversion<string>().IsRequired();
 

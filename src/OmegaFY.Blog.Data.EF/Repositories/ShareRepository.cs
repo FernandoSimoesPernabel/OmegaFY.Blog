@@ -10,6 +10,6 @@ internal class ShareRepository : BaseRepository<PostShares>, IShareRepository
 {
     public ShareRepository(SharesContext dbContext) : base(dbContext) { }
 
-    public async Task<PostShares> GetPostByIdAsync(Guid postId, CancellationToken cancellationToken)
+    public async Task<PostShares> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
         => await _dbSet.Include(post => post.Shareds).FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
 }
