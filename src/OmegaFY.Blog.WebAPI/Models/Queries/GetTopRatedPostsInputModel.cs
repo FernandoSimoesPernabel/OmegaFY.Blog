@@ -1,6 +1,9 @@
-﻿namespace OmegaFY.Blog.WebAPI.Models.Queries;
+﻿using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
+using OmegaFY.Blog.Application.Queries.Base.Pagination;
 
-public class GetTopRatedPostsInputModel
+namespace OmegaFY.Blog.WebAPI.Models.Queries;
+
+public class GetTopRatedPostsInputModel : PagedRequest
 {
-
+    public GetTopRatedPostsQuery ToQuery() => new GetTopRatedPostsQuery(PageNumber, PageSize);
 }

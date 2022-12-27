@@ -2,6 +2,7 @@
 using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Domain.Entities.Shares;
+using OmegaFY.Blog.Domain.Repositories.Avaliations;
 using OmegaFY.Blog.Domain.Repositories.Shares;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
 using OmegaFY.Blog.Infra.Authentication.Users;

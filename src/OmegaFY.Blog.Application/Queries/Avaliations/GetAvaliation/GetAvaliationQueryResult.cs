@@ -1,9 +1,10 @@
 ﻿using OmegaFY.Blog.Application.Result;
 using OmegaFY.Blog.Domain.Enums;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
-namespace OmegaFY.Blog.Application.Commands.Avaliations.ChangeUserRating;
+namespace OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliation;
 
-public class ChangeUserRatingCommandResult : GenericResult, ICommandResult
+public class GetAvaliationQueryResult : GenericResult, IQueryResult
 {
     public Guid Id { get; set; }
 
@@ -15,11 +16,11 @@ public class ChangeUserRatingCommandResult : GenericResult, ICommandResult
 
     public DateTime DateOfCreation { get; set; }
 
-    public DateTime DateOfModification { get; set; }
+    public DateTime? DateOfModification { get; set; }
 
-    public ChangeUserRatingCommandResult() { }
+    public GetAvaliationQueryResult() { }
 
-    public ChangeUserRatingCommandResult(Guid id, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation, DateTime dateOfModification)
+    public GetAvaliationQueryResult(Guid id, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation, DateTime? dateOfModification)
     {
         Id = id;
         PostId = postId;

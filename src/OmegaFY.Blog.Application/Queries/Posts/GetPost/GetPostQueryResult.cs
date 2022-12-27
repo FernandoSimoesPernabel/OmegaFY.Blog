@@ -22,7 +22,7 @@ public class GetPostQueryResult : GenericResult, IQueryResult
 
     public bool Private { get; set; }
 
-    public decimal AverageRate { get; set; }
+    public double AverageRate { get; set; }
 
     public int Avaliations { get; set; }
 

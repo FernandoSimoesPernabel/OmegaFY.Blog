@@ -1,12 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
+using OmegaFY.Blog.Application.Commands.Avaliations.ChangeUserRating;
+using OmegaFY.Blog.Application.Commands.Avaliations.RatePost;
+using OmegaFY.Blog.Application.Commands.Avaliations.RemoveRating;
 using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPrivate;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 using OmegaFY.Blog.Application.Commands.Shares.SharePost;
 using OmegaFY.Blog.Application.Commands.Shares.UnsharePost;
+using OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliation;
+using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
@@ -14,6 +19,7 @@ using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 using OmegaFY.Blog.Domain.Entities.Shares;
+using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
 using OmegaFY.Blog.WebAPI.Models.Queries;
@@ -30,7 +36,7 @@ public class PostsController : ApiControllerBase
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetAllPostsQueryResult>>), 200)]
     public async Task<IActionResult> GetAllPosts([FromQuery] GetAllPostsInputModel inputModel, CancellationToken cancellationToken)
     {
-        PagedResult<GetAllPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        PagedResult<GetAllPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -38,15 +44,23 @@ public class PostsController : ApiControllerBase
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentPublishedPostsQueryResult>>), 200)]
     public async Task<IActionResult> GetMostRecentPublishedPosts([FromQuery] GetMostRecentPublishedPostsInputModel inputModel, CancellationToken cancellationToken)
     {
-        PagedResult<GetMostRecentPublishedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentPublishedPostsQuery, PagedResult<GetMostRecentPublishedPostsQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        PagedResult<GetMostRecentPublishedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentPublishedPostsQuery, PagedResult<GetMostRecentPublishedPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
         return Ok(result);
     }
 
     [HttpGet("MostRecentShares")]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentSharesQueryResult>>), 200)]
-    public async Task<IActionResult> GetMostRecentSharesQueryResult([FromQuery] GetMostRecentSharesInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMostRecentShares([FromQuery] GetMostRecentSharesInputModel inputModel, CancellationToken cancellationToken)
     {
-        PagedResult<GetMostRecentSharesQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentSharesQuery, PagedResult<GetMostRecentSharesQueryResult>>(inputModel.ToCommand(), cancellationToken);
+        PagedResult<GetMostRecentSharesQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentSharesQuery, PagedResult<GetMostRecentSharesQueryResult>>(inputModel.ToQuery(), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet("TopRatedPosts")]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<GetTopRatedPostsQueryResult>>), 200)]
+    public async Task<IActionResult> GetTopRatedPostsQueryResult([FromQuery] GetTopRatedPostsInputModel inputModel, CancellationToken cancellationToken)
+    {
+        PagedResult<GetTopRatedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetTopRatedPostsQuery, PagedResult<GetTopRatedPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -127,6 +141,42 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> UnsharePost([FromRoute] UnsharePostInputModel inputModel, CancellationToken cancellationToken)
     {
         UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(inputModel.ToCommand(), cancellationToken);
+        return result.Failed() ? BadRequest(result) : NoContent();
+    }
+
+    [HttpGet("{PostId:guid}/Avaliations/{AvaliationId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<GetAvaliationQueryResult>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 404)]
+    public async Task<IActionResult> GetAvaliation([FromRoute] GetAvaliationInputModel inputModel, CancellationToken cancellationToken)
+    {
+        GetAvaliationQueryResult result = await _serviceBus.SendMessageAsync<GetAvaliationQuery, GetAvaliationQueryResult>(inputModel.ToQuery(), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost("{postId:guid}/Avaliations")]
+    [ProducesResponseType(typeof(ApiResponse<RatePostCommandResult>), 201)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> RatePost([FromRoute] Guid postId, [FromBody] Stars rate, CancellationToken cancellationToken)
+    {
+        RatePostCommandResult result = await _serviceBus.SendMessageAsync<RatePostCommand, RatePostCommandResult>(new(postId, rate), cancellationToken);
+        return CreatedAtAction(nameof(GetAvaliation), new { postId = result.PostId, avaliationId = result.Id }, result);
+    }
+
+    [HttpPut("{postId:guid}/Avaliations/{avaliationId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<ChangeUserRatingCommandResult>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> ChangeUserRating([FromRoute] Guid postId, [FromRoute] Guid avaliationId, [FromBody] Stars rate, CancellationToken cancellationToken)
+    {
+        ChangeUserRatingCommandResult result = await _serviceBus.SendMessageAsync<ChangeUserRatingCommand, ChangeUserRatingCommandResult>(new(postId, avaliationId, rate), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpDelete("{PostId:guid}/Avaliations/{AvaliationId:guid}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> RemoveRating([FromRoute] RemoveRatingInputModel inputModel, CancellationToken cancellationToken)
+    {
+        RemoveRatingCommandResult result = await _serviceBus.SendMessageAsync<RemoveRatingCommand, RemoveRatingCommandResult>(inputModel.ToCommand(), cancellationToken);
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 }

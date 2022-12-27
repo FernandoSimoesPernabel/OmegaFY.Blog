@@ -11,5 +11,5 @@ public class GetAllPostsInputModel : PagedRequest
 
     public Guid? AuthorId { get; set; }
 
-    public GetAllPostsQuery ToCommand() => new GetAllPostsQuery(StartDateOfCreation, EndDateOfCreation, AuthorId, PageNumber, PageSize);
+    public GetAllPostsQuery ToQuery() => new GetAllPostsQuery(StartDateOfCreation, EndDateOfCreation, AuthorId, PageNumber, PageSize);
 }

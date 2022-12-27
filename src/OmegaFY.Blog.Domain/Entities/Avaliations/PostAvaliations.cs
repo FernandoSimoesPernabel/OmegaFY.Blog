@@ -1,4 +1,5 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Entities.Shares;
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 
@@ -10,14 +11,29 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public IReadOnlyCollection<Avaliation> Avaliations => _avaliations.AsReadOnly();
 
-    public decimal AverageRate { get; private set; }
+    public double AverageRate { get; private set; }
 
     protected PostAvaliations() => _avaliations = new List<Avaliation>();
+
+    public bool HasAuthorAlreadyRatedPost(ReferenceId authorId) => _avaliations.Any(share => share.AuthorId == authorId);
+
+    public Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
+    {
+        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.Id == avaliationId && avaliation.AuthorId == authorId);
+
+        if (avaliation is null)
+            throw new NotFoundException();
+
+        return avaliation;
+    }
 
     public void RatePost(Avaliation avaliation)
     {
         if (avaliation is null)
             throw new DomainArgumentException("");
+
+        if (HasAuthorAlreadyRatedPost(avaliation.AuthorId))
+            throw new ConflictedException();
 
         _avaliations.Add(avaliation);
 
@@ -40,15 +56,5 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         CalculateAverageRate();
     }
 
-    internal void CalculateAverageRate() => AverageRate = _avaliations.Average(avaliation => (decimal)avaliation.Rate);
-
-    internal Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
-    {
-        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.Id == avaliationId && avaliation.AuthorId == authorId);
-
-        if (avaliation is null)
-            throw new NotFoundException();
-
-        return avaliation;
-    }
+    internal void CalculateAverageRate() => AverageRate = _avaliations.Any() ? _avaliations.Average(avaliation => (double)avaliation.Rate) : 0;
 }

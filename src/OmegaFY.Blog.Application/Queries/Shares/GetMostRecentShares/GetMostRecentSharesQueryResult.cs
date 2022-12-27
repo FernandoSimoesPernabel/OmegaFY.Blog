@@ -12,8 +12,6 @@ public class GetMostRecentSharesQueryResult : GenericResult, IQueryResult
 
     public string PostTitle { get; set; }
 
-    public string PostSubTitle { get; set; }
-
     public string PostAuthorName { get; set; }
 
     public DateTime DateAndTimeOfShare { get; set; }

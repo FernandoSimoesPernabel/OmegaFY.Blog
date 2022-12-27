@@ -16,10 +16,6 @@ internal class GetShareQueryHandler : QueryHandlerMediatRBase<GetShareQueryHandl
     public override async Task<GetShareQueryResult> HandleAsync(GetShareQuery request, CancellationToken cancellationToken)
     {
         GetShareQueryResult result = await _shareQueryProvider.GetShareQueryResultAsync(request.ShareId, _currentUser.CurrentRequestUserId.Value, cancellationToken);
-
-        if (result is null)
-            throw new NotFoundException();
-
-        return result;
+        return result ?? throw new NotFoundException();
     }
 }

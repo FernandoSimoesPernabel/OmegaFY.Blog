@@ -24,7 +24,6 @@ public class Avaliation : Entity
         PostId = postId;
         AuthorId = authorId;
         ModificationDetails = new ModificationDetails();
-
     }
 
     internal void ChangeRating(Stars rate)

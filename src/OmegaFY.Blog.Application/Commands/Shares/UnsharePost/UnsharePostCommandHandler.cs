@@ -3,6 +3,7 @@ using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Application.Commands.Shares.SharePost;
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Domain.Entities.Shares;
+using OmegaFY.Blog.Domain.Repositories.Avaliations;
 using OmegaFY.Blog.Domain.Repositories.Shares;
 using OmegaFY.Blog.Infra.Authentication.Users;
 
@@ -19,12 +20,12 @@ internal class UnsharePostCommandHandler : CommandHandlerMediatRBase<UnsharePost
 
     public override async Task<UnsharePostCommandResult> HandleAsync(UnsharePostCommand command, CancellationToken cancellationToken)
     {
-        PostShares postToShare = await _repository.GetPostByIdAsync(command.PostId, cancellationToken);
+        PostShares postToUnshare = await _repository.GetPostByIdAsync(command.PostId, cancellationToken);
 
-        if (postToShare is null)
+        if (postToUnshare is null)
             throw new NotFoundException();
 
-        postToShare.Unshare(command.ShareId, _currentUser.CurrentRequestUserId.Value);
+        postToUnshare.Unshare(command.ShareId, _currentUser.CurrentRequestUserId.Value);
 
         await _repository.SaveChangesAsync(cancellationToken);
 

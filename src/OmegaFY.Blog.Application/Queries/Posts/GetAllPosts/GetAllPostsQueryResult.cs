@@ -14,5 +14,5 @@ public class GetAllPostsQueryResult : GenericResult, IQueryResult
 
     public DateTime? DateOfModification { get; set; }
 
-    public decimal AverageRate { get; set; }
+    public double AverageRate { get; set; }
 }

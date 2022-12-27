@@ -14,20 +14,27 @@ public class ChangePostContentCommandResult : GenericResult, ICommandResult
 
     public string Body { get; set; }
 
-    public DateTime CreationDate { get; set; }
+    public DateTime DateOfCreation { get; set; }
 
-    public DateTime ModificationDate { get; set; }
+    public DateTime DateOfModification { get; set; }
 
     public ChangePostContentCommandResult() { }
 
-    public ChangePostContentCommandResult(Guid id, Guid authorId, string title, string subTitle, string body, DateTime creationDate, DateTime modificationDate)
+    public ChangePostContentCommandResult(
+        Guid id,
+        Guid authorId,
+        string title,
+        string subTitle,
+        string body,
+        DateTime dateOfCreation,
+        DateTime dateOfModification)
     {
         Id = id;
         AuthorId = authorId;
         Title = title;
         SubTitle = subTitle;
         Body = body;
-        CreationDate = creationDate;
-        ModificationDate = modificationDate;
+        DateOfCreation = dateOfCreation;
+        DateOfModification = dateOfModification;
     }
 }
