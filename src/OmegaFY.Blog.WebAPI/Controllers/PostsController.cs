@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
+using OmegaFY.Blog.Application.Commands.Avaliations.ChangeUserRating;
 using OmegaFY.Blog.Application.Commands.Avaliations.RatePost;
+using OmegaFY.Blog.Application.Commands.Avaliations.RemoveRating;
 using OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPrivate;
 using OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
@@ -17,6 +19,7 @@ using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 using OmegaFY.Blog.Domain.Entities.Shares;
+using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
 using OmegaFY.Blog.WebAPI.Models.Commands;
 using OmegaFY.Blog.WebAPI.Models.Queries;
@@ -141,7 +144,7 @@ public class PostsController : ApiControllerBase
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 
-    [HttpGet("{id:guid}/Avaliations/{AvaliationId:guid}")]
+    [HttpGet("{PostId:guid}/Avaliations/{AvaliationId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetAvaliationQueryResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 404)]
     public async Task<IActionResult> GetAvaliation([FromRoute] GetAvaliationInputModel inputModel, CancellationToken cancellationToken)
@@ -150,12 +153,30 @@ public class PostsController : ApiControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{id:guid}/Avaliations")]
+    [HttpPost("{postId:guid}/Avaliations")]
     [ProducesResponseType(typeof(ApiResponse<RatePostCommandResult>), 201)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> RatePost(RatePostInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> RatePost([FromRoute] Guid postId, [FromBody] Stars rate, CancellationToken cancellationToken)
     {
-        RatePostCommandResult result = await _serviceBus.SendMessageAsync<RatePostCommand, RatePostCommandResult>(inputModel.ToCommand(), cancellationToken);
+        RatePostCommandResult result = await _serviceBus.SendMessageAsync<RatePostCommand, RatePostCommandResult>(new(postId, rate), cancellationToken);
         return CreatedAtAction(nameof(GetAvaliation), new { postId = result.PostId, avaliationId = result.Id }, result);
+    }
+
+    [HttpPut("{postId:guid}/Avaliations/{avaliationId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<ChangeUserRatingCommandResult>), 200)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> ChangeUserRating([FromRoute] Guid postId, [FromRoute] Guid avaliationId, [FromBody] Stars rate, CancellationToken cancellationToken)
+    {
+        ChangeUserRatingCommandResult result = await _serviceBus.SendMessageAsync<ChangeUserRatingCommand, ChangeUserRatingCommandResult>(new(postId, avaliationId, rate), cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpDelete("{PostId:guid}/Avaliations/{AvaliationId:guid}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(typeof(ApiResponse), 400)]
+    public async Task<IActionResult> RemoveRating([FromRoute] RemoveRatingInputModel inputModel, CancellationToken cancellationToken)
+    {
+        RemoveRatingCommandResult result = await _serviceBus.SendMessageAsync<RemoveRatingCommand, RemoveRatingCommandResult>(inputModel.ToCommand(), cancellationToken);
+        return result.Failed() ? BadRequest(result) : NoContent();
     }
 }

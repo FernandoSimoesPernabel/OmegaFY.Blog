@@ -17,6 +17,16 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public bool HasAuthorAlreadyRatedPost(ReferenceId authorId) => _avaliations.Any(share => share.AuthorId == authorId);
 
+    public Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
+    {
+        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.Id == avaliationId && avaliation.AuthorId == authorId);
+
+        if (avaliation is null)
+            throw new NotFoundException();
+
+        return avaliation;
+    }
+
     public void RatePost(Avaliation avaliation)
     {
         if (avaliation is null)
@@ -46,15 +56,5 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         CalculateAverageRate();
     }
 
-    internal void CalculateAverageRate() => AverageRate = _avaliations.Average(avaliation => (double)avaliation.Rate);
-
-    internal Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
-    {
-        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.Id == avaliationId && avaliation.AuthorId == authorId);
-
-        if (avaliation is null)
-            throw new NotFoundException();
-
-        return avaliation;
-    }
+    internal void CalculateAverageRate() => AverageRate = _avaliations.Any() ? _avaliations.Average(avaliation => (double)avaliation.Rate) : 0;
 }

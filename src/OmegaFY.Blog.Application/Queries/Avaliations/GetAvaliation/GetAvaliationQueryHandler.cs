@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
+using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliation;
@@ -14,6 +15,7 @@ internal class GetAvaliationQueryHandler : QueryHandlerMediatRBase<GetAvaliation
 
     public async override Task<GetAvaliationQueryResult> HandleAsync(GetAvaliationQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        GetAvaliationQueryResult result = await _avaliationQueryProvider.GetAvaliationQueryResultAsync(request, cancellationToken);
+        return result ?? throw new NotFoundException();
     }
 }

@@ -14,17 +14,17 @@ public class PublishPostCommandResult : GenericResult, ICommandResult
 
     public string Body { get; set; }
 
-    public DateTime CreationDate { get; set; }
+    public DateTime DateOfCreation { get; set; }
 
     public PublishPostCommandResult() { }
 
-    public PublishPostCommandResult(Guid id, Guid authorId, string title, string subTitle, string body, DateTime creationDate)
+    public PublishPostCommandResult(Guid id, Guid authorId, string title, string subTitle, string body, DateTime dateOfCreation)
     {
         Id = id;
         AuthorId = authorId;
         Title = title;
         SubTitle = subTitle;
         Body = body;
-        CreationDate = creationDate;
+        DateOfCreation = dateOfCreation;
     }
 }
