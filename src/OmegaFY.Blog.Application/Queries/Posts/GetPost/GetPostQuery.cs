@@ -4,12 +4,12 @@ namespace OmegaFY.Blog.Application.Queries.Posts.GetPost;
 
 public class GetPostQuery : QueryRequestMediatRBase<GetPostQueryResult>
 {
-    public Guid PostId { get; set; }
+    public Guid Id { get; set; }
 
     public GetPostQuery() { }
 
-    public GetPostQuery(Guid postId)
+    public GetPostQuery(Guid id)
     {
-        PostId = postId;
+        Id = id;
     }
 }

@@ -15,7 +15,7 @@ internal class GetPostQueryHandler : QueryHandlerMediatRBase<GetPostQueryHandler
 
     public override async Task<GetPostQueryResult> HandleAsync(GetPostQuery request, CancellationToken cancellationToken)
     {
-        GetPostQueryResult result = await _postQueryProvider.GetPostQueryResultAsync(request.PostId, cancellationToken);
+        GetPostQueryResult result = await _postQueryProvider.GetPostQueryResultAsync(request.Id, cancellationToken);
         return result ?? throw new NotFoundException();
     }
 }

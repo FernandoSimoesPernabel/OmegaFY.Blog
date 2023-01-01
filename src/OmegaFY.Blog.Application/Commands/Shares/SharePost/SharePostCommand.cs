@@ -5,12 +5,12 @@ namespace OmegaFY.Blog.Application.Commands.Shares.SharePost;
 
 public class SharePostCommand : CommandMediatRBase<SharePostCommandResult>
 {
-    public Guid PostId { get; set; }
+    public Guid Id { get; set; }
 
     public SharePostCommand() { }
 
-    public SharePostCommand(Guid postId)
+    public SharePostCommand(Guid id)
     {
-        PostId = postId;
+        Id = id;
     }
 }

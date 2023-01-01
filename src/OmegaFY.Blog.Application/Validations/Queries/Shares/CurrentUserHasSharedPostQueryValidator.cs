@@ -7,6 +7,6 @@ public class CurrentUserHasSharedPostQueryValidator : AbstractValidator<CurrentU
 {
     public CurrentUserHasSharedPostQueryValidator()
     {
-        RuleFor(x => x.PostId).NotEmpty();
+        RuleFor(x => x.Id).NotEmpty();
     }
 }

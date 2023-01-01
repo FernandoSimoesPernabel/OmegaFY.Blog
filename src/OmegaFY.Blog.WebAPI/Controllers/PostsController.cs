@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
 using OmegaFY.Blog.Application.Commands.Avaliations.ChangeUserRating;
 using OmegaFY.Blog.Application.Commands.Avaliations.RatePost;
@@ -18,12 +17,9 @@ using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
-using OmegaFY.Blog.Domain.Entities.Shares;
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.WebAPI.Controllers.Base;
-using OmegaFY.Blog.WebAPI.Models.Commands;
-using OmegaFY.Blog.WebAPI.Models.Queries;
-using OmegaFY.Blog.WebAPI.Models.Responses;
+using OmegaFY.Blog.WebAPI.Responses;
 
 namespace OmegaFY.Blog.WebAPI.Controllers;
 
@@ -32,151 +28,115 @@ public class PostsController : ApiControllerBase
 {
     public PostsController(IServiceBus serviceBus) : base(serviceBus) { }
 
-    [HttpGet]
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetAllPostsQueryResult>>), 200)]
-    public async Task<IActionResult> GetAllPosts([FromQuery] GetAllPostsInputModel inputModel, CancellationToken cancellationToken)
-    {
-        PagedResult<GetAllPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetAllPosts([FromQuery] GetAllPostsQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetAllPostsQuery, PagedResult<GetAllPostsQueryResult>>(query, cancellationToken));
 
-    [HttpGet("MostRecentPublishedPosts")]
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentPublishedPostsQueryResult>>), 200)]
-    public async Task<IActionResult> GetMostRecentPublishedPosts([FromQuery] GetMostRecentPublishedPostsInputModel inputModel, CancellationToken cancellationToken)
-    {
-        PagedResult<GetMostRecentPublishedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentPublishedPostsQuery, PagedResult<GetMostRecentPublishedPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetMostRecentPublishedPosts([FromQuery] GetMostRecentPublishedPostsQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetMostRecentPublishedPostsQuery, PagedResult<GetMostRecentPublishedPostsQueryResult>>(query, cancellationToken));
 
-    [HttpGet("MostRecentShares")]
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostRecentSharesQueryResult>>), 200)]
-    public async Task<IActionResult> GetMostRecentShares([FromQuery] GetMostRecentSharesInputModel inputModel, CancellationToken cancellationToken)
-    {
-        PagedResult<GetMostRecentSharesQueryResult> result = await _serviceBus.SendMessageAsync<GetMostRecentSharesQuery, PagedResult<GetMostRecentSharesQueryResult>>(inputModel.ToQuery(), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetMostRecentShares([FromQuery] GetMostRecentSharesQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetMostRecentSharesQuery, PagedResult<GetMostRecentSharesQueryResult>>(query, cancellationToken));
 
-    [HttpGet("TopRatedPosts")]
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetTopRatedPostsQueryResult>>), 200)]
-    public async Task<IActionResult> GetTopRatedPostsQueryResult([FromQuery] GetTopRatedPostsInputModel inputModel, CancellationToken cancellationToken)
-    {
-        PagedResult<GetTopRatedPostsQueryResult> result = await _serviceBus.SendMessageAsync<GetTopRatedPostsQuery, PagedResult<GetTopRatedPostsQueryResult>>(inputModel.ToQuery(), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetTopRatedPostsQueryResult([FromQuery] GetTopRatedPostsQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetTopRatedPostsQuery, PagedResult<GetTopRatedPostsQueryResult>>(query, cancellationToken));
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{Id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetPostQueryResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 404)]
-    public async Task<IActionResult> GetPost([FromRoute] Guid id, CancellationToken cancellationToken)
-    {
-        GetPostQueryResult result = await _serviceBus.SendMessageAsync<GetPostQuery, GetPostQueryResult>(new(id), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetPost([FromRoute] GetPostQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetPostQuery, GetPostQueryResult>(query, cancellationToken));
 
-    [HttpPost]
+    [HttpPost()]
     [ProducesResponseType(typeof(ApiResponse<PublishPostCommandResult>), 201)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> PublishPost(PublishPostInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> PublishPost(PublishPostCommand command, CancellationToken cancellationToken)
     {
-        PublishPostCommandResult result = await _serviceBus.SendMessageAsync<PublishPostCommand, PublishPostCommandResult>(inputModel.ToCommand(), cancellationToken);
-        return CreatedAtAction(nameof(GetPost), new { id = result.Id }, result);
+        PublishPostCommandResult result = await _serviceBus.SendMessageAsync<PublishPostCommand, PublishPostCommandResult>(command, cancellationToken);
+        return CreatedAtAction(nameof(GetPost), new { result.Id }, result);
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut()]
     [ProducesResponseType(typeof(ApiResponse<ChangePostContentCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> ChangePostContent(Guid id, ChangePostContentInputModel inputModel, CancellationToken cancellationToken)
-    {
-        ChangePostContentCommandResult result = await _serviceBus.SendMessageAsync<ChangePostContentCommand, ChangePostContentCommandResult>(inputModel.ToCommand(id), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> ChangePostContent(ChangePostContentCommand command, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<ChangePostContentCommand, ChangePostContentCommandResult>(command, cancellationToken));
 
-    [HttpPatch("{id:guid}/MakePrivate")]
+    [HttpPatch("{Id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<MakePostPrivateCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> MakePostPrivate(Guid id, CancellationToken cancellationToken)
-    {
-        MakePostPrivateCommandResult result = await _serviceBus.SendMessageAsync<MakePostPrivateCommand, MakePostPrivateCommandResult>(new(id), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> MakePostPrivate([FromRoute] MakePostPrivateCommand command, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<MakePostPrivateCommand, MakePostPrivateCommandResult>(command, cancellationToken));
 
-    [HttpPatch("{id:guid}/MakePublic")]
+    [HttpPatch("{Id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<MakePostPublicCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> MakePostPublic(Guid id, CancellationToken cancellationToken)
-    {
-        MakePostPublicCommandResult result = await _serviceBus.SendMessageAsync<MakePostPublicCommand, MakePostPublicCommandResult>(new(id), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> MakePostPublic([FromRoute] MakePostPublicCommand command, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<MakePostPublicCommand, MakePostPublicCommandResult>(command, cancellationToken));
 
-    [HttpGet("{PostId:guid}/Shares/{ShareId:guid}")]
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponse<GetShareQueryResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 404)]
-    public async Task<IActionResult> GetShare([FromRoute] GetShareInputModel inputModel, CancellationToken cancellationToken)
-    {
-        GetShareQueryResult result = await _serviceBus.SendMessageAsync<GetShareQuery, GetShareQueryResult>(inputModel.ToCommand(), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetShare([FromQuery] GetShareQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetShareQuery, GetShareQueryResult>(query, cancellationToken));
 
-    [HttpGet("{id:guid}/Shares/CurrentUserHasSharedPost")]
+    [HttpGet("{Id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<CurrentUserHasSharedPostQueryResult>), 200)]
-    public async Task<IActionResult> CurrentUserHasSharedPost([FromRoute] Guid id, CancellationToken cancellationToken)
-    {
-        CurrentUserHasSharedPostQueryResult result = await _serviceBus.SendMessageAsync<CurrentUserHasSharedPostQuery, CurrentUserHasSharedPostQueryResult>(new(id), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> CurrentUserHasSharedPost([FromRoute] CurrentUserHasSharedPostQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<CurrentUserHasSharedPostQuery, CurrentUserHasSharedPostQueryResult>(query, cancellationToken));
 
-    [HttpPost("{id:guid}/Shares")]
+    [HttpPost("{Id:guid}")]
     [ProducesResponseType(typeof(ApiResponse<SharePostCommandResult>), 201)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> SharePost(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> SharePost([FromRoute] SharePostCommand command, CancellationToken cancellationToken)
     {
-        SharePostCommandResult result = await _serviceBus.SendMessageAsync<SharePostCommand, SharePostCommandResult>(new(id), cancellationToken);
-        return CreatedAtAction(nameof(GetShare), new { postId = result.PostId, shareId = result.Id }, result);
+        SharePostCommandResult result = await _serviceBus.SendMessageAsync<SharePostCommand, SharePostCommandResult>(command, cancellationToken);
+        return CreatedAtAction(nameof(GetShare), new { result.PostId, ShareId = result.Id }, result);
     }
 
-    [HttpDelete("{PostId:guid}/Shares/{ShareId:guid}")]
+    [HttpDelete()]
     [ProducesResponseType(204)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> UnsharePost([FromRoute] UnsharePostInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> UnsharePost([FromQuery] UnsharePostCommand command, CancellationToken cancellationToken)
     {
-        UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(inputModel.ToCommand(), cancellationToken);
+        UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(command, cancellationToken);
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 
-    [HttpGet("{PostId:guid}/Avaliations/{AvaliationId:guid}")]
+    [HttpGet()]
     [ProducesResponseType(typeof(ApiResponse<GetAvaliationQueryResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 404)]
-    public async Task<IActionResult> GetAvaliation([FromRoute] GetAvaliationInputModel inputModel, CancellationToken cancellationToken)
-    {
-        GetAvaliationQueryResult result = await _serviceBus.SendMessageAsync<GetAvaliationQuery, GetAvaliationQueryResult>(inputModel.ToQuery(), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetAvaliation([FromQuery] GetAvaliationQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetAvaliationQuery, GetAvaliationQueryResult>(query, cancellationToken));
 
-    [HttpPost("{postId:guid}/Avaliations")]
+    [HttpPost()]
     [ProducesResponseType(typeof(ApiResponse<RatePostCommandResult>), 201)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> RatePost([FromRoute] Guid postId, [FromBody] Stars rate, CancellationToken cancellationToken)
+    public async Task<IActionResult> RatePost([FromBody] RatePostCommand command, CancellationToken cancellationToken)
     {
-        RatePostCommandResult result = await _serviceBus.SendMessageAsync<RatePostCommand, RatePostCommandResult>(new(postId, rate), cancellationToken);
-        return CreatedAtAction(nameof(GetAvaliation), new { postId = result.PostId, avaliationId = result.Id }, result);
+        RatePostCommandResult result = await _serviceBus.SendMessageAsync<RatePostCommand, RatePostCommandResult>(command, cancellationToken);
+        return CreatedAtAction(nameof(GetAvaliation), new { result.PostId, AvaliationId = result.Id }, result);
     }
 
-    [HttpPut("{postId:guid}/Avaliations/{avaliationId:guid}")]
+    [HttpPut()]
     [ProducesResponseType(typeof(ApiResponse<ChangeUserRatingCommandResult>), 200)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> ChangeUserRating([FromRoute] Guid postId, [FromRoute] Guid avaliationId, [FromBody] Stars rate, CancellationToken cancellationToken)
-    {
-        ChangeUserRatingCommandResult result = await _serviceBus.SendMessageAsync<ChangeUserRatingCommand, ChangeUserRatingCommandResult>(new(postId, avaliationId, rate), cancellationToken);
-        return Ok(result);
-    }
+    public async Task<IActionResult> ChangeUserRating(ChangeUserRatingCommand command, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<ChangeUserRatingCommand, ChangeUserRatingCommandResult>(command, cancellationToken));
 
-    [HttpDelete("{PostId:guid}/Avaliations/{AvaliationId:guid}")]
+    [HttpDelete()]
     [ProducesResponseType(204)]
     [ProducesResponseType(typeof(ApiResponse), 400)]
-    public async Task<IActionResult> RemoveRating([FromRoute] RemoveRatingInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveRating([FromQuery] RemoveRatingCommand command, CancellationToken cancellationToken)
     {
-        RemoveRatingCommandResult result = await _serviceBus.SendMessageAsync<RemoveRatingCommand, RemoveRatingCommandResult>(inputModel.ToCommand(), cancellationToken);
+        RemoveRatingCommandResult result = await _serviceBus.SendMessageAsync<RemoveRatingCommand, RemoveRatingCommandResult>(command, cancellationToken);
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 }

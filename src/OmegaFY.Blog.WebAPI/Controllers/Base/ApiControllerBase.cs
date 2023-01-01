@@ -9,7 +9,7 @@ namespace OmegaFY.Blog.WebAPI.Controllers.Base;
 [ApiController]
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Authorize(PoliciesNamesConstants.BEARER_JWT_POLICY)]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public abstract class ApiControllerBase : ControllerBase
 {
     protected readonly IServiceBus _serviceBus;
