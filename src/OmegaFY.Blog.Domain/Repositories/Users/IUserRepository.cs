@@ -4,7 +4,7 @@ namespace OmegaFY.Blog.Domain.Repositories.Users;
 
 public interface IUserRepository : IRepository<User>
 {
-    public Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    public Task<User> GetByIdAsync(ReferenceId id, CancellationToken cancellationToken);
 
     public Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken);
 

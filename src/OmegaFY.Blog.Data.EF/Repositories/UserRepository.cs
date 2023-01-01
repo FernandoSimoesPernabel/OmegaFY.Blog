@@ -12,7 +12,7 @@ internal class UserRepository : BaseRepository<User>, IUserRepository
 
     public async Task CreateUserAsync(User user, CancellationToken cancellationToken) => await _dbSet.AddAsync(user, cancellationToken);
 
-    public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken) => await _dbSet.FindAsync(new object[] { id }, cancellationToken);
+    public async Task<User> GetByIdAsync(ReferenceId id, CancellationToken cancellationToken) => await _dbSet.FindAsync(new object[] { id }, cancellationToken);
 
     public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken) => await _dbSet.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
 

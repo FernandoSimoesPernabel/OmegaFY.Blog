@@ -34,28 +34,29 @@ public class RefreshTokenCommandHandler : CommandHandlerMediatRBase<RefreshToken
 
     public async override Task<RefreshTokenCommandResult> HandleAsync(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
-        User user = await _repository.GetByIdAsync(command.UserId, cancellationToken);
+        User user = await _repository.GetByIdAsync(_currentUser.CurrentRequestUserId.Value, cancellationToken);
 
-        if (user is null)
-            throw new NotFoundException();
+        if (user is null) throw new NotFoundException();
 
-        string cacheKey = CacheKeyGenerator.RefreshTokenKey(command.UserId, command.RefreshToken);
+        string cacheKey = CacheKeyGenerator.RefreshTokenKey(_currentUser.CurrentRequestUserId.Value, command.RefreshToken);
 
         AuthenticationToken? currentToken = await _distributedCache.GetAsync<AuthenticationToken?>(cacheKey, cancellationToken);
 
-        if (!currentToken.HasValue) throw new InvalidOperationException();
+        if (!currentToken.HasValue) throw new NotFoundException();
 
         if (command.CurrentToken != currentToken.Value.Token) throw new InvalidOperationException();
 
         AuthenticationToken newAuthToken =
             await _authenticationService.RefreshTokenAsync(currentToken.Value, new RefreshTokenInput(user.Id, user.Email, user.DisplayName));
 
+        await _distributedCache.RemoveAuthenticationTokenCacheAsync(user.Id, command.RefreshToken, cancellationToken);
+
         await _distributedCache.SetAuthenticationTokenCacheAsync(user.Id, newAuthToken, cancellationToken);
 
         return new RefreshTokenCommandResult(
-            newAuthToken.Token, 
+            newAuthToken.Token,
             newAuthToken.TokenExpirationDate,
-            newAuthToken.RefreshToken, 
+            newAuthToken.RefreshToken,
             newAuthToken.RefreshTokenExpirationDate);
     }
 }
