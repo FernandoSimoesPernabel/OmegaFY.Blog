@@ -20,7 +20,7 @@ internal class SharePostCommandHandler : CommandHandlerMediatRBase<SharePostComm
 
     public override async Task<SharePostCommandResult> HandleAsync(SharePostCommand command, CancellationToken cancellationToken)
     {
-        PostShares postToShare = await _repository.GetPostByIdAsync(command.PostId, cancellationToken);
+        PostShares postToShare = await _repository.GetPostByIdAsync(command.Id, cancellationToken);
 
         if (postToShare is null)
             throw new NotFoundException();

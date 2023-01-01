@@ -3,7 +3,7 @@ using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Constantes;
 
-namespace OmegaFY.Blog.WebAPI.Models.Responses;
+namespace OmegaFY.Blog.WebAPI.Responses;
 
 public class ApiResponse<T>
 {

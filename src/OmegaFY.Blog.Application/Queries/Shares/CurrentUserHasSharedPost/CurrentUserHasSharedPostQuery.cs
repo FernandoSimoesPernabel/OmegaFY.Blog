@@ -4,12 +4,12 @@ namespace OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 
 public class CurrentUserHasSharedPostQuery : QueryRequestMediatRBase<CurrentUserHasSharedPostQueryResult>
 {
-    public Guid PostId { get; set; }
+    public Guid Id { get; set; }
 
     public CurrentUserHasSharedPostQuery() { }
 
-    public CurrentUserHasSharedPostQuery(Guid postId)
+    public CurrentUserHasSharedPostQuery(Guid id)
     {
-        PostId = postId;
+        Id = id;
     }
 }

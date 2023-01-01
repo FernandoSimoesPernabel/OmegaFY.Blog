@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Common.Extensions;
-using OmegaFY.Blog.WebAPI.Models.Responses;
+using OmegaFY.Blog.WebAPI.Responses;
 
 namespace OmegaFY.Blog.WebAPI.FIlters;
 

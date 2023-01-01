@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Application.Result;
 
-namespace OmegaFY.Blog.WebAPI.Models.Responses;
+namespace OmegaFY.Blog.WebAPI.Responses;
 
 public class ApiResponse : ApiResponse<object>
 {

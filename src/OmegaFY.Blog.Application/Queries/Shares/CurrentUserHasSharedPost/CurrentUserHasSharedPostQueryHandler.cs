@@ -13,5 +13,5 @@ internal class CurrentUserHasSharedPostQueryHandler : QueryHandlerMediatRBase<Cu
         : base(currentUser, logger) => _shareQueryProvider = shareQueryProvider;
 
     public override async Task<CurrentUserHasSharedPostQueryResult> HandleAsync(CurrentUserHasSharedPostQuery request, CancellationToken cancellationToken)
-        => await _shareQueryProvider.CurrentUserHasSharedPostQueryResultAsync(request.PostId, _currentUser.CurrentRequestUserId.Value, cancellationToken);
+        => await _shareQueryProvider.CurrentUserHasSharedPostQueryResultAsync(request.Id, _currentUser.CurrentRequestUserId.Value, cancellationToken);
 }

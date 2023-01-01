@@ -7,6 +7,6 @@ public class SharePostCommandValidator : AbstractValidator<SharePostCommand>
 {
     public SharePostCommandValidator()
     {
-        RuleFor(x => x.PostId).NotEmpty();
+        RuleFor(x => x.Id).NotEmpty();
     }
 }
