@@ -10,7 +10,5 @@ public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenComman
         RuleFor(x => x.RefreshToken).NotEmpty();
 
         RuleFor(x => x.CurrentToken).NotEmpty();
-
-        RuleFor(x => x.UserId).NotEmpty();
     }
 }

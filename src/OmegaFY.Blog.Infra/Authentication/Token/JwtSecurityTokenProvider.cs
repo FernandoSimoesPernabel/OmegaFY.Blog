@@ -34,9 +34,7 @@ internal class JwtSecurityTokenProvider : IJwtProvider
         if (currentToken.RefreshTokenExpirationDate < DateTime.UtcNow)
             throw new UnauthorizedException();
 
-        AuthenticationToken newToken = WriteToken(refreshTokenInput.UserId, refreshTokenInput.Email, refreshTokenInput.UserName);
-
-        return new AuthenticationToken(newToken.Token, newToken.TokenExpirationDate, currentToken.RefreshToken, currentToken.RefreshTokenExpirationDate);
+        return WriteToken(refreshTokenInput.UserId, refreshTokenInput.Email, refreshTokenInput.UserName);
     }
 
     public AuthenticationToken WriteToken(LoginInput loginInput) => WriteToken(loginInput.UserId, loginInput.Email, loginInput.UserName);

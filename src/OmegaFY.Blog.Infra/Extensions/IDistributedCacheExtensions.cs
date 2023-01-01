@@ -37,4 +37,7 @@ public static class IDistributedCacheExtensions
             new DistributedCacheEntryOptions() { AbsoluteExpiration = authToken.RefreshTokenExpirationDate },
             cancellationToken);
     }
+
+    public static async Task RemoveAuthenticationTokenCacheAsync(this IDistributedCache distributedCache, Guid userId, Guid refreshToken, CancellationToken cancellationToken) 
+        => await distributedCache.RemoveAsync(CacheKeyGenerator.RefreshTokenKey(userId, refreshToken), cancellationToken);
 }
