@@ -5,4 +5,5 @@ namespace OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 
 public class GetMostRecentAvaliationsQuery : QueryPagedRequestMediatRBase<PagedResult<GetMostRecentAvaliationsQueryResult>>
 {
+    public Guid? AuthorId { get; set; }
 }

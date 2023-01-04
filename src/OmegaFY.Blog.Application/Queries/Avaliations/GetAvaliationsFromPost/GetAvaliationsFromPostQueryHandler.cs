@@ -12,8 +12,6 @@ internal class GetAvaliationsFromPostQueryHandler : QueryHandlerMediatRBase<GetA
     public GetAvaliationsFromPostQueryHandler(IUserInformation currentUser, ILogger<GetAvaliationsFromPostQueryHandler> logger, IAvaliationQueryProvider avaliationQueryProvider)
         : base(currentUser, logger) => _avaliationQueryProvider = avaliationQueryProvider;
 
-    public override Task<GetAvaliationsFromPostQueryResult> HandleAsync(GetAvaliationsFromPostQuery request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public override async Task<GetAvaliationsFromPostQueryResult> HandleAsync(GetAvaliationsFromPostQuery request, CancellationToken cancellationToken)
+        => await _avaliationQueryProvider.GetAvaliationsFromPostQueryResultAsync(request, cancellationToken);
 }

@@ -8,23 +8,15 @@ public class AvaliationFromPost
 
     public Guid PostId { get; set; }
 
+    public string PostTitle { get; set; }
+
     public Guid AuthorId { get; set; }
+
+    public string AuthorName { get; set; }
 
     public Stars Rate { get; set; }
 
     public DateTime DateOfCreation { get; set; }
 
     public DateTime? DateOfModification { get; set; }
-
-    public AvaliationFromPost() { }
-
-    public AvaliationFromPost(Guid id, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation, DateTime? dateOfModification)
-    {
-        Id = id;
-        PostId = postId;
-        AuthorId = authorId;
-        Rate = rate;
-        DateOfCreation = dateOfCreation;
-        DateOfModification = dateOfModification;
-    }
 }
