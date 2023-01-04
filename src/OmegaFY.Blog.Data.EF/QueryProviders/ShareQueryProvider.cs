@@ -53,18 +53,4 @@ internal class ShareQueryProvider : IShareQueryProvider
 
         return new PagedResult<GetMostRecentSharesQueryResult>(pagedResultInfo, result);
     }
-
-    public async Task<GetShareQueryResult> GetShareQueryResultAsync(Guid shareId, Guid authorId, CancellationToken cancellationToken)
-    {
-        return await _context.Set<SharedDatabaseModel>().AsNoTracking()
-            .Where(share => share.Id == shareId && share.AuthorId == authorId)
-            .Select(share => new GetShareQueryResult()
-            {
-                Id = share.Id,
-                AuthorId = share.Author.Id,
-                AuthorName = share.Author.DisplayName,
-                DateAndTimeOfShare = share.DateAndTimeOfShare,
-                PostId = share.PostId
-            }).FirstOrDefaultAsync(cancellationToken);
-    }
 }

@@ -33,7 +33,10 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
             throw new DomainArgumentException("");
 
         if (HasAuthorAlreadyRatedPost(avaliation.AuthorId))
-            throw new ConflictedException();
+        {
+            ChangeUserRating(avaliation.Id, avaliation.AuthorId, avaliation.Rate);
+            return;
+        }
 
         _avaliations.Add(avaliation);
 

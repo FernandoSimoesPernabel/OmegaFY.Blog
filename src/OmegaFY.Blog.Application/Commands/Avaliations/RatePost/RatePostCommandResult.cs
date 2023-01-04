@@ -15,14 +15,17 @@ public class RatePostCommandResult : GenericResult, ICommandResult
 
     public DateTime DateOfCreation { get; set; }
 
+    public DateTime? DateOfModification { get; set; }
+
     public RatePostCommandResult() { }
 
-    public RatePostCommandResult(Guid id, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation)
+    public RatePostCommandResult(Guid id, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation, DateTime? dateOfModification)
     {
         Id = id;
         PostId = postId;
         AuthorId = authorId;
         Rate = rate;
         DateOfCreation = dateOfCreation;
+        DateOfModification = dateOfModification;
     }
 }

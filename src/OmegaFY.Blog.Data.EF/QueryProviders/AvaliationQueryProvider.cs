@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliation;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
-using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.Models;
-using OmegaFY.Blog.Domain.Entities.Posts;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -15,21 +12,6 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
     private readonly QueryContext _context;
 
     public AvaliationQueryProvider(QueryContext context) => _context = context;
-
-    public async Task<GetAvaliationQueryResult> GetAvaliationQueryResultAsync(GetAvaliationQuery request, CancellationToken cancellationToken)
-    {
-        return await _context.Set<AvaliationDatabaseModel>().AsNoTracking()
-            .Where(avaliation => avaliation.Id == request.AvaliationId && avaliation.PostId == request.PostId)
-            .Select(avaliation => new GetAvaliationQueryResult()
-            {
-                Id = avaliation.Id,
-                AuthorId = avaliation.AuthorId,
-                DateOfCreation = avaliation.DateOfCreation,
-                DateOfModification = avaliation.DateOfModification,
-                PostId = avaliation.PostId,
-                Rate = avaliation.Rate
-            }).FirstOrDefaultAsync(cancellationToken);
-    }
 
     public async Task<PagedResult<GetTopRatedPostsQueryResult>> GetTopRatedPostsQueryResultAsync(GetTopRatedPostsQuery request, CancellationToken cancellationToken)
     {

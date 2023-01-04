@@ -34,6 +34,7 @@ internal class RatePostCommandHandler : CommandHandlerMediatRBase<RatePostComman
             avaliationFromCurrentUser.PostId,
             avaliationFromCurrentUser.AuthorId,
             avaliationFromCurrentUser.Rate,
-            avaliationFromCurrentUser.ModificationDetails.DateOfCreation);
+            avaliationFromCurrentUser.ModificationDetails.DateOfCreation,
+            avaliationFromCurrentUser.ModificationDetails.DateOfModification);
     }
 }

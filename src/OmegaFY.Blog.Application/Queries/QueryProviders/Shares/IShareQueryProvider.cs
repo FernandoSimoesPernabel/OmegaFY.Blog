@@ -6,8 +6,6 @@ namespace OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 
 public interface IShareQueryProvider : IQueryProvider
 {
-    public Task<GetShareQueryResult> GetShareQueryResultAsync(Guid shareId, Guid authorId, CancellationToken cancellationToken);
-
     public Task<CurrentUserHasSharedPostQueryResult> CurrentUserHasSharedPostQueryResultAsync(Guid postId, Guid authorId, CancellationToken cancellationToken);
 
     public Task<PagedResult<GetMostRecentSharesQueryResult>> GetMostRecentSharesQueryResultAsync(GetMostRecentSharesQuery request, CancellationToken cancellationToken);
