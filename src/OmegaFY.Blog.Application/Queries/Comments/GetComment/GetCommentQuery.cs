@@ -5,4 +5,5 @@ namespace OmegaFY.Blog.Application.Queries.Comments.GetComment;
 
 public class GetCommentQuery : QueryPagedRequestMediatRBase<PagedResult<GetCommentQueryResult>>
 {
+    public Guid CommentId { get; set; }
 }

@@ -157,7 +157,7 @@ public class PostsController : ApiControllerBase
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 
-    [HttpGet()]
+    [HttpGet("{CommentId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetCommentQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetComment([FromQuery] GetCommentQuery query, CancellationToken cancellationToken)
@@ -175,7 +175,7 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> MakeComment(MakeCommentCommand command, CancellationToken cancellationToken)
     {
         MakeCommentCommandResult result = await _serviceBus.SendMessageAsync<MakeCommentCommand, MakeCommentCommandResult>(command, cancellationToken);
-        return CreatedAtAction(nameof(GetComment), new { result.PostId, result.CommentId }, result);
+        return CreatedAtAction(nameof(GetComment), new { result.CommentId }, result);
     }
 
     [HttpPut()]
@@ -195,12 +195,11 @@ public class PostsController : ApiControllerBase
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 
-    //TODO esta errado o nome era get from comments
-    [HttpGet("{PostId:guid}")]
-    [ProducesResponseType(typeof(ApiResponse<GetReactionsFromPostQueryResult>), StatusCodes.Status200OK)]
+    [HttpGet("{CommentId:guid}")]
+    [ProducesResponseType(typeof(ApiResponse<GetReactionsFromCommentQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetReactionsFromPost([FromRoute] GetReactionsFromPostQuery query, CancellationToken cancellationToken)
-        => Ok(await _serviceBus.SendMessageAsync<GetReactionsFromPostQuery, GetReactionsFromPostQueryResult>(query, cancellationToken));
+    public async Task<IActionResult> GetReactionsFromPost([FromRoute] GetReactionsFromCommentQuery query, CancellationToken cancellationToken)
+        => Ok(await _serviceBus.SendMessageAsync<GetReactionsFromCommentQuery, GetReactionsFromCommentQueryResult>(query, cancellationToken));
 
     [HttpPut]
     [ProducesResponseType(typeof(ApiResponse<ReactToCommentCommandResult>), StatusCodes.Status201Created)]

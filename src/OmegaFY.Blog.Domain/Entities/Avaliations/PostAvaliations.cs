@@ -27,26 +27,23 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         return avaliation;
     }
 
-    public void RatePost(Avaliation avaliation)
+    public void RatePost(ReferenceId authorId, Stars rate)
     {
-        if (avaliation is null)
-            throw new DomainArgumentException("");
-
-        if (HasAuthorAlreadyRatedPost(avaliation.AuthorId))
+        if (HasAuthorAlreadyRatedPost(authorId))
         {
-            ChangeUserRating(avaliation.AuthorId, avaliation.Rate);
+            ChangeUserRating(authorId, rate);
             return;
         }
 
-        _avaliations.Add(avaliation);
+        _avaliations.Add(new Avaliation(Id, authorId, rate));
 
         CalculateAverageRate();
     }
 
-    public void ChangeUserRating(ReferenceId authorId, Stars rate)
+    public void ChangeUserRating(ReferenceId authorId, Stars newRate)
     {
         Avaliation currentAvaliation = FindAvaliationAndThrowIfNotFound(authorId);
-        currentAvaliation.ChangeRating(rate);
+        currentAvaliation.ChangeRating(newRate);
 
         CalculateAverageRate();
     }

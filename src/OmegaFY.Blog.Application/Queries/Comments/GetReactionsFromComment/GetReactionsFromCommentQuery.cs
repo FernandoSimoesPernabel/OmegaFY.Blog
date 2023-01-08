@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
 
-public class GetReactionsFromPostQuery : QueryPagedRequestMediatRBase<PagedResult<GetReactionsFromPostQueryResult>>
+public class GetReactionsFromCommentQuery : QueryPagedRequestMediatRBase<PagedResult<GetReactionsFromCommentQueryResult>>
 {
+    public Guid CommentId { get; set; }
 }
