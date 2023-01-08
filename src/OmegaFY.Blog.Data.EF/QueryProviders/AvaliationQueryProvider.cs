@@ -49,7 +49,7 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
         GetMostRecentAvaliationsQueryResult[] result =
             await query.Select(avaliation => new GetMostRecentAvaliationsQueryResult()
             {
-                Id = avaliation.Id,
+                AvaliationId = avaliation.Id,
                 AuthorId = avaliation.AuthorId,
                 AuthorName = avaliation.Author.DisplayName,
                 AvaliationDate = avaliation.DateOfModification ?? avaliation.DateOfCreation,

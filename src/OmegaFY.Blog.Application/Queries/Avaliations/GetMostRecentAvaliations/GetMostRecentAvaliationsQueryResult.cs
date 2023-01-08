@@ -5,7 +5,7 @@ namespace OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 
 public class GetMostRecentAvaliationsQueryResult : GenericResult, IQueryResult
 {
-    public Guid Id { get; set; }
+    public Guid AvaliationId { get; set; }
 
     public Guid PostId { get; set; }
 
