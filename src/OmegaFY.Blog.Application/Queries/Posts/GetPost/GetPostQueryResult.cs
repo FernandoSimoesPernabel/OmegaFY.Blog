@@ -4,7 +4,7 @@ namespace OmegaFY.Blog.Application.Queries.Posts.GetPost;
 
 public class GetPostQueryResult : GenericResult, IQueryResult
 {
-    public Guid Id { get; set; }
+    public Guid PostId { get; set; }
 
     public Guid AuthorId { get; set; }
 

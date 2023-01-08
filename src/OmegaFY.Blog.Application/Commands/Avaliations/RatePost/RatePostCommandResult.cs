@@ -5,7 +5,7 @@ namespace OmegaFY.Blog.Application.Commands.Avaliations.RatePost;
 
 public class RatePostCommandResult : GenericResult, ICommandResult
 {
-    public Guid Id { get; set; }
+    public Guid AvaliationId { get; set; }
 
     public Guid PostId { get; set; }
 
@@ -19,9 +19,9 @@ public class RatePostCommandResult : GenericResult, ICommandResult
 
     public RatePostCommandResult() { }
 
-    public RatePostCommandResult(Guid id, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation, DateTime? dateOfModification)
+    public RatePostCommandResult(Guid avaliationId, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation, DateTime? dateOfModification)
     {
-        Id = id;
+        AvaliationId = avaliationId;
         PostId = postId;
         AuthorId = authorId;
         Rate = rate;

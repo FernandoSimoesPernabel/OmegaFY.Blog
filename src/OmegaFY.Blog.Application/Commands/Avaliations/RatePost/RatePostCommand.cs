@@ -8,12 +8,4 @@ public class RatePostCommand : CommandMediatRBase<RatePostCommandResult>
     public Guid PostId { get; set; }
 
     public Stars Rate { get; set; }
-
-    public RatePostCommand() { }
-
-    public RatePostCommand(Guid postId, Stars rate)
-    {
-        PostId = postId;
-        Rate = rate;
-    }
 }

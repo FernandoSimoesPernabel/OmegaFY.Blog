@@ -10,4 +10,5 @@ namespace OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPostsFromPost
 
 public class GetCommentsFromPostQuery : QueryPagedRequestMediatRBase<PagedResult<GetCommentsFromPostQueryResult>>
 {
+    public Guid PostId { get; set; }
 }

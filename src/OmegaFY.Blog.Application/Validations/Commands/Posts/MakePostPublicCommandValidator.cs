@@ -7,6 +7,6 @@ public class MakePostPublicCommandValidator : AbstractValidator<MakePostPublicCo
 {
     public MakePostPublicCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.PostId).NotEmpty();
     }
 }

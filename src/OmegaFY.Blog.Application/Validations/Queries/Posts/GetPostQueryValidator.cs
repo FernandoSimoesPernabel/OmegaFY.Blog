@@ -7,6 +7,6 @@ public class GetPostQueryValidator : AbstractValidator<GetPostQuery>
 {
     public GetPostQueryValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.PostId).NotEmpty();
     }
 }

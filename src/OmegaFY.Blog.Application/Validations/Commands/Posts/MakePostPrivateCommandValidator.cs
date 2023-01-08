@@ -7,6 +7,6 @@ public class MakePostPrivateCommandValidator : AbstractValidator<MakePostPrivate
 {
     public MakePostPrivateCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.PostId).NotEmpty();
     }
 }

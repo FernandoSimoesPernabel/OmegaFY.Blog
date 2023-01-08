@@ -2,7 +2,7 @@
 
 public class ShareFromPost
 {
-    public Guid Id { get; set; }
+    public Guid ShareId { get; set; }
 
     public Guid PostId { get; set; }
 

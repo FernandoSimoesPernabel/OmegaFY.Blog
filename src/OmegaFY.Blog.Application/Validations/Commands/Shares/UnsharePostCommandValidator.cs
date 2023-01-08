@@ -8,6 +8,5 @@ public class UnsharePostCommandValidator : AbstractValidator<UnsharePostCommand>
     public UnsharePostCommandValidator()
     {
         RuleFor(x => x.PostId).NotEmpty();
-        RuleFor(x => x.ShareId).NotEmpty();
     }
 }

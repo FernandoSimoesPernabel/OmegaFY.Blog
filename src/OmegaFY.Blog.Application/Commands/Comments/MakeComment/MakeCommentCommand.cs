@@ -4,5 +4,7 @@ namespace OmegaFY.Blog.Application.Commands.Comments.MakeComment;
 
 public class MakeCommentCommand : CommandMediatRBase<MakeCommentCommandResult>
 {
+    public Guid PostId { get; set; }
 
+    public string Body { get; set; }
 }

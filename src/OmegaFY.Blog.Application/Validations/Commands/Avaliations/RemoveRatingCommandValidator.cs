@@ -8,7 +8,5 @@ public class RemoveRatingCommandValidator : AbstractValidator<RemoveRatingComman
     public RemoveRatingCommandValidator()
     {
         RuleFor(x => x.PostId).NotEmpty();
-
-        RuleFor(x => x.AvaliationId).NotEmpty();
     }
 }

@@ -17,9 +17,9 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public bool HasAuthorAlreadyRatedPost(ReferenceId authorId) => _avaliations.Any(share => share.AuthorId == authorId);
 
-    public Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
+    public Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId authorId)
     {
-        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.Id == avaliationId && avaliation.AuthorId == authorId);
+        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.AuthorId == authorId);
 
         if (avaliation is null)
             throw new NotFoundException();
@@ -34,7 +34,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
         if (HasAuthorAlreadyRatedPost(avaliation.AuthorId))
         {
-            ChangeUserRating(avaliation.Id, avaliation.AuthorId, avaliation.Rate);
+            ChangeUserRating(avaliation.AuthorId, avaliation.Rate);
             return;
         }
 
@@ -43,17 +43,17 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         CalculateAverageRate();
     }
 
-    public void ChangeUserRating(Guid avaliationId, ReferenceId authorId, Stars rate)
+    public void ChangeUserRating(ReferenceId authorId, Stars rate)
     {
-        Avaliation currentAvaliation = FindAvaliationAndThrowIfNotFound(avaliationId, authorId);
+        Avaliation currentAvaliation = FindAvaliationAndThrowIfNotFound(authorId);
         currentAvaliation.ChangeRating(rate);
 
         CalculateAverageRate();
     }
 
-    public void RemoveRating(ReferenceId avaliationId, ReferenceId authorId)
+    public void RemoveRating(ReferenceId authorId)
     {
-        Avaliation avaliation = FindAvaliationAndThrowIfNotFound(avaliationId, authorId);
+        Avaliation avaliation = FindAvaliationAndThrowIfNotFound(authorId);
         _avaliations.Remove(avaliation);
 
         CalculateAverageRate();

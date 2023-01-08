@@ -72,7 +72,7 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> GetMostRecentComments([FromQuery] GetMostRecentCommentsQuery query, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<GetMostRecentCommentsQuery, PagedResult<GetMostRecentCommentsQueryResult>>(query, cancellationToken));
 
-    [HttpGet("{Id:guid}")]
+    [HttpGet("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetPostQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPost([FromRoute] GetPostQuery query, CancellationToken cancellationToken)
@@ -84,7 +84,7 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> PublishPost(PublishPostCommand command, CancellationToken cancellationToken)
     {
         PublishPostCommandResult result = await _serviceBus.SendMessageAsync<PublishPostCommand, PublishPostCommandResult>(command, cancellationToken);
-        return CreatedAtAction(nameof(GetPost), new { result.Id }, result);
+        return CreatedAtAction(nameof(GetPost), new { result.PostId }, result);
     }
 
     [HttpPut()]
@@ -94,47 +94,47 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> ChangePostContent(ChangePostContentCommand command, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<ChangePostContentCommand, ChangePostContentCommandResult>(command, cancellationToken));
 
-    [HttpPatch("{Id:guid}")]
+    [HttpPatch("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<MakePostPrivateCommandResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> MakePostPrivate([FromRoute] MakePostPrivateCommand command, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<MakePostPrivateCommand, MakePostPrivateCommandResult>(command, cancellationToken));
 
-    [HttpPatch("{Id:guid}")]
+    [HttpPatch("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<MakePostPublicCommandResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> MakePostPublic([FromRoute] MakePostPublicCommand command, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<MakePostPublicCommand, MakePostPublicCommandResult>(command, cancellationToken));
 
-    [HttpGet("{Id:guid}")]
+    [HttpGet("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetSharesFromPostQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSharesFromPost([FromRoute] GetSharesFromPostQuery query, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<GetSharesFromPostQuery, GetSharesFromPostQueryResult>(query, cancellationToken));
 
-    [HttpGet("{Id:guid}")]
+    [HttpGet("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<CurrentUserHasSharedPostQueryResult>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CurrentUserHasSharedPost([FromRoute] CurrentUserHasSharedPostQuery query, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<CurrentUserHasSharedPostQuery, CurrentUserHasSharedPostQueryResult>(query, cancellationToken));
 
-    [HttpPost("{Id:guid}")]
+    [HttpPost("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<SharePostCommandResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SharePost([FromRoute] SharePostCommand command, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<SharePostCommand, SharePostCommandResult>(command, cancellationToken));
 
-    [HttpDelete()]
+    [HttpDelete("{PostId:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UnsharePost([FromQuery] UnsharePostCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> UnsharePost([FromRoute] UnsharePostCommand command, CancellationToken cancellationToken)
     {
         UnsharePostCommandResult result = await _serviceBus.SendMessageAsync<UnsharePostCommand, UnsharePostCommandResult>(command, cancellationToken);
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 
-    [HttpGet("{Id:guid}")]
+    [HttpGet("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetAvaliationsFromPostQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAvaliationsFromPost([FromRoute] GetAvaliationsFromPostQuery query, CancellationToken cancellationToken)
@@ -147,7 +147,7 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> RatePost([FromBody] RatePostCommand command, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<RatePostCommand, RatePostCommandResult>(command, cancellationToken));
 
-    [HttpDelete()]
+    [HttpDelete("{PostId:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
@@ -163,7 +163,7 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> GetComment([FromQuery] GetCommentQuery query, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<GetCommentQuery, GetCommentQueryResult>(query, cancellationToken));
 
-    [HttpGet("{Id:guid}")]
+    [HttpGet("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetCommentsFromPostQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCommentsFromPost([FromRoute] GetCommentsFromPostQuery query, CancellationToken cancellationToken)
@@ -175,7 +175,7 @@ public class PostsController : ApiControllerBase
     public async Task<IActionResult> MakeComment(MakeCommentCommand command, CancellationToken cancellationToken)
     {
         MakeCommentCommandResult result = await _serviceBus.SendMessageAsync<MakeCommentCommand, MakeCommentCommandResult>(command, cancellationToken);
-        return CreatedAtAction(nameof(GetComment), new { result.PostId, CommentId = result.Id }, result);
+        return CreatedAtAction(nameof(GetComment), new { result.PostId, result.CommentId }, result);
     }
 
     [HttpPut()]
@@ -195,7 +195,8 @@ public class PostsController : ApiControllerBase
         return result.Failed() ? BadRequest(result) : NoContent();
     }
 
-    [HttpGet("{Id:guid}")]
+    //TODO esta errado o nome era get from comments
+    [HttpGet("{PostId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetReactionsFromPostQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetReactionsFromPost([FromRoute] GetReactionsFromPostQuery query, CancellationToken cancellationToken)

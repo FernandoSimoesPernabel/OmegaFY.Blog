@@ -4,7 +4,7 @@ namespace OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliationsFromPost;
 
 public class AvaliationFromPost
 {
-    public Guid Id { get; set; }
+    public Guid AvaliationId { get; set; }
 
     public Guid PostId { get; set; }
 

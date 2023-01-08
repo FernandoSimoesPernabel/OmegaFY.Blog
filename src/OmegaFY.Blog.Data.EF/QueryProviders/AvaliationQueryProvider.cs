@@ -23,7 +23,7 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
             .Where(avaliation => !avaliation.Post.Private)
             .Select(avaliation => new AvaliationFromPost
             {
-                Id = avaliation.Id,
+                AvaliationId = avaliation.Id,
                 AuthorId = avaliation.AuthorId,
                 AuthorName = avaliation.Author.DisplayName,
                 DateOfCreation = avaliation.DateOfCreation,

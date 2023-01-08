@@ -35,7 +35,7 @@ internal class PostQueryProvider : IPostQueryProvider
         GetAllPostsQueryResult[] result =
             await query.Select(post => new GetAllPostsQueryResult()
             {
-                Id = post.Id,
+                PostId = post.Id,
                 AverageRate = post.AverageRate,
                 AuthorName = post.Author.DisplayName,
                 DateOfCreation = post.DateOfCreation,
@@ -64,7 +64,7 @@ internal class PostQueryProvider : IPostQueryProvider
         GetMostRecentPublishedPostsQueryResult[] result =
             await query.Select(x => new GetMostRecentPublishedPostsQueryResult()
             {
-                Id = x.Id,
+                PostId = x.Id,
                 AuthorName = x.Author.DisplayName,
                 DateOfCreation = x.DateOfCreation,
                 Title = x.Title
@@ -82,7 +82,7 @@ internal class PostQueryProvider : IPostQueryProvider
             .Where(post => post.Id == id)
             .Select(post => new GetPostQueryResult()
             {
-                Id = post.Id,
+                PostId = post.Id,
                 AuthorId = post.Author.Id,
                 AuthorName = post.Author.DisplayName,
                 Avaliations = post.Avaliations.Count,
