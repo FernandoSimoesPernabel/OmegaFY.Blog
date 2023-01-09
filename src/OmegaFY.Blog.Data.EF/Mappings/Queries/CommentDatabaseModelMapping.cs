@@ -27,6 +27,8 @@ public class CommentDatabaseModelMapping : IEntityTypeConfiguration<CommentDatab
 
         builder.HasOne(x => x.Author).WithMany(x => x.Comments).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(x => x.Post).WithMany(x => x.Comments).HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
+
         builder.ToTable("Comments");
     }
 }

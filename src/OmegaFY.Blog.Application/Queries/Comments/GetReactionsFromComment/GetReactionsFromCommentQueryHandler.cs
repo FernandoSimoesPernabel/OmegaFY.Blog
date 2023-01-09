@@ -2,17 +2,17 @@
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Infra.Authentication.Users;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Comments;
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
 
-internal class GetReactionsFromCommentQueryHandler : QueryHandlerMediatRBase<GetReactionsFromCommentQueryHandler, GetReactionsFromCommentQuery, PagedResult<GetReactionsFromCommentQueryResult>>
+internal class GetReactionsFromCommentQueryHandler : QueryHandlerMediatRBase<GetReactionsFromCommentQueryHandler, GetReactionsFromCommentQuery, GetReactionsFromCommentQueryResult>
 {
-    public GetReactionsFromCommentQueryHandler(IUserInformation currentUser, ILogger<GetReactionsFromCommentQueryHandler> logger) : base(currentUser, logger)
-    {
-    }
+    private readonly ICommentQueryProvider _commentQueryProvider;
 
-    public override Task<PagedResult<GetReactionsFromCommentQueryResult>> HandleAsync(GetReactionsFromCommentQuery request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public GetReactionsFromCommentQueryHandler(IUserInformation currentUser, ILogger<GetReactionsFromCommentQueryHandler> logger, ICommentQueryProvider commentQueryProvider)
+        : base(currentUser, logger) => _commentQueryProvider = commentQueryProvider;
+
+    public override async Task<GetReactionsFromCommentQueryResult> HandleAsync(GetReactionsFromCommentQuery request, CancellationToken cancellationToken)
+        => await _commentQueryProvider.GetReactionsFromCommentQueryResultAsync(request, cancellationToken);
 }

@@ -7,7 +7,7 @@ public class GetMostRecentAvaliationsQueryValidator : AbstractValidator<GetMostR
 {
     public GetMostRecentAvaliationsQueryValidator()
     {
-        RuleFor(x => x.AuthorId).NotEmpty();
+        RuleFor(x => x.AuthorId).NotEmpty().Unless(x => x.AuthorId is null);
 
         RuleFor(x => x.PageNumber).GreaterThan(0);
 

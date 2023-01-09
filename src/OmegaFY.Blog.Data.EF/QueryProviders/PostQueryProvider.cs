@@ -18,7 +18,7 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>()
             .Where(post => !post.Private)
             .OrderByDescending(post => post.DateOfCreation);
 
@@ -53,7 +53,7 @@ internal class PostQueryProvider : IPostQueryProvider
         GetMostRecentPublishedPostsQuery request,
         CancellationToken cancellationToken)
     {
-        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>()
             .Where(post => !post.Private)
             .OrderByDescending(post => post.DateOfCreation);
 
@@ -78,7 +78,7 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Set<PostDatabaseModel>().AsNoTracking()
+        return await _context.Set<PostDatabaseModel>()
             .Where(post => post.Id == id)
             .Select(post => new GetPostQueryResult()
             {

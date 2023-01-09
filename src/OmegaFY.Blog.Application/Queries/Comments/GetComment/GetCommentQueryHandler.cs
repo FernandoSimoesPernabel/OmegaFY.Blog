@@ -2,17 +2,17 @@
 using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using Microsoft.Extensions.Logging;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Comments;
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetComment;
 
-internal class GetCommentQueryHandler : QueryHandlerMediatRBase<GetCommentQueryHandler, GetCommentQuery, PagedResult<GetCommentQueryResult>>
+internal class GetCommentQueryHandler : QueryHandlerMediatRBase<GetCommentQueryHandler, GetCommentQuery, GetCommentQueryResult>
 {
-    public GetCommentQueryHandler(IUserInformation currentUser, ILogger<GetCommentQueryHandler> logger) : base(currentUser, logger)
-    {
-    }
+    private readonly ICommentQueryProvider _commentQueryProvider;
 
-    public override Task<PagedResult<GetCommentQueryResult>> HandleAsync(GetCommentQuery request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public GetCommentQueryHandler(IUserInformation currentUser, ILogger<GetCommentQueryHandler> logger, ICommentQueryProvider commentQueryProvider)
+        : base(currentUser, logger) => _commentQueryProvider = commentQueryProvider;
+
+    public override async Task<GetCommentQueryResult> HandleAsync(GetCommentQuery request, CancellationToken cancellationToken)
+        => await _commentQueryProvider.GetCommentQueryResultAsync(request, cancellationToken);
 }
