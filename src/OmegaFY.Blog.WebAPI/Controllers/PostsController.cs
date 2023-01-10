@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using OmegaFY.Blog.Application.Bus;
 using OmegaFY.Blog.Application.Commands.Avaliations.RatePost;
 using OmegaFY.Blog.Application.Commands.Avaliations.RemoveRating;
