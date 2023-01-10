@@ -1,6 +1,8 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Entities.Comments;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
+using System.Xml.Linq;
 
 namespace OmegaFY.Blog.Domain.Entities.Shares;
 
@@ -17,6 +19,9 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
     public void Share(Shared shared)
     {
         if (shared is null)
+            throw new DomainArgumentException("");
+
+        if (shared.PostId != Id)
             throw new DomainArgumentException("");
 
         if (HasAuthorAlreadySharedPost(shared.AuthorId))

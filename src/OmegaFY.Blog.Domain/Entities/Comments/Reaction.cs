@@ -11,18 +11,18 @@ public class Reaction : Entity
 
     public ReferenceId AuthorId { get; }
 
-    public Reactions CommentReaction { get; private set; }
+    public CommentReaction CommentReaction { get; private set; }
 
     protected Reaction() { }
 
-    public Reaction(ReferenceId commentId, ReferenceId authorId, Reactions commentReaction)
+    public Reaction(ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction)
     {
         ChangeCommentReaction(commentReaction);
         CommentId = commentId;
         AuthorId = authorId;
     }
 
-    public void ChangeCommentReaction(Reactions commentReaction)
+    public void ChangeCommentReaction(CommentReaction commentReaction)
     {
         if (!commentReaction.IsDefined())
             throw new DomainArgumentException("");

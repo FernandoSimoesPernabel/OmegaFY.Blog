@@ -12,5 +12,5 @@ public class ReactionFromPost
 
     public string ReactionAuthorName { get; set; }
 
-    public Reactions CommentReaction { get; set; }
+    public CommentReaction CommentReaction { get; set; }
 }

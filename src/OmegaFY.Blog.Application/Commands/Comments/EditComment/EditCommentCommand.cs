@@ -8,5 +8,5 @@ public class EditCommentCommand : CommandMediatRBase<EditCommentCommandResult>
 
     public Guid PostId { get; set; }
 
-    public string Body { get; set; }
+    public string NewContent { get; set; }
 }

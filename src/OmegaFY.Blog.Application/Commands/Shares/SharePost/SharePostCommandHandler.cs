@@ -25,16 +25,16 @@ internal class SharePostCommandHandler : CommandHandlerMediatRBase<SharePostComm
         if (postToShare is null)
             throw new NotFoundException();
 
-        Shared postShareFromCurrentUser = new Shared(postToShare.Id, _currentUser.CurrentRequestUserId.Value);
+        Shared shareFromCurrentUser = new Shared(postToShare.Id, _currentUser.CurrentRequestUserId.Value);
 
-        postToShare.Share(postShareFromCurrentUser);
+        postToShare.Share(shareFromCurrentUser);
 
         await _repository.SaveChangesAsync(cancellationToken);
 
         return new SharePostCommandResult(
-            postShareFromCurrentUser.Id,
-            postShareFromCurrentUser.PostId,
-            postShareFromCurrentUser.AuthorId,
-            postShareFromCurrentUser.DateAndTimeOfShare);
+            shareFromCurrentUser.Id,
+            shareFromCurrentUser.PostId,
+            shareFromCurrentUser.AuthorId,
+            shareFromCurrentUser.DateAndTimeOfShare);
     }
 }
