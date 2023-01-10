@@ -21,7 +21,7 @@ internal class MakeCommentCommandHandler : CommandHandlerMediatRBase<MakeComment
         if (postToComment is null)
             throw new NotFoundException();
 
-        Comment commentFromCurrentUser = new Comment(command.PostId, _currentUser.CurrentRequestUserId.Value, command.Body);
+        Comment commentFromCurrentUser = new Comment(command.PostId, _currentUser.CurrentRequestUserId.Value, command.Content);
 
         postToComment.Comment(commentFromCurrentUser);
 

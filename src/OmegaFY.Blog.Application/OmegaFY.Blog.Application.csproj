@@ -24,8 +24,4 @@
     <ProjectReference Include="..\OmegaFY.Blog.Infra\OmegaFY.Blog.Infra.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validations\Commands\Comments\" />
-  </ItemGroup>
-
 </Project>

@@ -6,5 +6,5 @@ public class MakeCommentCommand : CommandMediatRBase<MakeCommentCommandResult>
 {
     public Guid PostId { get; set; }
 
-    public string Body { get; set; }
+    public string Content { get; set; }
 }
