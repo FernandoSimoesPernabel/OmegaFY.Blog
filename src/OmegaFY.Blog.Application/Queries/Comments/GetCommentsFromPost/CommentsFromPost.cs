@@ -14,7 +14,7 @@ public class CommentFromPost
 
     public DateTime DateOfCreation { get; set; }
 
-    public DateTime? DateOfModification { get; set; }
+    public bool HasCommentBeenEdit { get; set; }
 
     public int Reactions { get; set; }
 }

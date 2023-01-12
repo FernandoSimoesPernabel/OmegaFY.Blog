@@ -16,7 +16,7 @@ public class GetMostRecentCommentsQueryResult : GenericResult, IQueryResult
 
     public DateTime DateOfCreation { get; set; }
 
-    public DateTime? DateOfModification { get; set; }
+    public bool HasCommentBeenEdit { get; set; }
 
     public int Reactions { get; set; }
 }

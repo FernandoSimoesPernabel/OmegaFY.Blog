@@ -16,7 +16,7 @@ public class AvaliationFromPost
 
     public Stars Rate { get; set; }
 
-    public DateTime DateOfCreation { get; set; }
+    public DateTime AvaliationDate { get; set; }
 
-    public DateTime? DateOfModification { get; set; }
+    public bool HasAvaliationBeenEdit { get; set; }
 }

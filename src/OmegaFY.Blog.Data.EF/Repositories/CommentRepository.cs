@@ -12,5 +12,5 @@ internal class CommentRepository : BaseRepository<PostComments>, ICommentReposit
     public CommentRepository(CommentsContext dbContext) : base(dbContext) { }
 
     public async Task<PostComments> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
-        => await _dbSet.Include(post => post.Comments).FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
+        => await _dbSet.Include(post => post.Comments).ThenInclude(comment => comment.Reactions).AsSplitQuery().FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
 }

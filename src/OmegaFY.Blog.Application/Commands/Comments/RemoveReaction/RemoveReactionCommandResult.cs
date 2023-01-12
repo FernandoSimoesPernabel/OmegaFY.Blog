@@ -4,5 +4,4 @@ namespace OmegaFY.Blog.Application.Commands.Comments.RemoveReaction;
 
 public class RemoveReactionCommandResult : GenericResult, ICommandResult
 {
-
 }

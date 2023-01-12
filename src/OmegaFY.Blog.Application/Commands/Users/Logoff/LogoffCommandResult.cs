@@ -4,5 +4,4 @@ namespace OmegaFY.Blog.Application.Commands.Users.Logoff;
 
 public class LogoffCommandResult : GenericResult, ICommandResult
 {
-
 }

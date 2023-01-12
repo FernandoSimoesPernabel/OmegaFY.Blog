@@ -152,7 +152,7 @@ public class PostsController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> RemoveRating([FromQuery] RemoveRatingCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveRating([FromRoute] RemoveRatingCommand command, CancellationToken cancellationToken)
     {
         RemoveRatingCommandResult result = await _serviceBus.SendMessageAsync<RemoveRatingCommand, RemoveRatingCommandResult>(command, cancellationToken);
         return result.Failed() ? BadRequest(result) : NoContent();
@@ -161,7 +161,7 @@ public class PostsController : ApiControllerBase
     [HttpGet("{CommentId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<GetCommentQueryResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetComment([FromQuery] GetCommentQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetComment([FromRoute] GetCommentQuery query, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<GetCommentQuery, GetCommentQueryResult>(query, cancellationToken));
 
     [HttpGet("{PostId:guid}")]

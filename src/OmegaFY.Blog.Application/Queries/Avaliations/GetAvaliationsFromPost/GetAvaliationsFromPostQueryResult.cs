@@ -6,13 +6,7 @@ public class GetAvaliationsFromPostQueryResult : GenericResult, IQueryResult
 {
     public AvaliationFromPost[] AvaliationsFromPost { get; set; }
 
-    public GetAvaliationsFromPostQueryResult()
-    {
-        AvaliationsFromPost = Array.Empty<AvaliationFromPost>();
-    }
+    public GetAvaliationsFromPostQueryResult() => AvaliationsFromPost = Array.Empty<AvaliationFromPost>();
 
-    public GetAvaliationsFromPostQueryResult(AvaliationFromPost[] avaliationsFromPost)
-    {
-        AvaliationsFromPost = avaliationsFromPost;
-    }
+    public GetAvaliationsFromPostQueryResult(AvaliationFromPost[] avaliationsFromPost) => AvaliationsFromPost = avaliationsFromPost;
 }

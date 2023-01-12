@@ -26,8 +26,8 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
                 AvaliationId = avaliation.Id,
                 AuthorId = avaliation.AuthorId,
                 AuthorName = avaliation.Author.DisplayName,
-                DateOfCreation = avaliation.DateOfCreation,
-                DateOfModification = avaliation.DateOfModification,
+                AvaliationDate = avaliation.DateOfModification ?? avaliation.DateOfCreation,
+                HasAvaliationBeenEdit = avaliation.DateOfModification.HasValue,
                 PostId = avaliation.PostId,
                 PostTitle = avaliation.Post.Title,
                 Rate = avaliation.Rate

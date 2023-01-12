@@ -39,7 +39,7 @@ internal class PostQueryProvider : IPostQueryProvider
                 AverageRate = post.AverageRate,
                 AuthorName = post.Author.DisplayName,
                 DateOfCreation = post.DateOfCreation,
-                DateOfModification = post.DateOfModification,
+                HasPostBeenEdit = post.DateOfModification.HasValue,
                 Title = post.Title
             })
             .Skip(pagedResultInfo.ItemsToSkip())

@@ -47,7 +47,7 @@ internal class CommentQueryProvider : ICommentQueryProvider
                 CommentId = comment.Id,
                 Content = comment.Content,
                 DateOfCreation = comment.DateOfCreation,
-                DateOfModification = comment.DateOfModification,
+                HasCommentBeenEdit = comment.DateOfModification.HasValue,
                 PostId = comment.PostId,
                 Reactions = comment.Reactions.Count
             })
@@ -78,7 +78,7 @@ internal class CommentQueryProvider : ICommentQueryProvider
                 CommentId = comment.Id,
                 Content = comment.Content,
                 DateOfCreation = comment.DateOfCreation,
-                DateOfModification = comment.DateOfModification,
+                HasCommentBeenEdit = comment.DateOfModification.HasValue,
                 PostId = comment.PostId,
                 Reactions = comment.Reactions.Count
             })
@@ -110,7 +110,7 @@ internal class CommentQueryProvider : ICommentQueryProvider
                 CommentId = comment.Id,
                 Content = comment.Content,
                 DateOfCreation = comment.DateOfCreation,
-                DateOfModification = comment.DateOfModification,
+                HasCommentBeenEdit = comment.DateOfModification.HasValue,
                 PostId = comment.PostId,
                 Reactions = comment.Reactions.Count
             })
