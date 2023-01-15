@@ -7,6 +7,7 @@ using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Interceptors;
 using OmegaFY.Blog.Data.EF.QueryProviders;
 using OmegaFY.Blog.Data.EF.Repositories;
 using OmegaFY.Blog.Domain.Repositories.Avaliations;
@@ -47,6 +48,12 @@ public static class EFServiceCollectionExtensions
             {
                 options.EnableDetailedErrors();
                 options.EnableSensitiveDataLogging();
+
+                options.AddInterceptors(
+                    new CustomDbCommandInterceptor(),
+                    new CustomDbConnectionInterceptor(),
+                    new CustomDbTransactionInterceptor(),
+                    new CustomSaveChangesInterceptor());
             }
         };
     }
