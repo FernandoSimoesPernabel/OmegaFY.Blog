@@ -49,7 +49,11 @@ public static class EFServiceCollectionExtensions
                 options.EnableDetailedErrors();
                 options.EnableSensitiveDataLogging();
 
-                options.AddInterceptors(new CustomDbCommandInterceptor(), new CustomDbConnectionInterceptor(), new CustomDbTransactionInterceptor());
+                options.AddInterceptors(
+                    new CustomDbCommandInterceptor(),
+                    new CustomDbConnectionInterceptor(),
+                    new CustomDbTransactionInterceptor(),
+                    new CustomSaveChangesInterceptor());
             }
         };
     }
