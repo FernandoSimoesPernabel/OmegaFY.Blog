@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Domain.Enums;
 
-public enum Reactions
+public enum CommentReaction
 {
     Like = 0,
     Dislike = 1,

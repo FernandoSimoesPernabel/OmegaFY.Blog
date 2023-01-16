@@ -23,17 +23,18 @@ internal class RatePostCommandHandler : CommandHandlerMediatRBase<RatePostComman
         if (postToRate is null)
             throw new NotFoundException();
 
-        Avaliation avaliationFromCurrentUser = new Avaliation(command.PostId, _currentUser.CurrentRequestUserId.Value, command.Rate);
-
-        postToRate.RatePost(avaliationFromCurrentUser);
+        postToRate.RatePost(_currentUser.CurrentRequestUserId.Value, command.Rate);
 
         await _repository.SaveChangesAsync(cancellationToken);
+
+        Avaliation avaliationFromCurrentUser = postToRate.FindAvaliationAndThrowIfNotFound(_currentUser.CurrentRequestUserId.Value);
 
         return new RatePostCommandResult(
             avaliationFromCurrentUser.Id,
             avaliationFromCurrentUser.PostId,
             avaliationFromCurrentUser.AuthorId,
             avaliationFromCurrentUser.Rate,
-            avaliationFromCurrentUser.ModificationDetails.DateOfCreation);
+            avaliationFromCurrentUser.ModificationDetails.DateOfCreation,
+            avaliationFromCurrentUser.ModificationDetails.DateOfModification);
     }
 }

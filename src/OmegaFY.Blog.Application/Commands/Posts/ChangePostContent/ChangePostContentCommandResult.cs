@@ -4,7 +4,7 @@ namespace OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 
 public class ChangePostContentCommandResult : GenericResult, ICommandResult
 {
-    public Guid Id { get; set; }
+    public Guid PostId { get; set; }
 
     public Guid AuthorId { get; set; }
 
@@ -21,7 +21,7 @@ public class ChangePostContentCommandResult : GenericResult, ICommandResult
     public ChangePostContentCommandResult() { }
 
     public ChangePostContentCommandResult(
-        Guid id,
+        Guid postId,
         Guid authorId,
         string title,
         string subTitle,
@@ -29,7 +29,7 @@ public class ChangePostContentCommandResult : GenericResult, ICommandResult
         DateTime dateOfCreation,
         DateTime dateOfModification)
     {
-        Id = id;
+        PostId = postId;
         AuthorId = authorId;
         Title = title;
         SubTitle = subTitle;

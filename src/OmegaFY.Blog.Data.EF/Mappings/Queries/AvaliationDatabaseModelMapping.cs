@@ -22,6 +22,8 @@ public class AvaliationDatabaseModelMapping : IEntityTypeConfiguration<Avaliatio
 
         builder.Property(x => x.DateOfModification).HasColumnType("datetime").IsRequired(false);
 
+        builder.HasOne(x => x.Post).WithMany(x => x.Avaliations).HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
+
         builder.HasOne(x => x.Author).WithMany(x => x.Avaliations).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
 
         builder.ToTable("Avaliations");

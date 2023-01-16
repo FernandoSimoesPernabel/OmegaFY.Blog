@@ -17,9 +17,9 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public bool HasAuthorAlreadyRatedPost(ReferenceId authorId) => _avaliations.Any(share => share.AuthorId == authorId);
 
-    public Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId avaliationId, ReferenceId authorId)
+    public Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId authorId)
     {
-        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.Id == avaliationId && avaliation.AuthorId == authorId);
+        Avaliation avaliation = _avaliations.FirstOrDefault(avaliation => avaliation.AuthorId == authorId);
 
         if (avaliation is null)
             throw new NotFoundException();
@@ -27,30 +27,30 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         return avaliation;
     }
 
-    public void RatePost(Avaliation avaliation)
+    public void RatePost(ReferenceId authorId, Stars rate)
     {
-        if (avaliation is null)
-            throw new DomainArgumentException("");
+        if (HasAuthorAlreadyRatedPost(authorId))
+        {
+            ChangeUserRating(authorId, rate);
+            return;
+        }
 
-        if (HasAuthorAlreadyRatedPost(avaliation.AuthorId))
-            throw new ConflictedException();
-
-        _avaliations.Add(avaliation);
+        _avaliations.Add(new Avaliation(Id, authorId, rate));
 
         CalculateAverageRate();
     }
 
-    public void ChangeUserRating(Guid avaliationId, ReferenceId authorId, Stars rate)
+    public void ChangeUserRating(ReferenceId authorId, Stars newRate)
     {
-        Avaliation currentAvaliation = FindAvaliationAndThrowIfNotFound(avaliationId, authorId);
-        currentAvaliation.ChangeRating(rate);
+        Avaliation currentAvaliation = FindAvaliationAndThrowIfNotFound(authorId);
+        currentAvaliation.ChangeRating(newRate);
 
         CalculateAverageRate();
     }
 
-    public void RemoveRating(ReferenceId avaliationId, ReferenceId authorId)
+    public void RemoveRating(ReferenceId authorId)
     {
-        Avaliation avaliation = FindAvaliationAndThrowIfNotFound(avaliationId, authorId);
+        Avaliation avaliation = FindAvaliationAndThrowIfNotFound(authorId);
         _avaliations.Remove(avaliation);
 
         CalculateAverageRate();

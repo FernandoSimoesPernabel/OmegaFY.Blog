@@ -12,5 +12,5 @@ public class ReactionDatabaseModel
 
     public UserDatabaseModel Author { get; set; }
 
-    public Reactions CommentReaction { get; set; }
+    public CommentReaction CommentReaction { get; set; }
 }

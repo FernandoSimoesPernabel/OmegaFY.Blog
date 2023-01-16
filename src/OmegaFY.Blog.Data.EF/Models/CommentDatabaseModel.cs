@@ -6,6 +6,8 @@ public class CommentDatabaseModel
 
     public Guid PostId { get; }
 
+    public PostDatabaseModel Post { get; set; }
+
     public Guid AuthorId { get; set; }
 
     public UserDatabaseModel Author { get; set; }

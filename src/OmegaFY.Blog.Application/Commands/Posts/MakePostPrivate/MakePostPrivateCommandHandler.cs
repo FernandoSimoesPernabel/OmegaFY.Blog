@@ -18,7 +18,7 @@ internal class MakePostPrivateCommandHandler : CommandHandlerMediatRBase<MakePos
 
     public override async Task<MakePostPrivateCommandResult> HandleAsync(MakePostPrivateCommand command, CancellationToken cancellationToken)
     {
-        Post existingPost = await _repository.GetByIdAsync(command.Id, _currentUser.CurrentRequestUserId.Value, cancellationToken);
+        Post existingPost = await _repository.GetByIdAsync(command.PostId, _currentUser.CurrentRequestUserId.Value, cancellationToken);
 
         if (existingPost is null) throw new NotFoundException();
 

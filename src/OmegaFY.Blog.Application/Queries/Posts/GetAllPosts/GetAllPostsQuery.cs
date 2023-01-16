@@ -10,15 +10,4 @@ public class GetAllPostsQuery : QueryPagedRequestMediatRBase<PagedResult<GetAllP
     public DateTime? EndDateOfCreation { get; set; }
 
     public Guid? AuthorId { get; set; }
-
-    public GetAllPostsQuery() { }
-
-    public GetAllPostsQuery(DateTime? startDateOfCreation, DateTime? endDateOfCreation, Guid? authorId, int pageNumber, int pageSize)
-    {
-        StartDateOfCreation = startDateOfCreation;
-        EndDateOfCreation = endDateOfCreation;
-        AuthorId = authorId;
-        PageSize = pageSize;
-        PageNumber = pageNumber;
-    }
 }

@@ -4,7 +4,7 @@ namespace OmegaFY.Blog.Application.Commands.Shares.SharePost;
 
 public class SharePostCommandResult : GenericResult, ICommandResult
 {
-    public Guid Id { get; set; }
+    public Guid ShareId { get; set; }
 
     public Guid PostId { get; set; }
 
@@ -14,9 +14,9 @@ public class SharePostCommandResult : GenericResult, ICommandResult
 
     public SharePostCommandResult() { }
 
-    public SharePostCommandResult(Guid id, Guid postId, Guid authorId, DateTime dateAndTimeOfShare)
+    public SharePostCommandResult(Guid shareId, Guid postId, Guid authorId, DateTime dateAndTimeOfShare)
     {
-        Id = id;
+        ShareId = shareId;
         PostId = postId;
         AuthorId = authorId;
         DateAndTimeOfShare = dateAndTimeOfShare;

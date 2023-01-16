@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliation;
+using OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliationsFromPost;
+using OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
-using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.Models;
-using OmegaFY.Blog.Domain.Entities.Posts;
+using System.Linq;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -16,19 +16,53 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
 
     public AvaliationQueryProvider(QueryContext context) => _context = context;
 
-    public async Task<GetAvaliationQueryResult> GetAvaliationQueryResultAsync(GetAvaliationQuery request, CancellationToken cancellationToken)
+    public async Task<GetAvaliationsFromPostQueryResult> GetAvaliationsFromPostQueryResultAsync(GetAvaliationsFromPostQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Set<AvaliationDatabaseModel>().AsNoTracking()
-            .Where(avaliation => avaliation.Id == request.AvaliationId && avaliation.PostId == request.PostId)
-            .Select(avaliation => new GetAvaliationQueryResult()
+        AvaliationFromPost[] result = await _context.Set<AvaliationDatabaseModel>()
+            .OrderBy(avaliation => avaliation.DateOfCreation)
+            .Where(avaliation => !avaliation.Post.Private)
+            .Select(avaliation => new AvaliationFromPost
             {
-                Id = avaliation.Id,
+                AvaliationId = avaliation.Id,
                 AuthorId = avaliation.AuthorId,
-                DateOfCreation = avaliation.DateOfCreation,
-                DateOfModification = avaliation.DateOfModification,
+                AuthorName = avaliation.Author.DisplayName,
+                AvaliationDate = avaliation.DateOfModification ?? avaliation.DateOfCreation,
+                HasAvaliationBeenEdit = avaliation.DateOfModification.HasValue,
                 PostId = avaliation.PostId,
+                PostTitle = avaliation.Post.Title,
                 Rate = avaliation.Rate
-            }).FirstOrDefaultAsync(cancellationToken);
+            }).ToArrayAsync(cancellationToken);
+
+        return new GetAvaliationsFromPostQueryResult(result);
+    }
+
+    public async Task<PagedResult<GetMostRecentAvaliationsQueryResult>> GetMostRecentAvaliationsQueryResultAsync(GetMostRecentAvaliationsQuery request, CancellationToken cancellationToken)
+    {
+        IQueryable<AvaliationDatabaseModel> query = _context.Set<AvaliationDatabaseModel>()
+            .OrderByDescending(avaliation => avaliation.DateOfModification ?? avaliation.DateOfCreation)
+            .Where(avaliation => !avaliation.Post.Private);
+
+        int totalOfItens = await query.CountAsync(cancellationToken);
+
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+
+        GetMostRecentAvaliationsQueryResult[] result =
+            await query.Select(avaliation => new GetMostRecentAvaliationsQueryResult()
+            {
+                AvaliationId = avaliation.Id,
+                AuthorId = avaliation.AuthorId,
+                AuthorName = avaliation.Author.DisplayName,
+                AvaliationDate = avaliation.DateOfModification ?? avaliation.DateOfCreation,
+                HasAvaliationBeenEdit = avaliation.DateOfModification.HasValue,
+                PostId = avaliation.PostId,
+                PostTitle = avaliation.Post.Title,
+                Rate = avaliation.Rate
+            })
+            .Skip(pagedResultInfo.ItemsToSkip())
+            .Take(request.PageSize)
+            .ToArrayAsync(cancellationToken);
+
+        return new PagedResult<GetMostRecentAvaliationsQueryResult>(pagedResultInfo, result);
     }
 
     public async Task<PagedResult<GetTopRatedPostsQueryResult>> GetTopRatedPostsQueryResultAsync(GetTopRatedPostsQuery request, CancellationToken cancellationToken)

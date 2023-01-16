@@ -18,7 +18,7 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<PagedResult<GetAllPostsQueryResult>> GetAllPostsQueryResultAsync(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>()
             .Where(post => !post.Private)
             .OrderByDescending(post => post.DateOfCreation);
 
@@ -35,11 +35,11 @@ internal class PostQueryProvider : IPostQueryProvider
         GetAllPostsQueryResult[] result =
             await query.Select(post => new GetAllPostsQueryResult()
             {
-                Id = post.Id,
+                PostId = post.Id,
                 AverageRate = post.AverageRate,
                 AuthorName = post.Author.DisplayName,
                 DateOfCreation = post.DateOfCreation,
-                DateOfModification = post.DateOfModification,
+                HasPostBeenEdit = post.DateOfModification.HasValue,
                 Title = post.Title
             })
             .Skip(pagedResultInfo.ItemsToSkip())
@@ -53,7 +53,7 @@ internal class PostQueryProvider : IPostQueryProvider
         GetMostRecentPublishedPostsQuery request,
         CancellationToken cancellationToken)
     {
-        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>().AsNoTracking()
+        IQueryable<PostDatabaseModel> query = _context.Set<PostDatabaseModel>()
             .Where(post => !post.Private)
             .OrderByDescending(post => post.DateOfCreation);
 
@@ -64,7 +64,7 @@ internal class PostQueryProvider : IPostQueryProvider
         GetMostRecentPublishedPostsQueryResult[] result =
             await query.Select(x => new GetMostRecentPublishedPostsQueryResult()
             {
-                Id = x.Id,
+                PostId = x.Id,
                 AuthorName = x.Author.DisplayName,
                 DateOfCreation = x.DateOfCreation,
                 Title = x.Title
@@ -78,11 +78,11 @@ internal class PostQueryProvider : IPostQueryProvider
 
     public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Set<PostDatabaseModel>().AsNoTracking()
+        return await _context.Set<PostDatabaseModel>()
             .Where(post => post.Id == id)
             .Select(post => new GetPostQueryResult()
             {
-                Id = post.Id,
+                PostId = post.Id,
                 AuthorId = post.Author.Id,
                 AuthorName = post.Author.DisplayName,
                 Avaliations = post.Avaliations.Count,

@@ -6,7 +6,7 @@ public class LoginCommand : CommandMediatRBase<LoginCommandResult>
 {
     public string Email { get; set; }
 
-    public string Password { get; set; }
+    public string Password { internal get; set; }
 
     public LoginCommand() { }
 

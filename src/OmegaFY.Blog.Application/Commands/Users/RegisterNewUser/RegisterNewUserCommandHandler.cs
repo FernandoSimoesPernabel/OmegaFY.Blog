@@ -48,6 +48,11 @@ public class RegisterNewUserCommandHandler : CommandHandlerMediatRBase<RegisterN
 
         await _distributedCache.SetAuthenticationTokenCacheAsync(newUser.Id, authToken, cancellationToken);
 
-        return new RegisterNewUserCommandResult(newUser.Id, authToken.Token, authToken.TokenExpirationDate, authToken.RefreshToken, authToken.RefreshTokenExpirationDate);
+        return new RegisterNewUserCommandResult(
+            newUser.Id,
+            authToken.Token,
+            authToken.TokenExpirationDate, 
+            authToken.RefreshToken, 
+            authToken.RefreshTokenExpirationDate);
     }
 }

@@ -20,7 +20,7 @@ internal class RemoveRatingCommandHandler : CommandHandlerMediatRBase<RemoveRati
 
         if (postToUnrate is null) throw new NotFoundException();
 
-        postToUnrate.RemoveRating(command.AvaliationId, _currentUser.CurrentRequestUserId.Value);
+        postToUnrate.RemoveRating(_currentUser.CurrentRequestUserId.Value);
 
         await _repository.SaveChangesAsync(cancellationToken);
 

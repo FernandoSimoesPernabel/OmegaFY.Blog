@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
+﻿using Asp.Versioning;
 using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Infra.IoC;
 using OmegaFY.Blog.WebAPI.FIlters;

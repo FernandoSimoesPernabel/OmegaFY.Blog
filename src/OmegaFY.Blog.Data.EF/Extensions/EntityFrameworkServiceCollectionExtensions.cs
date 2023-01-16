@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
+using OmegaFY.Blog.Application.Queries.QueryProviders.Comments;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 using OmegaFY.Blog.Data.EF.Context;
@@ -11,6 +12,7 @@ using OmegaFY.Blog.Data.EF.Interceptors;
 using OmegaFY.Blog.Data.EF.QueryProviders;
 using OmegaFY.Blog.Data.EF.Repositories;
 using OmegaFY.Blog.Domain.Repositories.Avaliations;
+using OmegaFY.Blog.Domain.Repositories.Comments;
 using OmegaFY.Blog.Domain.Repositories.Posts;
 using OmegaFY.Blog.Domain.Repositories.Shares;
 using OmegaFY.Blog.Domain.Repositories.Users;
@@ -71,6 +73,7 @@ public static class EFServiceCollectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IShareRepository, ShareRepository>();
         services.AddScoped<IAvaliationRepository, AvaliationRepository>();
+        services.AddScoped<ICommentRepository, CommentRepository>();
 
         return services;
     }
@@ -80,6 +83,7 @@ public static class EFServiceCollectionExtensions
         services.AddScoped<IPostQueryProvider, PostQueryProvider>();
         services.AddScoped<IShareQueryProvider, ShareQueryProvider>();
         services.AddScoped<IAvaliationQueryProvider, AvaliationQueryProvider>();
+        services.AddScoped<ICommentQueryProvider, CommentQueryProvider>();
 
         return services;
     }

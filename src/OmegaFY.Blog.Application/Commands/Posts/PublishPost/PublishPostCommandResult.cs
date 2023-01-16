@@ -4,7 +4,7 @@ namespace OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 
 public class PublishPostCommandResult : GenericResult, ICommandResult
 {
-    public Guid Id { get; set; }
+    public Guid PostId { get; set; }
 
     public Guid AuthorId { get; set; }
 
@@ -18,9 +18,9 @@ public class PublishPostCommandResult : GenericResult, ICommandResult
 
     public PublishPostCommandResult() { }
 
-    public PublishPostCommandResult(Guid id, Guid authorId, string title, string subTitle, string body, DateTime dateOfCreation)
+    public PublishPostCommandResult(Guid postId, Guid authorId, string title, string subTitle, string body, DateTime dateOfCreation)
     {
-        Id = id;
+        PostId = postId;
         AuthorId = authorId;
         Title = title;
         SubTitle = subTitle;

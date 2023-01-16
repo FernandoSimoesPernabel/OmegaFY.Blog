@@ -31,9 +31,9 @@ public class Comment : Entity
         ModificationDetails = new ModificationDetails();
     }
 
-    internal Reaction FindReactionAndThrowIfNotFound(ReferenceId reactionId, ReferenceId authorId)
+    internal Reaction FindReactionAndThrowIfNotFound(ReferenceId authorId)
     {
-        Reaction reaction = _reactions.FirstOrDefault(reaction => reaction.Id == reactionId && reaction.AuthorId == authorId);
+        Reaction reaction = _reactions.FirstOrDefault(reaction => reaction.AuthorId == authorId);
 
         if (reaction is null)
             throw new NotFoundException();
@@ -41,12 +41,14 @@ public class Comment : Entity
         return reaction;
     }
 
-    internal void ChangeContent(Body body)
+    internal bool HasAuthorAlreadyReactToComment(ReferenceId authorId) => _reactions.Any(reaction => reaction.AuthorId == authorId);
+
+    internal void ChangeContent(Body newBody)
     {
-        if (body.Content.Length > PostConstants.MAX_COMMENT_BODY_LENGTH)
+        if (newBody.Content.Length > PostConstants.MAX_COMMENT_BODY_LENGTH)
             throw new DomainArgumentException("");
 
-        Body = body;
+        Body = newBody;
 
         if (ModificationDetails is not null)
             ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
@@ -57,18 +59,21 @@ public class Comment : Entity
         if (reaction is null)
             throw new DomainArgumentException("");
 
+        if (reaction.CommentId != Id)
+            throw new DomainArgumentException("");
+
         _reactions.Add(reaction);
     }
 
-    internal void ChangeReaction(Guid reactionId, Guid authorId, Reactions newCommentReaction)
+    internal void ChangeReaction(Guid authorId, CommentReaction newCommentReaction)
     {
-        Reaction reaction = FindReactionAndThrowIfNotFound(reactionId, authorId);
+        Reaction reaction = FindReactionAndThrowIfNotFound(authorId);
         reaction.ChangeCommentReaction(newCommentReaction);
     }
 
-    internal void RemoveReaction(Guid reactionId, Guid authorId)
+    internal void RemoveReaction(Guid authorId)
     {
-        Reaction reaction = FindReactionAndThrowIfNotFound(reactionId, authorId);
+        Reaction reaction = FindReactionAndThrowIfNotFound(authorId);
         _reactions.Remove(reaction);
     }
 }

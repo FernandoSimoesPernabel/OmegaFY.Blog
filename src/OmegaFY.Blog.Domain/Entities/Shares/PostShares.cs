@@ -1,6 +1,8 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
+using OmegaFY.Blog.Domain.Entities.Comments;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
+using System.Xml.Linq;
 
 namespace OmegaFY.Blog.Domain.Entities.Shares;
 
@@ -19,15 +21,18 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
         if (shared is null)
             throw new DomainArgumentException("");
 
+        if (shared.PostId != Id)
+            throw new DomainArgumentException("");
+
         if (HasAuthorAlreadySharedPost(shared.AuthorId))
             throw new ConflictedException();
 
         _shareds.Add(shared);
     }
 
-    public void Unshare(ReferenceId shareId, ReferenceId authorId)
+    public void Unshare(ReferenceId authorId)
     {
-        Shared shared = _shareds.FirstOrDefault(share => share.Id == shareId && share.AuthorId == authorId);
+        Shared shared = _shareds.FirstOrDefault(share => share.AuthorId == authorId);
 
         if (shared is null)
             throw new NotFoundException();

@@ -8,7 +8,7 @@ public class RegisterNewUserCommand : CommandMediatRBase<RegisterNewUserCommandR
 
     public string DisplayName { get; set; }
 
-    public string Password { get; set; }
+    public string Password { internal get; set; }
 
     public RegisterNewUserCommand() { }
 

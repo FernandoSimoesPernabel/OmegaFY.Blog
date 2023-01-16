@@ -8,7 +8,7 @@ public class ChangePostContentCommandValidator : AbstractValidator<ChangePostCon
 {
     public ChangePostContentCommandValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
+        RuleFor(x => x.PostId).NotEmpty();
 
         RuleFor(x => x.Title).NotEmpty().Length(PostConstants.MIN_TITLE_LENGTH, PostConstants.MAX_TITLE_LENGTH);
 
