@@ -4,18 +4,25 @@ namespace OmegaFY.Blog.Application.Commands.Users.Login;
 
 public class LoginCommandResult : GenericResult, ICommandResult
 {
-    public string Token { get; set; }
+    public Guid UserId { get; }
 
-    public DateTime TokenExpirationDate { get; set; }
+    public string DisplayName { get; }
 
-    public Guid RefreshToken { get; set; }
+    public string Email { get; }
 
-    public DateTime RefreshTokenExpirationDate { get; set; }
+    public string Token { get; }
 
-    public LoginCommandResult() { }
+    public DateTime TokenExpirationDate { get; }
 
-    public LoginCommandResult(string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
+    public Guid RefreshToken { get; }
+
+    public DateTime RefreshTokenExpirationDate { get; }
+
+    public LoginCommandResult(Guid userId, string displayName, string email, string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
     {
+        UserId = userId;
+        DisplayName = displayName;
+        Email = email;
         Token = token;
         TokenExpirationDate = tokenExpirationDate;
         RefreshToken = refreshToken;

@@ -4,17 +4,15 @@ namespace OmegaFY.Blog.Application.Commands.Comments.MakeComment;
 
 public class MakeCommentCommandResult : GenericResult, ICommandResult
 {
-    public Guid CommentId { get; set; }
+    public Guid CommentId { get; }
 
-    public Guid PostId { get; set; }
+    public Guid PostId { get; }
 
-    public Guid AuthorId { get; set; }
+    public Guid AuthorId { get; }
 
-    public string Body { get; set; }
+    public string Body { get; }
 
-    public DateTime DateOfCreation { get; set; }
-
-    public MakeCommentCommandResult() { }
+    public DateTime DateOfCreation { get; }
 
     public MakeCommentCommandResult(Guid commentId, Guid postId, Guid authorId, string body, DateTime dateOfCreation)
     {

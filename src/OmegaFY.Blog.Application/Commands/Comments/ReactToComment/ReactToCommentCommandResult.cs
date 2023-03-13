@@ -5,15 +5,13 @@ namespace OmegaFY.Blog.Application.Commands.Comments.ReactToComment;
 
 public class ReactToCommentCommandResult : GenericResult, ICommandResult
 {
-    public Guid ReactionId { get; set; }
+    public Guid ReactionId { get; }
 
-    public Guid CommentId { get; set; }
+    public Guid CommentId { get; }
 
-    public Guid PostId { get; set; }
+    public Guid PostId { get; }
 
-    public CommentReaction Reaction { get; set; }
-
-    public ReactToCommentCommandResult() { }
+    public CommentReaction Reaction { get; }
 
     public ReactToCommentCommandResult(Guid reactionId, Guid commentId, Guid postId, CommentReaction reaction)
     {

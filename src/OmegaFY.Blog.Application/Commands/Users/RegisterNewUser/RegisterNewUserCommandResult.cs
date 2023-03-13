@@ -4,17 +4,15 @@ namespace OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
 
 public class RegisterNewUserCommandResult : GenericResult, ICommandResult
 {
-    public Guid UserId { get; set; }
+    public Guid UserId { get; }
 
-    public string Token { get; set; }
+    public string Token { get; }
 
-    public DateTime TokenExpirationDate { get; set; }
+    public DateTime TokenExpirationDate { get; }
 
-    public Guid RefreshToken { get; set; }
+    public Guid RefreshToken { get; }
 
-    public DateTime RefreshTokenExpirationDate { get; set; }
-
-    public RegisterNewUserCommandResult() { }
+    public DateTime RefreshTokenExpirationDate { get; }
 
     public RegisterNewUserCommandResult(Guid userId, string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
     {
