@@ -149,7 +149,7 @@ public static class DependencyInjectionExtensions
                     honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
                     honeycombOptions.ServiceVersion = ProjectVersion.Instance.ToString();
                 });
-        }).StartWithHost();
+        });
 
         return services;
     }

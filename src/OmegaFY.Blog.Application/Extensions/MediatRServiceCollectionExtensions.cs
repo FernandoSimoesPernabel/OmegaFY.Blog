@@ -12,10 +12,13 @@ public static class MediatRServiceCollectionExtensions
     {
         services.AddScoped<IServiceBus, MediatorServiceBus>();
 
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(OpenTelemetryInstrumentationBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationRequestBehavior<,>));
+        services.AddMediatR(options =>
+        {
+            options.RegisterServicesFromAssembly(typeof(MediatRServiceCollectionExtensions).Assembly);
 
-        services.AddMediatR(typeof(MediatRServiceCollectionExtensions).Assembly);
+            options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(OpenTelemetryInstrumentationBehavior<,>));
+            options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationRequestBehavior<,>));
+        });
 
         services.AddValidatorsFromAssembly(typeof(MediatRServiceCollectionExtensions).Assembly);
 
