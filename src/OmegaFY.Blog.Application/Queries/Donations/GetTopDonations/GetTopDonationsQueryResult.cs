@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Application.Queries.Donations.GetTopDonations;
 
-public class GetTopDonationsQueryResult : GenericResult, IQueryResult
+public sealed record class GetTopDonationsQueryResult : GenericResult, IQueryResult
 {
 }

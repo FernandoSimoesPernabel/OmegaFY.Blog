@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
 
-public class RegisterNewUserCommandResult : GenericResult, ICommandResult
+public sealed record class RegisterNewUserCommandResult : GenericResult, ICommandResult
 {
     public Guid UserId { get; }
 

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.Login;
 
-public class LoginCommand : CommandMediatRBase<LoginCommandResult>
+public sealed record class LoginCommand : CommandMediatRBase<LoginCommandResult>
 {
     public string Email { get; set; }
 

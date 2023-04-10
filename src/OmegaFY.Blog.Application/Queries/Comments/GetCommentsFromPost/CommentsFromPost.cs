@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPostsFromPost;
 
-public class CommentFromPost
+public sealed record class CommentFromPost
 {
     public Guid CommentId { get; set; }
 

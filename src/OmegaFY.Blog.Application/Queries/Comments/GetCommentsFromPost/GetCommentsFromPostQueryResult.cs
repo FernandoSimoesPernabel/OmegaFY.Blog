@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPostsFromPost;
 
-public class GetCommentsFromPostQueryResult : GenericResult, IQueryResult
+public sealed record class GetCommentsFromPostQueryResult : GenericResult, IQueryResult
 {
     public CommentFromPost[] CommentsFromPost { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.RegisterNewUser;
 
-public class RegisterNewUserCommand : CommandMediatRBase<RegisterNewUserCommandResult>
+public sealed record class RegisterNewUserCommand : CommandMediatRBase<RegisterNewUserCommandResult>
 {
     public string Email { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Application.Queries.Shares.GetSharesFromPost;
 
-public class ShareFromPost
+public sealed record class ShareFromPost
 {
     public Guid ShareId { get; set; }
 

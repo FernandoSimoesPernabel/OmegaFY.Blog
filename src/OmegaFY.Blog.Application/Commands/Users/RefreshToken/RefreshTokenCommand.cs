@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.RefreshToken;
 
-public class RefreshTokenCommand : CommandMediatRBase<RefreshTokenCommandResult>
+public sealed record class RefreshTokenCommand : CommandMediatRBase<RefreshTokenCommandResult>
 {
     public string CurrentToken { get; set; }
 

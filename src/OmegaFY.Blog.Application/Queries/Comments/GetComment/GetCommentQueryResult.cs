@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetComment;
 
-public class GetCommentQueryResult : GenericResult, IQueryResult
+public sealed record class GetCommentQueryResult : GenericResult, IQueryResult
 {
     public Guid CommentId { get; set; }
 

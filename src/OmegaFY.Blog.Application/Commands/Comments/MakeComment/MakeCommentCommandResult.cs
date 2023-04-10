@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Comments.MakeComment;
 
-public class MakeCommentCommandResult : GenericResult, ICommandResult
+public sealed record class MakeCommentCommandResult : GenericResult, ICommandResult
 {
     public Guid CommentId { get; }
 

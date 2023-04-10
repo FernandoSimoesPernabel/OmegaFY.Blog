@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliationsFromPost;
 
-public class AvaliationFromPost
+public sealed record class AvaliationFromPost
 {
     public Guid AvaliationId { get; set; }
 

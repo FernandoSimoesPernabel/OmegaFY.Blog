@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.Logoff;
 
-public class LogoffCommand : CommandMediatRBase<LogoffCommandResult>
+public sealed record class LogoffCommand : CommandMediatRBase<LogoffCommandResult>
 {
     public Guid RefreshToken { get; set; }
 }

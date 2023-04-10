@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 
-public class CurrentUserHasSharedPostQueryResult : GenericResult, IQueryResult
+public sealed record class CurrentUserHasSharedPostQueryResult : GenericResult, IQueryResult
 {
     public Guid PostId { get; set; }
 

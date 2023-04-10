@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 
-public class GetTopRatedPostsQueryResult : GenericResult, IQueryResult
+public sealed record class GetTopRatedPostsQueryResult : GenericResult, IQueryResult
 {
     public Guid PostId { get; set; }
 

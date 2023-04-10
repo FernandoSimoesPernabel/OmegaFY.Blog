@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Donations.BuyMeCoffe;
 
-public class BuyMeCoffeCommand : CommandMediatRBase<BuyMeCoffeCommandResult>
+public sealed record class BuyMeCoffeCommand : CommandMediatRBase<BuyMeCoffeCommandResult>
 {
 
 }

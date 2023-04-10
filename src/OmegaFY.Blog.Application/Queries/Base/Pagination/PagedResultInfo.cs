@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Application.Queries.Base.Pagination;
 
-public class PagedResultInfo
+public record class PagedResultInfo
 {
     public int CurrentPage { get; }
 

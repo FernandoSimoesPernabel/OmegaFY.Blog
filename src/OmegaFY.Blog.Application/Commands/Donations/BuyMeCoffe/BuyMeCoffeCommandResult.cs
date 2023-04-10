@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Donations.BuyMeCoffe;
 
-public class BuyMeCoffeCommandResult : GenericResult, ICommandResult
+public sealed record class BuyMeCoffeCommandResult : GenericResult, ICommandResult
 {
 
 }

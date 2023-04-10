@@ -3,7 +3,7 @@ using OmegaFY.Blog.Domain.Enums;
 
 namespace OmegaFY.Blog.Application.Commands.Comments.ReactToComment;
 
-public class ReactToCommentCommandResult : GenericResult, ICommandResult
+public sealed record class ReactToCommentCommandResult : GenericResult, ICommandResult
 {
     public Guid ReactionId { get; }
 

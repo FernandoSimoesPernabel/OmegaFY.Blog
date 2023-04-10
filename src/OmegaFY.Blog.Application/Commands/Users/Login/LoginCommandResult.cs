@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.Login;
 
-public class LoginCommandResult : GenericResult, ICommandResult
+public sealed record class LoginCommandResult : GenericResult, ICommandResult
 {
     public Guid UserId { get; }
 

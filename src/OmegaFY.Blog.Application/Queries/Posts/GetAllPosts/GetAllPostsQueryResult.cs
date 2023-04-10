@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 
-public class GetAllPostsQueryResult : GenericResult, IQueryResult
+public sealed record class GetAllPostsQueryResult : GenericResult, IQueryResult
 {
     public Guid PostId { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.RefreshToken;
 
-public class RefreshTokenCommandResult : GenericResult, ICommandResult
+public sealed record class RefreshTokenCommandResult : GenericResult, ICommandResult
 {
     public string Token { get; }
 

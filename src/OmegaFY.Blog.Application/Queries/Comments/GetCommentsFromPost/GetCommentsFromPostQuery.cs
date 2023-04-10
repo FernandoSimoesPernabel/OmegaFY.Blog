@@ -1,14 +1,8 @@
-﻿using OmegaFY.Blog.Application.Queries.Base.Pagination;
-using OmegaFY.Blog.Application.Queries.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OmegaFY.Blog.Application.Queries.Base;
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPostsFromPost;
 
-public class GetCommentsFromPostQuery : QueryRequestMediatRBase<GetCommentsFromPostQueryResult>
+public sealed record class GetCommentsFromPostQuery : QueryRequestMediatRBase<GetCommentsFromPostQueryResult>
 {
     public Guid PostId { get; set; }
 }

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 
-public class MakePostPublicCommand : CommandMediatRBase<MakePostPublicCommandResult>
+public sealed record class MakePostPublicCommand : CommandMediatRBase<MakePostPublicCommandResult>
 {
     public Guid PostId { get; set; }
 }

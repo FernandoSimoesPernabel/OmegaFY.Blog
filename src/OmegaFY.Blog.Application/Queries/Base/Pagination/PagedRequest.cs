@@ -1,6 +1,6 @@
 ﻿namespace OmegaFY.Blog.Application.Queries.Base.Pagination;
 
-public class PagedRequest
+public record class PagedRequest
 {
     public int PageNumber { get; set; } = 1;
 

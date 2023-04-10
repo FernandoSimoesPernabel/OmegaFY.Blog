@@ -3,7 +3,7 @@ using OmegaFY.Blog.Domain.Enums;
 
 namespace OmegaFY.Blog.Application.Commands.Avaliations.RatePost;
 
-public class RatePostCommand : CommandMediatRBase<RatePostCommandResult>
+public sealed record class RatePostCommand : CommandMediatRBase<RatePostCommandResult>
 {
     public Guid PostId { get; set; }
 

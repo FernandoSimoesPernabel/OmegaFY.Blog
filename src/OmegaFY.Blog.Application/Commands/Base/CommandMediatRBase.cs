@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Application.Commands.Base;
 
-public abstract class CommandMediatRBase<TResult> : ICommand, IRequest<TResult>
+public abstract record class CommandMediatRBase<TResult> : ICommand, IRequest<TResult>
 {
 }

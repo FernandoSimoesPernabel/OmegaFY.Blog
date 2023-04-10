@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Posts.MakePostPublic;
 
-public class MakePostPublicCommandResult : GenericResult, ICommandResult
+public sealed record class MakePostPublicCommandResult : GenericResult, ICommandResult
 {
 
 }

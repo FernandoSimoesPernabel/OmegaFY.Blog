@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
 
-public class GetReactionsFromCommentQueryResult : GenericResult, IQueryResult
+public sealed record class GetReactionsFromCommentQueryResult : GenericResult, IQueryResult
 {
     public ReactionFromPost[] ReactionsFromPost { get; set; }
 

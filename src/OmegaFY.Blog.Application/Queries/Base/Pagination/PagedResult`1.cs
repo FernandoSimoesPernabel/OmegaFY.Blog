@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Base.Pagination;
 
-public class PagedResult<TResult> : GenericResult, IQueryResult
+public record class PagedResult<TResult> : GenericResult, IQueryResult
 {
     public TResult[] Results { get; }
 

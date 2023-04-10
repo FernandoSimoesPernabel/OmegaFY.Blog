@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
 
-public class ReactionFromPost
+public sealed record class ReactionFromPost
 {
     public Guid ReactionId { get; set; }
 

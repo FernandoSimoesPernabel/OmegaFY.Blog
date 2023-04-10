@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Application.Queries.Base;
 
-public abstract class QueryRequestMediatRBase<TResult> : IQueryRequest, IRequest<TResult>
+public abstract record class QueryRequestMediatRBase<TResult> : IQueryRequest, IRequest<TResult>
 {
 }

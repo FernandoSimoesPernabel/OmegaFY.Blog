@@ -1,9 +1,8 @@
 ﻿using OmegaFY.Blog.Application.Commands.Base;
-using OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 
 namespace OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 
-public class ChangePostContentCommand : CommandMediatRBase<ChangePostContentCommandResult>
+public sealed record class ChangePostContentCommand : CommandMediatRBase<ChangePostContentCommandResult>
 {
     public Guid PostId { get; set; }
 

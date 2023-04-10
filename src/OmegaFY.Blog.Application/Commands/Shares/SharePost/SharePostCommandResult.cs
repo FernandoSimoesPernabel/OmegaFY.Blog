@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Shares.SharePost;
 
-public class SharePostCommandResult : GenericResult, ICommandResult
+public sealed record class SharePostCommandResult : GenericResult, ICommandResult
 {
     public Guid ShareId { get; }
 

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Posts.ChangePostContent;
 
-public class ChangePostContentCommandResult : GenericResult, ICommandResult
+public sealed record class ChangePostContentCommandResult : GenericResult, ICommandResult
 {
     public Guid PostId { get; }
 

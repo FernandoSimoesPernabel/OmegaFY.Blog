@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Result;
 
-public abstract class GenericResult : IResult
+public abstract record class GenericResult : IResult
 {
     private readonly List<ValidationError> _errors;
 
