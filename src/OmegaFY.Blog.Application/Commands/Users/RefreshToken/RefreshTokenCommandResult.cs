@@ -12,6 +12,8 @@ public sealed record class RefreshTokenCommandResult : GenericResult, ICommandRe
 
     public DateTime RefreshTokenExpirationDate { get; }
 
+    public RefreshTokenCommandResult() { }
+
     public RefreshTokenCommandResult(string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
     {
         Token = token;

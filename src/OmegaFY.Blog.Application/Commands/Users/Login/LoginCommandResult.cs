@@ -18,6 +18,8 @@ public sealed record class LoginCommandResult : GenericResult, ICommandResult
 
     public DateTime RefreshTokenExpirationDate { get; }
 
+    public LoginCommandResult() { }
+
     public LoginCommandResult(Guid userId, string displayName, string email, string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
     {
         UserId = userId;

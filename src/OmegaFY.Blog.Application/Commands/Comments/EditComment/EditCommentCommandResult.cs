@@ -16,6 +16,8 @@ public sealed record class EditCommentCommandResult : GenericResult, ICommandRes
 
     public DateTime DateOfModification { get; }
 
+    public EditCommentCommandResult() { }
+
     public EditCommentCommandResult(Guid commentId, Guid postId, Guid authorId, string content, DateTime dateOfCreation, DateTime dateOfModification)
     {
         CommentId = commentId;

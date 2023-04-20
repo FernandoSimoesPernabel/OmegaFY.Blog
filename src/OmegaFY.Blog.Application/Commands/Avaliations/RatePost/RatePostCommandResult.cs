@@ -17,6 +17,8 @@ public sealed record class RatePostCommandResult : GenericResult, ICommandResult
 
     public DateTime? DateOfModification { get; }
 
+    public RatePostCommandResult() { }
+
     public RatePostCommandResult(Guid avaliationId, Guid postId, Guid authorId, Stars rate, DateTime dateOfCreation, DateTime? dateOfModification)
     {
         AvaliationId = avaliationId;

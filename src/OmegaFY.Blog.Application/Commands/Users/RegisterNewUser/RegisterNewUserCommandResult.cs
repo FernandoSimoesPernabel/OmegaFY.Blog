@@ -14,6 +14,8 @@ public sealed record class RegisterNewUserCommandResult : GenericResult, IComman
 
     public DateTime RefreshTokenExpirationDate { get; }
 
+    public RegisterNewUserCommandResult() { }
+
     public RegisterNewUserCommandResult(Guid userId, string token, DateTime tokenExpirationDate, Guid refreshToken, DateTime refreshTokenExpirationDate)
     {
         UserId = userId;

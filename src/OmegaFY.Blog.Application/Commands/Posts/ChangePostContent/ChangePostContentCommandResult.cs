@@ -18,6 +18,8 @@ public sealed record class ChangePostContentCommandResult : GenericResult, IComm
 
     public DateTime DateOfModification { get; }
 
+    public ChangePostContentCommandResult() { }
+
     public ChangePostContentCommandResult(
         Guid postId,
         Guid authorId,

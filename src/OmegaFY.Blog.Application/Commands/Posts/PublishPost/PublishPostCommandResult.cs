@@ -16,6 +16,8 @@ public sealed record class PublishPostCommandResult : GenericResult, ICommandRes
 
     public DateTime DateOfCreation { get; }
 
+    public PublishPostCommandResult() { }
+
     public PublishPostCommandResult(Guid postId, Guid authorId, string title, string subTitle, string body, DateTime dateOfCreation)
     {
         PostId = postId;

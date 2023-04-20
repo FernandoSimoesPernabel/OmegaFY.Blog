@@ -12,6 +12,8 @@ public sealed record class SharePostCommandResult : GenericResult, ICommandResul
 
     public DateTime DateAndTimeOfShare { get; }
 
+    public SharePostCommandResult() { }
+
     public SharePostCommandResult(Guid shareId, Guid postId, Guid authorId, DateTime dateAndTimeOfShare)
     {
         ShareId = shareId;

@@ -14,6 +14,8 @@ public sealed record class MakeCommentCommandResult : GenericResult, ICommandRes
 
     public DateTime DateOfCreation { get; }
 
+    public MakeCommentCommandResult() { }
+
     public MakeCommentCommandResult(Guid commentId, Guid postId, Guid authorId, string body, DateTime dateOfCreation)
     {
         CommentId = commentId;

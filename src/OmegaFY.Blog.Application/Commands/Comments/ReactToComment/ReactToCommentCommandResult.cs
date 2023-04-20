@@ -13,6 +13,8 @@ public sealed record class ReactToCommentCommandResult : GenericResult, ICommand
 
     public CommentReaction Reaction { get; }
 
+    public ReactToCommentCommandResult() { }
+
     public ReactToCommentCommandResult(Guid reactionId, Guid commentId, Guid postId, CommentReaction reaction)
     {
         ReactionId = reactionId;
