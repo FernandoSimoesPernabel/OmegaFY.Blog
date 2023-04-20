@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Application.Request;
+using OmegaFY.Blog.Application.Result;
 using OmegaFY.Blog.Domain.Events;
-using OmegaFY.Blog.Domain.Result;
 
 namespace OmegaFY.Blog.Application.Bus;
 

@@ -1,6 +1,6 @@
 ﻿using OmegaFY.Blog.Domain.Enums;
 
-namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
+namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromComment;
 
 public sealed record class ReactionFromPost
 {

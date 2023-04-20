@@ -1,4 +1,4 @@
-﻿namespace OmegaFY.Blog.Domain.Result;
+﻿namespace OmegaFY.Blog.Application.Result;
 
 public interface IResult
 {

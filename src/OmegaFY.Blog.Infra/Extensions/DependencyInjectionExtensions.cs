@@ -16,7 +16,6 @@ using OmegaFY.Blog.Infra.Notifications;
 using OmegaFY.Blog.Infra.Notifications.Configs;
 using OmegaFY.Blog.Infra.Notifications.Emails;
 using OmegaFY.Blog.Infra.Notifications.Sms;
-using OmegaFY.Blog.Infra.Notifiers.Sms;
 using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Providers;

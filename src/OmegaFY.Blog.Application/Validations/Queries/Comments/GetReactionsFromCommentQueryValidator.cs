@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
+using OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromComment;
 
 namespace OmegaFY.Blog.Application.Validations.Queries.Comments;
 

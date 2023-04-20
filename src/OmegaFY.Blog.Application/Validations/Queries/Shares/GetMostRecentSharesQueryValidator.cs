@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 
-namespace OmegaFY.Blog.Application.Validations.Queries.Posts;
+namespace OmegaFY.Blog.Application.Validations.Queries.Shares;
 
 public class GetMostRecentSharesQueryValidator : AbstractValidator<GetMostRecentSharesQuery>
 {

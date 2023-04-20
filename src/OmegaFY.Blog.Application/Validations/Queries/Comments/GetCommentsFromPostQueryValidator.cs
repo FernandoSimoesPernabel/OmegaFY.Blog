@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPostsFromPost;
+using OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPost;
 
 namespace OmegaFY.Blog.Application.Validations.Queries.Comments;
 

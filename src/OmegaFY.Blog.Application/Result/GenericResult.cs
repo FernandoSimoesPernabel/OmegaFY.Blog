@@ -1,6 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Result;
-
-namespace OmegaFY.Blog.Application.Result;
+﻿namespace OmegaFY.Blog.Application.Result;
 
 public abstract record class GenericResult : IResult
 {
