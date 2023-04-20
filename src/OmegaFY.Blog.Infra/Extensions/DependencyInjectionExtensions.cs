@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Events;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
@@ -20,7 +21,6 @@ using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
 using OmegaFY.Blog.Infra.RateLimiter.Configs;
-using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SendGrid.Extensions.DependencyInjection;
@@ -49,15 +49,14 @@ public static class DependencyInjectionExtensions
     {
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
 
+        services.AddScoped<CustomJwtBearerEvents>();
+
         services.AddHttpContextAccessor();
         services.AddScoped<IUserInformation, HttpContextAccessorUserInformation>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IJwtProvider, JwtSecurityTokenProvider>();
 
-        services.AddAuthorization(auth =>
-        {
-            auth.AddBearerJwtPolicy();
-        });
+        services.AddAuthorization(auth => auth.AddBearerJwtPolicy());
 
         JwtSettings jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
 
@@ -85,6 +84,7 @@ public static class DependencyInjectionExtensions
             options.SaveToken = true;
             options.RequireHttpsMetadata = true;
             options.TokenValidationParameters = tokenValidationParameters;
+            options.EventsType = typeof(CustomJwtBearerEvents);
         });
 
         services.AddSingleton(tokenValidationParameters);
