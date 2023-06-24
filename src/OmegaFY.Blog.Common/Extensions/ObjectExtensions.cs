@@ -1,4 +1,6 @@
-﻿namespace OmegaFY.Blog.Common.Extensions;
+﻿using OmegaFY.Blog.Common.Helpers;
+
+namespace OmegaFY.Blog.Common.Extensions;
 
 public static class ObjectExtensions
 {
@@ -9,5 +11,5 @@ public static class ObjectExtensions
         return valuesToCompare.Any(x => x.Equals(value));
     }
 
-    public static string ToJson(this object value) => System.Text.Json.JsonSerializer.Serialize(value);
+    public static string ToJson(this object value) => JsonSerializerHelper.Serialize(value);
 }

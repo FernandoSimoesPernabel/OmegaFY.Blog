@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using KissLog.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.Authentication;
@@ -20,7 +22,7 @@ using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
 using OmegaFY.Blog.Infra.RateLimiter.Configs;
-using OpenTelemetry;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SendGrid.Extensions.DependencyInjection;
@@ -132,10 +134,12 @@ public static class DependencyInjectionExtensions
 
         services.AddSingleton<IOpenTelemetryRegisterProvider, OpenTelemetryActivitySourceProvider>();
 
+        ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName, serviceVersion: ProjectVersion.Instance.ToString());
+
         services.AddOpenTelemetry().WithTracing(builder =>
         {
             builder.AddSource(openTelemetrySettings.ServiceName)
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(openTelemetrySettings.ServiceName, serviceVersion: ProjectVersion.Instance.ToString()))
+                .SetResourceBuilder(resourceBuilder)
                 .AddAspNetCoreInstrumentation(aspnetOptions => aspnetOptions.Filter = (context) => context.Request.Path.Value.ShouldMonitorRoute())
                 .AddHttpClientInstrumentation(httpClientOptions =>
                 {
@@ -149,7 +153,18 @@ public static class DependencyInjectionExtensions
                     honeycombOptions.ApiKey = openTelemetrySettings.HoneycombApiKey;
                     honeycombOptions.ServiceVersion = ProjectVersion.Instance.ToString();
                 });
-        }).StartWithHost();
+        });
+
+        //TODO
+        //services.AddLogging(loggingBuilder => loggingBuilder.AddOpenTelemetry(openTelemetryBuilder =>
+        //{
+        //    openTelemetryBuilder.SetResourceBuilder(resourceBuilder);
+        //    openTelemetryBuilder.AddOtlpExporter(otlpOptions =>
+        //    {
+        //        otlpOptions.Endpoint = new Uri(openTelemetrySettings.HoneycombUrl);
+        //        otlpOptions.Headers = openTelemetrySettings.HoneycombApiKeyHeader;
+        //    });
+        //}));
 
         return services;
     }
@@ -217,5 +232,10 @@ public static class DependencyInjectionExtensions
         });
 
         return services;
+    }
+
+    public static IServiceCollection AddKissLog(this IServiceCollection services)
+    {
+        return services.AddLogging(provider => provider.AddKissLog());
     }
 }
