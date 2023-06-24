@@ -16,19 +16,20 @@ WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseKissLogMiddleware(options =>
-{
-    Application kissLogApplication = new Application(builder.Configuration["KissLog.OrganizationId"], builder.Configuration["KissLog.ApplicationId"]);
+//TODO
+//app.UseKissLogMiddleware(options =>
+//{
+//    Application kissLogApplication = new Application(builder.Configuration["KissLog.OrganizationId"], builder.Configuration["KissLog.ApplicationId"]);
 
-    RequestLogsApiListener logListener = new RequestLogsApiListener(kissLogApplication)
-    {
-        ApiUrl = builder.Configuration["KissLog.ApiUrl"],
-        Interceptor = new CustomLogListenerInterceptor(),
-        ObfuscationService = new CustomObfuscationService()
-    };
+//    RequestLogsApiListener logListener = new RequestLogsApiListener(kissLogApplication)
+//    {
+//        ApiUrl = builder.Configuration["KissLog.ApiUrl"],
+//        Interceptor = new CustomLogListenerInterceptor(),
+//        ObfuscationService = new CustomObfuscationService()
+//    };
 
-    options.Listeners.Add(logListener);
-});
+//    options.Listeners.Add(logListener);
+//});
 
 app.UseSwagger();
 
