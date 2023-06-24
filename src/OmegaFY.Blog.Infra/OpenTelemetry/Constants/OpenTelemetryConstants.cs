@@ -6,9 +6,9 @@ public class OpenTelemetryConstants
 
     public const string ACTIVITY_BASE_NAME = "omegafy";
 
-    public const string REQUEST_TYPE_KEY = $"{ACTIVITY_BASE_NAME}.request_type";
+    public const string REQUEST_CONTENT_KEY = $"{ACTIVITY_BASE_NAME}.request_content";
 
-    public const string RESULT_TYPE_KEY = $"{ACTIVITY_BASE_NAME}.result_type";
+    public const string RESULT_CONTENT_KEY = $"{ACTIVITY_BASE_NAME}.result_content";
 
     public const string API_ROUTE = "api/";
 }
