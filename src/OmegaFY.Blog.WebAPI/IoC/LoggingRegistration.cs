@@ -7,6 +7,6 @@ public class LoggingRegistration //: IDependencyInjectionRegister //TODO
 {
     public void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddKissLog();
+        
     }
 }

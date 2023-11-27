@@ -1,5 +1,4 @@
-﻿using KissLog.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -233,10 +232,5 @@ public static class DependencyInjectionExtensions
         });
 
         return services;
-    }
-
-    public static IServiceCollection AddKissLog(this IServiceCollection services)
-    {
-        return services.AddLogging(provider => provider.AddKissLog());
     }
 }
