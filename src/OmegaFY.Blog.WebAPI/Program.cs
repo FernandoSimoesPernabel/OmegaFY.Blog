@@ -5,7 +5,6 @@ using OmegaFY.Blog.Infra.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddDependencyInjectionRegister(typeof(Program).Assembly, builder);
 
 WebApplication app = builder.Build();
