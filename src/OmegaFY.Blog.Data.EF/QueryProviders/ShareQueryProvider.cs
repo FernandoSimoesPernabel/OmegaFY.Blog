@@ -4,6 +4,7 @@ using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
 using OmegaFY.Blog.Application.Queries.Shares.CurrentUserHasSharedPost;
 using OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Extensions;
 using OmegaFY.Blog.Data.EF.Models;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
@@ -47,8 +48,7 @@ internal class ShareQueryProvider : IShareQueryProvider
                 PostTitle = share.Post.Title,
                 PostAuthorName = share.Post.Author.DisplayName
             })
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Take(request.PageSize)
+            .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetMostRecentSharesQueryResult>(pagedResultInfo, result);

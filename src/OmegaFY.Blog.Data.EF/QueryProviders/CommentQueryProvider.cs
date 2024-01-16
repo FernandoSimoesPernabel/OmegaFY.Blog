@@ -7,6 +7,7 @@ using OmegaFY.Blog.Application.Queries.Comments.GetMostRecentComments;
 using OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromComment;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Comments;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Extensions;
 using OmegaFY.Blog.Data.EF.Models;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
@@ -82,8 +83,7 @@ internal class CommentQueryProvider : ICommentQueryProvider
                 PostId = comment.PostId,
                 Reactions = comment.Reactions.Count
             })
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Take(request.PageSize)
+            .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetMostReactedCommentsQueryResult>(pagedResultInfo, result);
@@ -114,8 +114,7 @@ internal class CommentQueryProvider : ICommentQueryProvider
                 PostId = comment.PostId,
                 Reactions = comment.Reactions.Count
             })
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Take(request.PageSize)
+            .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetMostRecentCommentsQueryResult>(pagedResultInfo, result);
@@ -132,8 +131,7 @@ internal class CommentQueryProvider : ICommentQueryProvider
                 ReactionAuthorId = reaction.AuthorId,
                 ReactionAuthorName = reaction.Author.DisplayName,
                 ReactionId = reaction.Id
-            })
-            .ToArrayAsync(cancellationToken);
+            }).ToArrayAsync(cancellationToken);
 
         return new GetReactionsFromCommentQueryResult(result);
     }
