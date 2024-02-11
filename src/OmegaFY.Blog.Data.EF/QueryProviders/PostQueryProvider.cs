@@ -56,6 +56,9 @@ internal class PostQueryProvider : IPostQueryProvider
             .Where(post => !post.Private)
             .OrderByDescending(post => post.DateOfCreation);
 
+        if (request.AuthorId.HasValue)
+            query = query.Where(post => post.Author.Id == request.AuthorId.Value);
+
         int totalOfItens = await query.CountAsync(cancellationToken);
 
         PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);

@@ -5,4 +5,5 @@ namespace OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 
 public sealed record class GetMostRecentPublishedPostsQuery : QueryPagedRequestMediatRBase<PagedResult<GetMostRecentPublishedPostsQueryResult>>
 {
+    public Guid? AuthorId { get; set; }
 }

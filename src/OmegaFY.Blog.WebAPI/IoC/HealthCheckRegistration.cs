@@ -12,8 +12,8 @@ public class HealthCheckRegistration : IDependencyInjectionRegister
 
         builder.Services.AddHealthChecksUI(options =>
         {
-            options.SetEvaluationTimeInSeconds(10);
-            options.SetMinimumSecondsBetweenFailureNotifications(20);
+            options.SetEvaluationTimeInSeconds(600);
+            options.SetMinimumSecondsBetweenFailureNotifications(30);
 
             options.AddHealthCheckEndpoint(ApplicationInfoConstants.APPLICATION_NAME, HealthCheckConstants.API_ENDPOINT);
         }).AddInMemoryStorage();
