@@ -1,8 +1,8 @@
 ﻿using OmegaFY.Blog.Domain.Enums;
 
-namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
+namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromComment;
 
-public class ReactionFromPost
+public sealed record class ReactionFromPost
 {
     public Guid ReactionId { get; set; }
 

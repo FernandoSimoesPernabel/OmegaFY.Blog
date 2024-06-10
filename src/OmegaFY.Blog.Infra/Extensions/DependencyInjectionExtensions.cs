@@ -1,5 +1,4 @@
-﻿using KissLog.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Infra.Authentication;
 using OmegaFY.Blog.Infra.Authentication.Configs;
+using OmegaFY.Blog.Infra.Authentication.Events;
 using OmegaFY.Blog.Infra.Authentication.Token;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.IoC;
@@ -17,7 +17,6 @@ using OmegaFY.Blog.Infra.Notifications;
 using OmegaFY.Blog.Infra.Notifications.Configs;
 using OmegaFY.Blog.Infra.Notifications.Emails;
 using OmegaFY.Blog.Infra.Notifications.Sms;
-using OmegaFY.Blog.Infra.Notifiers.Sms;
 using OmegaFY.Blog.Infra.OpenTelemetry;
 using OmegaFY.Blog.Infra.OpenTelemetry.Configs;
 using OmegaFY.Blog.Infra.OpenTelemetry.Providers;
@@ -51,30 +50,28 @@ public static class DependencyInjectionExtensions
     {
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
 
+        services.AddScoped<CustomJwtBearerEvents>();
+
         services.AddHttpContextAccessor();
         services.AddScoped<IUserInformation, HttpContextAccessorUserInformation>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IJwtProvider, JwtSecurityTokenProvider>();
-
-        services.AddAuthorization(auth =>
-        {
-            auth.AddBearerJwtPolicy();
-        });
 
         JwtSettings jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
 
         TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
         {
             ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
             RequireAudience = true,
             RequireExpirationTime = true,
             RequireSignedTokens = true,
             ValidateLifetime = true,
             ValidateIssuer = true,
             ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
             ValidAudience = jwtSettings.Audience,
             ValidIssuer = jwtSettings.Issuer,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
         };
 
         services.AddAuthentication(options =>
@@ -87,7 +84,10 @@ public static class DependencyInjectionExtensions
             options.SaveToken = true;
             options.RequireHttpsMetadata = true;
             options.TokenValidationParameters = tokenValidationParameters;
+            options.EventsType = typeof(CustomJwtBearerEvents);
         });
+
+        services.AddAuthorization(auth => auth.AddBearerJwtPolicy());
 
         services.AddSingleton(tokenValidationParameters);
 
@@ -232,10 +232,5 @@ public static class DependencyInjectionExtensions
         });
 
         return services;
-    }
-
-    public static IServiceCollection AddKissLog(this IServiceCollection services)
-    {
-        return services.AddLogging(provider => provider.AddKissLog());
     }
 }

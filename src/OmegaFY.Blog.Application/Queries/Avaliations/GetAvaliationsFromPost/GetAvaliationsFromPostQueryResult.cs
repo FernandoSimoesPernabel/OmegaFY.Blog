@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliationsFromPost;
 
-public class GetAvaliationsFromPostQueryResult : GenericResult, IQueryResult
+public sealed record class GetAvaliationsFromPostQueryResult : GenericResult, IQueryResult
 {
     public AvaliationFromPost[] AvaliationsFromPost { get; set; }
 

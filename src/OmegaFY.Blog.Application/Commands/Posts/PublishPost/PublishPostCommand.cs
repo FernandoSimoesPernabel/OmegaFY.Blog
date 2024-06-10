@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 
-public class PublishPostCommand : CommandMediatRBase<PublishPostCommandResult>
+public sealed record class PublishPostCommand : CommandMediatRBase<PublishPostCommandResult>
 {
     public string Title { get; set; }
 

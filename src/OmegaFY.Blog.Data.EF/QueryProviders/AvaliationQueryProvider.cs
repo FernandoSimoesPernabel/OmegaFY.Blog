@@ -5,8 +5,8 @@ using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Extensions;
 using OmegaFY.Blog.Data.EF.Models;
-using System.Linq;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -58,8 +58,7 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
                 PostTitle = avaliation.Post.Title,
                 Rate = avaliation.Rate
             })
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Take(request.PageSize)
+            .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetMostRecentAvaliationsQueryResult>(pagedResultInfo, result);
@@ -84,8 +83,7 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
                 PostAuthorName = post.Author.DisplayName,
                 PostTitle = post.Title
             })
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Take(request.PageSize)
+            .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetTopRatedPostsQueryResult>(pagedResultInfo, result);

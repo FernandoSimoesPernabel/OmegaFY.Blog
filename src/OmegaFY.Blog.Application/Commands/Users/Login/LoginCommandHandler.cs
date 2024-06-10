@@ -43,9 +43,12 @@ public class LoginCommandHandler : CommandHandlerMediatRBase<LoginCommandHandler
         await _distributedCache.SetAuthenticationTokenCacheAsync(user.Id, authToken, cancellationToken);
 
         return new LoginCommandResult(
-            authToken.Token, 
+            user.Id,
+            user.DisplayName,
+            user.Email,
+            authToken.Token,
             authToken.TokenExpirationDate,
-            authToken.RefreshToken, 
+            authToken.RefreshToken,
             authToken.RefreshTokenExpirationDate);
     }
 }

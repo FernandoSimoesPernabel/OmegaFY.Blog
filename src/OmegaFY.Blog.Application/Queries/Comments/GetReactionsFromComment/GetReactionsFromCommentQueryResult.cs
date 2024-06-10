@@ -1,8 +1,8 @@
 ﻿using OmegaFY.Blog.Application.Result;
 
-namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
+namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromComment;
 
-public class GetReactionsFromCommentQueryResult : GenericResult, IQueryResult
+public sealed record class GetReactionsFromCommentQueryResult : GenericResult, IQueryResult
 {
     public ReactionFromPost[] ReactionsFromPost { get; set; }
 

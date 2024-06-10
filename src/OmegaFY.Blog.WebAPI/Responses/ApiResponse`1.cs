@@ -1,7 +1,6 @@
 ﻿using OmegaFY.Blog.Application.Result;
 using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Common.Extensions;
-using OmegaFY.Blog.Domain.Constantes;
 
 namespace OmegaFY.Blog.WebAPI.Responses;
 
@@ -11,7 +10,7 @@ public class ApiResponse<T>
 
     public bool Succeeded => _errors?.Count == 0;
 
-    public IReadOnlyCollection<ValidationError> Erros => _errors.AsReadOnly();
+    public IReadOnlyCollection<ValidationError> Errors => _errors.AsReadOnly();
 
     public T Data { get; set; }
 

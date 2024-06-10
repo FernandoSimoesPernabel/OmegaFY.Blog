@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 
-public class GetMostRecentPublishedPostsQueryResult : GenericResult, IQueryResult
+public sealed record class GetMostRecentPublishedPostsQueryResult : GenericResult, IQueryResult
 {
     public Guid PostId { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.ExcludeAccount;
 
-public class ExcludeAccountCommandResult : GenericResult, ICommandResult
+public sealed record class ExcludeAccountCommandResult : GenericResult, ICommandResult
 {
 
 }

@@ -1,8 +1,8 @@
 ﻿using OmegaFY.Blog.Application.Result;
 
-namespace OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPostsFromPost;
+namespace OmegaFY.Blog.Application.Queries.Comments.GetCommentsFromPost;
 
-public class GetCommentsFromPostQueryResult : GenericResult, IQueryResult
+public sealed record class GetCommentsFromPostQueryResult : GenericResult, IQueryResult
 {
     public CommentFromPost[] CommentsFromPost { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 
-namespace OmegaFY.Blog.Application.Validations.Queries.Posts;
+namespace OmegaFY.Blog.Application.Validations.Queries.Avaliations;
 
 public class GetMostRecentAvaliationsQueryValidator : AbstractValidator<GetMostRecentAvaliationsQuery>
 {

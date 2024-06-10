@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Application.Commands.Comments.RemoveReaction;
 
-public class RemoveReactionCommandResult : GenericResult, ICommandResult
+public sealed record class RemoveReactionCommandResult : GenericResult, ICommandResult
 {
 }

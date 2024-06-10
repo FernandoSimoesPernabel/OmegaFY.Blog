@@ -1,13 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using OmegaFY.Blog.Common.Extensions;
+using OmegaFY.Blog.Common.Helpers;
 using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Cache.Keys;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace OmegaFY.Blog.Infra.Extensions;
 
@@ -16,7 +11,7 @@ public static class IDistributedCacheExtensions
     public static async Task<T> GetAsync<T>(this IDistributedCache distributedCache, string key, CancellationToken cancellationToken)
     {
         string valueFromCache = await distributedCache.GetStringAsync(key, cancellationToken);
-        return valueFromCache is null ? default : JsonSerializer.Deserialize<T>(valueFromCache);
+        return valueFromCache is null ? default : JsonSerializerHelper.Deserialize<T>(valueFromCache);
     }
 
     public static async Task SetAsync<T>(this IDistributedCache distributedCache, string key, T value, DistributedCacheEntryOptions options, CancellationToken cancellationToken)

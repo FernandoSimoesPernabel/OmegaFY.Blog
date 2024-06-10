@@ -9,8 +9,8 @@ internal static class ActivityExtensions
 {
     public static void SetCurrentRequestTracingInformation(this Activity activity, IRequest<GenericResult> request, GenericResult result)
     {
-        activity.SetTag(OpenTelemetryConstants.REQUEST_TYPE_KEY, request.ToString());
-        activity.SetTag(OpenTelemetryConstants.RESULT_TYPE_KEY, result.ToString());
+        activity.SetTag(OpenTelemetryConstants.REQUEST_CONTENT_KEY, request.ToString());
+        activity.SetTag(OpenTelemetryConstants.RESULT_CONTENT_KEY, result.ToString());
 
         activity.SetStatus(result);
     }

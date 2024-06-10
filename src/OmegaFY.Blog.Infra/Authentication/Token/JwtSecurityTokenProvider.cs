@@ -51,8 +51,8 @@ internal class JwtSecurityTokenProvider : IJwtProvider
 
         DateTime refreshExpiresIn = tokenExpiresIn.Add(_jwtSettings.TimeToExpireRefreshToken);
 
-        Claim[] userClaims = new Claim[]
-        {
+        Claim[] userClaims =
+        [
             new Claim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience),
             new Claim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer),
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
@@ -62,7 +62,7 @@ internal class JwtSecurityTokenProvider : IJwtProvider
             new Claim(JwtRegisteredClaimNames.Iat, issuedAt.ToString()),
             new Claim(JwtRegisteredClaimNames.Nbf, issuedAt.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+        ];
 
         JwtSecurityToken token = new JwtSecurityToken(
             claims: userClaims,

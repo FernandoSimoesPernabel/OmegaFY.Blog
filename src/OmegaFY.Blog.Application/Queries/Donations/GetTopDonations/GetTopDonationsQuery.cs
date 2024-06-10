@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Application.Queries.Donations.GetTopDonations;
 
-public class GetTopDonationsQuery : QueryRequestMediatRBase<GetTopDonationsQueryResult>
+public sealed record class GetTopDonationsQuery : QueryRequestMediatRBase<GetTopDonationsQueryResult>
 {
 }

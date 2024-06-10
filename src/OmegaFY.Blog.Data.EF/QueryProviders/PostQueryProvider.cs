@@ -5,8 +5,8 @@ using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 using OmegaFY.Blog.Application.Queries.Posts.GetPost;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Data.EF.Context;
+using OmegaFY.Blog.Data.EF.Extensions;
 using OmegaFY.Blog.Data.EF.Models;
-using OmegaFY.Blog.Domain.Entities.Posts;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
@@ -42,8 +42,7 @@ internal class PostQueryProvider : IPostQueryProvider
                 HasPostBeenEdit = post.DateOfModification.HasValue,
                 Title = post.Title
             })
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Take(request.PageSize)
+            .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetAllPostsQueryResult>(pagedResultInfo, result);
@@ -57,6 +56,9 @@ internal class PostQueryProvider : IPostQueryProvider
             .Where(post => !post.Private)
             .OrderByDescending(post => post.DateOfCreation);
 
+        if (request.AuthorId.HasValue)
+            query = query.Where(post => post.Author.Id == request.AuthorId.Value);
+
         int totalOfItens = await query.CountAsync(cancellationToken);
 
         PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
@@ -69,8 +71,7 @@ internal class PostQueryProvider : IPostQueryProvider
                 DateOfCreation = x.DateOfCreation,
                 Title = x.Title
             })
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Take(request.PageSize)
+            .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
 
         return new PagedResult<GetMostRecentPublishedPostsQueryResult>(pagedResultInfo, result);

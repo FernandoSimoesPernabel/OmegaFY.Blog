@@ -3,7 +3,7 @@ using OmegaFY.Blog.Domain.Enums;
 
 namespace OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 
-public class GetMostRecentAvaliationsQueryResult : GenericResult, IQueryResult
+public sealed record class GetMostRecentAvaliationsQueryResult : GenericResult, IQueryResult
 {
     public Guid AvaliationId { get; set; }
 

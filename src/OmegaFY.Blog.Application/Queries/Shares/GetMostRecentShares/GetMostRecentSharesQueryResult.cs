@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Shares.GetMostRecentShares;
 
-public class GetMostRecentSharesQueryResult : GenericResult, IQueryResult
+public sealed record class GetMostRecentSharesQueryResult : GenericResult, IQueryResult
 {
     public Guid ShareId { get; set; }
 

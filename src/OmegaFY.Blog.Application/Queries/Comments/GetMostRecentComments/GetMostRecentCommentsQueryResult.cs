@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetMostRecentComments;
 
-public class GetMostRecentCommentsQueryResult : GenericResult, IQueryResult
+public sealed record class GetMostRecentCommentsQueryResult : GenericResult, IQueryResult
 {
     public Guid CommentId { get; set; }
 

@@ -2,19 +2,19 @@
 
 namespace OmegaFY.Blog.Application.Commands.Posts.PublishPost;
 
-public class PublishPostCommandResult : GenericResult, ICommandResult
+public sealed record class PublishPostCommandResult : GenericResult, ICommandResult
 {
-    public Guid PostId { get; set; }
+    public Guid PostId { get; }
 
-    public Guid AuthorId { get; set; }
+    public Guid AuthorId { get; }
 
-    public string Title { get; set; }
+    public string Title { get; }
 
-    public string SubTitle { get; set; }
+    public string SubTitle { get; }
 
-    public string Body { get; set; }
+    public string Body { get; }
 
-    public DateTime DateOfCreation { get; set; }
+    public DateTime DateOfCreation { get; }
 
     public PublishPostCommandResult() { }
 

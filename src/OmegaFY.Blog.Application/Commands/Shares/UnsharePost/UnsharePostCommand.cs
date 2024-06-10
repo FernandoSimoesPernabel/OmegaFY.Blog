@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Shares.UnsharePost;
 
-public class UnsharePostCommand : CommandMediatRBase<UnsharePostCommandResult>
+public sealed record class UnsharePostCommand : CommandMediatRBase<UnsharePostCommandResult>
 {
     public Guid PostId { get; set; }
 }

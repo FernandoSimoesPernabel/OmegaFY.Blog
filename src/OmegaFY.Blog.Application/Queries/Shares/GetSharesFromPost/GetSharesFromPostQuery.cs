@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Shares.GetSharesFromPost;
 
-public class GetSharesFromPostQuery : QueryRequestMediatRBase<GetSharesFromPostQueryResult>
+public sealed record class GetSharesFromPostQuery : QueryRequestMediatRBase<GetSharesFromPostQueryResult>
 {
     public Guid PostId { get; set; }
 }

@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Application.Queries.Donations.GetMostRecentDonations;
 
-public class GetMostRecentDonationsQuery : QueryRequestMediatRBase<GetMostRecentDonationsQueryResult>
+public sealed record class GetMostRecentDonationsQuery : QueryRequestMediatRBase<GetMostRecentDonationsQueryResult>
 {
 }

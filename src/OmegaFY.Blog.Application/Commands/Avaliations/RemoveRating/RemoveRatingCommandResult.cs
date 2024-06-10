@@ -2,6 +2,6 @@
 
 namespace OmegaFY.Blog.Application.Commands.Avaliations.RemoveRating;
 
-public class RemoveRatingCommandResult : GenericResult, ICommandResult
+public sealed record class RemoveRatingCommandResult : GenericResult, ICommandResult
 {
 }

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Commands.Avaliations.RemoveRating;
 
-public class RemoveRatingCommand : CommandMediatRBase<RemoveRatingCommandResult>
+public sealed record class RemoveRatingCommand : CommandMediatRBase<RemoveRatingCommandResult>
 {
     public Guid PostId { get; set; }
 }

@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliationsFromPost;
 
-public class GetAvaliationsFromPostQuery : QueryRequestMediatRBase<GetAvaliationsFromPostQueryResult>
+public sealed record class GetAvaliationsFromPostQuery : QueryRequestMediatRBase<GetAvaliationsFromPostQueryResult>
 {
     public Guid PostId { get; set; }
 }

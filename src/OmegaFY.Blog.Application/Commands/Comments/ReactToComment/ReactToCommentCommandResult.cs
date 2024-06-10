@@ -3,15 +3,15 @@ using OmegaFY.Blog.Domain.Enums;
 
 namespace OmegaFY.Blog.Application.Commands.Comments.ReactToComment;
 
-public class ReactToCommentCommandResult : GenericResult, ICommandResult
+public sealed record class ReactToCommentCommandResult : GenericResult, ICommandResult
 {
-    public Guid ReactionId { get; set; }
+    public Guid ReactionId { get; }
 
-    public Guid CommentId { get; set; }
+    public Guid CommentId { get; }
 
-    public Guid PostId { get; set; }
+    public Guid PostId { get; }
 
-    public CommentReaction Reaction { get; set; }
+    public CommentReaction Reaction { get; }
 
     public ReactToCommentCommandResult() { }
 

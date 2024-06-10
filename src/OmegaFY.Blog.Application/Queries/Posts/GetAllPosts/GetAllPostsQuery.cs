@@ -3,7 +3,7 @@ using OmegaFY.Blog.Application.Queries.Base.Pagination;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetAllPosts;
 
-public class GetAllPostsQuery : QueryPagedRequestMediatRBase<PagedResult<GetAllPostsQueryResult>>
+public sealed record class GetAllPostsQuery : QueryPagedRequestMediatRBase<PagedResult<GetAllPostsQueryResult>>
 {
     public DateTime? StartDateOfCreation { get; set; }
 

@@ -4,7 +4,7 @@ using OmegaFY.Blog.Application.Queries.Base;
 using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Comments;
 
-namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromPost;
+namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromComment;
 
 internal class GetReactionsFromCommentQueryHandler : QueryHandlerMediatRBase<GetReactionsFromCommentQueryHandler, GetReactionsFromCommentQuery, GetReactionsFromCommentQueryResult>
 {

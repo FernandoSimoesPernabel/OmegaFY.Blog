@@ -2,15 +2,15 @@
 
 namespace OmegaFY.Blog.Application.Commands.Users.RefreshToken;
 
-public class RefreshTokenCommandResult : GenericResult, ICommandResult
+public sealed record class RefreshTokenCommandResult : GenericResult, ICommandResult
 {
-    public string Token { get; set; }
+    public string Token { get; }
 
-    public DateTime TokenExpirationDate { get; set; }
+    public DateTime TokenExpirationDate { get; }
 
-    public Guid RefreshToken { get; set; }
+    public Guid RefreshToken { get; }
 
-    public DateTime RefreshTokenExpirationDate { get; set; }
+    public DateTime RefreshTokenExpirationDate { get; }
 
     public RefreshTokenCommandResult() { }
 

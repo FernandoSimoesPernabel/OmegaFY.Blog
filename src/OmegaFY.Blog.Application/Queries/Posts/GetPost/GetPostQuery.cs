@@ -2,7 +2,7 @@
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetPost;
 
-public class GetPostQuery : QueryRequestMediatRBase<GetPostQueryResult>
+public sealed record class GetPostQuery : QueryRequestMediatRBase<GetPostQueryResult>
 {
     public Guid PostId { get; set; }
 }

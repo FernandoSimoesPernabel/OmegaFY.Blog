@@ -3,6 +3,7 @@ using OmegaFY.Blog.Application.Queries.Base.Pagination;
 
 namespace OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 
-public class GetMostRecentPublishedPostsQuery : QueryPagedRequestMediatRBase<PagedResult<GetMostRecentPublishedPostsQueryResult>>
+public sealed record class GetMostRecentPublishedPostsQuery : QueryPagedRequestMediatRBase<PagedResult<GetMostRecentPublishedPostsQueryResult>>
 {
+    public Guid? AuthorId { get; set; }
 }
