@@ -18,7 +18,7 @@ public abstract class CommandHandlerMediatRBase<TCommandHandler, TCommand, TComm
         _logger = logger;
     }
 
-    public async Task<TCommandResult> Handle(TCommand request, CancellationToken cancellationToken) => await HandleAsync(request, cancellationToken);
+    public Task<TCommandResult> Handle(TCommand request, CancellationToken cancellationToken) => HandleAsync(request, cancellationToken);
 
     public abstract Task<TCommandResult> HandleAsync(TCommand command, CancellationToken cancellationToken);
 }

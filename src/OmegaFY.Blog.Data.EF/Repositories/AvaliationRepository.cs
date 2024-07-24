@@ -6,10 +6,10 @@ using OmegaFY.Blog.Domain.Repositories.Avaliations;
 
 namespace OmegaFY.Blog.Data.EF.Repositories;
 
-internal class AvaliationRepository : BaseRepository<PostAvaliations>, IAvaliationRepository
+internal sealed class AvaliationRepository : BaseRepository<PostAvaliations>, IAvaliationRepository
 {
     public AvaliationRepository(AvaliationsContext dbContext) : base(dbContext) { }
 
-    public async Task<PostAvaliations> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
-        => await _dbSet.Include(post => post.Avaliations).FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
+    public Task<PostAvaliations> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
+        => _dbSet.Include(post => post.Avaliations).FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
 }

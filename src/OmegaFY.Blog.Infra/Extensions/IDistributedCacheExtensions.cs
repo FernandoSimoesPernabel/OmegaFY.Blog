@@ -14,25 +14,25 @@ public static class IDistributedCacheExtensions
         return valueFromCache is null ? default : JsonSerializerHelper.Deserialize<T>(valueFromCache);
     }
 
-    public static async Task SetAsync<T>(this IDistributedCache distributedCache, string key, T value, DistributedCacheEntryOptions options, CancellationToken cancellationToken)
+    public static Task SetAsync<T>(this IDistributedCache distributedCache, string key, T value, DistributedCacheEntryOptions options, CancellationToken cancellationToken)
     {
         string valueAsJsonString = value.ToJson();
-        await distributedCache.SetStringAsync(key, valueAsJsonString, options, cancellationToken);
+        return distributedCache.SetStringAsync(key, valueAsJsonString, options, cancellationToken);
     }
 
-    public static async Task SetAuthenticationTokenCacheAsync(
+    public static Task SetAuthenticationTokenCacheAsync(
         this IDistributedCache distributedCache,
         Guid userId,
         AuthenticationToken authToken,
         CancellationToken cancellationToken)
     {
-        await distributedCache.SetAsync(
-            CacheKeyGenerator.RefreshTokenKey(userId, authToken.RefreshToken),
-            authToken,
-            new DistributedCacheEntryOptions() { AbsoluteExpiration = authToken.RefreshTokenExpirationDate },
-            cancellationToken);
+        return distributedCache.SetAsync(
+           CacheKeyGenerator.RefreshTokenKey(userId, authToken.RefreshToken),
+           authToken,
+           new DistributedCacheEntryOptions() { AbsoluteExpiration = authToken.RefreshTokenExpirationDate },
+           cancellationToken);
     }
 
-    public static async Task RemoveAuthenticationTokenCacheAsync(this IDistributedCache distributedCache, Guid userId, Guid refreshToken, CancellationToken cancellationToken) 
-        => await distributedCache.RemoveAsync(CacheKeyGenerator.RefreshTokenKey(userId, refreshToken), cancellationToken);
+    public static Task RemoveAuthenticationTokenCacheAsync(this IDistributedCache distributedCache, Guid userId, Guid refreshToken, CancellationToken cancellationToken)
+        => distributedCache.RemoveAsync(CacheKeyGenerator.RefreshTokenKey(userId, refreshToken), cancellationToken);
 }

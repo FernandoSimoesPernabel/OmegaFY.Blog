@@ -23,7 +23,7 @@ public class CommentDatabaseModelMapping : IEntityTypeConfiguration<CommentDatab
 
         builder.Property(x => x.DateOfModification).HasColumnType("datetime").IsRequired(false);
 
-        builder.HasMany(x => x.Reactions).WithOne().HasForeignKey(x => x.CommentId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(x => x.Reactions).WithOne(x => x.Comment).HasForeignKey(x => x.CommentId).OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Author).WithMany(x => x.Comments).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
 

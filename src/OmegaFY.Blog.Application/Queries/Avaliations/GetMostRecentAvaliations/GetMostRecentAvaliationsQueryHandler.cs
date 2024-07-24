@@ -6,13 +6,13 @@ using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
 
 namespace OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 
-internal class GetMostRecentAvaliationsQueryHandler : QueryHandlerMediatRBase<GetMostRecentAvaliationsQueryHandler, GetMostRecentAvaliationsQuery, PagedResult<GetMostRecentAvaliationsQueryResult>>
+internal sealed class GetMostRecentAvaliationsQueryHandler : QueryHandlerMediatRBase<GetMostRecentAvaliationsQueryHandler, GetMostRecentAvaliationsQuery, PagedResult<GetMostRecentAvaliationsQueryResult>>
 {
     private readonly IAvaliationQueryProvider _avaliationQueryProvider;
 
     public GetMostRecentAvaliationsQueryHandler(IUserInformation currentUser, ILogger<GetMostRecentAvaliationsQueryHandler> logger, IAvaliationQueryProvider avaliationQueryProvider)
         : base(currentUser, logger) => _avaliationQueryProvider = avaliationQueryProvider;
 
-    public override async Task<PagedResult<GetMostRecentAvaliationsQueryResult>> HandleAsync(GetMostRecentAvaliationsQuery request, CancellationToken cancellationToken)
-        => await _avaliationQueryProvider.GetMostRecentAvaliationsQueryResultAsync(request, cancellationToken);
+    public override Task<PagedResult<GetMostRecentAvaliationsQueryResult>> HandleAsync(GetMostRecentAvaliationsQuery request, CancellationToken cancellationToken)
+        => _avaliationQueryProvider.GetMostRecentAvaliationsQueryResultAsync(request, cancellationToken);
 }

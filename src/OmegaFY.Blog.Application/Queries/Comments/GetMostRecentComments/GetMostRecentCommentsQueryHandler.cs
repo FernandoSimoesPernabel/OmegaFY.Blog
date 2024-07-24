@@ -6,13 +6,13 @@ using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Application.Queries.Comments.GetMostRecentComments;
 
-internal class GetMostRecentCommentsQueryHandler : QueryHandlerMediatRBase<GetMostRecentCommentsQueryHandler, GetMostRecentCommentsQuery, PagedResult<GetMostRecentCommentsQueryResult>>
+internal sealed class GetMostRecentCommentsQueryHandler : QueryHandlerMediatRBase<GetMostRecentCommentsQueryHandler, GetMostRecentCommentsQuery, PagedResult<GetMostRecentCommentsQueryResult>>
 {
     private readonly ICommentQueryProvider _commentQueryProvider;
 
-    public GetMostRecentCommentsQueryHandler(IUserInformation currentUser, ILogger<GetMostRecentCommentsQueryHandler> logger, ICommentQueryProvider commentQueryProvider) 
+    public GetMostRecentCommentsQueryHandler(IUserInformation currentUser, ILogger<GetMostRecentCommentsQueryHandler> logger, ICommentQueryProvider commentQueryProvider)
         : base(currentUser, logger) => _commentQueryProvider = commentQueryProvider;
 
-    public override async Task<PagedResult<GetMostRecentCommentsQueryResult>> HandleAsync(GetMostRecentCommentsQuery request, CancellationToken cancellationToken) 
-        => await _commentQueryProvider.GetMostRecentCommentsQueryResultAsync(request, cancellationToken);
+    public override Task<PagedResult<GetMostRecentCommentsQueryResult>> HandleAsync(GetMostRecentCommentsQuery request, CancellationToken cancellationToken)
+        => _commentQueryProvider.GetMostRecentCommentsQueryResultAsync(request, cancellationToken);
 }

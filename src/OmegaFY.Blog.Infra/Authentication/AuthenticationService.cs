@@ -6,7 +6,7 @@ using OmegaFY.Blog.Infra.Exceptions;
 
 namespace OmegaFY.Blog.Infra.Authentication;
 
-internal class AuthenticationService : IAuthenticationService
+internal sealed class AuthenticationService : IAuthenticationService
 {
     private readonly UserManager<IdentityUser> _userManager;
 

@@ -6,12 +6,12 @@ using OmegaFY.Blog.Domain.Repositories.Posts;
 
 namespace OmegaFY.Blog.Data.EF.Repositories;
 
-internal class PostRepository : BaseRepository<Post>, IPostRepository
+internal sealed class PostRepository : BaseRepository<Post>, IPostRepository
 {
     public PostRepository(PostsContext postsContext) : base(postsContext) { }
 
     public void AddPost(Post post) => _dbSet.Add(post);
 
-    public async Task<Post> GetByIdAsync(ReferenceId id, ReferenceId authorId, CancellationToken cancellationToken)
-        => await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.AuthorId == authorId, cancellationToken);
+    public Task<Post> GetByIdAsync(ReferenceId id, ReferenceId authorId, CancellationToken cancellationToken)
+        => _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.AuthorId == authorId, cancellationToken);
 }

@@ -65,7 +65,7 @@ public class PostsController : ApiControllerBase
 
     [HttpGet()]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<GetMostReactedCommentsQueryResult>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetMostReactedCommentsQuery([FromQuery] GetMostReactedCommentsQuery query, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMostReactedComments([FromQuery] GetMostReactedCommentsQuery query, CancellationToken cancellationToken)
         => Ok(await _serviceBus.SendMessageAsync<GetMostReactedCommentsQuery, PagedResult<GetMostReactedCommentsQueryResult>>(query, cancellationToken));
 
     [HttpGet()]
