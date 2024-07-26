@@ -4,7 +4,7 @@ public abstract class Entity : IEquatable<Entity>
 {
     public ReferenceId Id { get; }
 
-    protected Entity() => Id = Guid.NewGuid();
+    protected Entity() => Id = Ulid.NewUlid().ToGuid();
 
     public override bool Equals(object obj)
     {
