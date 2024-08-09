@@ -12,10 +12,10 @@ public record class Header
     public Header(string title, string subTitle)
     {
         if (string.IsNullOrWhiteSpace(title) || title.Length > PostConstants.MAX_TITLE_LENGTH)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException($"O título do cabeçalho precisa ser informato com até {PostConstants.MAX_TITLE_LENGTH} caracteres.");
 
         if (string.IsNullOrWhiteSpace(subTitle) || subTitle.Length > PostConstants.MAX_SUBTITLE_LENGTH)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException($"O subtítulo do cabeçalho precisa ser informato com até {PostConstants.MAX_SUBTITLE_LENGTH} caracteres.");
 
         Title = title;
         SubTitle = subTitle;

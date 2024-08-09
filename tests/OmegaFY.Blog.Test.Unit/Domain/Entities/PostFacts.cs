@@ -4,7 +4,6 @@ using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
-using System;
 using Xunit;
 
 namespace OmegaFY.Blog.Test.Unit.Domain.Entities;
@@ -21,7 +20,6 @@ public class PostFacts
         Post sut = CreatePost(authorId: authorId);
 
         //Assert
-        sut.AuthorId.Should().NotBeNull();
         sut.AuthorId.Should().Be(authorId);
     }
 
@@ -49,7 +47,7 @@ public class PostFacts
         Action sut = () => new Post(CreateAuthor(), nullHeader, CreateBody());
 
         //Assert
-        sut.Should().Throw<DomainArgumentException>();
+        sut.Should().Throw<DomainArgumentException>().WithMessage("Não foi informado corretamente um cabeçalho para esse post.");
     }
 
     [Fact]
@@ -62,7 +60,6 @@ public class PostFacts
         Post sut = CreatePost(body: validBody);
 
         //Assert
-        sut.Body.Should().NotBeNull();
         sut.Body.Should().BeEquivalentTo(validBody);
     }
 
@@ -85,7 +82,6 @@ public class PostFacts
         Post sut = new Post(CreateAuthor(), CreateHeader(), inRangeBody);
 
         //Assert
-        sut.Body.Should().NotBeNull();
         sut.Body.Should().BeEquivalentTo(inRangeBody);
     }
 
@@ -108,7 +104,7 @@ public class PostFacts
         Action sut = () => new Post(CreateAuthor(), CreateHeader(), outOfRangeBody);
 
         //Assert
-        sut.Should().Throw<DomainArgumentException>();
+        sut.Should().Throw<DomainArgumentException>().WithMessage("O conteúdo desse post foi informado incorretamente.");
     }
 
     [Fact]
@@ -122,7 +118,7 @@ public class PostFacts
 
         //Assert
         sut.ModificationDetails.Should().NotBeNull();
-        sut.ModificationDetails.DateOfCreation.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(10));
+        sut.ModificationDetails.DateOfCreation.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
 
     [Fact]
@@ -150,7 +146,7 @@ public class PostFacts
 
         //Assert
         sut.ModificationDetails.Should().NotBeNull();
-        sut.ModificationDetails.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(10));
+        sut.ModificationDetails.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
 
     [Fact]
@@ -273,7 +269,7 @@ public class PostFacts
     {
         if (body is null)
         {
-            string content = new Faker().Lorem.Paragraphs(10);
+            string content = new Faker().Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
             body = content.Substring(0, Math.Min(content.Length, PostConstants.MAX_POST_BODY_LENGTH));
         }
 
