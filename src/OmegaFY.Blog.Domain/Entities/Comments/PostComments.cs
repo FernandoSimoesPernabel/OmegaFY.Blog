@@ -32,10 +32,10 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
     public void Comment(Comment comment)
     {
         if (comment is null)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("Não foi informado nenhum comentário.");
 
         if (comment.PostId != Id)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("O comentário não pertence ao post atual.");
 
         _comments.Add(comment);
     }

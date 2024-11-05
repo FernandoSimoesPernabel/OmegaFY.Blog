@@ -139,6 +139,6 @@ public class ReferenceIdFacts
         ReferenceId referenceId = new ReferenceId(guid);
 
         // Act & Assert
-        referenceId.Should().Be(guid);
+        referenceId.Value.Should().Be(guid);
     }
 }

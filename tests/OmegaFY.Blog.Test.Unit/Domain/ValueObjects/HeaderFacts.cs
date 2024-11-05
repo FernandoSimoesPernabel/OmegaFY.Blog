@@ -9,11 +9,13 @@ namespace OmegaFY.Blog.Test.Unit.Domain.ValueObjects;
 
 public class HeaderFacts
 {
+    private readonly Faker _faker = new();
+
     [Fact]
     public void Constructor_PassingValidTitleAndSubTitle_ShouldCreateHeader()
     {
         //Arrange
-        Lorem lorem = new Faker().Lorem;
+        Lorem lorem = _faker.Lorem;
 
         string title = lorem.Letter(50);
 
@@ -31,8 +33,8 @@ public class HeaderFacts
     public void Constructor_PassingEmptyTitle_ShouldThrowDomainArgumentException()
     {
         // Arrange
-        string emptyTitle = "";
-        string subTitle = new Faker().Lorem.Letter(50);
+        string emptyTitle = string.Empty;
+        string subTitle = _faker.Lorem.Letter(50);
 
         // Act
         Action sut = () => new Header(emptyTitle, subTitle);
@@ -46,7 +48,7 @@ public class HeaderFacts
     {
         // Arrange
         string whitespaceTitle = "   ";
-        string subTitle = new Faker().Lorem.Letter(50);
+        string subTitle = _faker.Lorem.Letter(50);
 
         // Act
         Action sut = () => new Header(whitespaceTitle, subTitle);
@@ -59,8 +61,8 @@ public class HeaderFacts
     public void Constructor_PassingEmptySubTitle_ShouldThrowDomainArgumentException()
     {
         // Arrange
-        string title = new Faker().Lorem.Letter(50);
-        string emptySubTitle = "";
+        string title = _faker.Lorem.Letter(50);
+        string emptySubTitle = string.Empty;
 
         // Act
         Action sut = () => new Header(title, emptySubTitle);
@@ -73,7 +75,7 @@ public class HeaderFacts
     public void Constructor_PassingWhitespaceSubTitle_ShouldThrowDomainArgumentException()
     {
         // Arrange
-        string title = new Faker().Lorem.Letter(50);
+        string title = _faker.Lorem.Letter(50);
         string whitespaceSubTitle = "   ";
 
         // Act
@@ -87,7 +89,7 @@ public class HeaderFacts
     public void Constructor_PassingOutOfRangeTitle_ShouldThrowDomainArgumentException()
     {
         //Arrange
-        Lorem lorem = new Faker().Lorem;
+        Lorem lorem = _faker.Lorem;
 
         string outRangeTitle = lorem.Letter(100);
 
@@ -105,7 +107,7 @@ public class HeaderFacts
     {
         //Arrange
         string nullTitle = null;
-        string subTitle = new Faker().Lorem.Letter(50);
+        string subTitle = _faker.Lorem.Letter(50);
 
         //Act
         Action sut = () => new Header(nullTitle, subTitle);
@@ -118,7 +120,7 @@ public class HeaderFacts
     public void Constructor_PassingOutOfRangeSubTitle_ShouldThrowDomainArgumentException()
     {
         //Arrange
-        Lorem lorem = new Faker().Lorem;
+        Lorem lorem = _faker.Lorem;
 
         string title = lorem.Letter(50);
 
@@ -135,7 +137,7 @@ public class HeaderFacts
     public void Constructor_PassingNullSubTitle_ShouldThrowDomainArgumentException()
     {
         //Arrange
-        string title = new Faker().Lorem.Letter(50);
+        string title = _faker.Lorem.Letter(50);
         string nullSubTitle = null;
 
         //Act
@@ -149,8 +151,8 @@ public class HeaderFacts
     public void Equality_SameTitleAndSubTitle_ShouldBeEqual()
     {
         // Arrange
-        string title = new Faker().Lorem.Letter(30);
-        string subTitle = new Faker().Lorem.Letter(30);
+        string title = _faker.Lorem.Letter(30);
+        string subTitle = _faker.Lorem.Letter(30);
 
         Header header1 = new Header(title, subTitle);
         Header header2 = new Header(title, subTitle);
@@ -163,11 +165,11 @@ public class HeaderFacts
     public void Inequality_DifferentTitleOrSubTitle_ShouldNotBeEqual()
     {
         // Arrange
-        string title1 = new Faker().Lorem.Letter(30);
-        string subTitle1 = new Faker().Lorem.Letter(30);
+        string title1 = _faker.Lorem.Letter(30);
+        string subTitle1 = _faker.Lorem.Letter(30);
 
         Header header1 = new Header(title1, subTitle1);
-        Header header2 = new Header(new Faker().Lorem.Letter(30), new Faker().Lorem.Letter(30));
+        Header header2 = new Header(_faker.Lorem.Letter(30), _faker.Lorem.Letter(30));
 
         // Act & Assert
         header1.Should().NotBe(header2);

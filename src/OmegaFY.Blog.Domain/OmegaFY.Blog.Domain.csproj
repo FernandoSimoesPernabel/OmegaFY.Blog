@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="OmegaFY.Blog.Test.Unit" />
     <ProjectReference Include="..\OmegaFY.Blog.Common\OmegaFY.Blog.Common.csproj" />
   </ItemGroup>
 

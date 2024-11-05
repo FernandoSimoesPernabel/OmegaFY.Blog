@@ -10,6 +10,8 @@ namespace OmegaFY.Blog.Test.Unit.Domain.Entities;
 
 public class PostFacts
 {
+    private readonly Faker _faker = new();
+
     [Fact]
     public void Constructor_PassingValidAuthor_ShouldPublishedPost()
     {
@@ -273,7 +275,7 @@ public class PostFacts
         sut.Private.Should().BeFalse();
     }
 
-    private static Post CreatePost(ReferenceId? authorId = null, Header header = null, Body? body = null, bool @private = false)
+    private Post CreatePost(ReferenceId? authorId = null, Header header = null, Body? body = null, bool @private = false)
     {
         Post post = null;
 
@@ -291,14 +293,14 @@ public class PostFacts
         return post;
     }
 
-    private static ReferenceId CreateAuthor(ReferenceId? authorId = null) => authorId ?? new ReferenceId(Guid.NewGuid());
+    private ReferenceId CreateAuthor(ReferenceId? authorId = null) => authorId ?? new ReferenceId(Guid.NewGuid());
 
-    private static Header CreateHeader(Header header = null)
+    private Header CreateHeader(Header header = null)
     {
         if (header is null)
         {
-            string title = new Faker().Music.Genre();
-            string subTitle = new Faker().Music.Genre();
+            string title = _faker.Music.Genre();
+            string subTitle = _faker.Music.Genre();
 
             header = new Header(
                 title.Substring(0, Math.Min(title.Length, PostConstants.MAX_TITLE_LENGTH)),
@@ -308,11 +310,11 @@ public class PostFacts
         return header;
     }
 
-    private static Body CreateBody(Body? body = null)
+    private Body CreateBody(Body? body = null)
     {
         if (body is null)
         {
-            string content = new Faker().Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
+            string content = _faker.Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
             body = content.Substring(0, Math.Min(content.Length, PostConstants.MAX_POST_BODY_LENGTH));
         }
 

@@ -1,7 +1,6 @@
 ﻿using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.ValueObjects.Posts;
 
 namespace OmegaFY.Blog.Domain.Entities.Comments;
 
@@ -17,15 +16,15 @@ public class Reaction : Entity
 
     public Reaction(ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction)
     {
-        ChangeCommentReaction(commentReaction);
         CommentId = commentId;
         AuthorId = authorId;
+        ChangeCommentReaction(commentReaction);
     }
 
-    public void ChangeCommentReaction(CommentReaction commentReaction)
+    internal void ChangeCommentReaction(CommentReaction commentReaction)
     {
         if (!commentReaction.IsDefined())
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("A reação informada não é válida.");
 
         CommentReaction = commentReaction;
     }

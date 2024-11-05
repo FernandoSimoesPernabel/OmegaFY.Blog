@@ -9,11 +9,13 @@ namespace OmegaFY.Blog.Test.Unit.Domain.ValueObjects;
 
 public class BodyFacts
 {
+    private readonly Faker _faker = new();
+
     [Fact]
     public void Constructor_PassingValidBodyContent_ShouldCreateBody()
     {
         //Arrange
-        string validContent = new Faker().Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
+        string validContent = _faker.Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
 
         //Act
         Body sut = validContent;
@@ -52,7 +54,7 @@ public class BodyFacts
     public void Constructor_MaxLengthBodyContent_ShouldCreateBody()
     {
         // Arrange
-        string maxLengthContent = new Faker().Lorem.Letter(PostConstants.MAX_POST_BODY_LENGTH);
+        string maxLengthContent = _faker.Lorem.Letter(PostConstants.MAX_POST_BODY_LENGTH);
 
         // Act
         Body sut = maxLengthContent;
@@ -78,7 +80,7 @@ public class BodyFacts
     public void Constructor_ContentWithSpecialCharacters_ShouldCreateBody()
     {
         // Arrange
-        string specialCharContent = new Faker().Lorem.Sentence() + "!@#$%^&*()";
+        string specialCharContent = _faker.Lorem.Sentence() + "!@#$%^&*()";
 
         // Act
         Body sut = specialCharContent;
@@ -91,7 +93,7 @@ public class BodyFacts
     public void ImplicitOperator_FromBodyToImplictString_ShouldConvertToString()
     {
         //Arrange
-        Body validBody = new Faker().Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
+        Body validBody = _faker.Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
 
         //Act
         string sut = validBody;
@@ -104,7 +106,7 @@ public class BodyFacts
     public void ImplicitOperator_FromStringToImplictBody_ShouldConvertToBody()
     {
         //Arrange
-        string validContent = new Faker().Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
+        string validContent = _faker.Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
 
         //Act
         Body sut = validContent;
@@ -117,7 +119,7 @@ public class BodyFacts
     public void GetHashCode_PassingStringBodyContent_BodyHashCodeShouldBeTheSameAsString()
     {
         //Arrange
-        string validContent = new Faker().Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
+        string validContent = _faker.Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
 
         //Act
         Body sut = validContent;
@@ -130,7 +132,7 @@ public class BodyFacts
     public void ToString_PassingStringBodyContent_BodyToStringShouldBeTheSameAsString()
     {
         //Arrange
-        string validContent = new Faker().Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
+        string validContent = _faker.Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
 
         //Act
         Body sut = new Body(validContent);
@@ -143,7 +145,7 @@ public class BodyFacts
     public void Equality_SameContentBodies_ShouldBeEqual()
     {
         // Arrange
-        string content = new Faker().Lorem.Letter(100);
+        string content = _faker.Lorem.Letter(100);
         Body body1 = new Body(content);
         Body body2 = new Body(content);
 
@@ -155,8 +157,8 @@ public class BodyFacts
     public void Inequality_DifferentContentBodies_ShouldNotBeEqual()
     {
         // Arrange
-        Body body1 = new Body(new Faker().Lorem.Letter(100));
-        Body body2 = new Body(new Faker().Lorem.Letter(100));
+        Body body1 = new Body(_faker.Lorem.Letter(100));
+        Body body2 = new Body(_faker.Lorem.Letter(100));
 
         // Act & Assert
         body1.Should().NotBe(body2);
