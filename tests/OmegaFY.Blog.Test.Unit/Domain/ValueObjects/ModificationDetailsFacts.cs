@@ -43,4 +43,49 @@ public class ModificationDetailsFacts
         sut.DateOfModification.Should().NotBeNull();
         sut.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
+
+    [Fact]
+    public void Constructor_PassingDateOfCreation_NegativeDate_ShouldHaveDateOfCreationAndUtcNowDateOfModification()
+    {
+        // Arrange
+        DateTime dateOfCreation = new DateTime(2000, 1, 1);
+
+        // Act
+        ModificationDetails sut = new ModificationDetails(dateOfCreation);
+
+        // Assert
+        sut.DateOfCreation.Should().Be(dateOfCreation);
+        sut.DateOfModification.Should().NotBeNull();
+        sut.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+    }
+
+    [Fact]
+    public void Constructor_PassingDateOfCreation_RecentDate_ShouldHaveDateOfCreationAndUtcNowDateOfModification()
+    {
+        // Arrange
+        DateTime dateOfCreation = DateTime.UtcNow.AddMinutes(-1); // um minuto no passado
+
+        // Act
+        ModificationDetails sut = new ModificationDetails(dateOfCreation);
+
+        // Assert
+        sut.DateOfCreation.Should().Be(dateOfCreation);
+        sut.DateOfModification.Should().NotBeNull();
+        sut.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+    }
+
+    [Fact]
+    public void Constructor_PassingDateOfCreation_SameTime_ShouldHaveDateOfCreationAndUtcNowDateOfModification()
+    {
+        // Arrange
+        DateTime dateOfCreation = DateTime.UtcNow;
+
+        // Act
+        ModificationDetails sut = new ModificationDetails(dateOfCreation);
+
+        // Assert
+        sut.DateOfCreation.Should().Be(dateOfCreation);
+        sut.DateOfModification.Should().NotBeNull();
+        sut.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+    }
 }

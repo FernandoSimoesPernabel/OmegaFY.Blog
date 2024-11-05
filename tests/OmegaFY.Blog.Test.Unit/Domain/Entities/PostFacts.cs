@@ -178,6 +178,49 @@ public class PostFacts
     }
 
     [Fact]
+    public void ChangeContent_NullHeader_ShouldThrowDomainArgumentException()
+    {
+        // Arrange
+        Post sut = CreatePost();
+
+        // Act
+        Action action = () => sut.ChangeContent(null, CreateBody());
+
+        // Assert
+        action.Should().Throw<DomainArgumentException>().WithMessage("Não foi informado corretamente um cabeçalho para esse post.");
+    }
+
+    [Fact]
+    public void ChangeContent_BodyExceedsMaxLength_ShouldThrowDomainArgumentException()
+    {
+        // Arrange
+        Post sut = CreatePost();
+        Body outOfRangeBody = new Faker().Lorem.Letter(PostConstants.MAX_POST_BODY_LENGTH + 1);
+
+        // Act
+        Action action = () => sut.ChangeContent(CreateHeader(), outOfRangeBody);
+
+        // Assert
+        action.Should().Throw<DomainArgumentException>().WithMessage("O conteúdo desse post foi informado incorretamente.");
+    }
+
+    [Fact]
+    public void ChangeContent_ValidHeaderAndBody_ShouldUpdateDateOfModificationAndPreserveDateOfCreation()
+    {
+        // Arrange
+        Post sut = CreatePost();
+        DateTime initialDateOfCreation = sut.ModificationDetails.DateOfCreation;
+
+        // Act
+        sut.ChangeContent(CreateHeader(), CreateBody());
+
+        // Assert
+        sut.ModificationDetails.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+        sut.ModificationDetails.DateOfCreation.Should().Be(initialDateOfCreation);
+    }
+
+
+    [Fact]
     public void MakePrivate_PublicPost_ShouldBecomePrivate()
     {
         //Arrange

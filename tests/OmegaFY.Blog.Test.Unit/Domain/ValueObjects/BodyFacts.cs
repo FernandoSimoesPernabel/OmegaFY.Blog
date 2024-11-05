@@ -49,6 +49,45 @@ public class BodyFacts
     }
 
     [Fact]
+    public void Constructor_MaxLengthBodyContent_ShouldCreateBody()
+    {
+        // Arrange
+        string maxLengthContent = new Faker().Lorem.Letter(PostConstants.MAX_POST_BODY_LENGTH);
+
+        // Act
+        Body sut = maxLengthContent;
+
+        // Assert
+        sut.Content.Should().Be(maxLengthContent);
+    }
+
+    [Fact]
+    public void Constructor_WhitespaceBodyContent_ShouldThrowDomainArgumentException()
+    {
+        // Arrange
+        string whitespaceContent = "     ";
+
+        // Act
+        Action sut = () => new Body(whitespaceContent);
+
+        // Assert
+        sut.Should().Throw<DomainArgumentException>().WithMessage("Não foi informado nenhum conteudo para o corpo.");
+    }
+
+    [Fact]
+    public void Constructor_ContentWithSpecialCharacters_ShouldCreateBody()
+    {
+        // Arrange
+        string specialCharContent = new Faker().Lorem.Sentence() + "!@#$%^&*()";
+
+        // Act
+        Body sut = specialCharContent;
+
+        // Assert
+        sut.Content.Should().Be(specialCharContent);
+    }
+
+    [Fact]
     public void ImplicitOperator_FromBodyToImplictString_ShouldConvertToString()
     {
         //Arrange
@@ -98,5 +137,28 @@ public class BodyFacts
 
         //Assert
         sut.ToString().Should().Be(validContent.ToString());
+    }
+
+    [Fact]
+    public void Equality_SameContentBodies_ShouldBeEqual()
+    {
+        // Arrange
+        string content = new Faker().Lorem.Letter(100);
+        Body body1 = new Body(content);
+        Body body2 = new Body(content);
+
+        // Act & Assert
+        body1.Should().Be(body2);
+    }
+
+    [Fact]
+    public void Inequality_DifferentContentBodies_ShouldNotBeEqual()
+    {
+        // Arrange
+        Body body1 = new Body(new Faker().Lorem.Letter(100));
+        Body body2 = new Body(new Faker().Lorem.Letter(100));
+
+        // Act & Assert
+        body1.Should().NotBe(body2);
     }
 }

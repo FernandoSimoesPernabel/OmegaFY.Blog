@@ -33,6 +33,17 @@ public class ReferenceIdFacts
     }
 
     [Fact]
+    public void Constructor_PassingNewGuid_ShouldCreateUniqueReferenceId()
+    {
+        // Act
+        ReferenceId referenceId1 = new ReferenceId(Guid.NewGuid());
+        ReferenceId referenceId2 = new ReferenceId(Guid.NewGuid());
+
+        // Assert
+        referenceId1.Should().NotBe(referenceId2);
+    }
+
+    [Fact]
     public void ImplicitOperator_FromGuidToImplicitReferenceId_ShouldConvertToReferenceId()
     {
         //Arrange
@@ -82,5 +93,52 @@ public class ReferenceIdFacts
 
         //Assert
         sut.GetHashCode().Should().Be(validReferenceId.GetHashCode());
+    }
+
+    [Fact]
+    public void ToString_PassingGuid_ReferenceIdToStringShouldBeTheSameAsGuidString()
+    {
+        // Arrange
+        ReferenceId validReferenceId = new ReferenceId(Guid.NewGuid());
+
+        // Act
+        string sut = validReferenceId.ToString();
+
+        // Assert
+        sut.Should().Be(validReferenceId.Value.ToString());
+    }
+
+    [Fact]
+    public void Equality_PassingTwoReferenceIdsWithSameGuid_ShouldBeEqual()
+    {
+        // Arrange
+        Guid guid = Guid.NewGuid();
+        ReferenceId referenceId1 = new ReferenceId(guid);
+        ReferenceId referenceId2 = new ReferenceId(guid);
+
+        // Act & Assert
+        referenceId1.Should().Be(referenceId2);
+    }
+
+    [Fact]
+    public void Equality_PassingTwoReferenceIdsWithDifferentGuids_ShouldNotBeEqual()
+    {
+        // Arrange
+        ReferenceId referenceId1 = new ReferenceId(Guid.NewGuid());
+        ReferenceId referenceId2 = new ReferenceId(Guid.NewGuid());
+
+        // Act & Assert
+        referenceId1.Should().NotBe(referenceId2);
+    }
+
+    [Fact]
+    public void Equality_ReferenceIdAndGuidWithSameGuid_ShouldBeEqual()
+    {
+        // Arrange
+        Guid guid = Guid.NewGuid();
+        ReferenceId referenceId = new ReferenceId(guid);
+
+        // Act & Assert
+        referenceId.Should().Be(guid);
     }
 }
