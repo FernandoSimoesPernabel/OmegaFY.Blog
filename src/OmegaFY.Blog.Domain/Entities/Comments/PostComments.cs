@@ -11,7 +11,7 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
 
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
-    protected PostComments() => _comments = new List<Comment>();
+    public PostComments() => _comments = new List<Comment>();
 
     public Comment FindCommentAndThrowIfNotFound(ReferenceId commentId, ReferenceId authorId)
     {

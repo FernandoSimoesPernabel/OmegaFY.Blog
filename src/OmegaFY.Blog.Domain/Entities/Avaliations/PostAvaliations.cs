@@ -1,7 +1,5 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
-using OmegaFY.Blog.Domain.Entities.Shares;
 using OmegaFY.Blog.Domain.Enums;
-using OmegaFY.Blog.Domain.Exceptions;
 
 namespace OmegaFY.Blog.Domain.Entities.Avaliations;
 
@@ -13,8 +11,8 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public double AverageRate { get; private set; }
 
-    protected PostAvaliations() => _avaliations = new List<Avaliation>();
-
+    public PostAvaliations() => _avaliations = new List<Avaliation>();
+    
     public bool HasAuthorAlreadyRatedPost(ReferenceId authorId) => _avaliations.Any(share => share.AuthorId == authorId);
 
     public Avaliation FindAvaliationAndThrowIfNotFound(ReferenceId authorId)
@@ -56,5 +54,5 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
         CalculateAverageRate();
     }
 
-    internal void CalculateAverageRate() => AverageRate = _avaliations.Any() ? _avaliations.Average(avaliation => (double)avaliation.Rate) : 0;
+    private void CalculateAverageRate() => AverageRate = _avaliations.Any() ? _avaliations.Average(avaliation => (double)avaliation.Rate) : 0;
 }
