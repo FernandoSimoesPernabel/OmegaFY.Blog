@@ -1,8 +1,5 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
-using OmegaFY.Blog.Domain.Entities.Comments;
 using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.ValueObjects.Posts;
-using System.Xml.Linq;
 
 namespace OmegaFY.Blog.Domain.Entities.Shares;
 
@@ -12,17 +9,17 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
 
     public IReadOnlyCollection<Shared> Shareds => _shareds.AsReadOnly();
 
-    protected PostShares() => _shareds = new List<Shared>();
+    public PostShares() => _shareds = new List<Shared>();
 
     public bool HasAuthorAlreadySharedPost(ReferenceId authorId) => _shareds.Any(share => share.AuthorId == authorId);
 
     public void Share(Shared shared)
     {
         if (shared is null)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("Não foi informado nenhum compartilhamento.");
 
         if (shared.PostId != Id)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("O compartilhamento não pertence ao post atual.");
 
         if (HasAuthorAlreadySharedPost(shared.AuthorId))
             throw new ConflictedException();

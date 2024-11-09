@@ -10,7 +10,7 @@ using OmegaFY.Blog.Data.EF.Models;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
-internal class PostQueryProvider : IPostQueryProvider
+internal sealed class PostQueryProvider : IPostQueryProvider
 {
     private readonly QueryContext _context;
 
@@ -77,9 +77,9 @@ internal class PostQueryProvider : IPostQueryProvider
         return new PagedResult<GetMostRecentPublishedPostsQueryResult>(pagedResultInfo, result);
     }
 
-    public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
+    public Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Set<PostDatabaseModel>()
+        return _context.Set<PostDatabaseModel>()
             .Where(post => post.Id == id)
             .Select(post => new GetPostQueryResult()
             {

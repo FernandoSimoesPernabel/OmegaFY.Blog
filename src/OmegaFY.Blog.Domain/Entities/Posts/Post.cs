@@ -35,11 +35,11 @@ public class Post : Entity, IAggregateRoot<Post>
         if (body.Content.Length > PostConstants.MAX_POST_BODY_LENGTH)
             throw new DomainArgumentException("O conteúdo desse post foi informado incorretamente.");
 
-        Header = header;
-        Body = body;
-
         if (ModificationDetails is not null)
             ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
+
+        Header = header;
+        Body = body;
     }
 
     public void MakePrivate() => Private = true;

@@ -12,15 +12,15 @@ using OmegaFY.Blog.Data.EF.Models;
 
 namespace OmegaFY.Blog.Data.EF.QueryProviders;
 
-internal class CommentQueryProvider : ICommentQueryProvider
+internal sealed class CommentQueryProvider : ICommentQueryProvider
 {
     private readonly QueryContext _context;
 
     public CommentQueryProvider(QueryContext context) => _context = context;
 
-    public async Task<GetCommentQueryResult> GetCommentQueryResultAsync(GetCommentQuery request, CancellationToken cancellationToken)
+    public Task<GetCommentQueryResult> GetCommentQueryResultAsync(GetCommentQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Set<CommentDatabaseModel>()
+        return _context.Set<CommentDatabaseModel>()
             .Where(comment => comment.Id == request.CommentId)
             .Select(comment => new GetCommentQueryResult()
             {
@@ -61,7 +61,7 @@ internal class CommentQueryProvider : ICommentQueryProvider
     public async Task<PagedResult<GetMostReactedCommentsQueryResult>> GetMostReactedCommentsQueryResultAsync(GetMostReactedCommentsQuery request, CancellationToken cancellationToken)
     {
         IQueryable<CommentDatabaseModel> query = _context.Set<CommentDatabaseModel>()
-            .OrderByDescending(comment => comment.Reactions)
+            .OrderByDescending(comment => comment.Reactions.Count)
             .Where(comment => !comment.Post.Private);
 
         if (request.AuthorId.HasValue)

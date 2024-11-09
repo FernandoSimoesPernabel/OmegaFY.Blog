@@ -8,7 +8,6 @@ public abstract class QueryHandlerMediatRBase<TQueryHandler, TQueryRequest, TQue
     where TQueryRequest : IQueryRequest, IRequest<TQueryResult>
     where TQueryResult : IQueryResult
 {
-
     protected readonly IUserInformation _currentUser;
 
     protected readonly ILogger<TQueryHandler> _logger;
@@ -19,8 +18,7 @@ public abstract class QueryHandlerMediatRBase<TQueryHandler, TQueryRequest, TQue
         _logger = logger;
     }
 
-    public async Task<TQueryResult> Handle(TQueryRequest request, CancellationToken cancellationToken) => await HandleAsync(request, cancellationToken);
+    public Task<TQueryResult> Handle(TQueryRequest request, CancellationToken cancellationToken) => HandleAsync(request, cancellationToken);
 
     public abstract Task<TQueryResult> HandleAsync(TQueryRequest request, CancellationToken cancellationToken);
-
 }

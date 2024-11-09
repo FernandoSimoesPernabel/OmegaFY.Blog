@@ -11,7 +11,7 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
 
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
-    protected PostComments() => _comments = new List<Comment>();
+    public PostComments() => _comments = new List<Comment>();
 
     public Comment FindCommentAndThrowIfNotFound(ReferenceId commentId, ReferenceId authorId)
     {
@@ -32,10 +32,10 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
     public void Comment(Comment comment)
     {
         if (comment is null)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("Não foi informado nenhum comentário.");
 
         if (comment.PostId != Id)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("O comentário não pertence ao post atual.");
 
         _comments.Add(comment);
     }

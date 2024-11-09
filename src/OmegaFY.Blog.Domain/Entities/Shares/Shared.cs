@@ -1,7 +1,4 @@
-﻿using OmegaFY.Blog.Domain.Exceptions;
-using OmegaFY.Blog.Domain.ValueObjects.Posts;
-
-namespace OmegaFY.Blog.Domain.Entities.Shares;
+﻿namespace OmegaFY.Blog.Domain.Entities.Shares;
 
 public class Shared : Entity
 {
@@ -13,7 +10,7 @@ public class Shared : Entity
 
     protected Shared() { }
 
-    public Shared(Guid postId, ReferenceId authorId)
+    public Shared(ReferenceId postId, ReferenceId authorId)
     {
         PostId = postId;
         AuthorId = authorId;

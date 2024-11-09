@@ -46,7 +46,7 @@ public class Comment : Entity
     internal void ChangeContent(Body newBody)
     {
         if (newBody.Content.Length > PostConstants.MAX_COMMENT_BODY_LENGTH)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException($"O máximo de caracteres de um comentário é {PostConstants.MAX_COMMENT_BODY_LENGTH}.");
 
         Body = newBody;
 
@@ -57,10 +57,10 @@ public class Comment : Entity
     internal void React(Reaction reaction)
     {
         if (reaction is null)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("Não foi informada uma reação.");
 
         if (reaction.CommentId != Id)
-            throw new DomainArgumentException("");
+            throw new DomainArgumentException("O Id da reação não bate com o comentário atual.");
 
         _reactions.Add(reaction);
     }

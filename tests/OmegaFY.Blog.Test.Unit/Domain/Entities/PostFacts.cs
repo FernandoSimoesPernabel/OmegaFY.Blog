@@ -4,13 +4,14 @@ using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
-using System;
 using Xunit;
 
 namespace OmegaFY.Blog.Test.Unit.Domain.Entities;
 
 public class PostFacts
 {
+    private readonly Faker _faker = new();
+
     [Fact]
     public void Constructor_PassingValidAuthor_ShouldPublishedPost()
     {
@@ -21,7 +22,6 @@ public class PostFacts
         Post sut = CreatePost(authorId: authorId);
 
         //Assert
-        sut.AuthorId.Should().NotBeNull();
         sut.AuthorId.Should().Be(authorId);
     }
 
@@ -49,7 +49,7 @@ public class PostFacts
         Action sut = () => new Post(CreateAuthor(), nullHeader, CreateBody());
 
         //Assert
-        sut.Should().Throw<DomainArgumentException>();
+        sut.Should().Throw<DomainArgumentException>().WithMessage("Não foi informado corretamente um cabeçalho para esse post.");
     }
 
     [Fact]
@@ -62,7 +62,6 @@ public class PostFacts
         Post sut = CreatePost(body: validBody);
 
         //Assert
-        sut.Body.Should().NotBeNull();
         sut.Body.Should().BeEquivalentTo(validBody);
     }
 
@@ -85,7 +84,6 @@ public class PostFacts
         Post sut = new Post(CreateAuthor(), CreateHeader(), inRangeBody);
 
         //Assert
-        sut.Body.Should().NotBeNull();
         sut.Body.Should().BeEquivalentTo(inRangeBody);
     }
 
@@ -108,7 +106,7 @@ public class PostFacts
         Action sut = () => new Post(CreateAuthor(), CreateHeader(), outOfRangeBody);
 
         //Assert
-        sut.Should().Throw<DomainArgumentException>();
+        sut.Should().Throw<DomainArgumentException>().WithMessage("O conteúdo desse post foi informado incorretamente.");
     }
 
     [Fact]
@@ -122,7 +120,7 @@ public class PostFacts
 
         //Assert
         sut.ModificationDetails.Should().NotBeNull();
-        sut.ModificationDetails.DateOfCreation.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(10));
+        sut.ModificationDetails.DateOfCreation.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
 
     [Fact]
@@ -150,7 +148,7 @@ public class PostFacts
 
         //Assert
         sut.ModificationDetails.Should().NotBeNull();
-        sut.ModificationDetails.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(10));
+        sut.ModificationDetails.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
 
     [Fact]
@@ -180,6 +178,49 @@ public class PostFacts
         //Assert
         sut.Body.Should().BeEquivalentTo(newBody);
     }
+
+    [Fact]
+    public void ChangeContent_NullHeader_ShouldThrowDomainArgumentException()
+    {
+        // Arrange
+        Post sut = CreatePost();
+
+        // Act
+        Action action = () => sut.ChangeContent(null, CreateBody());
+
+        // Assert
+        action.Should().Throw<DomainArgumentException>().WithMessage("Não foi informado corretamente um cabeçalho para esse post.");
+    }
+
+    [Fact]
+    public void ChangeContent_BodyExceedsMaxLength_ShouldThrowDomainArgumentException()
+    {
+        // Arrange
+        Post sut = CreatePost();
+        Body outOfRangeBody = new Faker().Lorem.Letter(PostConstants.MAX_POST_BODY_LENGTH + 1);
+
+        // Act
+        Action action = () => sut.ChangeContent(CreateHeader(), outOfRangeBody);
+
+        // Assert
+        action.Should().Throw<DomainArgumentException>().WithMessage("O conteúdo desse post foi informado incorretamente.");
+    }
+
+    [Fact]
+    public void ChangeContent_ValidHeaderAndBody_ShouldUpdateDateOfModificationAndPreserveDateOfCreation()
+    {
+        // Arrange
+        Post sut = CreatePost();
+        DateTime initialDateOfCreation = sut.ModificationDetails.DateOfCreation;
+
+        // Act
+        sut.ChangeContent(CreateHeader(), CreateBody());
+
+        // Assert
+        sut.ModificationDetails.DateOfModification.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+        sut.ModificationDetails.DateOfCreation.Should().Be(initialDateOfCreation);
+    }
+
 
     [Fact]
     public void MakePrivate_PublicPost_ShouldBecomePrivate()
@@ -234,7 +275,7 @@ public class PostFacts
         sut.Private.Should().BeFalse();
     }
 
-    private static Post CreatePost(ReferenceId? authorId = null, Header header = null, Body? body = null, bool @private = false)
+    private Post CreatePost(ReferenceId? authorId = null, Header header = null, Body? body = null, bool @private = false)
     {
         Post post = null;
 
@@ -252,14 +293,14 @@ public class PostFacts
         return post;
     }
 
-    private static ReferenceId CreateAuthor(ReferenceId? authorId = null) => authorId ?? new ReferenceId(Guid.NewGuid());
+    private ReferenceId CreateAuthor(ReferenceId? authorId = null) => authorId ?? new ReferenceId(Guid.NewGuid());
 
-    private static Header CreateHeader(Header header = null)
+    private Header CreateHeader(Header header = null)
     {
         if (header is null)
         {
-            string title = new Faker().Music.Genre();
-            string subTitle = new Faker().Music.Genre();
+            string title = _faker.Music.Genre();
+            string subTitle = _faker.Music.Genre();
 
             header = new Header(
                 title.Substring(0, Math.Min(title.Length, PostConstants.MAX_TITLE_LENGTH)),
@@ -269,11 +310,11 @@ public class PostFacts
         return header;
     }
 
-    private static Body CreateBody(Body? body = null)
+    private Body CreateBody(Body? body = null)
     {
         if (body is null)
         {
-            string content = new Faker().Lorem.Paragraphs(10);
+            string content = _faker.Lorem.Letter(Random.Shared.Next(PostConstants.MAX_POST_BODY_LENGTH));
             body = content.Substring(0, Math.Min(content.Length, PostConstants.MAX_POST_BODY_LENGTH));
         }
 
