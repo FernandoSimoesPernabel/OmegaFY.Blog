@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace OmegaFY.Blog.Data.EF.Migrations
+namespace OmegaFY.Blog.Data.EF.Migrations.SqliteQuery
 {
     /// <inheritdoc />
     public partial class SqliteInitialMigration : Migration
