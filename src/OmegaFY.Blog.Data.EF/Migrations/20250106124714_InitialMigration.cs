@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OmegaFY.Blog.Data.EF.Migrations
 {
+    /// <inheritdoc />
     public partial class InitialMigration : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -52,9 +54,9 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    Email = table.Column<string>(type: "varchar(320)", nullable: false),
-                    DisplayName = table.Column<string>(type: "varchar(100)", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", unicode: false, maxLength: 320, nullable: false),
+                    DisplayName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,15 +173,15 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    Title = table.Column<string>(type: "varchar(50)", nullable: false),
-                    SubTitle = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
-                    DateOfCreation = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DateOfModification = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", unicode: false, maxLength: 50, nullable: false),
+                    SubTitle = table.Column<string>(type: "TEXT", unicode: false, maxLength: 50, nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateOfModification = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Private = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AverageRate = table.Column<decimal>(type: "numeric", nullable: false, defaultValue: 0m)
+                    AverageRate = table.Column<double>(type: "REAL", nullable: false, defaultValue: 0.0)
                 },
                 constraints: table =>
                 {
@@ -196,12 +198,12 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "Avaliations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    PostId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    DateOfCreation = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DateOfModification = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Rate = table.Column<byte>(type: "INTEGER", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PostId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateOfModification = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Rate = table.Column<byte>(type: "INTEGER", unicode: false, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -224,12 +226,12 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    PostId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    Content = table.Column<string>(type: "varchar(500)", nullable: false),
-                    DateOfCreation = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DateOfModification = table.Column<DateTime>(type: "datetime", nullable: true)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PostId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateOfModification = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -252,10 +254,10 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "Shares",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    PostId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    DateAndTimeOfShare = table.Column<DateTime>(type: "datetime", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PostId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    DateAndTimeOfShare = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -278,10 +280,10 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 name: "Reactions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    CommentId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "varchar(36)", nullable: false),
-                    CommentReaction = table.Column<string>(type: "varchar(50)", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CommentId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CommentReaction = table.Column<string>(type: "TEXT", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -389,6 +391,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
