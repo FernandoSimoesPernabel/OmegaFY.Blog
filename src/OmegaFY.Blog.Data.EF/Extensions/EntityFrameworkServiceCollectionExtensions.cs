@@ -21,7 +21,7 @@ namespace OmegaFY.Blog.Data.EF.Extensions;
 
 public static class EFServiceCollectionExtensions
 {
-    public static IServiceCollection AddEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+    public static IServiceCollection AddSqlLiteEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         string sqlLiteConnectionString = configuration.GetSqlLiteConnectionString();
 
@@ -37,27 +37,9 @@ public static class EFServiceCollectionExtensions
         return services;
     }
 
-    private static Action<DbContextOptionsBuilder> ConfigureSqlLiteOptions(
-        IHostEnvironment environment,
-        string sqlLiteConnectionString,
-        QueryTrackingBehavior trackingBehavior = QueryTrackingBehavior.TrackAll)
+    public static IServiceCollection AddSqlServerEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
-        return options =>
-        {
-            options.UseSqlite(sqlLiteConnectionString).UseQueryTrackingBehavior(trackingBehavior);
-
-            if (environment.IsDevelopment())
-            {
-                options.EnableDetailedErrors();
-                options.EnableSensitiveDataLogging();
-
-                options.AddInterceptors(
-                    new CustomDbCommandInterceptor(),
-                    new CustomDbConnectionInterceptor(),
-                    new CustomDbTransactionInterceptor(),
-                    new CustomSaveChangesInterceptor());
-            }
-        };
+        return services;
     }
 
     public static IdentityBuilder AddEntityFrameworkIdentityUserConfiguration(this IdentityBuilder identityBuilder)
@@ -86,5 +68,28 @@ public static class EFServiceCollectionExtensions
         services.AddScoped<ICommentQueryProvider, CommentQueryProvider>();
 
         return services;
+    }
+
+    private static Action<DbContextOptionsBuilder> ConfigureSqlLiteOptions(
+        IHostEnvironment environment,
+        string sqlLiteConnectionString,
+        QueryTrackingBehavior trackingBehavior = QueryTrackingBehavior.TrackAll)
+    {
+        return options =>
+        {
+            options.UseSqlite(sqlLiteConnectionString).UseQueryTrackingBehavior(trackingBehavior);
+
+            if (environment.IsDevelopment())
+            {
+                options.EnableDetailedErrors();
+                options.EnableSensitiveDataLogging();
+
+                options.AddInterceptors(
+                    new CustomDbCommandInterceptor(),
+                    new CustomDbConnectionInterceptor(),
+                    new CustomDbTransactionInterceptor(),
+                    new CustomSaveChangesInterceptor());
+            }
+        };
     }
 }
