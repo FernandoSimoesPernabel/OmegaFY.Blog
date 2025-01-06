@@ -8,7 +8,7 @@ public class HealthCheckRegistration : IDependencyInjectionRegister
 {
     public void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddHealthChecks().AddSqlLiteHealthCheck(builder.Configuration);
+        builder.Services.AddHealthChecks().AddSqliteHealthCheck(builder.Configuration);
 
         builder.Services.AddHealthChecksUI(options =>
         {

@@ -2,7 +2,7 @@
 
 public enum DatabaseOptions
 {
-    SqlLite = 0,
+    Sqlite = 0,
     SqlServer = 1,
     MongoDB = 2,
     CosmoDB = 3,

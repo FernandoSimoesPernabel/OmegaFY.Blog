@@ -8,5 +8,7 @@ public static class IConfigurationExtensions
 {
     public static DatabaseOptions GetDatabaseConfig(this IConfiguration configuration) => configuration.GetValue<DatabaseOptions>("ConnectionStrings:Database");
 
-    public static string GetSqlLiteConnectionString(this IConfiguration configuration) => configuration.GetConnectionString("SqlLite");
+    public static string GetSqliteConnectionString(this IConfiguration configuration) => configuration.GetConnectionString(nameof(DatabaseOptions.Sqlite));
+
+    public static string GetSqlServerConnectionString(this IConfiguration configuration) => configuration.GetConnectionString(nameof(DatabaseOptions.SqlServer));
 }

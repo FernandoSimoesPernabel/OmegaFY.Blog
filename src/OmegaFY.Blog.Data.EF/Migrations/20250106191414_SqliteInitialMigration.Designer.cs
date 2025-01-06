@@ -11,8 +11,8 @@ using OmegaFY.Blog.Data.EF.Context;
 namespace OmegaFY.Blog.Data.EF.Migrations
 {
     [DbContext(typeof(QueryContext))]
-    [Migration("20250106124714_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250106191414_SqliteInitialMigration")]
+    partial class SqliteInitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

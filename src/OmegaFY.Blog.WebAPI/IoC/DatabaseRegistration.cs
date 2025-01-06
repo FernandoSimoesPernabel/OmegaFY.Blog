@@ -11,10 +11,10 @@ public class DatabaseRegistration : IDependencyInjectionRegister
     {
         DatabaseOptions database = builder.Configuration.GetDatabaseConfig();
 
-        if (database.In(DatabaseOptions.SqlLite, DatabaseOptions.SqlServer))
+        if (database.In(DatabaseOptions.Sqlite, DatabaseOptions.SqlServer))
         {
-            if (database == DatabaseOptions.SqlLite)
-                builder.Services.AddSqlLiteEntityFrameworkContexts(builder.Configuration, builder.Environment);
+            if (database == DatabaseOptions.Sqlite)
+                builder.Services.AddSqliteEntityFrameworkContexts(builder.Configuration, builder.Environment);
 
             if (database == DatabaseOptions.SqlServer)
                 builder.Services.AddSqlServerEntityFrameworkContexts(builder.Configuration, builder.Environment);
