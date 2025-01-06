@@ -10,13 +10,13 @@ public class ShareMapping : IEntityTypeConfiguration<Shared>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
+        builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();
 
         builder.HasIndex(x => x.PostId);
 
-        builder.Property(x => x.PostId).HasColumnType("varchar(36)").IsRequired();
+        builder.Property(x => x.PostId).IsRequired();
 
-        builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
+        builder.Property(x => x.AuthorId).IsRequired();
 
         builder.Property(x => x.DateAndTimeOfShare).IsRequired();
 
