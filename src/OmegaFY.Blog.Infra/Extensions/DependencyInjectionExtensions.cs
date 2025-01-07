@@ -62,7 +62,7 @@ public static class DependencyInjectionExtensions
         TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
         {
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
             RequireAudience = true,
             RequireExpirationTime = true,
             RequireSignedTokens = true,
