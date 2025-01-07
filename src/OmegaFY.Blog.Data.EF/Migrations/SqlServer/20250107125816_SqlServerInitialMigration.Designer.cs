@@ -12,7 +12,7 @@ using OmegaFY.Blog.Data.EF.Context;
 namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
 {
     [DbContext(typeof(SqlServerQueryContext))]
-    [Migration("20250106194708_SqlServerInitialMigration")]
+    [Migration("20250107125816_SqlServerInitialMigration")]
     partial class SqlServerInitialMigration
     {
         /// <inheritdoc />
@@ -461,7 +461,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Avaliations")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", "Post")
@@ -480,7 +480,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", "Post")
@@ -510,7 +510,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Reactions")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.CommentDatabaseModel", "Comment")
@@ -529,7 +529,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.UserDatabaseModel", "Author")
                         .WithMany("Shareds")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OmegaFY.Blog.Data.EF.Models.PostDatabaseModel", "Post")

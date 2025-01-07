@@ -18,7 +18,7 @@ public class ReactionDatabaseModelMapping : IEntityTypeConfiguration<ReactionDat
 
         builder.Property(x => x.CommentReaction).HasMaxLength(50).IsUnicode(false).HasConversion<string>().IsRequired();
 
-        builder.HasOne(x => x.Author).WithMany(x => x.Reactions).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Author).WithMany(x => x.Reactions).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.NoAction);
 
         builder.ToTable("Reactions");
     }

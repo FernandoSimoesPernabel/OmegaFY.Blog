@@ -218,8 +218,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                         name: "FK_Avaliations_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -246,8 +245,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                         name: "FK_Comments_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -272,8 +270,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                         name: "FK_Shares_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -298,8 +295,7 @@ namespace OmegaFY.Blog.Data.EF.Migrations.SqlServer
                         name: "FK_Reactions_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

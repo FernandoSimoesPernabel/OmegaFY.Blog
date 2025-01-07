@@ -22,7 +22,7 @@ public class SharedDatabaseModelMapping : IEntityTypeConfiguration<SharedDatabas
 
         builder.Property(x => x.DateAndTimeOfShare).IsRequired();
 
-        builder.HasOne(x => x.Author).WithMany(x => x.Shareds).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Author).WithMany(x => x.Shareds).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Post).WithMany(x => x.Shareds).HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
 
