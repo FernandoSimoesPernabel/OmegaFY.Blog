@@ -10,13 +10,13 @@ public class ReactionMapping : IEntityTypeConfiguration<Reaction>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
+        builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();
 
-        builder.Property(x => x.CommentId).HasColumnType("varchar(36)").IsRequired();
+        builder.Property(x => x.CommentId).IsRequired();
 
-        builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
+        builder.Property(x => x.AuthorId).IsRequired();
 
-        builder.Property(x => x.CommentReaction).HasColumnType("varchar(50)").HasConversion<string>().IsRequired();
+        builder.Property(x => x.CommentReaction).HasMaxLength(50).HasConversion<string>().IsUnicode(false).IsRequired();
 
         builder.ToTable("Reactions");
     }

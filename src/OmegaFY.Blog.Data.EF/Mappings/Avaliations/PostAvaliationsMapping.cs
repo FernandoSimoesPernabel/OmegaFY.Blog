@@ -10,9 +10,9 @@ public class PostAvaliationsMapping : IEntityTypeConfiguration<PostAvaliations>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
+        builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();
 
-        builder.Property(x => x.AverageRate).HasColumnType("numeric").IsRequired().HasDefaultValue(0);
+        builder.Property(x => x.AverageRate).IsRequired().HasDefaultValue(0);
 
         builder.HasMany(x => x.Avaliations).WithOne().HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);
 

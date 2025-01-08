@@ -1,4 +1,5 @@
-﻿using OmegaFY.Blog.Common.Constantes;
+﻿using OmegaFY.Blog.Common.Configs;
+using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Data.EF.Extensions;
 using OmegaFY.Blog.Infra.IoC;
 
@@ -8,7 +9,11 @@ public class HealthCheckRegistration : IDependencyInjectionRegister
 {
     public void Register(WebApplicationBuilder builder)
     {
-        builder.Services.AddHealthChecks().AddSqlLiteHealthCheck(builder.Configuration);
+        DatabaseOptions database = builder.Configuration.GetDatabaseConfig();
+
+        builder.Services.AddHealthChecks()
+            .AddSqliteHealthCheck(builder.Configuration)
+            .AddSqlServerHealthCheck(builder.Configuration);
 
         builder.Services.AddHealthChecksUI(options =>
         {

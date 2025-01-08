@@ -10,7 +10,7 @@ public record class PagedResultInfo
 
     public int TotalOfItens { get; }
 
-    public bool HasPrevious => CurrentPage > 1;
+    public bool HasPrevious => TotalPages > 0 && CurrentPage > 1;
 
     public bool HasNext => CurrentPage < TotalPages;
 

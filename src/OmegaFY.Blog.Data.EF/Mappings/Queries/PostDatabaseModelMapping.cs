@@ -11,23 +11,23 @@ public class PostDatabaseModelMapping : IEntityTypeConfiguration<PostDatabaseMod
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).HasColumnType("varchar(36)").IsRequired().ValueGeneratedNever();
+        builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();
 
-        builder.Property(x => x.AuthorId).HasColumnType("varchar(36)").IsRequired();
+        builder.Property(x => x.AuthorId).IsRequired();
 
         builder.Property(x => x.Private).IsRequired();
 
-        builder.Property(x => x.Content).HasColumnType("text").IsRequired();
+        builder.Property(x => x.Content).IsUnicode().IsRequired();
 
-        builder.Property(x => x.Title).HasColumnType($"varchar({PostConstants.MAX_TITLE_LENGTH})").IsRequired();
+        builder.Property(x => x.Title).HasMaxLength(PostConstants.MAX_TITLE_LENGTH).IsUnicode(false).IsRequired();
 
-        builder.Property(x => x.SubTitle).HasColumnType($"varchar({PostConstants.MAX_SUBTITLE_LENGTH})").IsRequired();
+        builder.Property(x => x.SubTitle).HasMaxLength(PostConstants.MAX_SUBTITLE_LENGTH).IsUnicode(false).IsRequired();
 
-        builder.Property(x => x.DateOfCreation).HasColumnType("datetime").IsRequired();
+        builder.Property(x => x.DateOfCreation).IsRequired();
 
-        builder.Property(x => x.DateOfModification).HasColumnType("datetime").IsRequired(false);
+        builder.Property(x => x.DateOfModification).IsRequired(false);
 
-        builder.Property(x => x.AverageRate).HasColumnType("numeric").IsRequired().HasDefaultValue(0);
+        builder.Property(x => x.AverageRate).IsRequired().HasDefaultValue(0);
 
         builder.HasOne(x => x.Author).WithMany(x => x.Posts).HasForeignKey(x => x.AuthorId).OnDelete(DeleteBehavior.Cascade);
 

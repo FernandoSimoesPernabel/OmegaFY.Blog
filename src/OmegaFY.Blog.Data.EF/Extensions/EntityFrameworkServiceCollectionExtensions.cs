@@ -7,6 +7,7 @@ using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Comments;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Posts;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Shares;
+using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Data.EF.Context;
 using OmegaFY.Blog.Data.EF.Interceptors;
 using OmegaFY.Blog.Data.EF.QueryProviders;
@@ -21,43 +22,34 @@ namespace OmegaFY.Blog.Data.EF.Extensions;
 
 public static class EFServiceCollectionExtensions
 {
-    public static IServiceCollection AddEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+    public static IServiceCollection AddSqliteEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
-        string sqlLiteConnectionString = configuration.GetSqlLiteConnectionString();
-
-        services.AddDbContextPool<AvaliationsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
-        services.AddDbContextPool<CommentsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
-        services.AddDbContextPool<DonationsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
-        services.AddDbContextPool<PostsContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
-        services.AddDbContextPool<SharesContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
-        services.AddDbContextPool<UsersContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString));
-
-        services.AddDbContextPool<QueryContext>(ConfigureSqlLiteOptions(environment, sqlLiteConnectionString, QueryTrackingBehavior.NoTracking));
-
-        return services;
+        return services.AddEntityFrameworkContexts(configuration.GetSqliteConnectionString(), DatabaseOptions.Sqlite, environment);
     }
 
-    private static Action<DbContextOptionsBuilder> ConfigureSqlLiteOptions(
-        IHostEnvironment environment,
-        string sqlLiteConnectionString,
-        QueryTrackingBehavior trackingBehavior = QueryTrackingBehavior.TrackAll)
+    public static IServiceCollection AddSqlServerEntityFrameworkContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
-        return options =>
-        {
-            options.UseSqlite(sqlLiteConnectionString).UseQueryTrackingBehavior(trackingBehavior);
+        return services.AddEntityFrameworkContexts(configuration.GetSqlServerConnectionString(), DatabaseOptions.SqlServer, environment);
+    }
 
-            if (environment.IsDevelopment())
-            {
-                options.EnableDetailedErrors();
-                options.EnableSensitiveDataLogging();
+    public static IServiceCollection AddEntityFrameworkContexts(
+        this IServiceCollection services,
+        string connectionString,
+        DatabaseOptions database,
+        IHostEnvironment environment)
+    {
+        Action<DbContextOptionsBuilder> allTrackingOptions = ConfigureDbContextOptionsBuilder(environment, connectionString, database);
 
-                options.AddInterceptors(
-                    new CustomDbCommandInterceptor(),
-                    new CustomDbConnectionInterceptor(),
-                    new CustomDbTransactionInterceptor(),
-                    new CustomSaveChangesInterceptor());
-            }
-        };
+        services.AddDbContextPool<AvaliationsContext>(allTrackingOptions);
+        services.AddDbContextPool<CommentsContext>(allTrackingOptions);
+        services.AddDbContextPool<DonationsContext>(allTrackingOptions);
+        services.AddDbContextPool<PostsContext>(allTrackingOptions);
+        services.AddDbContextPool<SharesContext>(allTrackingOptions);
+        services.AddDbContextPool<UsersContext>(allTrackingOptions);
+
+        services.AddDbContextPool<QueryContext>(ConfigureDbContextOptionsBuilder(environment, connectionString, database, QueryTrackingBehavior.NoTracking));
+
+        return services;
     }
 
     public static IdentityBuilder AddEntityFrameworkIdentityUserConfiguration(this IdentityBuilder identityBuilder)
@@ -86,5 +78,33 @@ public static class EFServiceCollectionExtensions
         services.AddScoped<ICommentQueryProvider, CommentQueryProvider>();
 
         return services;
+    }
+
+    private static Action<DbContextOptionsBuilder> ConfigureDbContextOptionsBuilder(
+        IHostEnvironment environment,
+        string sqliteConnectionString,
+        DatabaseOptions database,
+        QueryTrackingBehavior trackingBehavior = QueryTrackingBehavior.TrackAll)
+    {
+        return options =>
+        {
+            if (database == DatabaseOptions.Sqlite)
+                options.UseSqlite(sqliteConnectionString).UseQueryTrackingBehavior(trackingBehavior);
+
+            if (database == DatabaseOptions.SqlServer)
+                options.UseSqlServer(sqliteConnectionString).UseQueryTrackingBehavior(trackingBehavior);
+
+            if (environment.IsDevelopment())
+            {
+                options.EnableDetailedErrors();
+                options.EnableSensitiveDataLogging();
+
+                options.AddInterceptors(
+                    new CustomDbCommandInterceptor(),
+                    new CustomDbConnectionInterceptor(),
+                    new CustomDbTransactionInterceptor(),
+                    new CustomSaveChangesInterceptor());
+            }
+        };
     }
 }
