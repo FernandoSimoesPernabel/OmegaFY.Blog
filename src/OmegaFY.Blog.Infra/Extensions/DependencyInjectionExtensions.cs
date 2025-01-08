@@ -71,7 +71,7 @@ public static class DependencyInjectionExtensions
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
             ValidAudience = jwtSettings.Audience,
-            ValidIssuer = jwtSettings.Issuer,
+            ValidIssuer = jwtSettings.Issuer
         };
 
         services.AddAuthentication(options =>

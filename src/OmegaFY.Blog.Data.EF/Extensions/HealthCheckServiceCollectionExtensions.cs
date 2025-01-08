@@ -9,4 +9,9 @@ public static class HealthCheckServiceCollectionExtensions
     {
         return healthChecksBuilder.AddSqlite(configuration.GetSqliteConnectionString(), name: "Sqlite", tags: ["database", "storage", "sql"]);
     }
+
+    public static IHealthChecksBuilder AddSqlServerHealthCheck(this IHealthChecksBuilder healthChecksBuilder, IConfiguration configuration)
+    {
+        return healthChecksBuilder.AddSqlServer(configuration.GetSqlServerConnectionString(), name: "SqlServer", tags: ["database", "storage", "sql"]);
+    }
 }
