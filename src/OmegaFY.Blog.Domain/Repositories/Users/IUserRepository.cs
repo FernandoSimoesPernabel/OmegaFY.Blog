@@ -1,4 +1,5 @@
 ﻿using OmegaFY.Blog.Domain.Entities.Users;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Domain.Repositories.Users;
 

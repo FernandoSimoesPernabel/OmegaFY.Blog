@@ -21,8 +21,8 @@ public class Avaliation : Entity
     {
         PostId = postId;
         AuthorId = authorId;
-        ModificationDetails = new ModificationDetails();
         ChangeRating(rate);
+        ModificationDetails = new ModificationDetails();
     }
 
     internal void ChangeRating(Stars rate)
@@ -32,7 +32,6 @@ public class Avaliation : Entity
 
         Rate = rate;
 
-        if (ModificationDetails is not null)
-            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
+        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 }

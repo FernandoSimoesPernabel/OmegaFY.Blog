@@ -4,6 +4,7 @@ using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 using Xunit;
 
 namespace OmegaFY.Blog.Test.Unit.Domain.Entities;
@@ -37,19 +38,6 @@ public class PostFacts
         //Assert
         sut.Header.Should().NotBeNull();
         sut.Header.Should().BeEquivalentTo(validHeader);
-    }
-
-    [Fact]
-    public void Constructor_PassingNullHeader_ShouldThrowDomainArgumentException()
-    {
-        //Arrange
-        Header nullHeader = null;
-
-        //Act
-        Action sut = () => new Post(CreateAuthor(), nullHeader, CreateBody());
-
-        //Assert
-        sut.Should().Throw<DomainArgumentException>().WithMessage("Não foi informado corretamente um cabeçalho para esse post.");
     }
 
     [Fact]
@@ -180,19 +168,6 @@ public class PostFacts
     }
 
     [Fact]
-    public void ChangeContent_NullHeader_ShouldThrowDomainArgumentException()
-    {
-        // Arrange
-        Post sut = CreatePost();
-
-        // Act
-        Action action = () => sut.ChangeContent(null, CreateBody());
-
-        // Assert
-        action.Should().Throw<DomainArgumentException>().WithMessage("Não foi informado corretamente um cabeçalho para esse post.");
-    }
-
-    [Fact]
     public void ChangeContent_BodyExceedsMaxLength_ShouldThrowDomainArgumentException()
     {
         // Arrange
@@ -275,7 +250,7 @@ public class PostFacts
         sut.Private.Should().BeFalse();
     }
 
-    private Post CreatePost(ReferenceId? authorId = null, Header header = null, Body? body = null, bool @private = false)
+    private Post CreatePost(ReferenceId? authorId = null, Header? header = null, Body? body = null, bool @private = false)
     {
         Post post = null;
 
@@ -285,7 +260,7 @@ public class PostFacts
 
         body = CreateBody(body);
 
-        post = new Post(authorId.Value, header, body.Value);
+        post = new Post(authorId.Value, header ?? new Header(), body.Value);
 
         if (@private)
             post.MakePrivate();
@@ -295,7 +270,7 @@ public class PostFacts
 
     private ReferenceId CreateAuthor(ReferenceId? authorId = null) => authorId ?? new ReferenceId(Guid.NewGuid());
 
-    private Header CreateHeader(Header header = null)
+    private Header CreateHeader(Header? header = null)
     {
         if (header is null)
         {
@@ -307,7 +282,7 @@ public class PostFacts
                 subTitle.Substring(0, Math.Min(subTitle.Length, PostConstants.MAX_SUBTITLE_LENGTH)));
         }
 
-        return header;
+        return header ?? new Header();
     }
 
     private Body CreateBody(Body? body = null)

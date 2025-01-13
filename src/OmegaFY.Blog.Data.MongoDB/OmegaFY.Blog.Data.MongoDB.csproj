@@ -8,11 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
+    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.28.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="9.0.0" />
+    <Folder Include="QueryProviders\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -21,25 +21,20 @@ public class Post : Entity, IAggregateRoot<Post>
 
     public Post(ReferenceId authorId, Header header, Body body)
     {
-        ChangeContent(header, body);
         AuthorId = authorId;
         Private = false;
+        ChangeContent(header, body);
         ModificationDetails = new ModificationDetails();
     }
 
     public void ChangeContent(Header header, Body body)
     {
-        if (header is null)
-            throw new DomainArgumentException("Não foi informado corretamente um cabeçalho para esse post.");
-
         if (body.Content.Length > PostConstants.MAX_POST_BODY_LENGTH)
             throw new DomainArgumentException("O conteúdo desse post foi informado incorretamente.");
 
-        if (ModificationDetails is not null)
-            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
-
         Header = header;
         Body = body;
+        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 
     public void MakePrivate() => Private = true;

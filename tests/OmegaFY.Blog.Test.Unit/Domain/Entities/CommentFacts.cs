@@ -6,6 +6,7 @@ using OmegaFY.Blog.Domain.Entities.Comments;
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 using Xunit;
 
 namespace OmegaFY.Blog.Test.Unit.Domain.Entities;

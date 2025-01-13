@@ -20,7 +20,7 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
 
         builder.Property(x => x.Body).HasMaxLength(PostConstants.MAX_COMMENT_BODY_LENGTH).IsUnicode().IsRequired();
 
-        builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
+        builder.ComplexProperty(x => x.ModificationDetails, modificationDetails =>
         {
             modificationDetails.Property(x => x.DateOfCreation).HasColumnName(nameof(ModificationDetails.DateOfCreation)).IsRequired();
             modificationDetails.Property(x => x.DateOfModification).HasColumnName(nameof(ModificationDetails.DateOfModification)).IsRequired(false);

@@ -49,9 +49,7 @@ public class Comment : Entity
             throw new DomainArgumentException($"O máximo de caracteres de um comentário é {PostConstants.MAX_COMMENT_BODY_LENGTH}.");
 
         Body = newBody;
-
-        if (ModificationDetails is not null)
-            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
+        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 
     internal void React(Reaction reaction)

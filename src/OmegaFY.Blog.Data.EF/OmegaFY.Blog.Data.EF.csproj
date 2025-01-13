@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OmegaFY.Blog.Application\OmegaFY.Blog.Application.csproj" />
+    <ProjectReference Include="..\OmegaFY.Blog.Common\OmegaFY.Blog.Common.csproj" />
     <ProjectReference Include="..\OmegaFY.Blog.Domain\OmegaFY.Blog.Domain.csproj" />
   </ItemGroup>
 

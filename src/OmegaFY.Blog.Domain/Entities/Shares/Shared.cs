@@ -1,4 +1,6 @@
-﻿namespace OmegaFY.Blog.Domain.Entities.Shares;
+﻿using OmegaFY.Blog.Domain.ValueObjects.Shared;
+
+namespace OmegaFY.Blog.Domain.Entities.Shares;
 
 public class Shared : Entity
 {

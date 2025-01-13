@@ -1,5 +1,6 @@
 ﻿using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Entities.Shares;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Domain.Repositories.Shares;
 

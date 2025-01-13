@@ -3,7 +3,7 @@ using OmegaFY.Blog.Domain.Exceptions;
 
 namespace OmegaFY.Blog.Domain.ValueObjects.Posts;
 
-public record class Header
+public readonly record struct Header
 {
     public string Title { get; }
 
