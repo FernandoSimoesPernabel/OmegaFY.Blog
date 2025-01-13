@@ -47,7 +47,7 @@ public class RefreshTokenCommandHandler : CommandHandlerMediatRBase<RefreshToken
         if (command.CurrentToken != currentToken.Value.Token) throw new InvalidOperationException();
 
         AuthenticationToken newAuthToken =
-            await _authenticationService.RefreshTokenAsync(currentToken.Value, new RefreshTokenInput(user.Id, user.Email, user.DisplayName));
+            await _authenticationService.RefreshTokenAsync(currentToken.Value, new RefreshTokenInput(user.Id, user.Email, user.DisplayName), cancellationToken);
 
         await _distributedCache.RemoveAuthenticationTokenCacheAsync(user.Id, command.RefreshToken, cancellationToken);
 

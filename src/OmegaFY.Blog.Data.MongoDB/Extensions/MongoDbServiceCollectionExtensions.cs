@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using OmegaFY.Blog.Data.MongoDB.Authentication;
 using OmegaFY.Blog.Data.MongoDB.Constants;
 using OmegaFY.Blog.Data.MongoDB.Context;
 using OmegaFY.Blog.Data.MongoDB.Repositories;
 using OmegaFY.Blog.Domain.Repositories.Posts;
+using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Data.MongoDB.Extensions;
 
@@ -37,6 +39,13 @@ public static class MongoDbServiceCollectionExtensions
         });
         
         return identityBuilder;
+    }
+
+    public static IServiceCollection AddMongoDbUserManager(this IServiceCollection services)
+    {
+        services.AddScoped<IUserManager, MongoDbUserManager>();
+
+        return services;
     }
 
     public static IServiceCollection AddMongoDbRepositories(this IServiceCollection services)

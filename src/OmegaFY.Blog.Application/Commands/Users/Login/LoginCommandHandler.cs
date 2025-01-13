@@ -38,7 +38,8 @@ public class LoginCommandHandler : CommandHandlerMediatRBase<LoginCommandHandler
         if (user is null)
             throw new NotFoundException();
 
-        AuthenticationToken authToken = await _authenticationService.LoginAsync(new LoginInput(user.Id, user.Email, command.Password, user.DisplayName));
+        AuthenticationToken authToken = 
+            await _authenticationService.LoginAsync(new LoginInput(user.Id, user.Email, command.Password, user.DisplayName), cancellationToken);
 
         await _distributedCache.SetAuthenticationTokenCacheAsync(user.Id, authToken, cancellationToken);
 

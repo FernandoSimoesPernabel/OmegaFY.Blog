@@ -23,6 +23,9 @@ public class IdentityUserRegistration : IDependencyInjectionRegister
         }
 
         if (database == DatabaseOptions.MongoDb)
+        {
+            builder.Services.AddMongoDbUserManager();
             builder.Services.AddIdentity(builder.Configuration).AddMongoDbIdentityUserConfiguration(builder.Configuration).AddDefaultTokenProviders();
+        }
     }
 }

@@ -21,7 +21,7 @@ internal sealed class AuthenticationService : IAuthenticationService
 
     public async Task<AuthenticationToken> RegisterNewUserAsync(LoginInput loginInput, CancellationToken cancellationToken)
     {
-        bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginInput.Email) is not null;
+        bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginInput.Email, cancellationToken) is not null;
 
         if (userAlreadyRegister)
             throw new ConflictedException();
@@ -33,27 +33,27 @@ internal sealed class AuthenticationService : IAuthenticationService
             UserName = loginInput.Email
         };
 
-        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginInput.Password);
+        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginInput.Password, cancellationToken);
 
         if (!createUserResult.Succeeded)
             throw new UnableToCreateUserOnIdentityException();
 
-        return await LoginAsync(loginInput);
+        return await LoginAsync(loginInput, cancellationToken);
     }
 
-    public async Task<AuthenticationToken> LoginAsync(LoginInput loginInput)
+    public async Task<AuthenticationToken> LoginAsync(LoginInput loginInput, CancellationToken cancellationToken)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(loginInput.Email);
+        IdentityUser identityUser = await _userManager.FindByEmailAsync(loginInput.Email, cancellationToken);
 
-        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password))
+        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password, cancellationToken))
             throw new UnauthorizedException();
 
         return _jwtProvider.WriteToken(loginInput);
     }
 
-    public async Task<AuthenticationToken> RefreshTokenAsync(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput)
+    public async Task<AuthenticationToken> RefreshTokenAsync(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput, CancellationToken cancellationToken)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email);
+        IdentityUser identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email, cancellationToken);
 
         if (identityUser is null)
             throw new UnauthorizedException();
