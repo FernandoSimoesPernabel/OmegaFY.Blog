@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using OmegaFY.Blog.Data.MongoDB.Repositories.Base;
 using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Repositories.Posts;

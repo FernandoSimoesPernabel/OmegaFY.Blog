@@ -1,4 +1,5 @@
-﻿using AspNetCore.Identity.MongoDbCore.Models;
+﻿using AspNetCore.Identity.Mongo;
+using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,10 @@ public static class MongoDbServiceCollectionExtensions
     {
         string connectionString = configuration.GetMongoDbConnectionString();
 
-        identityBuilder.AddMongoDbStores<MongoIdentityUser, MongoIdentityRole, Guid>(connectionString, MongoDbContants.DATABASE_NAME);
+        identityBuilder.AddMongoDbStores<MongoUser<string>, MongoRole<string>, string>(options =>
+        {
+            options.ConnectionString = connectionString;
+        });
         
         return identityBuilder;
     }

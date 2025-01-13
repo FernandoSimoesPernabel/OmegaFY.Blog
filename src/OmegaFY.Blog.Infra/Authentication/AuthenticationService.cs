@@ -2,17 +2,18 @@
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Authentication.Token;
+using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.Exceptions;
 
 namespace OmegaFY.Blog.Infra.Authentication;
 
 internal sealed class AuthenticationService : IAuthenticationService
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUserManager _userManager;
 
     private readonly IJwtProvider _jwtProvider;
 
-    public AuthenticationService(UserManager<IdentityUser> userManager, IJwtProvider jwtProvider)
+    public AuthenticationService(IUserManager userManager, IJwtProvider jwtProvider)
     {
         _userManager = userManager;
         _jwtProvider = jwtProvider;
