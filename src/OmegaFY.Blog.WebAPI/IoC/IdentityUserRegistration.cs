@@ -16,6 +16,8 @@ public class IdentityUserRegistration : IDependencyInjectionRegister
 
         builder.Services.AddIdentityUserConfiguration(builder.Configuration);
 
+        builder.Services.AddAuthenticationSettings(builder.Configuration);
+
         if (database.In(DatabaseOptions.Sqlite, DatabaseOptions.SqlServer))
         {
             builder.Services.AddEntityFrameworkUserManager();
@@ -25,7 +27,7 @@ public class IdentityUserRegistration : IDependencyInjectionRegister
         if (database == DatabaseOptions.MongoDb)
         {
             builder.Services.AddMongoDbUserManager();
-            builder.Services.AddIdentity(builder.Configuration).AddMongoDbIdentityUserConfiguration(builder.Configuration).AddDefaultTokenProviders();
+            builder.Services.AddMongoDbIdentityUserConfiguration(builder.Configuration).AddDefaultTokenProviders();
         }
     }
 }

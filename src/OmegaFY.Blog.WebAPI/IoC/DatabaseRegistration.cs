@@ -30,6 +30,7 @@ public class DatabaseRegistration : IDependencyInjectionRegister
         {
             builder.Services.AddMongoDb(builder.Configuration);
             builder.Services.AddMongoDbRepositories();
+            builder.Services.AddMongoDbQueryProviders();
 
             return;
         }

@@ -26,14 +26,7 @@ internal sealed class AuthenticationService : IAuthenticationService
         if (userAlreadyRegister)
             throw new ConflictedException();
 
-        IdentityUser identityUser = new()
-        {
-            Email = loginInput.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = loginInput.Email
-        };
-
-        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginInput.Password, cancellationToken);
+        IdentityResult createUserResult = await _userManager.CreateAsync(loginInput, cancellationToken);
 
         if (!createUserResult.Succeeded)
             throw new UnableToCreateUserOnIdentityException();
@@ -43,9 +36,7 @@ internal sealed class AuthenticationService : IAuthenticationService
 
     public async Task<AuthenticationToken> LoginAsync(LoginInput loginInput, CancellationToken cancellationToken)
     {
-        IdentityUser<string> identityUser = await _userManager.FindByEmailAsync(loginInput.Email, cancellationToken);
-
-        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password, cancellationToken))
+        if (!await _userManager.CheckPasswordAsync(loginInput, cancellationToken))
             throw new UnauthorizedException();
 
         return _jwtProvider.WriteToken(loginInput);
