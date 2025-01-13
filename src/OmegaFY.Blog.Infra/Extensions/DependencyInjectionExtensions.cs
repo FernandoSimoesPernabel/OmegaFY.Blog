@@ -118,7 +118,7 @@ public static class DependencyInjectionExtensions
             options.SignIn.RequireConfirmedAccount = authSettings.RequireConfirmedAccount;
         });
 
-        return services.AddIdentity<IdentityUser, IdentityRole>();
+        return services.AddIdentity<IdentityUser<string>, IdentityRole<string>>();
     }
 
     public static IServiceCollection AddDistributedCache(this IServiceCollection services)

@@ -3,6 +3,7 @@ using AspNetCore.Identity.Mongo.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using OmegaFY.Blog.Data.MongoDB.Authentication;
 using OmegaFY.Blog.Data.MongoDB.Constants;
@@ -37,7 +38,7 @@ public static class MongoDbServiceCollectionExtensions
         {
             options.ConnectionString = connectionString;
         });
-        
+
         return identityBuilder;
     }
 

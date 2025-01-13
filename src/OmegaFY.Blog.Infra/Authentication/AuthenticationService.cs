@@ -43,7 +43,7 @@ internal sealed class AuthenticationService : IAuthenticationService
 
     public async Task<AuthenticationToken> LoginAsync(LoginInput loginInput, CancellationToken cancellationToken)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(loginInput.Email, cancellationToken);
+        IdentityUser<string> identityUser = await _userManager.FindByEmailAsync(loginInput.Email, cancellationToken);
 
         if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password, cancellationToken))
             throw new UnauthorizedException();
@@ -53,7 +53,7 @@ internal sealed class AuthenticationService : IAuthenticationService
 
     public async Task<AuthenticationToken> RefreshTokenAsync(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput, CancellationToken cancellationToken)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email, cancellationToken);
+        IdentityUser<string> identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email, cancellationToken);
 
         if (identityUser is null)
             throw new UnauthorizedException();

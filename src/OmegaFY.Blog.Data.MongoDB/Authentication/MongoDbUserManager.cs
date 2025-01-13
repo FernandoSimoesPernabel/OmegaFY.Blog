@@ -1,37 +1,43 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AspNetCore.Identity.Mongo.Model;
+using Microsoft.AspNetCore.Identity;
 using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Data.MongoDB.Authentication;
 
 internal class MongoDbUserManager : IUserManager
 {
-    private readonly IUserStore<IdentityUser> _userStore;
+    private readonly IUserStore<MongoUser<string>> _userStore;
 
-    private readonly IUserPasswordStore<IdentityUser> _passwordStore;
+    private readonly IUserPasswordStore<MongoUser<string>> _passwordStore;
 
-    public MongoDbUserManager(IUserStore<IdentityUser> userStore, IUserPasswordStore<IdentityUser> passwordStore)
+    public MongoDbUserManager(IUserStore<MongoUser<string>> userStore, IUserPasswordStore<MongoUser<string>> passwordStore)
     {
         _userStore = userStore;
         _passwordStore = passwordStore;
     }
 
-    public async Task<bool> CheckPasswordAsync(IdentityUser identityUser, string password, CancellationToken cancellationToken)
+    public async Task<bool> CheckPasswordAsync(IdentityUser<string> identityUser, string password, CancellationToken cancellationToken)
     {
-        bool hasPassword = await _passwordStore.HasPasswordAsync(identityUser, cancellationToken);
+        MongoUser<string> mongoIdentityUser = identityUser as MongoUser<string>;
 
-        string passwordHash = await _passwordStore.GetPasswordHashAsync(identityUser, cancellationToken);
+        bool hasPassword = await _passwordStore.HasPasswordAsync(mongoIdentityUser, cancellationToken);
+
+        string passwordHash = await _passwordStore.GetPasswordHashAsync(mongoIdentityUser, cancellationToken);
         
         return hasPassword && passwordHash == password;
     }
 
-    public async Task<IdentityResult> CreateAsync(IdentityUser identityUser, string password, CancellationToken cancellationToken)
+    public async Task<IdentityResult> CreateAsync(IdentityUser<string> identityUser, string password, CancellationToken cancellationToken)
     {
-        await _userStore.CreateAsync(identityUser, cancellationToken);
+        MongoUser<string> mongoIdentityUser = identityUser as MongoUser<string>;
 
-        await _passwordStore.SetPasswordHashAsync(identityUser, password, cancellationToken);
+        await _userStore.CreateAsync(mongoIdentityUser, cancellationToken);
+
+        await _passwordStore.SetPasswordHashAsync(mongoIdentityUser, password, cancellationToken);
 
         return IdentityResult.Success;
     }
 
-    public Task<IdentityUser> FindByEmailAsync(string email, CancellationToken cancellationToken) => _userStore.FindByNameAsync(email, cancellationToken);
+    public async Task<IdentityUser<string>> FindByEmailAsync(string email, CancellationToken cancellationToken) 
+        => await _userStore.FindByNameAsync(email, cancellationToken);
 }
