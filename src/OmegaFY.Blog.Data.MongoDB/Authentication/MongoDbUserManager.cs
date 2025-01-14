@@ -25,6 +25,7 @@ internal class MongoDbUserManager : IUserManager
     {
         MongoUser<string> identityUser = new()
         {
+            Id = loginInput.UserId.ToString(),
             Email = loginInput.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
             UserName = loginInput.Email

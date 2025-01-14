@@ -5,6 +5,7 @@ using OmegaFY.Blog.Data.MongoDB.Serializers;
 using OmegaFY.Blog.Domain.Entities.Avaliations;
 using OmegaFY.Blog.Domain.Entities.Comments;
 using OmegaFY.Blog.Domain.Entities.Shares;
+using OmegaFY.Blog.Domain.Entities.Users;
 
 namespace OmegaFY.Blog.Data.MongoDB.Context;
 
@@ -34,6 +35,19 @@ public static class MongoDbContext
             classMap.MapMember(x => x.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
 
             classMap.MapMember(x => x.Private);
+
+            classMap.MapCreator(post => new Post(post.Id, post.AuthorId, post.Header, post.Body, post.ModificationDetails, post.Private));
+        });
+
+        BsonClassMap.RegisterClassMap<User>(classMap =>
+        {
+            classMap.AutoMap();
+
+            classMap.MapMember(x => x.Email);
+
+            classMap.MapMember(x => x.DisplayName);
+
+            classMap.MapCreator(user => new User(user.Id, user.Email, user.DisplayName));
         });
     }
 

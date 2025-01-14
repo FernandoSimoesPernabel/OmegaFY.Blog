@@ -19,5 +19,15 @@ internal class HeaderSerializer : StructSerializerBase<Header>
     }
 
     public override Header Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
-        => new Header(context.Reader.ReadString(nameof(Header.Title)), context.Reader.ReadString(nameof(Header.SubTitle)));
+    {
+        context.Reader.ReadStartDocument();
+
+        string title = context.Reader.ReadString(nameof(Header.Title));
+
+        string subtitle = context.Reader.ReadString(nameof(Header.SubTitle));
+
+        context.Reader.ReadEndDocument();
+
+        return new Header(title, subtitle);
+    }
 }

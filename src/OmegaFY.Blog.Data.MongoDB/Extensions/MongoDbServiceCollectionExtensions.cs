@@ -20,7 +20,6 @@ using OmegaFY.Blog.Domain.Repositories.Comments;
 using OmegaFY.Blog.Domain.Repositories.Posts;
 using OmegaFY.Blog.Domain.Repositories.Shares;
 using OmegaFY.Blog.Domain.Repositories.Users;
-using OmegaFY.Blog.Infra.Authentication.Configs;
 using OmegaFY.Blog.Infra.Authentication.Users;
 
 namespace OmegaFY.Blog.Data.MongoDB.Extensions;

@@ -24,6 +24,8 @@ internal class MakePostPrivateCommandHandler : CommandHandlerMediatRBase<MakePos
 
         existingPost.MakePrivate();
 
+        await _repository.UpdatePostAsync(existingPost, cancellationToken);
+
         await _repository.SaveChangesAsync(cancellationToken);
 
         return new();

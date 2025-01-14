@@ -19,6 +19,6 @@ internal sealed class PostRepository : BaseRepository<Post>, IPostRepository
 
     public Task UpdatePostAsync(Post post, CancellationToken cancellationToken) => Task.CompletedTask;
 
-    public Task<Post> GetByIdAsync(ReferenceId id, ReferenceId authorId, CancellationToken cancellationToken)
-        => _dbSet.FirstOrDefaultAsync(post => post.Id == id && post.AuthorId == authorId, cancellationToken);
+    public Task<Post> GetByIdAsync(ReferenceId postId, ReferenceId authorId, CancellationToken cancellationToken)
+        => _dbSet.FirstOrDefaultAsync(post => post.Id == postId && post.AuthorId == authorId, cancellationToken);
 }

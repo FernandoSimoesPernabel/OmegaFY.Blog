@@ -19,6 +19,15 @@ public class Post : Entity, IAggregateRoot<Post>
 
     protected Post() { }
 
+    public Post(ReferenceId postId, ReferenceId authorId, Header header, Body body, ModificationDetails modificationDetails, bool isPrivate) : base(postId)
+    {
+        AuthorId = authorId;
+        Header = header;
+        Body = body;
+        ModificationDetails = modificationDetails;
+        Private = isPrivate;
+    }
+
     public Post(ReferenceId authorId, Header header, Body body)
     {
         AuthorId = authorId;

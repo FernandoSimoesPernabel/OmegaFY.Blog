@@ -9,5 +9,5 @@ public interface IPostRepository : IRepository<Post>
 
     public Task UpdatePostAsync(Post post, CancellationToken cancellationToken);
 
-    public Task<Post> GetByIdAsync(ReferenceId id, ReferenceId authorId, CancellationToken cancellationToken);
+    public Task<Post> GetByIdAsync(ReferenceId postId, ReferenceId authorId, CancellationToken cancellationToken);
 }
