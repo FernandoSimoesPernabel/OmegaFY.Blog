@@ -1,9 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using OmegaFY.Blog.Data.MongoDB.Constants;
 using OmegaFY.Blog.Data.MongoDB.Repositories.Base;
 using OmegaFY.Blog.Domain.Entities.Avaliations;
-using OmegaFY.Blog.Domain.Entities.Posts;
 using OmegaFY.Blog.Domain.Repositories.Avaliations;
 using OmegaFY.Blog.Domain.ValueObjects.Shared;
 

@@ -17,6 +17,13 @@ public class Avaliation : Entity
 
     protected Avaliation() { }
 
+    public Avaliation(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, Stars rate) : base(avaliationId)
+    {
+        PostId = postId;
+        AuthorId = authorId;
+        Rate = rate;
+    }
+
     public Avaliation(ReferenceId postId, ReferenceId authorId, Stars rate)
     {
         PostId = postId;

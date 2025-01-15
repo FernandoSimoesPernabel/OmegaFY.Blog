@@ -13,4 +13,6 @@ internal sealed class AvaliationRepository : BaseRepository<PostAvaliations>, IA
 
     public Task<PostAvaliations> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
         => _dbSet.Include(post => post.Avaliations).FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
+
+    public Task UpdatePostAvaliationsAsync(PostAvaliations postAvaliations, CancellationToken cancellationToken) => Task.CompletedTask;
 }
