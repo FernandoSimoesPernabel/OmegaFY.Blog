@@ -121,7 +121,7 @@ public static class DependencyInjectionExtensions
         return services;
     }
 
-    public static IdentityBuilder AddIdentity(this IServiceCollection services, IConfiguration configuration)
+    public static IdentityBuilder AddIdentity(this IServiceCollection services)
     {
         return services.AddIdentity<IdentityUser<string>, IdentityRole<string>>();
     }

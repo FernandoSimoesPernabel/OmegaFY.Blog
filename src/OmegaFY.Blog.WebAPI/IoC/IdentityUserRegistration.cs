@@ -21,7 +21,7 @@ public class IdentityUserRegistration : IDependencyInjectionRegister
         if (database.In(DatabaseOptions.Sqlite, DatabaseOptions.SqlServer))
         {
             builder.Services.AddEntityFrameworkUserManager();
-            builder.Services.AddIdentity(builder.Configuration).AddEntityFrameworkIdentityUserConfiguration().AddDefaultTokenProviders();
+            builder.Services.AddIdentity().AddEntityFrameworkStores().AddDefaultTokenProviders();
         }
 
         if (database == DatabaseOptions.MongoDb)

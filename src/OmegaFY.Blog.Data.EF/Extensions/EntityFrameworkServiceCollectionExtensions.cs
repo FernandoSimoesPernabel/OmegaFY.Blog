@@ -54,7 +54,7 @@ public static class EFServiceCollectionExtensions
         return services;
     }
 
-    public static IdentityBuilder AddEntityFrameworkIdentityUserConfiguration(this IdentityBuilder identityBuilder)
+    public static IdentityBuilder AddEntityFrameworkStores(this IdentityBuilder identityBuilder)
     {
         return identityBuilder.AddEntityFrameworkStores<UsersContext>();
     }

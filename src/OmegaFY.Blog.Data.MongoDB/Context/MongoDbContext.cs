@@ -1,11 +1,7 @@
 ﻿using MongoDB.Bson.Serialization;
-using OmegaFY.Blog.Domain.Entities.Posts;
-using OmegaFY.Blog.Domain.Entities;
 using OmegaFY.Blog.Data.MongoDB.Serializers;
-using OmegaFY.Blog.Domain.Entities.Avaliations;
-using OmegaFY.Blog.Domain.Entities.Comments;
-using OmegaFY.Blog.Domain.Entities.Shares;
-using OmegaFY.Blog.Domain.Entities.Users;
+using MongoDB.Bson.Serialization.Serializers;
+using OmegaFY.Blog.Data.MongoDB.Models;
 
 namespace OmegaFY.Blog.Data.MongoDB.Context;
 
@@ -21,154 +17,118 @@ public static class MongoDbContext
 
     public static void RegisterClassMaps()
     {
-        RegisterEntityClassMap();
+        if (BsonClassMap.IsClassMapRegistered(typeof(AvaliationCollectionModel)))
+            return;
 
-        RegisterPostClassMap();
-
-        RegisterPostAvaliationsClassMap();
-
-        RegisterAvaliationClassMap();
-
-        RegisterPostCommentsClassMap();
-
-        RegisterCommentClassMap();
-
-        RegisterReactionClassMap();
-
-        RegisterPostSharesReactionClass();
-
-        RegisterSharedClassMap();
-
-        RegisterUserClassMap();
-    }
-
-    private static void RegisterUserClassMap()
-    {
-        BsonClassMap.RegisterClassMap<User>(classMap =>
+        BsonClassMap.RegisterClassMap<AvaliationCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
-            classMap.MapMember(x => x.Email);
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
-            classMap.MapMember(x => x.DisplayName);
+            classMap.MapMember(map => map.PostId).SetSerializer(new ObjectIdSerializer());
 
-            classMap.MapCreator(user => new User(user.Id, user.Email, user.DisplayName));
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+
+            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
         });
-    }
 
-    private static void RegisterSharedClassMap()
-    {
-        BsonClassMap.RegisterClassMap<Shared>(classMap =>
+        BsonClassMap.RegisterClassMap<PostAvaliationsCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
+            classMap.MapMember(map => map.Avaliations);
         });
-    }
 
-    private static void RegisterPostSharesReactionClass()
-    {
-        BsonClassMap.RegisterClassMap<PostShares>(classMap =>
+        BsonClassMap.RegisterClassMap<CommentCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
+            classMap.MapMember(map => map.PostId).SetSerializer(new ObjectIdSerializer());
+
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+
+            classMap.MapMember(map => map.Body).SetSerializer(new BodySerializer());
+
+            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
+
+            classMap.MapMember(map => map.Reactions);
         });
-    }
 
-    private static void RegisterReactionClassMap()
-    {
-        BsonClassMap.RegisterClassMap<Reaction>(classMap =>
+        BsonClassMap.RegisterClassMap<PostCommentsCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
+            classMap.MapMember(map => map.Comments);
         });
-    }
 
-    private static void RegisterCommentClassMap()
-    {
-        BsonClassMap.RegisterClassMap<Comment>(classMap =>
+        BsonClassMap.RegisterClassMap<PostCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+
+            classMap.MapMember(map => map.Header).SetSerializer(new HeaderSerializer());
+
+            classMap.MapMember(map => map.Body).SetSerializer(new BodySerializer());
+
+            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
+
+            classMap.MapMember(map => map.Private);
         });
-    }
 
-    private static void RegisterPostCommentsClassMap()
-    {
-        BsonClassMap.RegisterClassMap<PostComments>(classMap =>
+        BsonClassMap.RegisterClassMap<ReactionCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
+            classMap.MapMember(map => map.CommentId).SetSerializer(new ObjectIdSerializer());
+
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+
+            classMap.MapMember(map => map.CommentReaction);
         });
-    }
 
-    private static void RegisterAvaliationClassMap()
-    {
-        BsonClassMap.RegisterClassMap<Avaliation>(classMap =>
+        BsonClassMap.RegisterClassMap<SharedCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
-            classMap.MapMember(x => x.PostId);
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
-            classMap.MapMember(x => x.AuthorId);
+            classMap.MapMember(map => map.PostId).SetSerializer(new ObjectIdSerializer());
 
-            classMap.MapMember(x => x.ModificationDetails);
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
 
-            classMap.MapMember(x => x.Rate);
-
-            classMap.MapCreator(avaliation => new Avaliation(avaliation.Id, avaliation.PostId, avaliation.AuthorId, avaliation.Rate));
+            classMap.MapMember(map => map.DateAndTimeOfShare);
         });
-    }
 
-    private static void RegisterPostAvaliationsClassMap()
-    {
-        BsonClassMap.RegisterClassMap<PostAvaliations>(classMap =>
+        BsonClassMap.RegisterClassMap<PostSharesCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
-            classMap.SetIgnoreExtraElements(true);
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
-            classMap.MapMember(x => x.Avaliations);
-
-            classMap.MapMember(x => x.AverageRate);
-
-            classMap.MapCreator(post => new PostAvaliations(post.Id, post.Avaliations, post.AverageRate));
+            classMap.MapMember(map => map.Shareds);
         });
-    }
 
-    private static void RegisterPostClassMap()
-    {
-        BsonClassMap.RegisterClassMap<Post>(classMap =>
+        BsonClassMap.RegisterClassMap<UserCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
-            classMap.MapMember(x => x.AuthorId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
 
-            classMap.MapMember(x => x.Header).SetSerializer(new HeaderSerializer());
+            classMap.MapMember(map => map.Email);
 
-            classMap.MapMember(x => x.Body).SetSerializer(new BodySerializer());
-
-            classMap.MapMember(x => x.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
-
-            classMap.MapMember(x => x.Private);
-
-            classMap.MapCreator(post => new Post(post.Id, post.AuthorId, post.Header, post.Body, post.ModificationDetails, post.Private));
-        });
-    }
-
-    private static void RegisterEntityClassMap()
-    {
-        BsonClassMap.RegisterClassMap<Entity>(classMap =>
-        {
-            classMap.AutoMap();
-
-            classMap.MapMember(x => x.Id).SetSerializer(new ReferenceIdSerializer());
-
-            classMap.SetIsRootClass(true);
+            classMap.MapMember(map => map.DisplayName);
         });
     }
 }

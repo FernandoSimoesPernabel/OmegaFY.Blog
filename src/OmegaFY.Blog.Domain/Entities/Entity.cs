@@ -8,8 +8,6 @@ public abstract class Entity : IEquatable<Entity>
 
     protected Entity() => Id = Ulid.NewUlid().ToGuid();
 
-    protected Entity(ReferenceId id) => Id = id;
-
     public override bool Equals(object obj)
     {
         if (obj is not Entity entity) return false;

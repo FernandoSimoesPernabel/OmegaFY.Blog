@@ -15,7 +15,7 @@ internal class MongoDbUserManager : IUserManager
     {
         MongoUser<string> identityUser = await _userManager.FindByEmailAsync(loginInput.Email);
 
-        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password))
+        if (identityUser is null)
             return false;
 
         return await _userManager.CheckPasswordAsync(identityUser, loginInput.Password);
