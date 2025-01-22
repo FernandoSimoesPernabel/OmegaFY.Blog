@@ -1,5 +1,8 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using OmegaFY.Blog.Data.MongoDB.Constants;
+using OmegaFY.Blog.Data.MongoDB.Extensions;
+using OmegaFY.Blog.Data.MongoDB.Models;
 using OmegaFY.Blog.Data.MongoDB.Repositories.Base;
 using OmegaFY.Blog.Domain.Entities.Users;
 using OmegaFY.Blog.Domain.Repositories.Users;
@@ -7,19 +10,26 @@ using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.MongoDB.Repositories;
 
-internal sealed class UserRepository : BaseRepository<User>, IUserRepository
+internal sealed class UserRepository : BaseRepository<User, UserCollectionModel>, IUserRepository
 {
     protected override string CollectionName => MongoDbContants.USER_COLLECTION;
 
     public UserRepository(IMongoDatabase database) : base(database) { }
 
-    public Task<User> GetByIdAsync(ReferenceId id, CancellationToken cancellationToken) 
-        => _collection.Find(user => user.Id == id).FirstOrDefaultAsync(cancellationToken);
+    public async Task<User> GetByIdAsync(ReferenceId id, CancellationToken cancellationToken)
+    {
+        UserCollectionModel userModel = await _collection.Find(user => user.Id == id.ToObjectId()).FirstOrDefaultAsync(cancellationToken);
+        return userModel?.ToUser();
+    }
 
-    public Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken) 
-        => _collection.Find(user => user.Email == email).FirstOrDefaultAsync(cancellationToken);
+    public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
+    {
+        UserCollectionModel userModel = await _collection.Find(user => user.Email == email).FirstOrDefaultAsync(cancellationToken);
+        return userModel?.ToUser();
+    }
 
-    public Task CreateUserAsync(User user, CancellationToken cancellationToken) => _collection.InsertOneAsync(user, null, cancellationToken);
+    public Task CreateUserAsync(User user, CancellationToken cancellationToken) 
+        => _collection.InsertOneAsync(user.ToUserCollectionModel(), null, cancellationToken);
 
     public async Task<bool> CheckIfUserAlreadyExistsAsync(string email, CancellationToken cancellationToken)
     {

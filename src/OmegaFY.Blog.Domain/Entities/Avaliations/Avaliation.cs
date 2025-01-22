@@ -17,6 +17,13 @@ public class Avaliation : Entity
 
     protected Avaliation() { }
 
+    private Avaliation(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, Stars rate) : base(avaliationId)
+    {
+        PostId = postId;
+        AuthorId = authorId;
+        Rate = rate;
+    }
+
     public Avaliation(ReferenceId postId, ReferenceId authorId, Stars rate)
     {
         PostId = postId;
@@ -34,4 +41,7 @@ public class Avaliation : Entity
 
         ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
+
+    public static Avaliation Create(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, Stars rate) 
+        => new Avaliation(avaliationId, postId, authorId, rate);
 }

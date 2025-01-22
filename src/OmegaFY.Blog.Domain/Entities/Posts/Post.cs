@@ -19,6 +19,15 @@ public class Post : Entity, IAggregateRoot<Post>
 
     protected Post() { }
 
+    private Post(ReferenceId postId, ReferenceId authorId, Header header, Body body, ModificationDetails modificationDetails, bool @private) : base(postId)
+    {
+        AuthorId = authorId;
+        Header = header;
+        Body = body;
+        ModificationDetails = modificationDetails;
+        Private = @private;
+    }
+
     public Post(ReferenceId authorId, Header header, Body body)
     {
         AuthorId = authorId;
@@ -40,4 +49,7 @@ public class Post : Entity, IAggregateRoot<Post>
     public void MakePrivate() => Private = true;
 
     public void MakePublic() => Private = false;
+
+    public static Post Create(ReferenceId postId, ReferenceId authorId, Header header, Body body, ModificationDetails modificationDetails, bool @private) 
+        => new Post(postId, authorId, header, body, modificationDetails, @private);
 }

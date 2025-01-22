@@ -12,6 +12,12 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
 
     public double AverageRate { get; private set; }
 
+    private PostAvaliations(Guid postId, Avaliation[] avaliations, double averageRate) : base(postId)
+    {
+        _avaliations = avaliations?.ToList() ?? [];
+        AverageRate = averageRate;
+    }
+
     public PostAvaliations() => _avaliations = new List<Avaliation>();
     
     public bool HasAuthorAlreadyRatedPost(ReferenceId authorId) => _avaliations.Any(share => share.AuthorId == authorId);
@@ -56,4 +62,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
     }
 
     private void CalculateAverageRate() => AverageRate = _avaliations.Any() ? _avaliations.Average(avaliation => (double)avaliation.Rate) : 0;
+
+    public static PostAvaliations Create(Guid postId, Avaliation[] avaliations, double averageRate) 
+        => new PostAvaliations(postId, avaliations, averageRate);
 }

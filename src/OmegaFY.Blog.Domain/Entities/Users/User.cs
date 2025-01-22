@@ -1,5 +1,6 @@
 ﻿using OmegaFY.Blog.Domain.Constantes;
 using OmegaFY.Blog.Domain.Exceptions;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Domain.Entities.Users;
 
@@ -9,7 +10,13 @@ public class User : Entity, IAggregateRoot<User>
 
     public string DisplayName { get; private set; }
 
-    public User() { }
+    protected User() { }
+
+    private User(ReferenceId userId, string email, string displayName) : base(userId)
+    {
+        Email = email;
+        DisplayName = displayName;
+    }
 
     public User(string email, string displayName)
     {
@@ -30,4 +37,6 @@ public class User : Entity, IAggregateRoot<User>
 
         DisplayName = displayName;
     }
+
+    public static User Create(ReferenceId userId, string email, string displayName) => new User(userId, email, displayName);
 }
