@@ -12,9 +12,9 @@ public static class AvaliationExtensions
     {
         return new AvaliationCollectionModel()
         {
-            Id = avaliation.Id.ToObjectId(),
-            AuthorId = avaliation.AuthorId.ToObjectId(),
-            PostId = avaliation.PostId.ToObjectId(),
+            Id = avaliation.Id,
+            AuthorId = avaliation.AuthorId,
+            PostId = avaliation.PostId,
             ModificationDetails = avaliation.ModificationDetails,
             Rate = avaliation.Rate
         };

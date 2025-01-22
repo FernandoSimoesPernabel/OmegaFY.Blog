@@ -1,10 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.MongoDB.Models;
 
 public class UserCollectionModel
 {
-    public ObjectId Id { get; set; }
+    public ReferenceId Id { get; set; }
 
     public string Email { get; set; }
 

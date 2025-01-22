@@ -18,7 +18,7 @@ internal sealed class UserRepository : BaseRepository<User, UserCollectionModel>
 
     public async Task<User> GetByIdAsync(ReferenceId id, CancellationToken cancellationToken)
     {
-        UserCollectionModel userModel = await _collection.Find(user => user.Id == id.ToObjectId()).FirstOrDefaultAsync(cancellationToken);
+        UserCollectionModel userModel = await _collection.Find(user => user.Id == id).FirstOrDefaultAsync(cancellationToken);
         return userModel?.ToUser();
     }
 

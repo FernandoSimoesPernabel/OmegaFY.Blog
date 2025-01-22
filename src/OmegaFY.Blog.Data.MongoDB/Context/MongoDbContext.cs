@@ -24,11 +24,11 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.PostId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.PostId).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
         });
@@ -37,7 +37,9 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.SetIgnoreExtraElements(true);
+
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.Avaliations);
         });
@@ -46,11 +48,11 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.PostId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.PostId).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.Body).SetSerializer(new BodySerializer());
 
@@ -63,7 +65,7 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.Comments);
         });
@@ -72,9 +74,9 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.Header).SetSerializer(new HeaderSerializer());
 
@@ -89,11 +91,11 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.CommentId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.CommentId).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.CommentReaction);
         });
@@ -102,11 +104,11 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.PostId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.PostId).SetSerializer(new ReferenceIdSerializer());
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ObjectIdSerializer());
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.DateAndTimeOfShare);
         });
@@ -115,7 +117,7 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.Shareds);
         });
@@ -124,7 +126,7 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ObjectIdSerializer());
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.Email);
 

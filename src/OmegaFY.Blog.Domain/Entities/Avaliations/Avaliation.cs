@@ -17,10 +17,11 @@ public class Avaliation : Entity
 
     protected Avaliation() { }
 
-    private Avaliation(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, Stars rate) : base(avaliationId)
+    private Avaliation(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, ModificationDetails modificationDetails, Stars rate) : base(avaliationId)
     {
         PostId = postId;
         AuthorId = authorId;
+        ModificationDetails = modificationDetails;
         Rate = rate;
     }
 
@@ -42,6 +43,6 @@ public class Avaliation : Entity
         ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 
-    public static Avaliation Create(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, Stars rate) 
-        => new Avaliation(avaliationId, postId, authorId, rate);
+    public static Avaliation Create(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, ModificationDetails modificationDetails, Stars rate) 
+        => new Avaliation(avaliationId, postId, authorId, modificationDetails, rate);
 }

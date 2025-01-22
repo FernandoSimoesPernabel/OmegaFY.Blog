@@ -26,12 +26,12 @@ internal sealed class PostRepository : BaseRepository<Post, PostCollectionModel>
             .Set(p => p.ModificationDetails, post.ModificationDetails)
             .Set(p => p.Private, post.Private);
 
-        return _collection.UpdateOneAsync(p => p.Id == post.Id.ToObjectId() && p.AuthorId == post.AuthorId.ToObjectId(), update, null, cancellationToken);
+        return _collection.UpdateOneAsync(p => p.Id == post.Id && p.AuthorId == post.AuthorId, update, null, cancellationToken);
     }
 
     public async Task<Post> GetByIdAsync(ReferenceId postId, ReferenceId authorId, CancellationToken cancellationToken)
     {
-        PostCollectionModel postModel = await _collection.Find(post => post.Id == postId.ToObjectId() && post.AuthorId == authorId.ToObjectId()).FirstOrDefaultAsync(cancellationToken);
+        PostCollectionModel postModel = await _collection.Find(post => post.Id == postId && post.AuthorId == authorId).FirstOrDefaultAsync(cancellationToken);
         return postModel?.ToPost();
     }
 }

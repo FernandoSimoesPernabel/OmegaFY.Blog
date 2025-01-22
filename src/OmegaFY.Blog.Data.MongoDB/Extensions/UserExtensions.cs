@@ -9,7 +9,7 @@ public static class UserExtensions
     {
         return new UserCollectionModel()
         {
-            Id = user.Id.ToObjectId(),
+            Id = user.Id,
             DisplayName = user.DisplayName,
             Email = user.Email
         };

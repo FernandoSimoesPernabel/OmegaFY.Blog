@@ -9,5 +9,5 @@ public static class AvaliationCollectionModelExtensions
         => avaliationModels.Select(avaliationModel => avaliationModel.ToAvaliation()).ToArray();
 
     public static Avaliation ToAvaliation(this AvaliationCollectionModel avaliationModel) 
-        => Avaliation.Create(avaliationModel.Id.ToGuid(), avaliationModel.PostId.ToGuid(), avaliationModel.AuthorId.ToGuid(), avaliationModel.Rate);
+        => Avaliation.Create(avaliationModel.Id, avaliationModel.PostId, avaliationModel.AuthorId, avaliationModel.ModificationDetails, avaliationModel.Rate);
 }

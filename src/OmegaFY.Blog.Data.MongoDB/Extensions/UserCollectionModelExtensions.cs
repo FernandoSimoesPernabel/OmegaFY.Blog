@@ -5,5 +5,5 @@ namespace OmegaFY.Blog.Data.MongoDB.Extensions;
 
 public static class UserCollectionModelExtensions
 {
-    public static User ToUser(this UserCollectionModel userModel) => User.Create(userModel.Id.ToGuid(), userModel.Email, userModel.DisplayName);
+    public static User ToUser(this UserCollectionModel userModel) => User.Create(userModel.Id, userModel.Email, userModel.DisplayName);
 }

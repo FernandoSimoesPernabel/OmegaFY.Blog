@@ -6,5 +6,5 @@ namespace OmegaFY.Blog.Data.MongoDB.Extensions;
 public static class PostAvaliationsCollectionModelExtensions
 {
     public static PostAvaliations ToPostAvaliations(this PostAvaliationsCollectionModel postModel) 
-        => PostAvaliations.Create(postModel.Id.ToGuid(), postModel.Avaliations.ToArrayOfAvaliation(), postModel.AverageRate);
+        => PostAvaliations.Create(postModel.Id, postModel.Avaliations.ToArrayOfAvaliation(), postModel.AverageRate);
 }

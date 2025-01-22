@@ -9,7 +9,7 @@ public static class PostAvaliationsExtensions
     {
         return new PostAvaliationsCollectionModel()
         {
-            Id = postAvaliations.Id.ToObjectId(),
+            Id = postAvaliations.Id,
             Avaliations = postAvaliations.Avaliations.ToArrayOfAvaliationCollectionModel(),
             AverageRate = postAvaliations.AverageRate
         };

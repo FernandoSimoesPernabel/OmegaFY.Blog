@@ -17,13 +17,13 @@ internal class AvaliationRepository : BaseRepository<PostAvaliations, PostAvalia
 
     public async Task<PostAvaliations> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
     {
-        PostAvaliationsCollectionModel postModel = await _collection.Find(post => post.Id == postId.ToObjectId()).FirstOrDefaultAsync(cancellationToken);
+        PostAvaliationsCollectionModel postModel = await _collection.Find(post => post.Id == postId).FirstOrDefaultAsync(cancellationToken);
         return postModel?.ToPostAvaliations();
     }
 
     public async Task UpdatePostAvaliationsAsync(PostAvaliations postAvaliations, CancellationToken cancellationToken)
     {
-        FilterDefinition<PostAvaliationsCollectionModel> filter = Builders<PostAvaliationsCollectionModel>.Filter.Eq(post => post.Id, postAvaliations.Id.ToObjectId());
+        FilterDefinition<PostAvaliationsCollectionModel> filter = Builders<PostAvaliationsCollectionModel>.Filter.Eq(post => post.Id, postAvaliations.Id);
 
         UpdateDefinition<PostAvaliationsCollectionModel> update = Builders<PostAvaliationsCollectionModel>.Update
             .Set("Avaliations", postAvaliations.Avaliations)

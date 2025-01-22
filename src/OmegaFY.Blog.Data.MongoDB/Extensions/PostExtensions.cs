@@ -9,8 +9,8 @@ public static class PostExtensions
     {
         return new PostCollectionModel()
         {
-            Id = post.Id.ToObjectId(),
-            AuthorId = post.AuthorId.ToObjectId(),
+            Id = post.Id,
+            AuthorId = post.AuthorId,
             Body = post.Body,
             Header = post.Header,
             ModificationDetails = post.ModificationDetails,
