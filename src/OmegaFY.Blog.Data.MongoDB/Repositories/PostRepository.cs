@@ -9,7 +9,7 @@ using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.MongoDB.Repositories;
 
-internal sealed class PostRepository : BaseRepository<Post, PostCollectionModel>, IPostRepository
+internal sealed class PostRepository : BaseRepository<Post, PostBasicInfoCollectionModel>, IPostRepository
 {
     protected override string CollectionName => MongoDbContants.POST_COLLECTION;
 
@@ -20,7 +20,7 @@ internal sealed class PostRepository : BaseRepository<Post, PostCollectionModel>
 
     public Task UpdatePostAsync(Post post, CancellationToken cancellationToken)
     {
-        UpdateDefinition<PostCollectionModel> update = Builders<PostCollectionModel>.Update
+        UpdateDefinition<PostBasicInfoCollectionModel> update = Builders<PostBasicInfoCollectionModel>.Update
             .Set(p => p.Header, post.Header)
             .Set(p => p.Body, post.Body)
             .Set(p => p.ModificationDetails, post.ModificationDetails)
@@ -31,7 +31,7 @@ internal sealed class PostRepository : BaseRepository<Post, PostCollectionModel>
 
     public async Task<Post> GetByIdAsync(ReferenceId postId, ReferenceId authorId, CancellationToken cancellationToken)
     {
-        PostCollectionModel postModel = await _collection.Find(post => post.Id == postId && post.AuthorId == authorId).FirstOrDefaultAsync(cancellationToken);
+        PostBasicInfoCollectionModel postModel = await _collection.Find(post => post.Id == postId && post.AuthorId == authorId).FirstOrDefaultAsync(cancellationToken);
         return postModel?.ToPost();
     }
 }

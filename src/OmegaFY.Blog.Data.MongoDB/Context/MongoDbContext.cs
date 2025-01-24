@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson.Serialization;
 using OmegaFY.Blog.Data.MongoDB.Serializers;
-using MongoDB.Bson.Serialization.Serializers;
 using OmegaFY.Blog.Data.MongoDB.Models;
 
 namespace OmegaFY.Blog.Data.MongoDB.Context;
@@ -19,6 +18,29 @@ public static class MongoDbContext
     {
         if (BsonClassMap.IsClassMapRegistered(typeof(AvaliationCollectionModel)))
             return;
+
+        BsonClassMap.RegisterClassMap<PostCollectionModel>(classMap =>
+        {
+            classMap.AutoMap();
+
+            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+
+            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
+
+            classMap.MapMember(map => map.Header).SetSerializer(new HeaderSerializer());
+
+            classMap.MapMember(map => map.Body).SetSerializer(new BodySerializer());
+
+            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
+
+            classMap.MapMember(map => map.Private);
+
+            classMap.MapMember(map => map.Avaliations);
+
+            classMap.MapMember(map => map.Comments);
+
+            classMap.MapMember(map => map.Shareds);
+        });
 
         BsonClassMap.RegisterClassMap<AvaliationCollectionModel>(classMap =>
         {
@@ -65,12 +87,14 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
+            classMap.SetIgnoreExtraElements(true);
+
             classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 
             classMap.MapMember(map => map.Comments);
         });
 
-        BsonClassMap.RegisterClassMap<PostCollectionModel>(classMap =>
+        BsonClassMap.RegisterClassMap<PostBasicInfoCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
@@ -116,6 +140,8 @@ public static class MongoDbContext
         BsonClassMap.RegisterClassMap<PostSharesCollectionModel>(classMap =>
         {
             classMap.AutoMap();
+
+            classMap.SetIgnoreExtraElements(true);
 
             classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
 

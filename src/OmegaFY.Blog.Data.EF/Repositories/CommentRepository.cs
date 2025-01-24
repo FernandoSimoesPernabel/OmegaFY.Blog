@@ -13,4 +13,6 @@ internal sealed class CommentRepository : BaseRepository<PostComments>, IComment
 
     public Task<PostComments> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
         => _dbSet.Include(post => post.Comments).ThenInclude(comment => comment.Reactions).AsSplitQuery().FirstOrDefaultAsync(post => post.Id == postId, cancellationToken);
+
+    public Task UpdatePostCommentsAsync(PostComments postComments, CancellationToken cancellationToken) => Task.CompletedTask;
 }

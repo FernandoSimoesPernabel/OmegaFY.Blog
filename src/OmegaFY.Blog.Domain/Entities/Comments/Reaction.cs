@@ -15,6 +15,13 @@ public class Reaction : Entity
 
     protected Reaction() { }
 
+    private Reaction(ReferenceId reactionId, ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction) : base(reactionId)
+    {
+        CommentId = commentId;
+        AuthorId = authorId;
+        CommentReaction = commentReaction;
+    }
+
     public Reaction(ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction)
     {
         CommentId = commentId;
@@ -29,4 +36,7 @@ public class Reaction : Entity
 
         CommentReaction = commentReaction;
     }
+
+    public static Reaction Create(ReferenceId reactionId, ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction)
+        => new Reaction(reactionId, commentId, authorId, commentReaction);
 }

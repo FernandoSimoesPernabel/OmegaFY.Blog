@@ -3,7 +3,7 @@ using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.MongoDB.Models;
 
-public class PostCollectionModel
+public class PostBasicInfoCollectionModel
 {
     public ReferenceId Id { get; set; }
 
@@ -16,12 +16,4 @@ public class PostCollectionModel
     public ModificationDetails ModificationDetails { get; set; }
 
     public bool Private { get; set; }
-
-    public double AverageRate { get; set; }
-
-    public AvaliationCollectionModel[] Avaliations { get; set; } = [];
-
-    public CommentCollectionModel[] Comments { get; set; } = [];
-
-    public SharedCollectionModel[] Shareds { get; set; } = [];
 }

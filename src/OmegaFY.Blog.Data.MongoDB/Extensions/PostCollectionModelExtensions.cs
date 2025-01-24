@@ -5,6 +5,6 @@ namespace OmegaFY.Blog.Data.MongoDB.Extensions;
 
 public static class PostCollectionModelExtensions
 {
-    public static Post ToPost(this PostCollectionModel postModel) 
+    public static Post ToPost(this PostBasicInfoCollectionModel postModel) 
         => Post.Create(postModel.Id, postModel.AuthorId, postModel.Header, postModel.Body, postModel.ModificationDetails, postModel.Private);
 }

@@ -21,14 +21,14 @@ internal class AvaliationRepository : BaseRepository<PostAvaliations, PostAvalia
         return postModel?.ToPostAvaliations();
     }
 
-    public async Task UpdatePostAvaliationsAsync(PostAvaliations postAvaliations, CancellationToken cancellationToken)
+    public Task UpdatePostAvaliationsAsync(PostAvaliations postAvaliations, CancellationToken cancellationToken)
     {
         FilterDefinition<PostAvaliationsCollectionModel> filter = Builders<PostAvaliationsCollectionModel>.Filter.Eq(post => post.Id, postAvaliations.Id);
 
         UpdateDefinition<PostAvaliationsCollectionModel> update = Builders<PostAvaliationsCollectionModel>.Update
-            .Set("Avaliations", postAvaliations.Avaliations)
-            .Set("AverageRate", postAvaliations.AverageRate);
+            .Set(nameof(PostAvaliationsCollectionModel.Avaliations), postAvaliations.Avaliations)
+            .Set(nameof(PostAvaliationsCollectionModel.AverageRate), postAvaliations.AverageRate);
 
-        await _collection.UpdateOneAsync(filter, update, null, cancellationToken);
+        return _collection.UpdateOneAsync(filter, update, null, cancellationToken);
     }
 }

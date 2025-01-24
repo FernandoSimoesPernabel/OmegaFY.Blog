@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using OmegaFY.Blog.Data.MongoDB.Extensions;
 using OmegaFY.Blog.Data.MongoDB.Models;
 using OmegaFY.Blog.Data.MongoDB.Repositories.Base;
 using OmegaFY.Blog.Domain.Entities.Shares;
@@ -13,8 +14,19 @@ internal sealed class ShareRepository : BaseRepository<PostShares, PostSharesCol
 
     public ShareRepository(IMongoDatabase database) : base(database) { }
 
-    public Task<PostShares> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
+    public async Task<PostShares> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        PostSharesCollectionModel postModel = await _collection.Find(post => post.Id == postId).FirstOrDefaultAsync(cancellationToken);
+        return postModel?.ToPostShares();
+    }
+
+    public Task UpdatePostShares(PostShares postShares, CancellationToken cancellationToken)
+    {
+        FilterDefinition<PostSharesCollectionModel> filter = Builders<PostSharesCollectionModel>.Filter.Eq(post => post.Id, postShares.Id);
+
+        UpdateDefinition<PostSharesCollectionModel> update =
+            Builders<PostSharesCollectionModel>.Update.Set(nameof(PostSharesCollectionModel.Shareds), postShares.Shareds);
+
+        return _collection.UpdateOneAsync(filter, update, null, cancellationToken);
     }
 }

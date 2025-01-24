@@ -12,10 +12,20 @@ public class Shared : Entity
 
     protected Shared() { }
 
+    private Shared(ReferenceId shareId, ReferenceId postId, ReferenceId authorId, DateTime dateAndTimeOfShare) : base(shareId)
+    {
+        PostId = postId;
+        AuthorId = authorId;
+        DateAndTimeOfShare = dateAndTimeOfShare;
+    }
+
     public Shared(ReferenceId postId, ReferenceId authorId)
     {
         PostId = postId;
         AuthorId = authorId;
         DateAndTimeOfShare = DateTime.UtcNow;
     }
+
+    public static Shared Create(ReferenceId shareId, ReferenceId postId, ReferenceId authorId, DateTime dateAndTimeOfShare) 
+        => new Shared(shareId, postId, authorId, dateAndTimeOfShare);
 }

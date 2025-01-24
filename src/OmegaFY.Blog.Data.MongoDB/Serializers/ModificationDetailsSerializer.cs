@@ -25,7 +25,7 @@ internal class ModificationDetailsSerializer : StructSerializerBase<Modification
     public override ModificationDetails Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
     {
         context.Reader.ReadStartDocument();
-
+        
         DateTime dateOfCreation = BsonUtils.ToDateTimeFromMillisecondsSinceEpoch(context.Reader.ReadDateTime(nameof(ModificationDetails.DateOfCreation)));
 
         context.Reader.ReadName(nameof(ModificationDetails.DateOfModification));

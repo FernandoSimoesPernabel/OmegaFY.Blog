@@ -12,6 +12,11 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
 
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
+    private PostComments(ReferenceId postId, Comment[] comments) : base(postId)
+    {
+        _comments = comments?.ToList() ?? [];
+    }
+
     public PostComments() => _comments = new List<Comment>();
 
     public Comment FindCommentAndThrowIfNotFound(ReferenceId commentId, ReferenceId authorId)
@@ -77,4 +82,6 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
         Comment comment = FindCommentAndThrowIfNotFound(commentId, authorId);
         comment.RemoveReaction(authorId);
     }
+
+    public static PostComments Create(ReferenceId postId, Comment[] comments) => new PostComments(postId, comments);
 }

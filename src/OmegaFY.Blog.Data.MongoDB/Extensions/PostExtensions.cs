@@ -5,9 +5,9 @@ namespace OmegaFY.Blog.Data.MongoDB.Extensions;
 
 public static class PostExtensions
 {
-    public static PostCollectionModel ToPostCollectionModel(this Post post)
+    public static PostBasicInfoCollectionModel ToPostCollectionModel(this Post post)
     {
-        return new PostCollectionModel()
+        return new PostBasicInfoCollectionModel()
         {
             Id = post.Id,
             AuthorId = post.AuthorId,
