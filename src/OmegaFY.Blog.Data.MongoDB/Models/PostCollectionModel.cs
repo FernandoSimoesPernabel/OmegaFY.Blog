@@ -1,19 +1,20 @@
-﻿using OmegaFY.Blog.Domain.ValueObjects.Posts;
-using OmegaFY.Blog.Domain.ValueObjects.Shared;
-
-namespace OmegaFY.Blog.Data.MongoDB.Models;
+﻿namespace OmegaFY.Blog.Data.MongoDB.Models;
 
 public class PostCollectionModel
 {
-    public ReferenceId Id { get; set; }
+    public Guid Id { get; set; }
 
-    public ReferenceId AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
 
-    public Header Header { get; set; }
+    public string Title { get; set; }
 
-    public Body Body { get; set; }
+    public string SubTitle { get; set; }
 
-    public ModificationDetails ModificationDetails { get; set; }
+    public string Body { get; set; }
+
+    public DateTime DateOfCreation { get; set; }
+
+    public DateTime? DateOfModification { get; set; }
 
     public bool Private { get; set; }
 

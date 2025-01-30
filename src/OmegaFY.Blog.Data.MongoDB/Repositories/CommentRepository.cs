@@ -16,13 +16,13 @@ internal sealed class CommentRepository : BaseRepository<PostComments, PostComme
 
     public async Task<PostComments> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
     {
-        PostCommentsCollectionModel postModel = await _collection.Find(post => post.Id == postId).FirstOrDefaultAsync(cancellationToken);
+        PostCommentsCollectionModel postModel = await _collection.Find(post => post.Id == postId.Value).FirstOrDefaultAsync(cancellationToken);
         return postModel?.ToPostComments();
     }
 
     public Task UpdatePostCommentsAsync(PostComments postComments, CancellationToken cancellationToken)
     {
-        FilterDefinition<PostCommentsCollectionModel> filter = Builders<PostCommentsCollectionModel>.Filter.Eq(post => post.Id, postComments.Id);
+        FilterDefinition<PostCommentsCollectionModel> filter = Builders<PostCommentsCollectionModel>.Filter.Eq(post => post.Id, postComments.Id.Value);
 
         UpdateDefinition<PostCommentsCollectionModel> update =
             Builders<PostCommentsCollectionModel>.Update.Set(nameof(PostCommentsCollectionModel.Comments), postComments.Comments);

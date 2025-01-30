@@ -16,13 +16,13 @@ internal sealed class ShareRepository : BaseRepository<PostShares, PostSharesCol
 
     public async Task<PostShares> GetPostByIdAsync(ReferenceId postId, CancellationToken cancellationToken)
     {
-        PostSharesCollectionModel postModel = await _collection.Find(post => post.Id == postId).FirstOrDefaultAsync(cancellationToken);
+        PostSharesCollectionModel postModel = await _collection.Find(post => post.Id == postId.Value).FirstOrDefaultAsync(cancellationToken);
         return postModel?.ToPostShares();
     }
 
     public Task UpdatePostShares(PostShares postShares, CancellationToken cancellationToken)
     {
-        FilterDefinition<PostSharesCollectionModel> filter = Builders<PostSharesCollectionModel>.Filter.Eq(post => post.Id, postShares.Id);
+        FilterDefinition<PostSharesCollectionModel> filter = Builders<PostSharesCollectionModel>.Filter.Eq(post => post.Id, postShares.Id.Value);
 
         UpdateDefinition<PostSharesCollectionModel> update =
             Builders<PostSharesCollectionModel>.Update.Set(nameof(PostSharesCollectionModel.Shareds), postShares.Shareds);

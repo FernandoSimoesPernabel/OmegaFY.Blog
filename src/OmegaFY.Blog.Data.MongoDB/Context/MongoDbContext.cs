@@ -1,6 +1,8 @@
 ﻿using MongoDB.Bson.Serialization;
 using OmegaFY.Blog.Data.MongoDB.Serializers;
 using OmegaFY.Blog.Data.MongoDB.Models;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson;
 
 namespace OmegaFY.Blog.Data.MongoDB.Context;
 
@@ -8,10 +10,10 @@ public static class MongoDbContext
 {
     public static void RegisterSerializers()
     {
-        BsonSerializer.RegisterSerializer(new ReferenceIdSerializer());
         BsonSerializer.RegisterSerializer(new HeaderSerializer());
         BsonSerializer.RegisterSerializer(new BodySerializer());
         BsonSerializer.RegisterSerializer(new ModificationDetailsSerializer());
+        BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
     }
 
     public static void RegisterClassMaps()
@@ -23,15 +25,19 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.AuthorId);
 
-            classMap.MapMember(map => map.Header).SetSerializer(new HeaderSerializer());
+            classMap.MapMember(map => map.Title);
 
-            classMap.MapMember(map => map.Body).SetSerializer(new BodySerializer());
+            classMap.MapMember(map => map.SubTitle);
 
-            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
+            classMap.MapMember(map => map.Body);
+
+            classMap.MapMember(map => map.DateOfCreation);
+
+            classMap.MapMember(map => map.DateOfModification);
 
             classMap.MapMember(map => map.Private);
 
@@ -46,13 +52,15 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
-            classMap.MapMember(map => map.PostId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.PostId);
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.AuthorId);
 
-            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
+            classMap.MapMember(map => map.DateOfCreation);
+
+            classMap.MapMember(map => map.DateOfModification);
         });
 
         BsonClassMap.RegisterClassMap<PostAvaliationsCollectionModel>(classMap =>
@@ -61,7 +69,7 @@ public static class MongoDbContext
 
             classMap.SetIgnoreExtraElements(true);
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
             classMap.MapMember(map => map.Avaliations);
         });
@@ -70,15 +78,17 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
-            classMap.MapMember(map => map.PostId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.PostId);
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.AuthorId);
 
-            classMap.MapMember(map => map.Body).SetSerializer(new BodySerializer());
+            classMap.MapMember(map => map.Body);
 
-            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
+            classMap.MapMember(map => map.DateOfCreation);
+
+            classMap.MapMember(map => map.DateOfModification);
 
             classMap.MapMember(map => map.Reactions);
         });
@@ -89,37 +99,20 @@ public static class MongoDbContext
 
             classMap.SetIgnoreExtraElements(true);
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
             classMap.MapMember(map => map.Comments);
-        });
-
-        BsonClassMap.RegisterClassMap<PostBasicInfoCollectionModel>(classMap =>
-        {
-            classMap.AutoMap();
-
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
-
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
-
-            classMap.MapMember(map => map.Header).SetSerializer(new HeaderSerializer());
-
-            classMap.MapMember(map => map.Body).SetSerializer(new BodySerializer());
-
-            classMap.MapMember(map => map.ModificationDetails).SetSerializer(new ModificationDetailsSerializer());
-
-            classMap.MapMember(map => map.Private);
         });
 
         BsonClassMap.RegisterClassMap<ReactionCollectionModel>(classMap =>
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
-            classMap.MapMember(map => map.CommentId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.CommentId);
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.AuthorId);
 
             classMap.MapMember(map => map.CommentReaction);
         });
@@ -128,11 +121,11 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
-            classMap.MapMember(map => map.PostId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.PostId);
 
-            classMap.MapMember(map => map.AuthorId).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapMember(map => map.AuthorId);
 
             classMap.MapMember(map => map.DateAndTimeOfShare);
         });
@@ -143,7 +136,7 @@ public static class MongoDbContext
 
             classMap.SetIgnoreExtraElements(true);
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
             classMap.MapMember(map => map.Shareds);
         });
@@ -152,7 +145,7 @@ public static class MongoDbContext
         {
             classMap.AutoMap();
 
-            classMap.MapIdMember(map => map.Id).SetSerializer(new ReferenceIdSerializer());
+            classMap.MapIdMember(map => map.Id);
 
             classMap.MapMember(map => map.Email);
 

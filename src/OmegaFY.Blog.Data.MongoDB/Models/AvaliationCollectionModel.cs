@@ -1,17 +1,18 @@
 ﻿using OmegaFY.Blog.Domain.Enums;
-using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.MongoDB.Models;
 
 public class AvaliationCollectionModel
 {
-    public ReferenceId Id { get; set; }
+    public Guid Id { get; set; }
 
-    public ReferenceId PostId { get; set; }
+    public Guid PostId { get; set; }
 
-    public ReferenceId AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
 
-    public ModificationDetails ModificationDetails { get; set; }
+    public DateTime DateOfCreation { get; set; }
+
+    public DateTime? DateOfModification { get; set; }
 
     public Stars Rate { get; set; }
 }

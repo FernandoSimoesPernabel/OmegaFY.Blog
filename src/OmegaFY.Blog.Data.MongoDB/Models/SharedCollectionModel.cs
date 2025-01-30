@@ -1,14 +1,12 @@
-﻿using OmegaFY.Blog.Domain.ValueObjects.Shared;
-
-namespace OmegaFY.Blog.Data.MongoDB.Models;
+﻿namespace OmegaFY.Blog.Data.MongoDB.Models;
 
 public class SharedCollectionModel
 {
-    public ReferenceId Id { get; set; }
+    public Guid Id { get; set; }
 
-    public ReferenceId PostId { get; set; }
+    public Guid PostId { get; set; }
 
-    public ReferenceId AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
 
     public DateTime DateAndTimeOfShare { get; set; }
 }

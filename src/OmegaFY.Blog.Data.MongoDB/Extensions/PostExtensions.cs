@@ -5,16 +5,18 @@ namespace OmegaFY.Blog.Data.MongoDB.Extensions;
 
 public static class PostExtensions
 {
-    public static PostBasicInfoCollectionModel ToPostCollectionModel(this Post post)
+    public static PostCollectionModel ToPostCollectionModel(this Post post)
     {
-        return new PostBasicInfoCollectionModel()
+        return new PostCollectionModel()
         {
             Id = post.Id,
             AuthorId = post.AuthorId,
             Body = post.Body,
-            Header = post.Header,
-            ModificationDetails = post.ModificationDetails,
-            Private = post.Private
+            DateOfCreation = post.ModificationDetails.DateOfCreation,
+            DateOfModification = post.ModificationDetails.DateOfModification,
+            Private = post.Private,
+            SubTitle = post.Header.SubTitle,
+            Title = post.Header.Title
         };
     }
 }

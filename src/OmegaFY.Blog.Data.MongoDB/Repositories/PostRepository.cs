@@ -9,7 +9,7 @@ using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.MongoDB.Repositories;
 
-internal sealed class PostRepository : BaseRepository<Post, PostBasicInfoCollectionModel>, IPostRepository
+internal sealed class PostRepository : BaseRepository<Post, PostCollectionModel>, IPostRepository
 {
     protected override string CollectionName => MongoDbContants.POST_COLLECTION;
 
@@ -20,18 +20,20 @@ internal sealed class PostRepository : BaseRepository<Post, PostBasicInfoCollect
 
     public Task UpdatePostAsync(Post post, CancellationToken cancellationToken)
     {
-        UpdateDefinition<PostBasicInfoCollectionModel> update = Builders<PostBasicInfoCollectionModel>.Update
-            .Set(p => p.Header, post.Header)
-            .Set(p => p.Body, post.Body)
-            .Set(p => p.ModificationDetails, post.ModificationDetails)
+        UpdateDefinition<PostCollectionModel> update = Builders<PostCollectionModel>.Update
+            .Set(p => p.Title, post.Header.Title)
+            .Set(p => p.SubTitle, post.Header.SubTitle)
+            .Set(p => p.Body, post.Body.Content)
+            .Set(p => p.DateOfCreation, post.ModificationDetails.DateOfCreation)
+            .Set(p => p.DateOfModification, post.ModificationDetails.DateOfModification)
             .Set(p => p.Private, post.Private);
 
-        return _collection.UpdateOneAsync(p => p.Id == post.Id && p.AuthorId == post.AuthorId, update, null, cancellationToken);
+        return _collection.UpdateOneAsync(p => p.Id == post.Id.Value && p.AuthorId == post.AuthorId.Value, update, null, cancellationToken);
     }
 
     public async Task<Post> GetByIdAsync(ReferenceId postId, ReferenceId authorId, CancellationToken cancellationToken)
     {
-        PostBasicInfoCollectionModel postModel = await _collection.Find(post => post.Id == postId && post.AuthorId == authorId).FirstOrDefaultAsync(cancellationToken);
+        PostCollectionModel postModel = await _collection.Find(post => post.Id == postId.Value && post.AuthorId == authorId.Value).FirstOrDefaultAsync(cancellationToken);
         return postModel?.ToPost();
     }
 }

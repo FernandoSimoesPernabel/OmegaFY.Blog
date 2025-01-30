@@ -14,8 +14,9 @@ public static class AvaliationExtensions
         {
             Id = avaliation.Id,
             AuthorId = avaliation.AuthorId,
+            DateOfCreation  = avaliation.ModificationDetails.DateOfCreation,
+            DateOfModification = avaliation.ModificationDetails.DateOfModification,
             PostId = avaliation.PostId,
-            ModificationDetails = avaliation.ModificationDetails,
             Rate = avaliation.Rate
         };
     }
