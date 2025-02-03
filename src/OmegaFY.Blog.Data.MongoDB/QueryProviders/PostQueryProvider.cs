@@ -14,7 +14,7 @@ internal class PostQueryProvider : IPostQueryProvider
 {
     private readonly IMongoCollection<PostCollectionModel> _postCollection;
 
-    private readonly IMongoCollection<UserCollectionModel> _userCollection; 
+    private readonly IMongoCollection<UserCollectionModel> _userCollection;
 
     public PostQueryProvider(IMongoDatabase database)
     {
@@ -52,11 +52,21 @@ internal class PostQueryProvider : IPostQueryProvider
             {
                 PostId = post.Id,
                 AverageRate = post.AverageRate,
-                //AuthorName = post.Author.DisplayName,
+                AuthorId = post.AuthorId,
                 DateOfCreation = post.DateOfCreation,
                 HasPostBeenEdit = post.DateOfModification.HasValue,
                 Title = post.Title
             }).ToArrayAsync(cancellationToken);
+
+        await _userCollection.HydrateAuthorNamesAsync(
+            result,
+            result => result.Select(query => query.AuthorId).ToArray(),
+            (result, users) => Array.ForEach(result, query =>
+            {
+                UserCollectionModel postAuthor = users.First(user => user.Id == query.AuthorId);
+                query.AuthorName = postAuthor.DisplayName;
+            }),
+            cancellationToken);
 
         return new PagedResult<GetAllPostsQueryResult>(pagedResultInfo, result);
     }
@@ -84,22 +94,31 @@ internal class PostQueryProvider : IPostQueryProvider
             .Project(post => new GetMostRecentPublishedPostsQueryResult()
             {
                 PostId = post.Id,
-                //AuthorName = post.Author.DisplayName,
+                AuthorId = post.AuthorId,
                 DateOfCreation = post.DateOfCreation,
                 Title = post.Title
             }).ToArrayAsync(cancellationToken);
+
+        await _userCollection.HydrateAuthorNamesAsync(
+            result,
+            result => result.Select(query => query.AuthorId).ToArray(),
+            (result, users) => Array.ForEach(result, query =>
+            {
+                UserCollectionModel postAuthor = users.First(user => user.Id == query.AuthorId);
+                query.AuthorName = postAuthor.DisplayName;
+            }),
+            cancellationToken);
 
         return new PagedResult<GetMostRecentPublishedPostsQueryResult>(pagedResultInfo, result);
     }
 
     public async Task<GetPostQueryResult> GetPostQueryResultAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _postCollection.Find(Builders<PostCollectionModel>.Filter.Eq(post => post.Id, id))
+        GetPostQueryResult result = await _postCollection.Find(Builders<PostCollectionModel>.Filter.Eq(post => post.Id, id))
             .Project(post => new GetPostQueryResult()
             {
                 PostId = post.Id,
                 AuthorId = post.AuthorId,
-                //AuthorName = post.Author.DisplayName,
                 Avaliations = post.Avaliations.Count(),
                 AverageRate = post.AverageRate,
                 Comments = post.Comments.Count(),
@@ -111,5 +130,13 @@ internal class PostQueryProvider : IPostQueryProvider
                 SubTitle = post.SubTitle,
                 Title = post.Title
             }).FirstOrDefaultAsync(cancellationToken);
+
+        await _userCollection.HydrateAuthorNameAsync(
+            result,
+            result.AuthorId,
+            (result, user) => result.AuthorName = user.DisplayName,
+            cancellationToken);
+
+        return result;
     }
 }

@@ -67,9 +67,9 @@ internal sealed class CommentQueryProvider : ICommentQueryProvider
         if (request.AuthorId.HasValue)
             query = query.Where(comment => comment.AuthorId == request.AuthorId.Value);
 
-        int totalOfItens = await query.CountAsync(cancellationToken);
+        int totalOfItems = await query.CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetMostReactedCommentsQueryResult[] result =
             await query.Select(comment => new GetMostReactedCommentsQueryResult()
@@ -98,9 +98,9 @@ internal sealed class CommentQueryProvider : ICommentQueryProvider
         if (request.AuthorId.HasValue)
             query = query.Where(comment => comment.AuthorId == request.AuthorId.Value);
 
-        int totalOfItens = await query.CountAsync(cancellationToken);
+        int totalOfItems = await query.CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetMostRecentCommentsQueryResult[] result =
             await query.Select(comment => new GetMostRecentCommentsQueryResult()

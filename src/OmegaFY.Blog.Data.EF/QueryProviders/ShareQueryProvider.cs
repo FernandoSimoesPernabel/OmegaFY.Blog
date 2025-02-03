@@ -34,9 +34,9 @@ internal class ShareQueryProvider : IShareQueryProvider
         if (request.AuthorId.HasValue)
             query = query.Where(share => share.AuthorId == request.AuthorId.Value);
 
-        int totalOfItens = await query.CountAsync(cancellationToken);
+        int totalOfItems = await query.CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetMostRecentSharesQueryResult[] result =
             await query.Select(share => new GetMostRecentSharesQueryResult()
