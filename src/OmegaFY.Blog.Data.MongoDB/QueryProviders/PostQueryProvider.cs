@@ -46,8 +46,7 @@ internal class PostQueryProvider : IPostQueryProvider
 
         GetAllPostsQueryResult[] result = await _postCollection.Find(filter)
             .SortByDescending(post => post.DateOfCreation)
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Limit(pagedResultInfo.PageSize)
+            .Paginate(pagedResultInfo)
             .Project(post => new GetAllPostsQueryResult()
             {
                 PostId = post.Id,
@@ -89,8 +88,7 @@ internal class PostQueryProvider : IPostQueryProvider
 
         GetMostRecentPublishedPostsQueryResult[] result = await _postCollection.Find(filter)
             .SortByDescending(post => post.DateOfCreation)
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Limit(pagedResultInfo.PageSize)
+            .Paginate(pagedResultInfo)
             .Project(post => new GetMostRecentPublishedPostsQueryResult()
             {
                 PostId = post.Id,

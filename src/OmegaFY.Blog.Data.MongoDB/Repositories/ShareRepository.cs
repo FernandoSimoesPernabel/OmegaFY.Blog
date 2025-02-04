@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using OmegaFY.Blog.Data.MongoDB.Constants;
 using OmegaFY.Blog.Data.MongoDB.Extensions;
 using OmegaFY.Blog.Data.MongoDB.Models;
 using OmegaFY.Blog.Data.MongoDB.Repositories.Base;
@@ -10,7 +11,7 @@ namespace OmegaFY.Blog.Data.MongoDB.Repositories;
 
 internal sealed class ShareRepository : BaseRepository<PostShares, PostSharesCollectionModel>, IShareRepository
 {
-    protected override string CollectionName => throw new NotImplementedException();
+    protected override string CollectionName => MongoDbContants.POST_COLLECTION;
 
     public ShareRepository(IMongoDatabase database) : base(database) { }
 
@@ -25,7 +26,7 @@ internal sealed class ShareRepository : BaseRepository<PostShares, PostSharesCol
         FilterDefinition<PostSharesCollectionModel> filter = Builders<PostSharesCollectionModel>.Filter.Eq(post => post.Id, postShares.Id.Value);
 
         UpdateDefinition<PostSharesCollectionModel> update =
-            Builders<PostSharesCollectionModel>.Update.Set(nameof(PostSharesCollectionModel.Shareds), postShares.Shareds);
+            Builders<PostSharesCollectionModel>.Update.Set(nameof(PostSharesCollectionModel.Shareds), postShares.Shareds.ToArrayOfSharedCollectionModel());
 
         return _collection.UpdateOneAsync(filter, update, null, cancellationToken);
     }

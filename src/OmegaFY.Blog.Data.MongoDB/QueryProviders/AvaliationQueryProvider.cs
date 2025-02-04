@@ -3,13 +3,10 @@ using OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliationsFromPost;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
 using OmegaFY.Blog.Application.Queries.Base.Pagination;
-using OmegaFY.Blog.Application.Queries.Posts.GetMostRecentPublishedPosts;
 using OmegaFY.Blog.Application.Queries.QueryProviders.Avaliations;
 using OmegaFY.Blog.Data.MongoDB.Constants;
 using OmegaFY.Blog.Data.MongoDB.Extensions;
 using OmegaFY.Blog.Data.MongoDB.Models;
-using OmegaFY.Blog.Domain.Entities.Avaliations;
-using SendGrid.Helpers.Mail;
 
 namespace OmegaFY.Blog.Data.MongoDB.QueryProviders;
 
@@ -50,8 +47,8 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
             result => result.Select(query => query.AuthorId).ToArray(),
             (result, users) => Array.ForEach(result, query =>
             {
-                UserCollectionModel postAuthor = users.First(user => user.Id == query.AuthorId);
-                query.AuthorName = postAuthor.DisplayName;
+                UserCollectionModel avaliationAuthor = users.First(user => user.Id == query.AuthorId);
+                query.AuthorName = avaliationAuthor.DisplayName;
             }),
             cancellationToken);
 
@@ -81,8 +78,7 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
         PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetMostRecentAvaliationsQueryResult[][] allAvaliations = await _postCollection.Find(filter)
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Limit(pagedResultInfo.PageSize)
+            .Paginate(pagedResultInfo)
             .Project(projection)
             .ToArrayAsync(cancellationToken);
 
@@ -93,8 +89,8 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
             result => result.Select(query => query.AuthorId).ToArray(),
             (result, users) => Array.ForEach(result, query =>
             {
-                UserCollectionModel postAuthor = users.First(user => user.Id == query.AuthorId);
-                query.AuthorName = postAuthor.DisplayName;
+                UserCollectionModel avaliationAuthor = users.First(user => user.Id == query.AuthorId);
+                query.AuthorName = avaliationAuthor.DisplayName;
             }),
             cancellationToken);
 
@@ -112,15 +108,14 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
 
         GetTopRatedPostsQueryResult[] result = await _postCollection.Find(filter)
             .SortByDescending(post => post.DateOfCreation)
-            .Skip(pagedResultInfo.ItemsToSkip())
-            .Limit(pagedResultInfo.PageSize)
+            .Paginate(pagedResultInfo)
             .Project(post => new GetTopRatedPostsQueryResult()
             {
                 PostId = post.Id,
                 AuthorId = post.AuthorId,
                 AverageRate = post.AverageRate,
                 DateOfCreation = post.DateOfCreation,
-                PostTitle = post.Title                
+                PostTitle = post.Title
             }).ToArrayAsync(cancellationToken);
 
         await _userCollection.HydrateAuthorNamesAsync(
