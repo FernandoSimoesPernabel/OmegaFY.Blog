@@ -24,6 +24,8 @@ internal class MakePostPublicCommandHandler : CommandHandlerMediatRBase<MakePost
 
         existingPost.MakePublic();
 
+        await _repository.UpdatePostAsync(existingPost, cancellationToken);
+
         await _repository.SaveChangesAsync(cancellationToken);
 
         return new();

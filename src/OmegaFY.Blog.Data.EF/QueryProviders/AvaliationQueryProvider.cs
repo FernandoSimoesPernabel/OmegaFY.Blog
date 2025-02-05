@@ -19,9 +19,9 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
     public async Task<GetAvaliationsFromPostQueryResult> GetAvaliationsFromPostQueryResultAsync(GetAvaliationsFromPostQuery request, CancellationToken cancellationToken)
     {
         AvaliationFromPost[] result = await _context.Set<AvaliationDatabaseModel>()
-            .OrderBy(avaliation => avaliation.DateOfCreation)
+            .OrderByDescending(avaliation => avaliation.DateOfModification ?? avaliation.DateOfCreation)
             .Where(avaliation => !avaliation.Post.Private)
-            .Select(avaliation => new AvaliationFromPost
+            .Select(avaliation => new AvaliationFromPost()
             {
                 AvaliationId = avaliation.Id,
                 AuthorId = avaliation.AuthorId,
@@ -42,9 +42,9 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
             .OrderByDescending(avaliation => avaliation.DateOfModification ?? avaliation.DateOfCreation)
             .Where(avaliation => !avaliation.Post.Private);
 
-        int totalOfItens = await query.CountAsync(cancellationToken);
+        int totalOfItems = await query.CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetMostRecentAvaliationsQueryResult[] result =
             await query.Select(avaliation => new GetMostRecentAvaliationsQueryResult()
@@ -70,14 +70,15 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
             .OrderByDescending(post => post.AverageRate)
             .Where(post => !post.Private);
 
-        int totalOfItens = await query.CountAsync(cancellationToken);
+        int totalOfItems = await query.CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetTopRatedPostsQueryResult[] result =
             await query.Select(post => new GetTopRatedPostsQueryResult()
             {
                 PostId = post.Id,
+                AuthorId = post.AuthorId,
                 AverageRate = post.AverageRate,
                 DateOfCreation = post.DateOfCreation,
                 PostAuthorName = post.Author.DisplayName,

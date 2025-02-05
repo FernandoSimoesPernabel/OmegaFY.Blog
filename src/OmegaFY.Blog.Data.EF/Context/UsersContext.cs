@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OmegaFY.Blog.Data.EF.Mappings.Users;
 using OmegaFY.Blog.Data.EF.ValueConverts;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 
-internal class UsersContext : IdentityDbContext<IdentityUser>
+internal class UsersContext : IdentityDbContext<IdentityUser<string>, IdentityRole<string>, string>
 {
     public UsersContext(DbContextOptions<UsersContext> options) : base(options) { }
 

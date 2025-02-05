@@ -1,6 +1,7 @@
 ﻿using OmegaFY.Blog.Common.Configs;
 using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Data.EF.Extensions;
+using OmegaFY.Blog.Data.MongoDB.Extensions;
 using OmegaFY.Blog.Infra.IoC;
 
 namespace OmegaFY.Blog.WebAPI.IoC;
@@ -13,7 +14,8 @@ public class HealthCheckRegistration : IDependencyInjectionRegister
 
         builder.Services.AddHealthChecks()
             .AddSqliteHealthCheck(builder.Configuration)
-            .AddSqlServerHealthCheck(builder.Configuration);
+            .AddSqlServerHealthCheck(builder.Configuration)
+            .AddMongoDbHealthCheck();
 
         builder.Services.AddHealthChecksUI(options =>
         {

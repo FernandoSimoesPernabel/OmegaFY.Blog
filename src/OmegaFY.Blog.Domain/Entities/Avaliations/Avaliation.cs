@@ -17,12 +17,20 @@ public class Avaliation : Entity
 
     protected Avaliation() { }
 
+    private Avaliation(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, ModificationDetails modificationDetails, Stars rate) : base(avaliationId)
+    {
+        PostId = postId;
+        AuthorId = authorId;
+        ModificationDetails = modificationDetails;
+        Rate = rate;
+    }
+
     public Avaliation(ReferenceId postId, ReferenceId authorId, Stars rate)
     {
         PostId = postId;
         AuthorId = authorId;
-        ModificationDetails = new ModificationDetails();
         ChangeRating(rate);
+        ModificationDetails = new ModificationDetails();
     }
 
     internal void ChangeRating(Stars rate)
@@ -32,7 +40,9 @@ public class Avaliation : Entity
 
         Rate = rate;
 
-        if (ModificationDetails is not null)
-            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
+        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
+
+    public static Avaliation Create(ReferenceId avaliationId, ReferenceId postId, ReferenceId authorId, ModificationDetails modificationDetails, Stars rate) 
+        => new Avaliation(avaliationId, postId, authorId, modificationDetails, rate);
 }

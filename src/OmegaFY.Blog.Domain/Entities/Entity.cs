@@ -1,10 +1,14 @@
-﻿namespace OmegaFY.Blog.Domain.Entities;
+﻿using OmegaFY.Blog.Domain.ValueObjects.Shared;
+
+namespace OmegaFY.Blog.Domain.Entities;
 
 public abstract class Entity : IEquatable<Entity>
 {
     public ReferenceId Id { get; }
 
     protected Entity() => Id = Ulid.NewUlid().ToGuid();
+
+    protected Entity(ReferenceId id) => Id = id;
 
     public override bool Equals(object obj)
     {

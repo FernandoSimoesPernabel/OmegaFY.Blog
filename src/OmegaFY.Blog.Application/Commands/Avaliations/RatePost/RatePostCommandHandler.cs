@@ -2,8 +2,6 @@
 using OmegaFY.Blog.Application.Commands.Base;
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Domain.Entities.Avaliations;
-using OmegaFY.Blog.Domain.Entities.Shares;
-using OmegaFY.Blog.Domain.Repositories;
 using OmegaFY.Blog.Domain.Repositories.Avaliations;
 using OmegaFY.Blog.Infra.Authentication.Users;
 
@@ -24,6 +22,8 @@ internal class RatePostCommandHandler : CommandHandlerMediatRBase<RatePostComman
             throw new NotFoundException();
 
         postToRate.RatePost(_currentUser.CurrentRequestUserId.Value, command.Rate);
+
+        await _repository.UpdatePostAvaliationsAsync(postToRate, cancellationToken);
 
         await _repository.SaveChangesAsync(cancellationToken);
 

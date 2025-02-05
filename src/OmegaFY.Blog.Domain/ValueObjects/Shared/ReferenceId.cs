@@ -1,5 +1,7 @@
 ﻿using OmegaFY.Blog.Domain.Exceptions;
 
+namespace OmegaFY.Blog.Domain.ValueObjects.Shared;
+
 public readonly record struct ReferenceId
 {
     public Guid Value { get; }

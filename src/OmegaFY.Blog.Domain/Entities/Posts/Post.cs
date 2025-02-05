@@ -19,30 +19,37 @@ public class Post : Entity, IAggregateRoot<Post>
 
     protected Post() { }
 
+    private Post(ReferenceId postId, ReferenceId authorId, Header header, Body body, ModificationDetails modificationDetails, bool @private) : base(postId)
+    {
+        AuthorId = authorId;
+        Header = header;
+        Body = body;
+        ModificationDetails = modificationDetails;
+        Private = @private;
+    }
+
     public Post(ReferenceId authorId, Header header, Body body)
     {
-        ChangeContent(header, body);
         AuthorId = authorId;
         Private = false;
+        ChangeContent(header, body);
         ModificationDetails = new ModificationDetails();
     }
 
     public void ChangeContent(Header header, Body body)
     {
-        if (header is null)
-            throw new DomainArgumentException("Não foi informado corretamente um cabeçalho para esse post.");
-
         if (body.Content.Length > PostConstants.MAX_POST_BODY_LENGTH)
             throw new DomainArgumentException("O conteúdo desse post foi informado incorretamente.");
 
-        if (ModificationDetails is not null)
-            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
-
         Header = header;
         Body = body;
+        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 
     public void MakePrivate() => Private = true;
 
     public void MakePublic() => Private = false;
+
+    public static Post Create(ReferenceId postId, ReferenceId authorId, Header header, Body body, ModificationDetails modificationDetails, bool @private) 
+        => new Post(postId, authorId, header, body, modificationDetails, @private);
 }

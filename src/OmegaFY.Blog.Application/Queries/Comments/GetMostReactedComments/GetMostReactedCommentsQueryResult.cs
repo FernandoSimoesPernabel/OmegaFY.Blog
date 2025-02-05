@@ -18,5 +18,5 @@ public sealed record class GetMostReactedCommentsQueryResult : GenericResult, IQ
 
     public bool HasCommentBeenEdit { get; set; }
 
-    public int Reactions { get; set; }
+    public int ReactionCount { get; set; }
 }

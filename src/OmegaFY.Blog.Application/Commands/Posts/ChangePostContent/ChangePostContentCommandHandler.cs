@@ -25,6 +25,8 @@ internal class ChangePostContentCommandHandler : CommandHandlerMediatRBase<Chang
 
         existingPost.ChangeContent(new Header(command.Title, command.SubTitle), command.Body);
 
+        await _repository.UpdatePostAsync(existingPost, cancellationToken);
+
         await _repository.SaveChangesAsync(cancellationToken);
 
         return new ChangePostContentCommandResult(

@@ -28,15 +28,16 @@ internal sealed class PostQueryProvider : IPostQueryProvider
         if (request.AuthorId.HasValue)
             query = query.Where(post => post.Author.Id == request.AuthorId.Value);
 
-        int totalOfItens = await query.CountAsync(cancellationToken);
+        int totalOfItems = await query.CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetAllPostsQueryResult[] result =
             await query.Select(post => new GetAllPostsQueryResult()
             {
                 PostId = post.Id,
                 AverageRate = post.AverageRate,
+                AuthorId = post.AuthorId,
                 AuthorName = post.Author.DisplayName,
                 DateOfCreation = post.DateOfCreation,
                 HasPostBeenEdit = post.DateOfModification.HasValue,
@@ -59,17 +60,18 @@ internal sealed class PostQueryProvider : IPostQueryProvider
         if (request.AuthorId.HasValue)
             query = query.Where(post => post.Author.Id == request.AuthorId.Value);
 
-        int totalOfItens = await query.CountAsync(cancellationToken);
+        int totalOfItems = await query.CountAsync(cancellationToken);
 
-        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItens);
+        PagedResultInfo pagedResultInfo = new PagedResultInfo(request.PageNumber, request.PageSize, totalOfItems);
 
         GetMostRecentPublishedPostsQueryResult[] result =
-            await query.Select(x => new GetMostRecentPublishedPostsQueryResult()
+            await query.Select(post => new GetMostRecentPublishedPostsQueryResult()
             {
-                PostId = x.Id,
-                AuthorName = x.Author.DisplayName,
-                DateOfCreation = x.DateOfCreation,
-                Title = x.Title
+                PostId = post.Id,
+                AuthorId = post.AuthorId,
+                AuthorName = post.Author.DisplayName,
+                DateOfCreation = post.DateOfCreation,
+                Title = post.Title
             })
             .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);

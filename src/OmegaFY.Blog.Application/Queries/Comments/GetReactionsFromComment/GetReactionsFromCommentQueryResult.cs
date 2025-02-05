@@ -4,11 +4,11 @@ namespace OmegaFY.Blog.Application.Queries.Comments.GetReactionsFromComment;
 
 public sealed record class GetReactionsFromCommentQueryResult : GenericResult, IQueryResult
 {
-    public ReactionFromPost[] ReactionsFromPost { get; set; }
+    public ReactionFromComment[] ReactionsFromPost { get; set; }
 
     public GetReactionsFromCommentQueryResult() { }
 
-    public GetReactionsFromCommentQueryResult(ReactionFromPost[] reactionsFromPost)
+    public GetReactionsFromCommentQueryResult(ReactionFromComment[] reactionsFromPost)
     {
         ReactionsFromPost = reactionsFromPost;
     }

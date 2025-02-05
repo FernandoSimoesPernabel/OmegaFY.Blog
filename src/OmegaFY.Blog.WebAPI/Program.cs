@@ -1,4 +1,4 @@
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using OmegaFY.Blog.Common.Constantes;
 using OmegaFY.Blog.Infra.Extensions;

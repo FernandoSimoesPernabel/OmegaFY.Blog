@@ -23,6 +23,15 @@ public class Comment : Entity
 
     protected Comment() => _reactions = new List<Reaction>();
 
+    private Comment(ReferenceId commentId, ReferenceId postId, ReferenceId authorId, Body body, ModificationDetails modificationDetails, Reaction[] reactions) : base(commentId)
+    {
+        PostId = postId;
+        AuthorId = authorId;
+        Body = body;
+        ModificationDetails = modificationDetails;
+        _reactions = reactions?.ToList() ?? [];
+    }
+
     public Comment(ReferenceId postId, ReferenceId authorId, Body body) : this()
     {
         ChangeContent(body);
@@ -49,9 +58,7 @@ public class Comment : Entity
             throw new DomainArgumentException($"O máximo de caracteres de um comentário é {PostConstants.MAX_COMMENT_BODY_LENGTH}.");
 
         Body = newBody;
-
-        if (ModificationDetails is not null)
-            ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
+        ModificationDetails = new ModificationDetails(ModificationDetails.DateOfCreation);
     }
 
     internal void React(Reaction reaction)
@@ -76,4 +83,7 @@ public class Comment : Entity
         Reaction reaction = FindReactionAndThrowIfNotFound(authorId);
         _reactions.Remove(reaction);
     }
+
+    public static Comment Create(ReferenceId commentId, ReferenceId postId, ReferenceId authorId, Body body, ModificationDetails modificationDetails, Reaction[] reactions) 
+        => new Comment(commentId, postId, authorId, body, modificationDetails, reactions);
 }

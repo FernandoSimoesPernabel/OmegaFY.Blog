@@ -21,13 +21,13 @@ public class PostMapping : IEntityTypeConfiguration<Post>
 
         builder.Property(x => x.Body).IsUnicode().HasColumnName("Content").IsRequired();
 
-        builder.OwnsOne(x => x.Header, header =>
+        builder.ComplexProperty(x => x.Header, header =>
         {
             header.Property(x => x.Title).HasColumnName(nameof(Header.Title)).HasMaxLength(PostConstants.MAX_TITLE_LENGTH).IsUnicode(false).IsRequired();
             header.Property(x => x.SubTitle).HasColumnName(nameof(Header.SubTitle)).HasMaxLength(PostConstants.MAX_SUBTITLE_LENGTH).IsUnicode(false).IsRequired();
         });
 
-        builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
+        builder.ComplexProperty(x => x.ModificationDetails, modificationDetails =>
         {
             modificationDetails.Property(x => x.DateOfCreation).HasColumnName(nameof(ModificationDetails.DateOfCreation)).IsRequired();
             modificationDetails.Property(x => x.DateOfModification).HasColumnName(nameof(ModificationDetails.DateOfModification)).IsRequired(false);

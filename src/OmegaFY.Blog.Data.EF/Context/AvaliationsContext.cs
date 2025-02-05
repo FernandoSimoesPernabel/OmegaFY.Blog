@@ -2,6 +2,7 @@
 using OmegaFY.Blog.Data.EF.Mappings.Avaliations;
 using OmegaFY.Blog.Data.EF.ValueConverts;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Data.EF.Context;
 

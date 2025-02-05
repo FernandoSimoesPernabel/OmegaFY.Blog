@@ -29,6 +29,8 @@ internal class SharePostCommandHandler : CommandHandlerMediatRBase<SharePostComm
 
         postToShare.Share(shareFromCurrentUser);
 
+        await _repository.UpdatePostShares(postToShare, cancellationToken);
+
         await _repository.SaveChangesAsync(cancellationToken);
 
         return new SharePostCommandResult(

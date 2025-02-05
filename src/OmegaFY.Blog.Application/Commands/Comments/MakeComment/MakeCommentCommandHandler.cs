@@ -25,6 +25,8 @@ internal class MakeCommentCommandHandler : CommandHandlerMediatRBase<MakeComment
 
         postToComment.Comment(commentFromCurrentUser);
 
+        await _repository.UpdatePostCommentsAsync(postToComment, cancellationToken);
+
         await _repository.SaveChangesAsync(cancellationToken);
 
         return new MakeCommentCommandResult(

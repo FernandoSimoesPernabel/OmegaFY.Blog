@@ -2,6 +2,7 @@
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Domain.Entities.Shares;
 using OmegaFY.Blog.Domain.Exceptions;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 using Xunit;
 
 namespace OmegaFY.Blog.Test.Unit.Domain.Entities;

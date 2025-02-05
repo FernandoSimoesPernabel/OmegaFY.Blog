@@ -1,6 +1,7 @@
 ﻿using OmegaFY.Blog.Common.Extensions;
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Domain.Entities.Comments;
 
@@ -13,6 +14,13 @@ public class Reaction : Entity
     public CommentReaction CommentReaction { get; private set; }
 
     protected Reaction() { }
+
+    private Reaction(ReferenceId reactionId, ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction) : base(reactionId)
+    {
+        CommentId = commentId;
+        AuthorId = authorId;
+        CommentReaction = commentReaction;
+    }
 
     public Reaction(ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction)
     {
@@ -28,4 +36,7 @@ public class Reaction : Entity
 
         CommentReaction = commentReaction;
     }
+
+    public static Reaction Create(ReferenceId reactionId, ReferenceId commentId, ReferenceId authorId, CommentReaction commentReaction)
+        => new Reaction(reactionId, commentId, authorId, commentReaction);
 }

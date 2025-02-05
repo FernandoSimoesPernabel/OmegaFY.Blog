@@ -19,7 +19,7 @@ public class AvaliationMapping : IEntityTypeConfiguration<Avaliation>
 
         builder.Property(x => x.Rate).HasConversion<byte>().IsRequired();
 
-        builder.OwnsOne(x => x.ModificationDetails, modificationDetails =>
+        builder.ComplexProperty(x => x.ModificationDetails, modificationDetails =>
         {
             modificationDetails.Property(x => x.DateOfCreation).HasColumnName(nameof(ModificationDetails.DateOfCreation)).IsRequired();
             modificationDetails.Property(x => x.DateOfModification).HasColumnName(nameof(ModificationDetails.DateOfModification)).IsRequired(false);

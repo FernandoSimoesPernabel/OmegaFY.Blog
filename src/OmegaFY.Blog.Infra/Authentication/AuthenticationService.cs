@@ -2,17 +2,18 @@
 using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Infra.Authentication.Models;
 using OmegaFY.Blog.Infra.Authentication.Token;
+using OmegaFY.Blog.Infra.Authentication.Users;
 using OmegaFY.Blog.Infra.Exceptions;
 
 namespace OmegaFY.Blog.Infra.Authentication;
 
 internal sealed class AuthenticationService : IAuthenticationService
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUserManager _userManager;
 
     private readonly IJwtProvider _jwtProvider;
 
-    public AuthenticationService(UserManager<IdentityUser> userManager, IJwtProvider jwtProvider)
+    public AuthenticationService(IUserManager userManager, IJwtProvider jwtProvider)
     {
         _userManager = userManager;
         _jwtProvider = jwtProvider;
@@ -20,39 +21,30 @@ internal sealed class AuthenticationService : IAuthenticationService
 
     public async Task<AuthenticationToken> RegisterNewUserAsync(LoginInput loginInput, CancellationToken cancellationToken)
     {
-        bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginInput.Email) is not null;
+        bool userAlreadyRegister = await _userManager.FindByEmailAsync(loginInput.Email, cancellationToken) is not null;
 
         if (userAlreadyRegister)
             throw new ConflictedException();
 
-        IdentityUser identityUser = new()
-        {
-            Email = loginInput.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = loginInput.Email
-        };
-
-        IdentityResult createUserResult = await _userManager.CreateAsync(identityUser, loginInput.Password);
+        IdentityResult createUserResult = await _userManager.CreateAsync(loginInput, cancellationToken);
 
         if (!createUserResult.Succeeded)
             throw new UnableToCreateUserOnIdentityException();
 
-        return await LoginAsync(loginInput);
+        return await LoginAsync(loginInput, cancellationToken);
     }
 
-    public async Task<AuthenticationToken> LoginAsync(LoginInput loginInput)
+    public async Task<AuthenticationToken> LoginAsync(LoginInput loginInput, CancellationToken cancellationToken)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(loginInput.Email);
-
-        if (identityUser is null || !await _userManager.CheckPasswordAsync(identityUser, loginInput.Password))
+        if (!await _userManager.CheckPasswordAsync(loginInput, cancellationToken))
             throw new UnauthorizedException();
 
         return _jwtProvider.WriteToken(loginInput);
     }
 
-    public async Task<AuthenticationToken> RefreshTokenAsync(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput)
+    public async Task<AuthenticationToken> RefreshTokenAsync(AuthenticationToken currentToken, RefreshTokenInput refreshTokenInput, CancellationToken cancellationToken)
     {
-        IdentityUser identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email);
+        IdentityUser<string> identityUser = await _userManager.FindByEmailAsync(refreshTokenInput.Email, cancellationToken);
 
         if (identityUser is null)
             throw new UnauthorizedException();

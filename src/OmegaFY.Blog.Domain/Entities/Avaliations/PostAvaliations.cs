@@ -1,5 +1,6 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Domain.Enums;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Domain.Entities.Avaliations;
 
@@ -10,6 +11,12 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
     public IReadOnlyCollection<Avaliation> Avaliations => _avaliations.AsReadOnly();
 
     public double AverageRate { get; private set; }
+
+    private PostAvaliations(Guid postId, Avaliation[] avaliations, double averageRate) : base(postId)
+    {
+        _avaliations = avaliations?.ToList() ?? [];
+        AverageRate = averageRate;
+    }
 
     public PostAvaliations() => _avaliations = new List<Avaliation>();
     
@@ -55,4 +62,7 @@ public class PostAvaliations : Entity, IAggregateRoot<PostAvaliations>
     }
 
     private void CalculateAverageRate() => AverageRate = _avaliations.Any() ? _avaliations.Average(avaliation => (double)avaliation.Rate) : 0;
+
+    public static PostAvaliations Create(Guid postId, Avaliation[] avaliations, double averageRate) 
+        => new PostAvaliations(postId, avaliations, averageRate);
 }

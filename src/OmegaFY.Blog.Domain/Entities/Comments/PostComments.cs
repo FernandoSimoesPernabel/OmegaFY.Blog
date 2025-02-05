@@ -2,6 +2,7 @@
 using OmegaFY.Blog.Domain.Enums;
 using OmegaFY.Blog.Domain.Exceptions;
 using OmegaFY.Blog.Domain.ValueObjects.Posts;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Domain.Entities.Comments;
 
@@ -10,6 +11,11 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
     private readonly List<Comment> _comments;
 
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
+
+    private PostComments(ReferenceId postId, Comment[] comments) : base(postId)
+    {
+        _comments = comments?.ToList() ?? [];
+    }
 
     public PostComments() => _comments = new List<Comment>();
 
@@ -76,4 +82,6 @@ public class PostComments : Entity, IAggregateRoot<PostComments>
         Comment comment = FindCommentAndThrowIfNotFound(commentId, authorId);
         comment.RemoveReaction(authorId);
     }
+
+    public static PostComments Create(ReferenceId postId, Comment[] comments) => new PostComments(postId, comments);
 }

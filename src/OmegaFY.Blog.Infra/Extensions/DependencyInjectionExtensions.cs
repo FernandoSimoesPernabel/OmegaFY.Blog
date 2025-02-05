@@ -94,7 +94,7 @@ public static class DependencyInjectionExtensions
         return services;
     }
 
-    public static IdentityBuilder AddIdentity(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthenticationSettings(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<AuthenticationSettings>(configuration.GetSection(nameof(AuthenticationSettings)));
 
@@ -118,7 +118,12 @@ public static class DependencyInjectionExtensions
             options.SignIn.RequireConfirmedAccount = authSettings.RequireConfirmedAccount;
         });
 
-        return services.AddIdentity<IdentityUser, IdentityRole>();
+        return services;
+    }
+
+    public static IdentityBuilder AddIdentity(this IServiceCollection services)
+    {
+        return services.AddIdentity<IdentityUser<string>, IdentityRole<string>>();
     }
 
     public static IServiceCollection AddDistributedCache(this IServiceCollection services)

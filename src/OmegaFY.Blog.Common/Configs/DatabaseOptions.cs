@@ -4,7 +4,7 @@ public enum DatabaseOptions
 {
     Sqlite = 0,
     SqlServer = 1,
-    MongoDB = 2,
-    CosmoDB = 3,
-    RavenDB = 4
+    MongoDb = 2,
+    CosmoDb = 3,
+    RavenDb = 4
 }

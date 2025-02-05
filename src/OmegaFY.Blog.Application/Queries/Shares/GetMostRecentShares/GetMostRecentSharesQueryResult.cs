@@ -6,9 +6,13 @@ public sealed record class GetMostRecentSharesQueryResult : GenericResult, IQuer
 {
     public Guid ShareId { get; set; }
 
+    public Guid ShareAuthorId { get; set; }
+
     public string ShareAuthorName { get; set; }
 
     public Guid PostId { get; set; }
+
+    public Guid PostAuthorId { get; set; }
 
     public string PostTitle { get; set; }
 

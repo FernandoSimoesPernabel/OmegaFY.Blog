@@ -1,5 +1,6 @@
 ﻿using OmegaFY.Blog.Common.Exceptions;
 using OmegaFY.Blog.Domain.Exceptions;
+using OmegaFY.Blog.Domain.ValueObjects.Shared;
 
 namespace OmegaFY.Blog.Domain.Entities.Shares;
 
@@ -8,6 +9,11 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
     private readonly List<Shared> _shareds;
 
     public IReadOnlyCollection<Shared> Shareds => _shareds.AsReadOnly();
+
+    private PostShares(ReferenceId postId, Shared[] shares) : base(postId)
+    {
+        _shareds = shares?.ToList() ?? [];
+    }
 
     public PostShares() => _shareds = new List<Shared>();
 
@@ -36,4 +42,6 @@ public class PostShares : Entity, IAggregateRoot<PostShares>
 
         _shareds.Remove(shared);
     }
+
+    public static PostShares Create(ReferenceId postId, Shared[] shares) => new PostShares(postId, shares);
 }
