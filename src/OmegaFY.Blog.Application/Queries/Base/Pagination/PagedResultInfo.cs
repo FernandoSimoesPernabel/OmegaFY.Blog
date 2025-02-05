@@ -8,15 +8,15 @@ public record class PagedResultInfo
 
     public int TotalPages { get; }
 
-    public int TotalOfItems { get; }
+    public long TotalOfItems { get; }
 
     public bool HasPrevious => TotalPages > 0 && CurrentPage > 1;
 
     public bool HasNext => CurrentPage < TotalPages;
 
-    public PagedResultInfo(PagedRequest pagedRequest, int totalOfItems) : this(pagedRequest.PageNumber, pagedRequest.PageSize, totalOfItems) { }
+    public PagedResultInfo(PagedRequest pagedRequest, long totalOfItems) : this(pagedRequest.PageNumber, pagedRequest.PageSize, totalOfItems) { }
 
-    public PagedResultInfo(int currentPage, int pageSize, int totalOfItems)
+    public PagedResultInfo(int currentPage, int pageSize, long totalOfItems)
     {
         CurrentPage = Math.Max(currentPage, 1);
         PageSize = Math.Max(pageSize, 1);

@@ -4,7 +4,7 @@ public class CommentCollectionModel
 {
     public Guid Id { get; set; }
 
-    public Guid PostId { get; }
+    public Guid PostId { get; set; }
 
     public Guid AuthorId { get; set; }
 

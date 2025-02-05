@@ -50,7 +50,7 @@ internal sealed class CommentQueryProvider : ICommentQueryProvider
                 DateOfCreation = comment.DateOfCreation,
                 HasCommentBeenEdit = comment.DateOfModification.HasValue,
                 PostId = comment.PostId,
-                Reactions = comment.Reactions.Count
+                ReactionCount = comment.Reactions.Count
             })
             .OrderByDescending(comment => comment.DateOfCreation)
             .ToArrayAsync(cancellationToken);
@@ -81,7 +81,7 @@ internal sealed class CommentQueryProvider : ICommentQueryProvider
                 DateOfCreation = comment.DateOfCreation,
                 HasCommentBeenEdit = comment.DateOfModification.HasValue,
                 PostId = comment.PostId,
-                Reactions = comment.Reactions.Count
+                ReactionCount = comment.Reactions.Count
             })
             .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
@@ -112,7 +112,7 @@ internal sealed class CommentQueryProvider : ICommentQueryProvider
                 DateOfCreation = comment.DateOfCreation,
                 HasCommentBeenEdit = comment.DateOfModification.HasValue,
                 PostId = comment.PostId,
-                Reactions = comment.Reactions.Count
+                ReactionCount = comment.Reactions.Count
             })
             .Paginate(pagedResultInfo)
             .ToArrayAsync(cancellationToken);
@@ -122,9 +122,9 @@ internal sealed class CommentQueryProvider : ICommentQueryProvider
 
     public async Task<GetReactionsFromCommentQueryResult> GetReactionsFromCommentQueryResultAsync(GetReactionsFromCommentQuery request, CancellationToken cancellationToken)
     {
-        ReactionFromPost[] result = await _context.Set<ReactionDatabaseModel>()
+        ReactionFromComment[] result = await _context.Set<ReactionDatabaseModel>()
             .Where(reaction => reaction.CommentId == request.CommentId)
-            .Select(reaction => new ReactionFromPost()
+            .Select(reaction => new ReactionFromComment()
             {
                 CommentId = reaction.CommentId,
                 CommentReaction = reaction.CommentReaction,

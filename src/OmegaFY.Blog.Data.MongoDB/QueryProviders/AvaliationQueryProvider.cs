@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetAvaliationsFromPost;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetMostRecentAvaliations;
 using OmegaFY.Blog.Application.Queries.Avaliations.GetTopRatedPosts;
@@ -61,7 +62,7 @@ internal class AvaliationQueryProvider : IAvaliationQueryProvider
     {
         FilterDefinition<PostCollectionModel> filter = Builders<PostCollectionModel>.Filter.Where(post => !post.Private);
 
-        int totalOfItems = (int)await _postCollection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+        long totalOfItems = await _postCollection.AggregateCountAsync(filter, post => post.Avaliations, cancellationToken);
 
         ProjectionDefinition<PostCollectionModel, GetMostRecentAvaliationsQueryResult[]> projection =
             Builders<PostCollectionModel>.Projection.Expression(post => post.Avaliations.Select(avaliation => new GetMostRecentAvaliationsQueryResult()

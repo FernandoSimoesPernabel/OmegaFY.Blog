@@ -42,9 +42,11 @@ internal class ShareQueryProvider : IShareQueryProvider
             await query.Select(share => new GetMostRecentSharesQueryResult()
             {
                 ShareId = share.Id,
+                ShareAuthorId = share.AuthorId,
+                PostId = share.PostId,
+                PostAuthorId = share.Post.AuthorId,
                 ShareAuthorName = share.Author.DisplayName,
                 DateAndTimeOfShare = share.DateAndTimeOfShare,
-                PostId = share.PostId,
                 PostTitle = share.Post.Title,
                 PostAuthorName = share.Post.Author.DisplayName
             })

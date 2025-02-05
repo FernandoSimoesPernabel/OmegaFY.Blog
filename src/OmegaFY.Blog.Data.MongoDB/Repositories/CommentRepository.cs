@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using OmegaFY.Blog.Data.MongoDB.Constants;
 using OmegaFY.Blog.Data.MongoDB.Extensions;
 using OmegaFY.Blog.Data.MongoDB.Models;
 using OmegaFY.Blog.Data.MongoDB.Repositories.Base;
@@ -10,7 +11,7 @@ namespace OmegaFY.Blog.Data.MongoDB.Repositories;
 
 internal sealed class CommentRepository : BaseRepository<PostComments, PostCommentsCollectionModel>, ICommentRepository
 {
-    protected override string CollectionName => throw new NotImplementedException();
+    protected override string CollectionName => MongoDbContants.POST_COLLECTION;
 
     public CommentRepository(IMongoDatabase database) : base(database) { }
 
@@ -25,7 +26,7 @@ internal sealed class CommentRepository : BaseRepository<PostComments, PostComme
         FilterDefinition<PostCommentsCollectionModel> filter = Builders<PostCommentsCollectionModel>.Filter.Eq(post => post.Id, postComments.Id.Value);
 
         UpdateDefinition<PostCommentsCollectionModel> update =
-            Builders<PostCommentsCollectionModel>.Update.Set(nameof(PostCommentsCollectionModel.Comments), postComments.Comments);
+            Builders<PostCommentsCollectionModel>.Update.Set(nameof(PostCommentsCollectionModel.Comments), postComments.Comments.ToArrayOfCommentCollectionModel());
 
         return _collection.UpdateOneAsync(filter, update, null, cancellationToken);
     }

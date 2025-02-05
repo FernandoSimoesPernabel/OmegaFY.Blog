@@ -18,5 +18,5 @@ public sealed record class GetMostRecentCommentsQueryResult : GenericResult, IQu
 
     public bool HasCommentBeenEdit { get; set; }
 
-    public int Reactions { get; set; }
+    public int ReactionCount { get; set; }
 }

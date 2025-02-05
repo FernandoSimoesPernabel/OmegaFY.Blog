@@ -14,7 +14,8 @@ public class HealthCheckRegistration : IDependencyInjectionRegister
 
         builder.Services.AddHealthChecks()
             .AddSqliteHealthCheck(builder.Configuration)
-            .AddSqlServerHealthCheck(builder.Configuration);
+            .AddSqlServerHealthCheck(builder.Configuration)
+            .AddMongoDbHealthCheck();
 
         builder.Services.AddHealthChecksUI(options =>
         {

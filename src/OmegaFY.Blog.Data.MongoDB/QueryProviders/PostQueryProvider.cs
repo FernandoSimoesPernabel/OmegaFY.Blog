@@ -117,14 +117,14 @@ internal class PostQueryProvider : IPostQueryProvider
             {
                 PostId = post.Id,
                 AuthorId = post.AuthorId,
-                Avaliations = post.Avaliations.Count(),
+                Avaliations = post.Avaliations.Length,
                 AverageRate = post.AverageRate,
-                Comments = post.Comments.Count(),
+                Comments = post.Comments.Length,
                 Content = post.Body,
                 DateOfCreation = post.DateOfCreation,
                 DateOfModification = post.DateOfModification,
                 Private = post.Private,
-                Shares = post.Shareds.Count(),
+                Shares = post.Shareds.Length,
                 SubTitle = post.SubTitle,
                 Title = post.Title
             }).FirstOrDefaultAsync(cancellationToken);
